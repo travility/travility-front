@@ -1,0 +1,30 @@
+.login_btn{
+    background-color: #2A52BE;
+    color:whitesmoke;
+    font-weight: bold;
+}
+
+.login_btn:hover{
+    background-color: #a7bcf4;
+    color:whitesmoke;
+    font-weight: bold;
+}
+
+.login_g img,
+.login_k img,
+.login_n img {
+  width: 100%;
+  height: auto;
+}
+
+.login_g{
+
+}
+
+.login_k{
+
+}
+
+.login_n{
+
+}
