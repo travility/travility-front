@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styles from './styles/SignupPage.module.css';
 import { signup, checkUsername } from '../../api/memberApi';
+import styles from '../../styles/member/SignupPage.module.css';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
