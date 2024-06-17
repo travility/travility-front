@@ -1,4 +1,4 @@
-import styles from './styles/LoginPage.module.css';
+import styles from '../../styles/member/LoginPage.module.css';
 
 
 
@@ -40,13 +40,13 @@ const LoginPage = () => {
                 </div>
                 <div>
                 <button className={styles.login_g} >
-                <img src="/images/google.png" alt="구글 로그인" />
+                <img src="/images/member/google.png" alt="구글 로그인" />
                 </button>
                 <button className={styles.login_k} >
-                <img src="/images/kakao.png" alt="카카오 로그인" />
+                <img src="/images/member/kakao.png" alt="카카오 로그인" />
                 </button>
                 <button className={styles.login_n} >
-                <img src="/images/naver.png" alt="네이버 로그인" />
+                <img src="/images/member/naver.png" alt="네이버 로그인" />
                 </button>
                 </div>
                 <div>

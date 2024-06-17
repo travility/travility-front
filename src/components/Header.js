@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './styles/Header.module.css';
-import { ReactComponent as Logo } from './styles/icon/Travility.svg';
+import styles from '../styles/components/Header.module.css';
+import { ReactComponent as Logo } from '../icon/Travility.svg';
 
 const Header = () => {
     const navigate = useNavigate();

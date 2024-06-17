@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Layout from './components/Layout';
-import AboutUsPage from './pages/AboutusPage';
+import AboutUsPage from './pages/main/AboutusPage';
 import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';
 import LoginPage from './pages/member/LoginPage';
 import SignupPage from './pages/member/SignupPage';
@@ -9,8 +9,8 @@ import SignupPage from './pages/member/SignupPage';
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<AboutUsPage />} />
       <Route path="/" element={<Layout />}>
-      <Route index element={<AboutUsPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route

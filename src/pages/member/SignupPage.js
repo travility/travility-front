@@ -1,4 +1,4 @@
-import styles from './styles/SignupPage.module.css';
+import styles from '../../styles/member/SignupPage.module.css';
 
 const SignupPage = () => {
   return (
