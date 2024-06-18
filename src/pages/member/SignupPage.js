@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { signup, checkUsername } from '../../api/memberApi';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/member/SignupPage.module.css';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
-  const [confirmUsername, setConfirmUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -16,10 +17,13 @@ const SignupPage = () => {
   const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
   const [errorBirth, setErrorBirth] = useState('');
+  const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(null);
+
+  const navigate = useNavigate();
 
   //아이디 유효성 확인
   const vaildateUsername = (username) => {
-    const regex = /^[a-z0-9]{8,20}$/; //영소문자, 숫자 8~20자 이하
+    const regex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{8,20}$/; //영소문자, 숫자 8~20자 이하
     return regex.test(username);
   };
 
@@ -29,22 +33,26 @@ const SignupPage = () => {
     const isValid = vaildateUsername(e.target.value);
     if (!isValid) {
       //만족하지 않으면
-      setErrorUsername('아이디는 영소문자, 숫자 8~20자로 입력하세요.');
+      setErrorUsername('영소문자, 숫자 8~20자로 입력하세요.');
     } else {
       setErrorUsername('');
     }
+    setIsUsernameDuplicate(null);
   };
 
   //아이디 중복 확인
-  const duplicateUsername = (e) => {
-    e.preventDefault(); //기본 폼 제출 동작 막기
+  const handleDuplicateUsername = (e) => {
+    e.preventDefault();
     checkUsername(username)
       .then((data) => {
         if (data.duplicate) {
           //중복인 경우
-          setConfirmUsername('중복 아이디입니다');
+          setErrorUsername('중복 아이디입니다.');
+          setIsUsernameDuplicate(true);
         } else {
-          setConfirmUsername('사용 가능합니다');
+          //중복이 아닌 경우
+          setErrorUsername('사용 가능합니다.');
+          setIsUsernameDuplicate(false);
         }
       })
       .catch((error) => console.log(error));
@@ -63,9 +71,7 @@ const SignupPage = () => {
     const isValid = vaildatePassword(e.target.value);
     if (!isValid) {
       //만족하지 않으면
-      setErrorPassword(
-        '비밀번호는 영소문자, 숫자, 특수문자 8자 이상 입력하세요'
-      );
+      setErrorPassword('영소문자, 숫자, 특수문자 8자 이상 입력하세요');
     } else {
       setErrorPassword('');
     }
@@ -105,8 +111,20 @@ const SignupPage = () => {
     return inputDate <= currnetDate; //생년월일이 현재 날짜보다 이하여야 한다.
   };
 
+  //생일 에러 표시 여부
   const handleBirth = (e) => {
-    setBirth(e.target.value);
+    const date = new Date(e.target.value);
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? '0' + day : day;
+
+    const formatDate = year + '-' + month + '-' + day;
+
+    setBirth(formatDate);
+
     const isValid = validateBirth(e.target.value);
     if (!isValid) {
       setErrorBirth('생일이 올바르지 않습니다');
@@ -117,7 +135,13 @@ const SignupPage = () => {
 
   //회원 가입
   const handleSignup = () => {
+    console.log(!isUsernameDuplicate);
+    console.log(vaildateUsername(username));
+    console.log(vaildatePassword(password));
+    console.log(validateEmail(email));
+    console.log(validateBirth(birth));
     if (
+      !isUsernameDuplicate &&
       vaildateUsername(username) &&
       vaildatePassword(password) &&
       validateEmail(email) &&
@@ -137,7 +161,28 @@ const SignupPage = () => {
         })
         .catch((error) => {
           console.log(error);
+          Swal.fire({
+            title: '회원가입 실패',
+            text: '회원가입 중 문제가 발생했습니다.',
+            icon: 'error',
+            confirmButtonColor: '#2a52be',
+          });
         });
+      Swal.fire({
+        title: '회원가입 성공',
+        text: '로그인 페이지로 이동합니다.',
+        icon: 'success',
+        confirmButtonColor: '#2a52be',
+      }).then(() => {
+        navigate('/login');
+      });
+    } else {
+      Swal.fire({
+        title: '회원가입 실패',
+        text: '양식이 올바르지 않습니다.',
+        icon: 'error',
+        confirmButtonColor: '#2a52be',
+      });
     }
   };
 
@@ -155,16 +200,17 @@ const SignupPage = () => {
             placeholder="영소문자, 숫자를 포함한 8~20자"
             value={username}
             onChange={handleUsername}
+            required
           ></input>
+          <button onClick={handleDuplicateUsername}>중복 확인</button>
           <div>{errorUsername}</div>
-          <button onClick={duplicateUsername}>중복 확인</button>
-          <div>{confirmUsername}</div>
           <div>비밀번호</div>
           <input
             type="password"
             placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
             value={password}
             onChange={handlePassword}
+            required
           ></input>
           <div>{errorPassword}</div>
           <div>비밀번호 확인</div>
@@ -173,6 +219,7 @@ const SignupPage = () => {
             placeholder="비밀번호를 재입력해주세요"
             value={confirmPassword}
             onChange={handleConfirmPassword}
+            required
           ></input>
           <div>{errorConfirmPassword}</div>
           <div>이메일</div>
@@ -181,6 +228,7 @@ const SignupPage = () => {
             placeholder="이메일을 입력해주세요"
             value={email}
             onChange={handleEmail}
+            required
           ></input>
           <div>{errorEmail}</div>
           <div>생년월일</div>
@@ -189,6 +237,7 @@ const SignupPage = () => {
             placeholder="yyyy-mm-dd"
             value={birth}
             onChange={handleBirth}
+            required
           ></input>
           <div>{errorBirth}</div>
         </form>
