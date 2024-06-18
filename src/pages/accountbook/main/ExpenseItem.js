@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../../styles/accountbook/AccountBookMain.module.css";
 
 const categoryImages = {
@@ -18,6 +18,7 @@ const ExpenseItem = ({
   description,
   imgName,
 }) => {
+  const [imgError, setImgError] = useState(false);
   const categoryImage = categoryImages[category] || "others.png";
 
   return (
@@ -31,11 +32,16 @@ const ExpenseItem = ({
       <span className={styles.currency}>{currency}</span>
       <span className={styles.amount}>{amount}</span>
       <span className={styles.description}>{description}</span>
-      <img
-        className={styles.expenseImg}
-        src={`/images/account/${imgName}`}
-        alt={description}
-      />
+      {imgError || !imgName ? (
+        <div className={`${styles.expenseImg} ${styles.defaultImg}`}></div>
+      ) : (
+        <img
+          className={styles.expenseImg}
+          src={`/images/account/${imgName}`}
+          alt=""
+          onError={() => setImgError(true)}
+        />
+      )}
     </div>
   );
 };

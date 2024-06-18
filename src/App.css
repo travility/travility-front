@@ -4,6 +4,11 @@ html, body {
 	padding: 0;
 }
 
+:root {
+	--component-padding: 0 3rem;
+	--color:#2A52BE;
+}
+
 .inner {
 	max-width: 1440px;
 	margin: 0 auto;

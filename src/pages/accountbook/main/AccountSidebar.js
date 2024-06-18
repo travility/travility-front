@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "../../../styles/accountbook/AccountBookMain.module.css";
+import AddBudget from "../../../components/AddBudget";
 
-const Sidebar = ({
+const AccountSidebar = ({
   accountBook,
   dates,
   onDateChange,
@@ -9,6 +10,7 @@ const Sidebar = ({
   onShowPreparation,
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const backgroundImage = accountBook.imgName
     ? `/images/account/${accountBook.imgName}`
@@ -35,6 +37,10 @@ const Sidebar = ({
   const handleShowPreparation = () => {
     setSelectedOption("preparation");
     onShowPreparation();
+  };
+
+  const handleBudgetSubmit = () => {
+    // 서버 전송 post
   };
 
   return (
@@ -92,23 +98,29 @@ const Sidebar = ({
           <button>
             <img src="/images/account/statistic.png" alt="statistic" />
           </button>
-          지출 통계
+          <p>지출 통계</p>
         </span>
         <span>
-          <button>
+          <button onClick={() => setIsModalOpen(true)}>
             <img src="/images/account/local_atm.png" alt="budget" />
           </button>
-          화폐/예산 추가
+          <p>화폐/예산 추가</p>
         </span>
         <span>
           <button>
             <img src="/images/account/write.png" alt="addExpense" />
           </button>
-          지출 내역 추가
+          <p>지출 내역 추가</p>
         </span>
       </div>
+      {isModalOpen && (
+        <AddBudget
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleBudgetSubmit}
+        />
+      )}
     </aside>
   );
 };
 
-export default Sidebar;
+export default AccountSidebar;
