@@ -1,0 +1,55 @@
+:root {
+    --sidebar-width: 310px;
+    --sidebar-padding-left: 80px;
+    --color:#2A52BE;
+  }
+ 
+  .sidebar {
+    display: flex;
+    width: var(--sidebar-width);
+    position: fixed;
+    height: 80%;
+    flex-direction: column;
+    background-color: white;
+    padding-left: var(--sidebar-padding-left);
+  }
+
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(var(--sidebar-width) + var(--sidebar-padding-left));
+    /* .sidebar의 너비 + padding-left 값 */
+    width: 1px;
+    height: 100%;
+    background-color: #ccc; 
+    border-left: 1px solid #ccc; 
+  }
+
+.sidebarHeader {
+   font-size: 28px;
+   font-weight: bold;
+   list-style: none;
+  }
+  
+.sidebarSubHeader {
+    margin-bottom: 2rem;
+    color: lightgrey;
+    list-style: none;
+    padding-bottom: 1.5rem;
+  }
+  
+.sidebarItem {
+    font-size: medium;
+    padding-bottom: 1.5rem;
+    list-style: none;
+
+}
+ 
+.NavLink{
+    text-decoration: none;
+    color:var(--color);
+    &:hover{
+        font-weight: bold;
+    }
+}
