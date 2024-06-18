@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "./AccountSidebar";
 import ExpenseList from "./ExpenseList";
 import styles from "../../../styles/accountbook/AccountBookMain.module.css";
 
