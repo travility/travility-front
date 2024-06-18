@@ -1,10 +1,10 @@
-import Header from './Header';
-import styles from '../styles/components/Layout.module.css'
-import { Outlet } from 'react-router-dom';
+import Header from "./Header";
+import styles from "../styles/components/Layout.module.css";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (
-    <div>
+    <div className="inner">
       <Header />
       <div className={styles.layout}>
         <Outlet />
