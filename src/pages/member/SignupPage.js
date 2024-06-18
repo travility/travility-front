@@ -3,6 +3,7 @@ import { signup, checkUsername } from '../../api/memberApi';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/member/SignupPage.module.css';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
@@ -19,7 +20,21 @@ const SignupPage = () => {
   const [errorBirth, setErrorBirth] = useState('');
   const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(null);
 
+  const [seePassword, setSeePassword] = useState(false);
+  const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
+  
+
+  //비밀번호 공개 여부 표시
+  const seePasswordHandler =()=>{
+    setSeePassword(!seePassword);
+  };
+
+  const seeConfirmPasswordHandler = () => {
+    setSeeConfirmPassword(!seeConfirmPassword);
+  };
+
 
   //아이디 유효성 확인
   const vaildateUsername = (username) => {
@@ -86,6 +101,7 @@ const SignupPage = () => {
       setErrorConfirmPassword('');
     }
   };
+  
 
   //이메일 유효성 검사
   const validateEmail = (email) => {
@@ -188,62 +204,94 @@ const SignupPage = () => {
 
   return (
     <div className={styles.signup_container}>
-      <div>
+      <div className={styles.signup_container_content}>
+      <div className={styles.signup_container_header}>
         <p>회원가입</p>
-        <p>반가워요! 가입을 위해 몇 가지만 확인할게요</p>
+        <p>
+        반가워요! 가입을 위해 몇 가지만 확인할게요.
+        </p>
       </div>
-      <div>
+      <div className={styles.signup_container_form}>
         <form>
-          <div>아이디</div>
+          <div className={styles.signup_title}>아이디</div>
+          <div className={styles.signup_id_container}>
           <input
             type="text"
             placeholder="영소문자, 숫자를 포함한 8~20자"
             value={username}
             onChange={handleUsername}
             required
+            className={styles.signup_input_id}
           ></input>
-          <button onClick={handleDuplicateUsername}>중복 확인</button>
-          <div>{errorUsername}</div>
-          <div>비밀번호</div>
+          <button
+           onClick={handleDuplicateUsername}
+           className={styles.signup_check_button}
+           >중복 확인</button>
+          </div>
+          <div className={styles.signup_error}>{errorUsername}</div>
+          
+
+          <div className={styles.signup_title}>비밀번호</div>
+          <div className={styles.signup_input_seepw_container}>
           <input
-            type="password"
+            type={seePassword ? "text" : "password"}
             placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
             value={password}
             onChange={handlePassword}
+            className={styles.signup_input_pw}
             required
           ></input>
-          <div>{errorPassword}</div>
-          <div>비밀번호 확인</div>
+          <button type="button" onClick={seePasswordHandler} 
+          className={styles.toggle_pw_button}>
+          {seePassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+          </button>
+          </div>
+          <div className={styles.signup_error}>{errorPassword}</div>
+
+          <div className={styles.signup_title}>비밀번호 확인</div>
+          <div className={styles.signup_input_seecheckpw_container}>
           <input
-            type="password"
+            type={seeConfirmPassword ? "text" : "password"}
             placeholder="비밀번호를 재입력해주세요"
             value={confirmPassword}
             onChange={handleConfirmPassword}
             required
+            className={styles.signup_input_checkpw}
           ></input>
-          <div>{errorConfirmPassword}</div>
-          <div>이메일</div>
+          <button type="button" onClick={seeConfirmPasswordHandler} 
+          className={styles.toggle_checkpw_button}>
+          {seeConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+          </button>
+          </div>
+          <div className={styles.signup_error}>{errorConfirmPassword}</div>
+
+          <div className={styles.signup_title}>이메일</div>
           <input
             type="email"
             placeholder="이메일을 입력해주세요"
             value={email}
             onChange={handleEmail}
             required
+            className={styles.signup_input_email}
           ></input>
-          <div>{errorEmail}</div>
-          <div>생년월일</div>
+          <div className={styles.signup_error}>{errorEmail}</div>
+          <div className={styles.signup_title}>생년월일</div>
           <input
             type="date"
             placeholder="yyyy-mm-dd"
             value={birth}
             onChange={handleBirth}
             required
+            className={styles.signup_input_date}
           ></input>
-          <div>{errorBirth}</div>
+          <div className={styles.signup_error}>{errorBirth}</div>
         </form>
-        <button type="submit" onClick={handleSignup}>
-          회원가입
+        <button type="submit" 
+        onClick={handleSignup}
+        className={styles.signup_action_button}>
+          회원 가입
         </button>
+      </div>
       </div>
     </div>
   );

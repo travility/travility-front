@@ -1,55 +1,59 @@
 :root {
-    --sidebar-width: 310px;
+    --sidebar-width: 300px;
     --sidebar-padding-left: 80px;
     --color:#2A52BE;
   }
  
-  .sidebar {
+  .sidebar_container {
     display: flex;
     width: var(--sidebar-width);
-    position: fixed;
-    height: 80%;
+    height: 50%;
     flex-direction: column;
     background-color: white;
     padding-left: var(--sidebar-padding-left);
+    position: relative;
   }
 
-  .sidebar::after {
+  .sidebar_container::after {
     content: '';
     position: absolute;
     top: 0;
-    left: calc(var(--sidebar-width) + var(--sidebar-padding-left));
-    /* .sidebar의 너비 + padding-left 값 */
-    width: 1px;
+    right:30px;
     height: 100%;
-    background-color: #ccc; 
-    border-left: 1px solid #ccc; 
+    border-left: 1px solid #dfdfdf; 
   }
 
-.sidebarHeader {
-   font-size: 28px;
+  .sidebar_header {
+   font-size: 26px;
    font-weight: bold;
    list-style: none;
+   margin-bottom: 2.5%;
+   letter-spacing: -2px;
   }
   
-.sidebarSubHeader {
-    margin-bottom: 2rem;
+  .sidebar_subheader {
+    font-size: 14px;
+    margin-bottom: 2.7rem;
     color: lightgrey;
     list-style: none;
-    padding-bottom: 1.5rem;
+    letter-spacing: -1px;
   }
   
-.sidebarItem {
-    font-size: medium;
-    padding-bottom: 1.5rem;
+  .sidebar_item {
+    padding-bottom: 1.3rem;
     list-style: none;
-
+    letter-spacing: -1.5px;
+    margin-left: 3px;
 }
  
-.NavLink{
-    text-decoration: none;
-    color:var(--color);
-    &:hover{
-        font-weight: bold;
-    }
-}
+.nav_link{
+      text-decoration: none;
+      color:var(--color);
+      &:hover{
+          font-weight: bold;
+      }
+  }
+
+  .nav_link_active {
+    font-weight: bold;
+  }

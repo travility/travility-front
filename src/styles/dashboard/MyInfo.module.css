@@ -1,50 +1,49 @@
-.page{
+.myinfo_page{
     display: flex;
 }
 
-.container {
-    margin-left: 530px;
+.myinfo_container {
+    
+    margin-left: 25px;
+    margin-top: 1rem;
   }
   
-  .myinfoul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-
-  .myinfoul {
+  .myinfo_item {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
   
-  .myinfoul li:nth-child(odd) {
+  .myinfo_item li:nth-child(odd) {
     color: #2A52BE;
     font-weight: bold;
     font-size: medium;
-    padding: 6px;
+    margin-bottom: 7px;
+    letter-spacing: -1px;
   }
   
-  .myinfoul li:nth-child(even) {
+  .myinfo_item li:nth-child(even) {
     color: rgb(145, 145, 145);
     border: 1px solid rgb(145, 145, 145);
-    width: 400px;
+    width: 370px;
     border-radius: 5px;
-    padding: 5px;
-    margin-left: 2%;
-    margin-bottom: 6%;
+    padding: 8px;
+    margin-bottom: 2%;
+    font-size: 11px;
   }
 
   .deleteMember{
-    margin-top: 25%;
+    margin-top: 6%;
     padding: 6px;
-    margin-left: 4px;
+    margin-left: 5px;
     font-size: small;
     color:rgb(145, 145, 145) ;
+    letter-spacing: -1px;
     &:hover {
         font-weight: bold;
         text-decoration: underline;
-        color:rgb(70, 70, 70);
+        color:rgb(119, 119, 119);
+        cursor: pointer;
     }
 
   }
