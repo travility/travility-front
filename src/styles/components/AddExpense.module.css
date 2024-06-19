@@ -1,0 +1,208 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  width: 30rem;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  font-size: 0.8rem;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.titleInput {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+}
+
+.categoryContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.categoryContainer img {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+}
+
+.selected {
+  border-bottom: 2px solid #000;
+}
+
+.dateTimeGroup {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.dateInput,
+.timeInput {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+}
+
+.timeInput {
+  margin-left: 0.5rem;
+}
+
+.radioGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.radioGroup label {
+  flex: 1;
+}
+
+.budgetType {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.paymentMethods {
+  display: flex;
+  gap: 1rem;
+}
+
+.paymentMethods img {
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.paymentMethodSelect {
+  flex: 1;
+  margin-left: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+}
+
+.addFormContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroupRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.formGroup label {
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.formGroup input,
+.formGroup select {
+  flex: 2;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 0.7rem;
+  margin-top: 0.3rem;
+  text-align: right;
+}
+
+.imageUpload {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  background-color: var(--line-color);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10rem;
+  text-align: center;
+  position: relative;
+}
+
+.imgUploadLabel {
+  cursor: pointer;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.imagePreview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 5px;
+}
+
+.textArea {
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  resize: none;
+}
+
+.submitButton {
+  display: flex;
+  justify-content: center;
+}
+
+.submitButton button {
+  flex: 1;
+  padding: 0.7rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  background: var(--main-color);
+  color:#fff;
+}

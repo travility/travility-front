@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../../../styles/accountbook/AccountBookMain.module.css";
 import AddBudget from "../../../components/AddBudget";
+import AddExpense from "../../../components/AddExpense";
 
 const AccountSidebar = ({
   accountBook,
@@ -10,7 +11,8 @@ const AccountSidebar = ({
   onShowPreparation,
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
 
   const backgroundImage = accountBook.imgName
     ? `/images/account/${accountBook.imgName}`
@@ -39,8 +41,42 @@ const AccountSidebar = ({
     onShowPreparation();
   };
 
-  const handleBudgetSubmit = () => {
-    // 서버 전송 post
+  const handleBudgetSubmit = async (budgets) => {
+    try {
+      const response = await fetch("/api/accountbook/budget", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(budgets),
+      });
+      if (response.ok) {
+        console.log("Budgets updated successfully");
+      } else {
+        console.error("Failed to update budgets");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleExpenseSubmit = async (expense) => {
+    try {
+      const response = await fetch("/api/accountbook/expense", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(expense),
+      });
+      if (response.ok) {
+        console.log("Expense added successfully");
+      } else {
+        console.error("Failed to add expense");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -101,22 +137,31 @@ const AccountSidebar = ({
           <p>지출 통계</p>
         </span>
         <span>
-          <button onClick={() => setIsModalOpen(true)}>
+          <button onClick={() => setIsBudgetModalOpen(true)}>
             <img src="/images/account/local_atm.png" alt="budget" />
           </button>
           <p>화폐/예산 추가</p>
         </span>
         <span>
-          <button>
+          <button onClick={() => setIsExpenseModalOpen(true)}>
             <img src="/images/account/write.png" alt="addExpense" />
           </button>
           <p>지출내역 추가</p>
         </span>
       </div>
-      {isModalOpen && (
+      {isBudgetModalOpen && (
         <AddBudget
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isBudgetModalOpen}
+          onClose={() => setIsBudgetModalOpen(false)}
           onSubmit={handleBudgetSubmit}
+          accountBookId={accountBook.id}
+        />
+      )}
+      {isExpenseModalOpen && (
+        <AddExpense
+          isOpen={isExpenseModalOpen}
+          onClose={() => setIsExpenseModalOpen(false)}
+          onSubmit={handleExpenseSubmit}
         />
       )}
     </aside>

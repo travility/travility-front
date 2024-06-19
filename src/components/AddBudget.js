@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../styles/components/AddBudget.module.css";
 
-const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
+const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   const [budgetType, setBudgetType] = useState("shared");
   const [currency, setCurrency] = useState("KRW"); // 기본값을 KRW로 설정
   const [amount, setAmount] = useState("");
@@ -16,7 +16,6 @@ const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
   const apiKey = "6479b2db710a6836e64142b2"; // https://app.exchangerate-api.com/dashboard/confirmed
 
   useEffect(() => {
-    // 화폐 목록
     axios
       .get(`https://v6.exchangerate-api.com/v6/${apiKey}/codes`)
       .then((response) => {
@@ -27,11 +26,21 @@ const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
       .catch((error) => {
         console.error("Error fetching currency codes:", error);
       });
-  }, [apiKey]);
+
+    axios
+      .get(`/api/accountbook/budget/${accountBookId}`)
+      .then((response) => {
+        if (response.data) {
+          setBudgets(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching budgets:", error);
+      });
+  }, [apiKey, accountBookId]);
 
   useEffect(() => {
     if (currency) {
-      // ExchangeRate-API 호출
       axios
         .get(`https://v6.exchangerate-api.com/v6/${apiKey}/latest/${currency}`)
         .then((response) => {
@@ -102,7 +111,6 @@ const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
     resetForm();
   };
 
-  // 서버전송
   const handleRegister = () => {
     const budgetsToSubmit = budgets.map((budget) => ({
       isShared: budget.type === "shared",
@@ -113,7 +121,7 @@ const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
     }));
 
     axios
-      .post("/budgets", budgetsToSubmit)
+      .post("/api/accountbook/budget", budgetsToSubmit)
       .then((response) => {
         onSubmit(response.data);
         onClose();
@@ -133,7 +141,6 @@ const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
       .toFixed(2);
   };
 
-  // 숫자와 소수점 2자리까지 허용
   const handleAmountChange = (e) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
@@ -176,125 +183,133 @@ const AddBudget = ({ onClose, onSubmit, accountBookId }) => {
   };
 
   return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <button className={styles.closeButton} onClick={onClose}>
-          &times;
-        </button>
-        <h2>예산 등록</h2>
-        <div className={styles.budgetType}>
-          <label>
-            <input
-              type="radio"
-              value="shared"
-              checked={budgetType === "shared"}
-              onChange={() => setBudgetType("shared")}
-            />
-            공동경비
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="personal"
-              checked={budgetType === "personal"}
-              onChange={() => setBudgetType("personal")}
-            />
-            개인경비
-          </label>
-        </div>
-        <div className={styles.addFormContainer}>
-          <div className={styles.formGroup}>
-            <div className={styles.formGroupRow}>
-              <label htmlFor="currency">화폐</label>
-              <select
-                id="currency"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-              >
-                {currencies.map(([code, name]) => (
-                  <option key={code} value={code}>
-                    {name} ({code})
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className={styles.formGroup}>
-            <div className={styles.formGroupRow}>
-              <label htmlFor="amount">금액</label>
-              <input
-                id="amount"
-                type="text"
-                value={amount}
-                onChange={handleAmountChange}
-                placeholder="금액 입력"
-              />
-            </div>
-            {amountError && <span className={styles.error}>{amountError}</span>}
-          </div>
-        </div>
-        <div className={styles.exchangeRateContainer}>
-          <div className={styles.formGroup}>
-            <div className={styles.formGroupRow}>
-              <label htmlFor="exchangeRate">{currency} 1.00 = KRW</label>
-              <input
-                id="exchangeRate"
-                type="text"
-                value={exchangeRate}
-                onChange={handleExchangeRateChange}
-              />
-            </div>
-            {exchangeRateError && (
-              <span className={styles.error}>{exchangeRateError}</span>
-            )}
-          </div>
-        </div>
-        <div className={styles.buttonContainer}>
-          <button
-            className={styles.addButton}
-            onClick={editIndex !== null ? handleEditBudget : handleAddBudget}
-          >
-            {editIndex !== null ? "수정" : "예산 추가하기"}
-          </button>
-          {editIndex !== null && (
-            <button
-              className={styles.deleteButton}
-              onClick={handleDeleteBudget}
-            >
-              삭제
+    <>
+      {isOpen && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <button className={styles.closeButton} onClick={onClose}>
+              &times;
             </button>
-          )}
-        </div>
-        <div className={styles.budgetSummary}>
-          <h3>예산 금액</h3>
-          <div className={styles.budgetDetailContainer}>
-            {budgets.map((budget, index) => (
-              <div
-                key={index}
-                className={styles.budgetDetail}
-                onClick={() => handleBudgetClick(index)}
-              >
-                <span>
-                  {budget.type === "shared" ? "공동경비" : "개인경비"}
-                </span>
-                <span>
-                  {budget.currency} {parseFloat(budget.amount).toFixed(2)}
-                </span>
-                <span>
-                  {budget.currency} 1.00 = KRW {budget.exchangeRate}
-                </span>
+            <h2>예산 등록</h2>
+            <div className={styles.budgetType}>
+              <label>
+                <input
+                  type="radio"
+                  value="shared"
+                  checked={budgetType === "shared"}
+                  onChange={() => setBudgetType("shared")}
+                />
+                공동경비
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="personal"
+                  checked={budgetType === "personal"}
+                  onChange={() => setBudgetType("personal")}
+                />
+                개인경비
+              </label>
+            </div>
+            <div className={styles.addFormContainer}>
+              <div className={styles.formGroup}>
+                <div className={styles.formGroupRow}>
+                  <label htmlFor="currency">화폐</label>
+                  <select
+                    id="currency"
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
+                  >
+                    {currencies.map(([code, name]) => (
+                      <option key={code} value={code}>
+                        {name} ({code})
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            ))}
-          </div>
-          <div className={styles.totalBudget}>
-            총 예산 금액 : <span>{calculateTotalAmount()} KRW</span>
+              <div className={styles.formGroup}>
+                <div className={styles.formGroupRow}>
+                  <label htmlFor="amount">금액</label>
+                  <input
+                    id="amount"
+                    type="text"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    placeholder="금액 입력"
+                  />
+                </div>
+                {amountError && (
+                  <span className={styles.error}>{amountError}</span>
+                )}
+              </div>
+            </div>
+            <div className={styles.exchangeRateContainer}>
+              <div className={styles.formGroup}>
+                <div className={styles.formGroupRow}>
+                  <label htmlFor="exchangeRate">{currency} 1.00 = KRW</label>
+                  <input
+                    id="exchangeRate"
+                    type="text"
+                    value={exchangeRate}
+                    onChange={handleExchangeRateChange}
+                  />
+                </div>
+                {exchangeRateError && (
+                  <span className={styles.error}>{exchangeRateError}</span>
+                )}
+              </div>
+            </div>
+            <div className={styles.buttonContainer}>
+              <button
+                className={styles.addButton}
+                onClick={
+                  editIndex !== null ? handleEditBudget : handleAddBudget
+                }
+              >
+                {editIndex !== null ? "수정" : "예산 추가하기"}
+              </button>
+              {editIndex !== null && (
+                <button
+                  className={styles.deleteButton}
+                  onClick={handleDeleteBudget}
+                >
+                  삭제
+                </button>
+              )}
+            </div>
+            <div className={styles.budgetSummary}>
+              <h3>예산 금액</h3>
+              <div className={styles.budgetDetailContainer}>
+                {budgets.map((budget, index) => (
+                  <div
+                    key={index}
+                    className={styles.budgetDetail}
+                    onClick={() => handleBudgetClick(index)}
+                  >
+                    <span>
+                      {budget.type === "shared" ? "공동경비" : "개인경비"}
+                    </span>
+                    <span>
+                      {budget.currency} {parseFloat(budget.amount).toFixed(2)}
+                    </span>
+                    <span>
+                      {budget.currency} 1.00 = KRW {budget.exchangeRate}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.totalBudget}>
+                총 예산 금액 : <span>{calculateTotalAmount()} KRW</span>
+              </div>
+            </div>
+            <button className={styles.registerButton} onClick={handleRegister}>
+              등록
+            </button>
           </div>
         </div>
-        <button className={styles.registerButton} onClick={handleRegister}>
-          등록
-        </button>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
