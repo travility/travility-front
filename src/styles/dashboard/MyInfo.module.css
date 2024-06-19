@@ -1,24 +1,26 @@
 .myinfo_page{
     display: flex;
+    height: 100vh;
 }
 
 .myinfo_container {
-    
-    margin-left: 25px;
+    margin-left: 35px;
     margin-top: 1rem;
+    height: 70vh;
   }
   
   .myinfo_item {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    margin-left: 30px;
   }
   
   .myinfo_item li:nth-child(odd) {
     color: #2A52BE;
     font-weight: bold;
-    font-size: medium;
-    margin-bottom: 7px;
+    font-size: 14px;
+    margin-bottom: 8px;
     letter-spacing: -1px;
   }
   
@@ -28,15 +30,17 @@
     width: 370px;
     border-radius: 5px;
     padding: 8px;
-    margin-bottom: 2%;
+    margin-bottom: 25px;
     font-size: 11px;
   }
 
   .deleteMember{
-    margin-top: 6%;
+    background-color: white;
+    border-style: none;
+    margin-top: 40px;
     padding: 6px;
-    margin-left: 5px;
-    font-size: small;
+    margin-left: 30px;
+    font-size: 12px;
     color:rgb(145, 145, 145) ;
     letter-spacing: -1px;
     &:hover {

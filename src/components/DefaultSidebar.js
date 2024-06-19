@@ -11,7 +11,7 @@ const DefaultSidebar = () => {
   
   
 return (
-    <div className={styles.sidebar_container}>
+    <aside className={styles.sidebar_container}>
       
       <ul>
         <li className={styles.sidebar_header}>
@@ -32,7 +32,7 @@ return (
         </li>
         <li className={styles.sidebar_item}>
           <NavLink 
-          to="/calendar" 
+          to="/mycalendar" 
           className={({ isActive }) =>
             isActive ? `${styles.nav_link} ${styles.nav_link_active}` : styles.nav_link
           }
@@ -51,7 +51,7 @@ return (
             </NavLink>
         </li>
       </ul>
-    </div>
+    </aside>
   );
 };
 

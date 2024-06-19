@@ -73,10 +73,10 @@ const MyInfo = () => {
   //onClick={handleDeleteMember}
 
   return (
-     <section className={styles.myinfo_page}>
+     <div className={styles.myinfo_page}>
         <DefaultSidebar />
         
-      <section className={styles.myinfo_container}>
+      <div className={styles.myinfo_container}>
         <ul className={styles.myinfo_item}>
         <li>아이디</li>
         <li>아이디 정보</li>
@@ -85,11 +85,12 @@ const MyInfo = () => {
         <li>생년월일</li>
         <li>생년월일 정보</li>
         </ul>
-        <div className={styles.deleteMember} >
+        <button className={styles.deleteMember} >
             회원탈퇴
-        </div>
-      </section>
-      </section>
+        </button>
+      </div>
+      
+      </div>
     );
   };
   

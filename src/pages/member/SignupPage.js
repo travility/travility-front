@@ -230,7 +230,6 @@ const SignupPage = () => {
           </div>
           <div className={styles.signup_error}>{errorUsername}</div>
           
-
           <div className={styles.signup_title}>비밀번호</div>
           <div className={styles.signup_input_seepw_container}>
           <input
