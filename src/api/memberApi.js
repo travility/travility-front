@@ -18,22 +18,16 @@ export const signup = async (member) => {
   return response.data;
 };
 
+//로그인
 export const login = async (data) => {
   const response = await axios.post(`${API_SERVER_HOST}/login`, data);
   return response;
 };
 
-
-
-
-
-
-
-
-
-
-// // OAuth2
-// export const fetchRootData = async (url) => {
-//   const response = await axios.get("http://localhost:8080/${url}", { withCredentials: true }); // 인증정보를 포함하여 요청
-//   return response.data;
-// };
+// OAuth2
+export const getTokenfromCookie = async () => {
+  const response = await axios.get(`${API_SERVER_HOST}/auth/social-jwt`, {
+    withCredentials: true,
+  }); // 인증정보를 포함하여 요청
+  return response;
+};

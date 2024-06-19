@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import DefaultSidebar from '../../components/DefaultSidebar';
-import styles from '../../styles/dashboard/Calendar.css';
+import '../../styles/dashboard/Calendar.css';
 
 const MyCalendar = () => {
   const today = new Date();
@@ -21,9 +21,11 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className={styles.mycalendar_container}>
-      <DefaultSidebar />
-      <div className={styles.mycalendar_container}>
+    <div className="mycalendar_page">
+      <div className="mycalendar_sidebar">
+        <DefaultSidebar />
+      </div>
+      <div className="mycalendar_container">
         <Calendar
           value={date}
           onChange={handleDateChange}
@@ -47,7 +49,7 @@ const MyCalendar = () => {
               date.getDate() === today.getDate()
             ) {
               elements.push(
-                <div key={'today'} className={styles.mycalendar_today}>
+                <div key={'today'} className="mycalendar_today">
                   오늘
                 </div>
               );
@@ -58,17 +60,14 @@ const MyCalendar = () => {
               elements.push(
                 <div
                   key={moment(date).format('YYYY-MM-DD')}
-                  className={styles.mycalendar_today_dot}
+                  className="mycalendar_today_dot"
                 />
               );
             }
             return <>{elements}</>;
           }}
         />
-        <div
-          className={styles.mycalendar_click_today}
-          onClick={handleTodayClick}
-        >
+        <div className="mycalendar_click_today" onClick={handleTodayClick}>
           오늘
         </div>
       </div>
