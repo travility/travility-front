@@ -298,11 +298,13 @@ const SignupPage = () => {
               className={styles.signup_input_date}
             ></input>
             <div className={styles.signup_error}>{errorBirth}</div>
-            <input
-              type="submit"
-              value="회원가입"
-              className={styles.signup_action_button}
-            ></input>
+            <div className={styles.signup_actions}>
+              <input
+                type="submit"
+                value="회원가입"
+                className={styles.signup_button}
+              ></input>
+            </div>
           </form>
         </div>
       </div>

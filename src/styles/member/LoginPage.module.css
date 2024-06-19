@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
 }
 
 .login_content {
@@ -49,7 +49,7 @@
 }
 
 .login_field {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .login_title {

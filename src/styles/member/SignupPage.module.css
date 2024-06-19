@@ -11,7 +11,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .signup_container_header p:first-of-type {
@@ -24,8 +24,7 @@
 
 .signup_container_header p:last-of-type {
   color: #909090;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 15px;
   padding: 1rem;
   letter-spacing: -1px;
 }
@@ -47,7 +46,7 @@
 }
 
 .signup_id_container input {
-  width: 75%;
+  width: 72%;
   margin-right: 3%;
   margin-top: 1%;
 }
@@ -70,18 +69,17 @@
 .signup_check_button {
   background-color: #2a52be;
   color: whitesmoke;
-  border: 4px solid #2a52be;
+  border: 1px solid #2a52be;
   border-radius: 5px;
   padding: 1%;
   position: absolute;
-  margin: auto 0;
   letter-spacing: -1px;
 
   &:hover {
     cursor: pointer;
     font-weight: bold;
     background-color: #002266;
-    border: 4px solid #002266;
+    border: 1px solid #002266;
   }
 }
 
@@ -129,7 +127,7 @@
 
 .toggle_pw_button {
   position: absolute;
-  right: 2%;
+  right: 6%;
   top: 60%;
   transform: translateY(-50%);
   background: none;
@@ -140,7 +138,7 @@
 
 .toggle_checkpw_button {
   position: absolute;
-  right: 2%;
+  right: 6%;
   top: 60%;
   transform: translateY(-50%);
   background: none;
@@ -169,7 +167,12 @@
   font-family: Noto Sans, sans-serif;
 }
 
-.signup_action_button {
+.signup_actions {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.signup_button {
   background-color: #2a52be;
   color: whitesmoke;
   border: 1px solid #2a52be;
