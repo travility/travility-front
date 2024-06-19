@@ -17,3 +17,9 @@ export const signup = async (member) => {
   const response = await axios.post(`${API_SERVER_HOST}/signup`, member);
   return response.data;
 };
+
+// OAuth2
+export const fetchRootData = async () => {
+  const response = await axios.get("http://localhost:8080/", { withCredentials: true });
+  return response.data;
+};

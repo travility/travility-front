@@ -1,6 +1,14 @@
 import styles from '../../styles/member/LoginPage.module.css';
 
 
+const onNaverLogin = () => {
+      window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+    };
+
+const onGoogleLogin = () => {
+      window.location.href = "http://localhost:8080/oauth2/authorization/google";
+      };
+
 
 const LoginPage = () => {
   
@@ -39,13 +47,13 @@ const LoginPage = () => {
                       SNS LOGIN
                 </div>
                 <div>
-                <button className={styles.login_g} >
+                <button className={styles.login_g} onClick={onGoogleLogin} >
                 <img src="/images/member/google.png" alt="구글 로그인" />
                 </button>
                 <button className={styles.login_k} >
                 <img src="/images/member/kakao.png" alt="카카오 로그인" />
                 </button>
-                <button className={styles.login_n} >
+                <button className={styles.login_n} onClick={onNaverLogin} >
                 <img src="/images/member/naver.png" alt="네이버 로그인" />
                 </button>
                 </div>
