@@ -18,8 +18,17 @@ export const signup = async (member) => {
   return response.data;
 };
 
-// OAuth2
-export const fetchRootData = async () => {
-  const response = await axios.get("http://localhost:8080/", { withCredentials: true });
-  return response.data;
-};
+
+
+
+
+
+
+
+
+
+// // OAuth2
+// export const fetchRootData = async (url) => {
+//   const response = await axios.get("http://localhost:8080/${url}", { withCredentials: true }); // 인증정보를 포함하여 요청
+//   return response.data;
+// };
