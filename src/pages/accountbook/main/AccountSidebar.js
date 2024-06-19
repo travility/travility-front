@@ -110,7 +110,7 @@ const AccountSidebar = ({
           <button>
             <img src="/images/account/write.png" alt="addExpense" />
           </button>
-          <p>지출 내역 추가</p>
+          <p>지출내역 추가</p>
         </span>
       </div>
       {isModalOpen && (
