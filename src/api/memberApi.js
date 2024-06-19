@@ -18,8 +18,15 @@ export const signup = async (member) => {
   return response.data;
 };
 
+export const login = async (data) => {
+  const response = await axios.post(`${API_SERVER_HOST}/login`, data);
+  return response;
+};
+
 // OAuth2
 export const fetchRootData = async () => {
-  const response = await axios.get("http://localhost:8080/", { withCredentials: true });
+  const response = await axios.get('http://localhost:8080/', {
+    withCredentials: true,
+  });
   return response.data;
 };
