@@ -57,24 +57,22 @@ const Header = () => {
   const userName = 'OOO';
 
   return (
-    <div className="inner">
-      <header className={styles.header}>
-        <div className={styles.logo}>
+      <header className={styles.header_container}>
+        <div className={styles.header_logo}>
           <Logo />
         </div>
-        <div className={styles.userActions}>
-          <span className={styles.welcomeMessage}>
+        <div className={styles.header_user_container}>
+          <span className={styles.header_welcome_message}>
             <img src="/images/person_circle.png" alt="user" />
             {userName} 님 반갑습니다!
           </span>
-          <nav className={styles.nav}>
-            <button onClick={handleLogout}>Logout</button>
-            <button onClick={goAccount}>Account</button>
-            <button onClick={goAboutUs}>About Us</button>
+          <nav className={styles.header_navigation_container}>
+            <button className={styles.logout_button} onClick={handleLogout}>Logout</button>
+            <button className={styles.account_button} onClick={goAccount}>Account</button>
+            <button className={styles.aboutus_button} onClick={goAboutUs}>About Us</button>
           </nav>
         </div>
       </header>
-    </div>
   );
 };
 

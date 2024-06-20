@@ -3,6 +3,7 @@ import './App.css';
 import Layout from './components/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';
+import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
 import AccountBookMain from './pages/accountbook/main/AccountBookMain';
 import LoginPage from './pages/member/LoginPage';
 import SignupPage from './pages/member/SignupPage';
@@ -54,6 +55,23 @@ function App() {
             </AuthenticatedRoute>
           }
         />
+        {/* <Route
+          path="/accountbook/list/:id"
+          element={
+            <AuthenticatedRoute>
+              <AccountBookListPage />
+            </AuthenticatedRoute>
+          }
+        /> */}
+        <Route
+          path="/accountbook/list/:id"
+          element={
+           
+              <AccountBookListPage />
+            
+          }
+        /> 
+
         <Route
           path="/accountbook/main/:id"
           element={

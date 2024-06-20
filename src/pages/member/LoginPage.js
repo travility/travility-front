@@ -99,7 +99,7 @@ const LoginPage = () => {
                 className={styles.login_input}
               />
             </div>
-            <div className={styles.login_actions}>
+            <div className={styles.login_actions_container}>
               <input
                 type="submit"
                 value="로그인"
@@ -108,30 +108,28 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
-        <div className={styles.login_social}>
-          <p>SNS 로그인</p>
-          <div className={styles.login_socialButtons}>
+          <p className={styles.login_social_txt}>SNS LOGIN</p>
+          <div className={styles.login_social_buttons_container}>
             <button
-              className={styles.login_socialButton}
+              className={styles.login_social_button}
               onClick={onGoogleLogin}
             >
               <img src="/images/member/google.png" alt="구글 로그인" />
             </button>
-            <button className={styles.login_socialButton}>
+            <button className={styles.login_social_button}>
               <img src="/images/member/kakao.png" alt="카카오 로그인" />
             </button>
             <button
-              className={styles.login_socialButton}
+              className={styles.login_social_button}
               onClick={onNaverLogin}
             >
               <img src="/images/member/naver.png" alt="네이버 로그인" />
             </button>
           </div>
-        </div>
-        <div className={styles.login_signup}>
-          <span className={styles.login_signupText}>계정이 없으신가요?</span>
+        <div className={styles.login_signup_container}>
+          <span className={styles.login_signup_text}>계정이 없으신가요?</span>
           <button
-            className={styles.login_signupButton}
+            className={styles.login_signup_button}
             onClick={() => navigate('/signup')}
           >
             회원가입
