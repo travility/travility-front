@@ -46,6 +46,7 @@ const MyInfo = () => {
       inputPlaceholder: "탈퇴합니다",
       showCancelButton: true,
       confirmButtonText: "탈퇴하기",
+      confirmButtonColor: '#2a52be',
       cancelButtonText: "취소",
       preConfirm: (inputValue) => {
         if (inputValue !== "탈퇴합니다") {
@@ -62,6 +63,7 @@ const MyInfo = () => {
         title: "회원 탈퇴가 완료되었습니다.",
         text: "메인 페이지로 이동합니다.",
         confirmButtonText: "확인",
+        confirmButtonColor: '#2a52be',
       }).then((res) => {
         if (res.isConfirmed) {
           navigate("/");

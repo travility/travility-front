@@ -1,0 +1,101 @@
+:root {
+    --fc-today-bg-color: rgba(226, 230, 228, 0.274);
+}
+
+.calendar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .fc {
+    width: 100% !important;
+    height: 85% !important;
+  }
+  
+  .fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+
+  /* 툴바의 버튼 */
+.fc .fc-toolbar-chunk .fc-button {
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  background-color: rgb(240, 242, 244);
+  color: rgb(139, 139, 139);
+}
+
+/* 툴바 사용 불가 버튼 스타일 */
+.fc .fc-toolbar-chunk .fc-button:disabled {
+  color: rgb(139, 139, 139);
+  background-color: rgb(243, 243, 243);
+}
+
+툴바 사용 불가 버튼 hover 시 스타일 주지 않기 
+.fc .fc-toolbar-chunk .fc-button:disabled:hover {
+   cursor: not-allowed;
+} 
+
+/* 툴바 버튼 포커스 시 그림자 제거 */
+.fc .fc-toolbar-chunk .fc-button:focus {
+  box-shadow: none;
+}
+
+/* 툴바 버튼 hover 시 배경색 변경 */
+.fc .fc-toolbar-chunk .fc-button:hover {
+  background-color: rgb(233, 231, 231);
+  color: rgb(139, 139, 139);
+}
+
+/* 날짜변경 화살표 아이콘 */
+.fc .fc-button-primary span {
+  font-weight: 500;
+  font-size: 28px;
+}
+
+  /* 일요일 날짜: 빨간색 */
+  .fc .fc-day-sun a {
+    color: rgb(230, 1, 1);
+  }
+
+  /* 토요일 날짜: 파란색 */
+  .fc .fc-day-sat a {
+    color: var(--main-color);
+  }
+
+.fc-daygrid-event-harness{
+    border: 0px;
+    border-radius: 0px;
+  }
+
+.fc-today {
+    background-color: var(--fc-today-bg-color);
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, 
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+    margin-right: 0%;
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, 
+.fc-direction-rtl .fc-daygrid-event.fc-event-end {
+    margin-left: 0%;
+}
+
+.fc-h-event{
+    background-color: var(--main-color); 
+    border: 1px solid var(--main-color); 
+    padding: 3px;
+}
+
+.fc-daygrid-event {
+    border-radius: 0px;
+    font-size: small;
+    text-align: center;
+    position: relative;
+    white-space: nowrap;
+}
