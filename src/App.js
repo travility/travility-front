@@ -8,23 +8,11 @@ import LoginPage from './pages/member/LoginPage';
 import SignupPage from './pages/member/SignupPage';
 import MyInfo from './pages/dashboard/MyInfo';
 import MyCalendar from './pages/dashboard/MyCalendar';
-import MyCalendar2 from './pages/dashboard/MyCalendar2';
 import MyReport from './pages/dashboard/MyReport';
 import LoadingPage from './pages/auth/LoadingPage';
 import AuthenticatedRoute from './pages/auth/AuthenticatedRoute';
-import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import './styles/dashboard/global.css';
-import Layout from './components/Layout';
-import AboutUsPage from './pages/main/AboutusPage';
-import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';
-import AccountBookMain from './pages/accountbook/main/AccountBookMain';
-import LoginPage from './pages/member/LoginPage';
-import SignupPage from './pages/member/SignupPage';
-import MyInfo from './pages/dashboard/MyInfo';
-import MyCalendar from './pages/dashboard/MyCalendar';
-import MyReport from './pages/dashboard/MyReport';
-import LoadingPage from './pages/member/LoadingPage';
 
 function App() {
   return (
@@ -55,14 +43,6 @@ function App() {
           element={
             <AuthenticatedRoute>
               <MyCalendar />
-            </AuthenticatedRoute>
-          }
-        />
-        <Route
-          path="/mycalendar2"
-          element={
-            <AuthenticatedRoute>
-              <MyCalendar2 />
             </AuthenticatedRoute>
           }
         />
