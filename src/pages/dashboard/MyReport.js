@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import DefaultSidebar from '../../components/DefaultSidebar';
@@ -64,6 +64,21 @@ const barOptions = {
 };
 
 const MyReport = () => {
+
+  // 총 금액 계산
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  useEffect(() => {
+    const expenseElements = document.querySelectorAll(`.${styles.expense_item} p:last-child`);
+    let total = 0;
+    expenseElements.forEach(element => {
+      const amount = parseInt(element.textContent.replace(/[^0-9]/g, ''), 10);
+      total += amount;
+    });
+    setTotalAmount(total);
+  }, []);
+
+
   return (
     <div className={styles.dashboard_container}>
       <DefaultSidebar />
@@ -88,38 +103,32 @@ const MyReport = () => {
         <div className={styles.expenses}>
           <div className={styles.expense_item}>
             <p>숙박</p>
-            <p>USD 12,000</p>
             <p>KRW 320,000</p>
           </div>
           <div className={styles.expense_item}>
             <p>교통</p>
-            <p>USD 0</p>
             <p>KRW 180,000</p>
           </div>
           <div className={styles.expense_item}>
             <p>쇼핑</p>
-            <p>USD 12,000</p>
             <p>KRW 320,000</p>
           </div>
           <div className={styles.expense_item}>
             <p>식비</p>
-            <p>USD 12,000</p>
             <p>KRW 320,000</p>
           </div>
           <div className={styles.expense_item}>
             <p>관광</p>
-            <p>USD 0</p>
             <p>KRW 320,000</p>
           </div>
           <div className={styles.expense_item}>
             <p>기타</p>
-            <p>USD 12,000</p>
             <p>KRW 320,000</p>
           </div>
         </div>
         <div className={styles.total_expenses}>
           <p>총 지출</p>
-          <p className={styles.total_amount}>₩ 3,188,800</p>
+          <p className={styles.total_amount}>₩ {totalAmount.toLocaleString()}</p>
         </div>
       </div>
     </div>
