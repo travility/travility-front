@@ -93,7 +93,7 @@ const MyReport = () => {
           <div className={styles.summary}>
             <p>
               문태준님은 <span className={styles.highlight_category}>숙박</span>에 가장 많은 소비를 하고,{' '}<br />
-              <span className={styles.highlight_paymentMethod}>카드</span>를 더 많이 이용했어요.
+              <span className={styles.highlight_paymentMethod}>카드</span>로 가장 많이 결제하셨어요.
             </p>
             <div className={styles.bar_container}>
               <Bar data={barData} options={barOptions} />
@@ -127,8 +127,7 @@ const MyReport = () => {
           </div>
         </div>
         <div className={styles.total_expenses}>
-          <p>총 지출</p>
-          <p className={styles.total_amount}>₩ {totalAmount.toLocaleString()}</p>
+        <span>총 지출</span> <span className={styles.total_amount}>₩ {totalAmount.toLocaleString()}</span>
         </div>
       </div>
     </div>

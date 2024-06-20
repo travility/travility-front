@@ -63,10 +63,17 @@
 }
 
 .total_expenses {
-  text-align: center;
+  text-align: right;
   margin-top: 20px;
   font-size: 20px;
 }
+
+.total_expenses span:first-child {
+  font-weight: bold; 
+  margin-right: 10px; 
+}
+
+
 
 .total_amount {
   color: red;
