@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/member/LoginPage.module.css';
 import { login } from '../../api/memberApi';
 import Swal from 'sweetalert2';
@@ -17,6 +17,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -43,7 +44,12 @@ const LoginPage = () => {
           icon: 'success',
           confirmButtonColor: '#2a52be',
         }).then(() => {
-          navigate('/'); //원래는 가계부 등록 페이지로 이동해야함
+          if (location.state && location.state.from) {
+            //로그인 페이지로 강제이동 됐을 경우 (이전 페이지 정보 존재할 경우)
+            navigate(location.state.from);
+          } else {
+            navigate('/'); //원래는 가계부 등록 페이지
+          }
         });
       })
       .catch((error) => {

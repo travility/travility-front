@@ -1,19 +1,19 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React from 'react';
+import { useState, useEffect } from 'react';
 // import { getMemberFromSession, deleteMember } from '../../api/memberApi'; // 백엔드 API 호출 부분은 주석처리
-import { useNavigate } from "react-router-dom";
-import DefaultSidebar from "../../components/DefaultSidebar";
-import styles from "../../styles/dashboard/MyInfo.module.css";
-import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
+import DefaultSidebar from '../../components/DefaultSidebar';
+import styles from '../../styles/dashboard/MyInfo.module.css';
+import Swal from 'sweetalert2';
 
 // Dummy Data
 const getMemberFromSession = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
-        memberId: "exampleUser123",
-        email: "example@domain.com",
-        birth: "1990-01-01",
+        memberId: 'exampleUser123',
+        email: 'example@domain.com',
+        birth: '1990-01-01',
       });
     }, 1000);
   });
@@ -39,34 +39,34 @@ const MyInfo = () => {
 
   const handleDeleteMember = async () => {
     const { value: text } = await Swal.fire({
-      icon: "warning",
-      text: "회원탈퇴 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 탈퇴하시겠습니까?",
+      icon: 'warning',
+      text: '회원탈퇴 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 탈퇴하시겠습니까?',
       inputLabel: '회원 탈퇴를 위해 "탈퇴합니다"를 입력해주세요',
-      input: "text",
-      inputPlaceholder: "탈퇴합니다",
+      input: 'text',
+      inputPlaceholder: '탈퇴합니다',
       showCancelButton: true,
-      confirmButtonText: "탈퇴하기",
+      confirmButtonText: '탈퇴하기',
       confirmButtonColor: '#2a52be',
-      cancelButtonText: "취소",
+      cancelButtonText: '취소',
       preConfirm: (inputValue) => {
-        if (inputValue !== "탈퇴합니다") {
+        if (inputValue !== '탈퇴합니다') {
           Swal.showValidationMessage('정확히 "탈퇴합니다"를 입력해주세요.');
         }
       },
     });
 
-    if (text === "탈퇴합니다") {
+    if (text === '탈퇴합니다') {
       // try {
       //   await deleteMember(memberInfo.id);
       Swal.fire({
-        icon: "success",
-        title: "회원 탈퇴가 완료되었습니다.",
-        text: "메인 페이지로 이동합니다.",
-        confirmButtonText: "확인",
+        icon: 'success',
+        title: '회원 탈퇴가 완료되었습니다.',
+        text: '메인 페이지로 이동합니다.',
+        confirmButtonText: '확인',
         confirmButtonColor: '#2a52be',
       }).then((res) => {
         if (res.isConfirmed) {
-          navigate("/");
+          navigate('/');
         }
       });
       // } catch (error) {
