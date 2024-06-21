@@ -18,13 +18,13 @@
 }
 
 .chart_container {
-  width: 400px; /* 도넛 차트의 너비 조절 */
-  height: 400px; /* 도넛 차트의 높이 조절 */
+  width: 400px; /* 도넛차트 넓이 */
+  height: 400px; /* 도넛 차트 높이 */
 }
 
 .bar_container {
-  width: 300px; /* 막대 차트의 너비 조절 */
-  height: 100px; /* 막대 차트의 높이 조절 */
+  width: 300px; /* 막대 차트 너비 */
+  height: 100px; /* 막대 차트 높이 */
   margin-top: 20px;
 }
 
@@ -33,24 +33,22 @@
 }
 
 .summary p {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 24px; 
+  font-weight: bold; 
   margin-bottom: 20px;
 }
 
-.highlight_category, .highlight_paymentMethod {
-  font-weight: bold;
-  font-size: 32px;
-}
-
-.highlight_category{
+.highlight_category {
   color: green;
+  font-weight: bold;
+  font-size: 28px; 
 }
 
-.highlight_paymentMethod{
+.highlight_paymentMethod {
   color: blue;
+  font-weight: bold;
+  font-size: 28px; 
 }
-
 
 .expenses {
   display: flex;
@@ -62,18 +60,26 @@
   text-align: center;
 }
 
+.expense_item p {
+  margin: 0;
+}
+
+.expense_item svg {
+  display: block;
+  margin: 0 auto 10px;
+}
+
 .total_expenses {
-  text-align: right;
+  text-align: right; 
   margin-top: 20px;
   font-size: 20px;
 }
 
+/* 총지출 텍스트 */
 .total_expenses span:first-child {
   font-weight: bold; 
   margin-right: 10px; 
 }
-
-
 
 .total_amount {
   color: red;
