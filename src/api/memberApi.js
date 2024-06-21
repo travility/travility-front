@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from '../util/axiosInterceptor';
 
 const API_SERVER_HOST = 'http://localhost:8080/api';
 
@@ -36,11 +37,7 @@ export const getTokenfromCookie = async () => {
 };
 
 //로그아웃
-export const logout = async (token) => {
-  const response = await axios.post(
-    `${API_SERVER_HOST}/logout`,
-    {}, //post 요청 시, 두 번째 인자는 바디
-    { headers: { Authorization: token }, withCredentials: true }
-  );
+export const logout = async () => {
+  const response = await axiosInstance.post('/logout');
   return response;
 };

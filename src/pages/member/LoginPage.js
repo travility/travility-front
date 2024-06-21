@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/member/LoginPage.module.css';
 import { login } from '../../api/memberApi';
@@ -108,24 +108,21 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
-          <p className={styles.login_social_txt}>SNS LOGIN</p>
-          <div className={styles.login_social_buttons_container}>
-            <button
-              className={styles.login_social_button}
-              onClick={onGoogleLogin}
-            >
-              <img src="/images/member/google.png" alt="구글 로그인" />
-            </button>
-            <button className={styles.login_social_button}>
-              <img src="/images/member/kakao.png" alt="카카오 로그인" />
-            </button>
-            <button
-              className={styles.login_social_button}
-              onClick={onNaverLogin}
-            >
-              <img src="/images/member/naver.png" alt="네이버 로그인" />
-            </button>
-          </div>
+        <p className={styles.login_social_txt}>SNS LOGIN</p>
+        <div className={styles.login_social_buttons_container}>
+          <button
+            className={styles.login_social_button}
+            onClick={onGoogleLogin}
+          >
+            <img src="/images/member/google.png" alt="구글 로그인" />
+          </button>
+          <button className={styles.login_social_button}>
+            <img src="/images/member/kakao.png" alt="카카오 로그인" />
+          </button>
+          <button className={styles.login_social_button} onClick={onNaverLogin}>
+            <img src="/images/member/naver.png" alt="네이버 로그인" />
+          </button>
+        </div>
         <div className={styles.login_signup_container}>
           <span className={styles.login_signup_text}>계정이 없으신가요?</span>
           <button

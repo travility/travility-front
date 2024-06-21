@@ -1,72 +1,76 @@
 .header_container {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    width: 100%;
-    padding: 1rem;
-    justify-content: space-between;
-  }
-  
-  .header_logo {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  justify-content: space-between;
+}
+
+.header_logo {
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.header_user_container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem;
+}
+
+.header_welcome_message {
+  font-size: 0.8rem;
+  color: #e89b29;
+}
+
+.header_welcome_message img {
+  height: 0.8rem;
+  padding-right: 0.5rem;
+}
+
+.header_navigation {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header_navigation_container {
+  font-size: 0.8rem;
+  text-decoration: none;
+  margin: 0.5rem;
+  font-weight: bold;
+  color: inherit;
+  background-color: none;
+  align-items: center;
+  &:hover {
     cursor: pointer;
-    padding: 1rem;
   }
-  
-  .header_user_container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 2rem;
-  }
-  
-  .header_welcome_message {
-    font-size: 0.8rem;
-    color: #E89B29;
-  }
+}
 
-  .header_welcome_message img{
-    height: 0.8rem;
-    padding-right: 0.5rem;
-  }
-  
-  .header_navigation {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .header_navigation_container {
-    font-size: 0.8rem;
-    text-decoration: none;
-    margin: 0.5rem;
-    font-weight: bold;
-    color: inherit;
-    background-color: none;
-    align-items: center;
-    &:hover{
-      cursor: pointer;
-    }
-  }
-  
-  .logout_button{
-    border: 0px;
-    display: inline;
-  }
+.logout_button {
+  border: 0px;
+  display: inline;
+}
 
-  .account_button{
-    border: 0px;
-    display: inline;
-  }
+.login_button {
+  border: 0px;
+  display: inline;
+}
 
-  .aboutus_button{
-    border: 0px;
-    display: inline;
-  }
+.account_button {
+  border: 0px;
+  display: inline;
+}
+
+.aboutus_button {
+  border: 0px;
+  display: inline;
+}
 
 .account_button::before {
-    content: "|     "; 
+  content: '|     ';
 }
 
 .account_button::after {
-    content: "    |";
+  content: '    |';
 }
-

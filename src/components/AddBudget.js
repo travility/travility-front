@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styles from "../styles/components/AddBudget.module.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styles from '../styles/components/AddBudget.module.css';
 
 const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
-  const [budgetType, setBudgetType] = useState("shared");
-  const [currency, setCurrency] = useState("KRW"); // 기본값을 KRW로 설정
-  const [amount, setAmount] = useState("");
-  const [exchangeRate, setExchangeRate] = useState("1.00"); // 기본값을 1.00으로 설정
+  const [budgetType, setBudgetType] = useState('shared');
+  const [currency, setCurrency] = useState('KRW'); // 기본값을 KRW로 설정
+  const [amount, setAmount] = useState('');
+  const [exchangeRate, setExchangeRate] = useState('1.00'); // 기본값을 1.00으로 설정
   const [budgets, setBudgets] = useState([]);
   const [currencies, setCurrencies] = useState([]);
-  const [amountError, setAmountError] = useState("");
-  const [exchangeRateError, setExchangeRateError] = useState("");
+  const [amountError, setAmountError] = useState('');
+  const [exchangeRateError, setExchangeRateError] = useState('');
   const [editIndex, setEditIndex] = useState(null);
 
-  const apiKey = "6479b2db710a6836e64142b2"; // https://app.exchangerate-api.com/dashboard/confirmed
+  const apiKey = '6479b2db710a6836e64142b2'; // https://app.exchangerate-api.com/dashboard/confirmed
 
   useEffect(() => {
     axios
@@ -24,19 +24,19 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
         }
       })
       .catch((error) => {
-        console.error("Error fetching currency codes:", error);
+        console.error('Error fetching currency codes:', error);
       });
 
-    axios
-      .get(`/api/accountbook/budget/${accountBookId}`)
-      .then((response) => {
-        if (response.data) {
-          setBudgets(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching budgets:", error);
-      });
+    // axios
+    //   .get(`/api/accountbook/budget/${accountBookId}`)
+    //   .then((response) => {
+    //     if (response.data) {
+    //       setBudgets(response.data);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching budgets:', error);
+    //   });
   }, [apiKey, accountBookId]);
 
   useEffect(() => {
@@ -51,25 +51,25 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
           ) {
             setExchangeRate(response.data.conversion_rates.KRW.toFixed(2));
           } else {
-            setExchangeRate("1.00");
+            setExchangeRate('1.00');
           }
         })
         .catch((error) => {
-          console.error("Error fetching exchange rate:", error);
-          setExchangeRate("1.00");
+          console.error('Error fetching exchange rate:', error);
+          setExchangeRate('1.00');
         });
     } else {
-      setExchangeRate("1.00");
+      setExchangeRate('1.00');
     }
   }, [currency, apiKey]);
 
   const handleAddBudget = () => {
     if (!amount) {
-      setAmountError("금액을 입력하세요.");
+      setAmountError('금액을 입력하세요.');
       return;
     }
     if (!exchangeRate) {
-      setExchangeRateError("환율을 입력하세요.");
+      setExchangeRateError('환율을 입력하세요.');
       return;
     }
     const newBudget = {
@@ -84,11 +84,11 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
 
   const handleEditBudget = () => {
     if (!amount) {
-      setAmountError("금액을 입력하세요.");
+      setAmountError('금액을 입력하세요.');
       return;
     }
     if (!exchangeRate) {
-      setExchangeRateError("환율을 입력하세요.");
+      setExchangeRateError('환율을 입력하세요.');
       return;
     }
     const updatedBudgets = budgets.map((budget, index) =>
@@ -113,7 +113,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
 
   const handleRegister = () => {
     const budgetsToSubmit = budgets.map((budget) => ({
-      isShared: budget.type === "shared",
+      isShared: budget.type === 'shared',
       curUnit: budget.currency,
       exchangeRate: parseFloat(budget.exchangeRate),
       amount: parseFloat(budget.amount),
@@ -121,13 +121,13 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
     }));
 
     axios
-      .post("/api/accountbook/budget", budgetsToSubmit)
+      .post('/api/accountbook/budget', budgetsToSubmit)
       .then((response) => {
         onSubmit(response.data);
         onClose();
       })
       .catch((error) => {
-        console.error("Error submitting budgets:", error);
+        console.error('Error submitting budgets:', error);
       });
   };
 
@@ -145,10 +145,10 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
     if (regex.test(value)) {
-      setAmountError("");
+      setAmountError('');
       setAmount(value);
     } else {
-      setAmountError("숫자를 입력하세요.");
+      setAmountError('숫자를 입력하세요.');
     }
   };
 
@@ -156,10 +156,10 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
     if (regex.test(value)) {
-      setExchangeRateError("");
+      setExchangeRateError('');
       setExchangeRate(value);
     } else {
-      setExchangeRateError("숫자를 입력하세요.");
+      setExchangeRateError('숫자를 입력하세요.');
     }
   };
 
@@ -173,13 +173,13 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   };
 
   const resetForm = () => {
-    setBudgetType("shared");
-    setCurrency("KRW");
-    setAmount("");
-    setExchangeRate("1.00");
+    setBudgetType('shared');
+    setCurrency('KRW');
+    setAmount('');
+    setExchangeRate('1.00');
     setEditIndex(null);
-    setAmountError("");
-    setExchangeRateError("");
+    setAmountError('');
+    setExchangeRateError('');
   };
 
   return (
@@ -196,8 +196,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                 <input
                   type="radio"
                   value="shared"
-                  checked={budgetType === "shared"}
-                  onChange={() => setBudgetType("shared")}
+                  checked={budgetType === 'shared'}
+                  onChange={() => setBudgetType('shared')}
                 />
                 공동경비
               </label>
@@ -205,8 +205,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                 <input
                   type="radio"
                   value="personal"
-                  checked={budgetType === "personal"}
-                  onChange={() => setBudgetType("personal")}
+                  checked={budgetType === 'personal'}
+                  onChange={() => setBudgetType('personal')}
                 />
                 개인경비
               </label>
@@ -267,7 +267,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                   editIndex !== null ? handleEditBudget : handleAddBudget
                 }
               >
-                {editIndex !== null ? "수정" : "예산 추가하기"}
+                {editIndex !== null ? '수정' : '예산 추가하기'}
               </button>
               {editIndex !== null && (
                 <button
@@ -288,7 +288,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                     onClick={() => handleBudgetClick(index)}
                   >
                     <span>
-                      {budget.type === "shared" ? "공동경비" : "개인경비"}
+                      {budget.type === 'shared' ? '공동경비' : '개인경비'}
                     </span>
                     <span>
                       {budget.currency} {parseFloat(budget.amount).toFixed(2)}
