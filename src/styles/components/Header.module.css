@@ -1,42 +1,72 @@
-.header {
+.header_container {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     width: 100%;
     padding: 1rem;
+    justify-content: space-between;
   }
   
-  .logo {
+  .header_logo {
     cursor: pointer;
     padding: 1rem;
   }
   
-  .userActions {
+  .header_user_container {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 2rem;
   }
   
-  .welcomeMessage {
+  .header_welcome_message {
     font-size: 0.8rem;
     color: #E89B29;
   }
 
-  .welcomeMessage img{
+  .header_welcome_message img{
     height: 0.8rem;
     padding-right: 0.5rem;
   }
   
-  .nav {
+  .header_navigation {
     display: flex;
     justify-content: flex-end;
   }
   
-  .nav a {
+  .header_navigation_container {
     font-size: 0.8rem;
     text-decoration: none;
-    margin: 1rem;
+    margin: 0.5rem;
     font-weight: bold;
     color: inherit;
+    background-color: none;
+    align-items: center;
+    &:hover{
+      cursor: pointer;
+    }
   }
+  
+  .logout_button{
+    border: 0px;
+    display: inline;
+  }
+
+  .account_button{
+    border: 0px;
+    display: inline;
+  }
+
+  .aboutus_button{
+    border: 0px;
+    display: inline;
+  }
+
+.account_button::before {
+    content: "|     "; 
+}
+
+.account_button::after {
+    content: "    |";
+}
+

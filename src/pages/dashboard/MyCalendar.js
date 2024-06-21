@@ -1,75 +1,71 @@
-import React, { useState } from 'react';
-import Calendar from 'react-calendar';
-import moment from 'moment';
-import DefaultSidebar from '../../components/DefaultSidebar';
-import '../../styles/dashboard/Calendar.css';
+import React, { useState, useEffect } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import DefaultSidebar from "../../components/DefaultSidebar";
+import styles from "../../styles/dashboard/MyCalendar.module.css";
+import { eachDayOfInterval, parseISO, format } from "date-fns";
 
 const MyCalendar = () => {
-  const today = new Date();
-  const [date, setDate] = useState(today);
-  const [activeStartDate, setActiveStartDate] = useState(new Date());
-  const journeyDay = ['2024-06-03', '2024-06-13']; // 여행 날짜
+  const [events, setEvents] = useState([]);
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
+  useEffect(() => {
+    const data = {
+      startDate: "2024-06-10",
+      endDate: "2024-06-20",
+      country: "Japan",
+      expenses: [
+        { expenseDate: "2024-06-12", amount: 10000000 },
+        { expenseDate: "2024-06-13", amount: 50000000 },
+        { expenseDate: "2024-06-18", amount: 20000000 },
+      ],
+    };
+
+    const travelDays = eachDayOfInterval({
+      start: parseISO(data.startDate),
+      end: parseISO(data.endDate),
+    }).map((date, index) => ({
+      title: index === 0 ? data.country : "",
+      start: format(date, "yyyy-MM-dd"),
+      classNames: [styles.travelPeriod],
+    }));
+
+    const expenseEvents = data.expenses.map((expense) => ({
+      title: `KRW ${expense.amount}`,
+      start: expense.expenseDate,
+      classNames: [styles.expenseLabel],
+    }));
+
+    setEvents([...travelDays, ...expenseEvents]);
+  }, []);
+
+  const renderEventContent = (eventInfo) => {
+    if (
+      eventInfo.event.classNames.includes(styles.countryLabel) ||
+      eventInfo.event.title === "Japan"
+    ) {
+      return <div className={styles.countryLabel}>{eventInfo.event.title}</div>;
+    }
+
+    if (eventInfo.event.classNames.includes(styles.expenseLabel)) {
+      return <div className={styles.expenseLabel}>{eventInfo.event.title}</div>;
+    }
+
+    return null;
   };
-
-  const handleTodayClick = () => {
-    const today = new Date();
-    setActiveStartDate(today);
-    setDate(today);
-  };
-
+  
   return (
-    <div className="mycalendar_page">
-      <div className="mycalendar_sidebar">
+    <div className={styles.container}>
+      <div className={styles.sidebar}>
         <DefaultSidebar />
       </div>
-      <div className="mycalendar_container">
-        <Calendar
-          value={date}
-          onChange={handleDateChange}
-          formatDay={(locale, date) => moment(date).format('D')}
-          formatYear={(locale, date) => moment(date).format('YYYY')}
-          formatMonthYear={(locale, date) => moment(date).format('YYYY. MM')}
-          calendarType="gregory"
-          showNeighboringMonth={false}
-          next2Label={null}
-          prev2Label={null}
-          minDetail="year"
-          activeStartDate={activeStartDate}
-          onActiveStartDateChange={({ activeStartDate }) =>
-            setActiveStartDate(activeStartDate)
-          }
-          tileContent={({ date, view }) => {
-            const elements = [];
-            if (
-              view === 'month' &&
-              date.getMonth() === today.getMonth() &&
-              date.getDate() === today.getDate()
-            ) {
-              elements.push(
-                <div key={'today'} className="mycalendar_today">
-                  오늘
-                </div>
-              );
-            }
-            if (
-              journeyDay.find((x) => x === moment(date).format('YYYY-MM-DD'))
-            ) {
-              elements.push(
-                <div
-                  key={moment(date).format('YYYY-MM-DD')}
-                  className="mycalendar_today_dot"
-                />
-              );
-            }
-            return <>{elements}</>;
-          }}
+      <div className={styles.calendar_container}>
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          initialView="dayGridMonth"
+          events={events}
+          eventContent={renderEventContent}
+
         />
-        <div className="mycalendar_click_today" onClick={handleTodayClick}>
-          오늘
-        </div>
       </div>
     </div>
   );
