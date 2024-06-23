@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/member/LoginPage.module.css';
 import { login } from '../../api/memberApi';
 import Swal from 'sweetalert2';
+import { saveToken } from '../../util/tokenUtils';
 
 const onNaverLogin = () => {
   window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
@@ -37,19 +38,14 @@ const LoginPage = () => {
       .then((response) => {
         const token = response.headers.get('Authorization');
         console.log(token);
-        localStorage.setItem('Authorization', token);
+        saveToken(token);
         Swal.fire({
           title: '로그인 성공',
           //text: ' 페이지로 이동합니다.',
           icon: 'success',
           confirmButtonColor: '#2a52be',
         }).then(() => {
-          if (location.state && location.state.from) {
-            //로그인 페이지로 강제이동 됐을 경우 (이전 페이지 정보 존재할 경우)
-            navigate(location.state.from);
-          } else {
-            navigate('/'); //원래는 가계부 등록 페이지
-          }
+          navigate('/');
         });
       })
       .catch((error) => {

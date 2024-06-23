@@ -1,60 +1,90 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';
-import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
+import AccountBookListPage from './pages/accountbook/AccountBookListPage';
 import AccountBookMain from './pages/accountbook/main/AccountBookMain';
 import LoginPage from './pages/member/LoginPage';
 import SignupPage from './pages/member/SignupPage';
 import MyInfo from './pages/dashboard/MyInfo';
 import MyCalendar from './pages/dashboard/MyCalendar';
 import MyReport from './pages/dashboard/MyReport';
-import LoadingPage from './pages/auth/LoadingPage';
-import AuthenticatedRoute from './pages/auth/AuthenticatedRoute';
+import LoadingPage from './util/LoadingPage';
+import AuthenticatedRoute from './util/AuthenticatedRoute';
 import './App.css';
 import './styles/dashboard/global.css';
+import { validateToken } from './util/tokenUtils';
+import { createContext, useEffect, useState } from 'react';
+import { getMemberInfo } from './api/memberApi';
+import { handleTokenExpirationLogout } from './util/logoutUtils';
+export const TokenStateContext = createContext();
 
 function App() {
+  const [tokenStatus, setTokenStatus] = useState();
+  const [memberInfo, setMemberInfo] = useState();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    validateToken()
+      .then((result) => {
+        console.log(result);
+        setTokenStatus(result);
+        if (result === 'Token valid') {
+          getMemberInfo().then((data) => {
+            console.log(data);
+            console.log(data.username);
+            setMemberInfo(data);
+          });
+        } else if (result === 'Token expired') {
+          handleTokenExpirationLogout(navigate);
+        }
+      })
+      .catch((error) => {
+        console.error('토큰 유효성 검사 중 오류 발생:', error);
+      });
+  }, [navigate]);
+
   return (
-    <Routes>
-      <Route path="/" element={<AboutUsPage />} />
-      <Route path="/" element={<Layout />}>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/loading" element={<LoadingPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route
-          path="/myreport"
-          element={
-            <AuthenticatedRoute>
-              <MyReport />
-            </AuthenticatedRoute>
-          }
-        />
-        <Route
-          path="/myinfo"
-          element={
-            <AuthenticatedRoute>
-              <MyInfo />
-            </AuthenticatedRoute>
-          }
-        />
-        <Route
-          path="/mycalendar"
-          element={
-            <AuthenticatedRoute>
-              <MyCalendar />
-            </AuthenticatedRoute>
-          }
-        />
-        <Route
-          path="/accountbook/add/:id"
-          element={
-            <AuthenticatedRoute>
-              <AddAccountBookPage />
-            </AuthenticatedRoute>
-          }
-        />
-        {/* <Route
+    <TokenStateContext.Provider value={{ tokenStatus, memberInfo }}>
+      <Routes>
+        <Route path="/" element={<AboutUsPage />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/loading" element={<LoadingPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/myreport"
+            element={
+              <AuthenticatedRoute>
+                <MyReport />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/myinfo"
+            element={
+              <AuthenticatedRoute>
+                <MyInfo />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/mycalendar"
+            element={
+              <AuthenticatedRoute>
+                <MyCalendar />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/accountbook/add/:id"
+            element={
+              <AuthenticatedRoute>
+                <AddAccountBookPage />
+              </AuthenticatedRoute>
+            }
+          />
+          {/* <Route
           path="/accountbook/list/:id"
           element={
             <AuthenticatedRoute>
@@ -62,25 +92,22 @@ function App() {
             </AuthenticatedRoute>
           }
         /> */}
-        <Route
-          path="/accountbook/list/:id"
-          element={
-           
-              <AccountBookListPage />
-            
-          }
-        /> 
+          <Route
+            path="/accountbook/list/:id"
+            element={<AccountBookListPage />}
+          />
 
-        <Route
-          path="/accountbook/main/:id"
-          element={
-            <AuthenticatedRoute>
-              <AccountBookMain />
-            </AuthenticatedRoute>
-          }
-        />
-      </Route>
-    </Routes>
+          <Route
+            path="/accountbook/main/:id"
+            element={
+              <AuthenticatedRoute>
+                <AccountBookMain />
+              </AuthenticatedRoute>
+            }
+          />
+        </Route>
+      </Routes>
+    </TokenStateContext.Provider>
   );
 }
 

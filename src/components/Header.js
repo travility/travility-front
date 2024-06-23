@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/components/Header.module.css';
 import { ReactComponent as Logo } from '../icon/Travility.svg';
 import { logout } from '../api/memberApi';
-import Swal from 'sweetalert2';
 import {
   handleAlreadyLoggedOut,
+  handleSuccessLogout,
   handleTokenExpirationLogout,
 } from '../util/logoutUtils';
-import { decodeToken, isTokenPresent, removeToken } from '../util/tokenUtils';
+import { isTokenPresent } from '../util/tokenUtils';
+import { TokenStateContext } from '../App';
 
 const Header = () => {
+  const { tokenStatus, memberInfo } = useContext(TokenStateContext);
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,36 +31,31 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setUsername(decodeToken().username);
-    } else {
-      setUsername('');
+    console.log(tokenStatus);
+    console.log(location.pathname);
+    console.log(memberInfo);
+    if (memberInfo && memberInfo.username) {
+      console.log(memberInfo.username);
+      setUsername(memberInfo.username);
     }
-  }, [isLoggedIn]);
+  }, [location.pathname, memberInfo, tokenStatus]);
 
   const handleLogout = () => {
-    if (!isTokenPresent()) {
-      //토큰이 없으면
-      handleAlreadyLoggedOut(navigate);
-    } else {
-      //토큰이 없으면
+    if (tokenStatus === 'Token valid') {
+      logout().catch((error) => {
+        console.log(error);
+      });
+      handleSuccessLogout(navigate);
+    } else if (tokenStatus === 'Token expired') {
       logout()
         .then(() => {
-          removeToken();
-          Swal.fire({
-            title: '로그아웃 성공',
-            icon: 'success',
-            confirmButtonColor: '#2a52be',
-          }).then(() => {
-            navigate('/login');
-          });
+          handleTokenExpirationLogout(navigate);
         })
         .catch((error) => {
           console.log(error);
-          if (error === 'Token expired') {
-            handleTokenExpirationLogout(navigate);
-          }
         });
+    } else if (tokenStatus === 'Token null') {
+      handleAlreadyLoggedOut(navigate);
     }
   };
 
@@ -68,7 +65,7 @@ const Header = () => {
         <Logo />
       </div>
       <div className={styles.header_user_container}>
-        {isLoggedIn && (
+        {isLoggedIn && username && (
           <span className={styles.header_welcome_message}>
             <img src="/images/person_circle.png" alt="user" />
             {username} 님 반갑습니다!
@@ -76,11 +73,11 @@ const Header = () => {
         )}
 
         <nav className={styles.header_navigation_container}>
-          {location.pathname === '/login' ? (
+          {location.pathname === '/login' || location.pathname === '/signup' ? (
             <button className={styles.aboutus_button} onClick={goAboutUs}>
               About Us
             </button>
-          ) : isLoggedIn ? (
+          ) : tokenStatus === 'Token valid' ? (
             <>
               <button className={styles.logout_button} onClick={handleLogout}>
                 Logout

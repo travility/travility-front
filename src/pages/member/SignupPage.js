@@ -253,7 +253,7 @@ const SignupPage = () => {
                 onClick={seePasswordHandler}
                 className={styles.toggle_pw_button}
               >
-                {seePassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </button>
             </div>
             <div className={styles.signup_error}>{errorPassword}</div>
