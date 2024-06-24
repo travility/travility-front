@@ -1,41 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState, useEffect } from 'react';
 // import { getMemberFromSession, deleteMember } from '../../api/memberApi'; // 백엔드 API 호출 부분은 주석처리
 import { useNavigate } from 'react-router-dom';
 import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/dashboard/MyInfo.module.css';
 import Swal from 'sweetalert2';
-
-// Dummy Data
-const getMemberFromSession = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        memberId: 'exampleUser123',
-        email: 'example@domain.com',
-        birth: '1990-01-01',
-      });
-    }, 1000);
-  });
-};
+import { TokenStateContext } from '../../App';
 
 const MyInfo = () => {
-  const [memberInfo, setMemberInfo] = useState({});
-  const [loading, setLoading] = useState(true);
+  const { memberInfo } = useContext(TokenStateContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getMemberFromSession()
-      .then((data) => {
-        setMemberInfo(data);
-        console.log(data);
-        setLoading(false); // 데이터 로딩 완료
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false); // 에러 발생 시에도 로딩 상태 해제
-      });
-  }, []);
+    if (memberInfo) {
+      setLoading(false);
+    }
+  }, [memberInfo]);
 
   const handleDeleteMember = async () => {
     const { value: text } = await Swal.fire({
@@ -92,11 +73,11 @@ const MyInfo = () => {
       <div className={styles.myinfo_container}>
         <ul className={styles.myinfo_item}>
           <li>아이디</li>
-          <li>{memberInfo.memberId}</li>
+          <li>{memberInfo.username}</li>
           <li>이메일</li>
           <li>{memberInfo.email}</li>
-          <li>생년월일</li>
-          <li>{memberInfo.birth}</li>
+          {/* <li>생년월일</li>
+          <li>{}</li> */}
         </ul>
         <button className={styles.deleteMember} onClick={handleDeleteMember}>
           회원탈퇴

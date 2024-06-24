@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from '../util/axiosInterceptor';
 
 const API_SERVER_HOST = 'http://localhost:8080/api';
 
@@ -36,11 +37,18 @@ export const getTokenfromCookie = async () => {
 };
 
 //로그아웃
-export const logout = async (token) => {
-  const response = await axios.post(
-    `${API_SERVER_HOST}/logout`,
-    {}, //post 요청 시, 두 번째 인자는 바디
-    { headers: { Authorization: token }, withCredentials: true }
-  );
+export const logout = async () => {
+  const response = await axios.post(`${API_SERVER_HOST}/logout`);
   return response;
+};
+//JWT 존재 여부
+export const checkToken = async () => {
+  const response = await axiosInstance.get('/auth/check-token');
+  return response.data;
+};
+
+//사용자 정보 추출
+export const getMemberInfo = async () => {
+  const response = await axiosInstance.get('/users');
+  return response.data;
 };

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/member/LoginPage.module.css';
 import { login } from '../../api/memberApi';
 import Swal from 'sweetalert2';
+import { saveToken } from '../../util/tokenUtils';
 
 const onNaverLogin = () => {
   window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
@@ -37,19 +38,14 @@ const LoginPage = () => {
       .then((response) => {
         const token = response.headers.get('Authorization');
         console.log(token);
-        localStorage.setItem('Authorization', token);
+        saveToken(token);
         Swal.fire({
           title: '로그인 성공',
           //text: ' 페이지로 이동합니다.',
           icon: 'success',
           confirmButtonColor: '#2a52be',
         }).then(() => {
-          if (location.state && location.state.from) {
-            //로그인 페이지로 강제이동 됐을 경우 (이전 페이지 정보 존재할 경우)
-            navigate(location.state.from);
-          } else {
-            navigate('/'); //원래는 가계부 등록 페이지
-          }
+          navigate('/');
         });
       })
       .catch((error) => {
@@ -108,24 +104,21 @@ const LoginPage = () => {
             </div>
           </form>
         </div>
-          <p className={styles.login_social_txt}>SNS LOGIN</p>
-          <div className={styles.login_social_buttons_container}>
-            <button
-              className={styles.login_social_button}
-              onClick={onGoogleLogin}
-            >
-              <img src="/images/member/google.png" alt="구글 로그인" />
-            </button>
-            <button className={styles.login_social_button}>
-              <img src="/images/member/kakao.png" alt="카카오 로그인" />
-            </button>
-            <button
-              className={styles.login_social_button}
-              onClick={onNaverLogin}
-            >
-              <img src="/images/member/naver.png" alt="네이버 로그인" />
-            </button>
-          </div>
+        <p className={styles.login_social_txt}>SNS LOGIN</p>
+        <div className={styles.login_social_buttons_container}>
+          <button
+            className={styles.login_social_button}
+            onClick={onGoogleLogin}
+          >
+            <img src="/images/member/google.png" alt="구글 로그인" />
+          </button>
+          <button className={styles.login_social_button}>
+            <img src="/images/member/kakao.png" alt="카카오 로그인" />
+          </button>
+          <button className={styles.login_social_button} onClick={onNaverLogin}>
+            <img src="/images/member/naver.png" alt="네이버 로그인" />
+          </button>
+        </div>
         <div className={styles.login_signup_container}>
           <span className={styles.login_signup_text}>계정이 없으신가요?</span>
           <button

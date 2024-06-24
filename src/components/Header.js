@@ -1,12 +1,21 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../styles/components/Header.module.css';
 import { ReactComponent as Logo } from '../icon/Travility.svg';
 import { logout } from '../api/memberApi';
-import Swal from 'sweetalert2';
+import {
+  handleAlreadyLoggedOut,
+  handleSuccessLogout,
+  handleTokenExpirationLogout,
+} from '../util/logoutUtils';
+import { isTokenPresent } from '../util/tokenUtils';
+import { TokenStateContext } from '../App';
 
 const Header = () => {
+  const { tokenStatus, memberInfo } = useContext(TokenStateContext);
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   const goAboutUs = () => {
     navigate('/');
@@ -16,63 +25,111 @@ const Header = () => {
     navigate('/account');
   };
 
+  const goLogin = () => {
+    navigate('/login');
+  };
+
+  useEffect(() => {
+    if (memberInfo && memberInfo.username) {
+      setUsername(memberInfo.username);
+    }
+  }, [memberInfo]);
+
   const handleLogout = () => {
-    const token = localStorage.getItem('Authorization');
-    console.log(token);
-    if (token) {
-      //로그인 상태인 경우 == 토큰이 있는 경우
-      logout(token)
+    if (tokenStatus === 'Token valid') {
+      logout().catch((error) => {
+        console.log(error);
+      });
+      handleSuccessLogout(navigate);
+    } else if (tokenStatus === 'Token expired') {
+      logout()
         .then(() => {
-          localStorage.removeItem('Authorization');
-          Swal.fire({
-            title: '로그아웃 성공',
-            icon: 'success',
-            confirmButtonColor: '#2a52be',
-          });
-          navigate('/');
+          handleTokenExpirationLogout(navigate);
         })
         .catch((error) => {
           console.log(error);
-          Swal.fire({
-            title: '로그아웃 실패',
-            text: '로그아웃 중 문제가 생겼습니다.',
-            icon: 'error',
-            confirmButtonColor: '#2a52be',
-          }).then(() => {
-            navigate('/');
-          });
         });
-    } else {
-      Swal.fire({
-        title: '로그아웃 실패',
-        text: '이미 로그아웃 상태입니다.',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
-      }).then(() => {
-        navigate('/');
-      });
+    } else if (tokenStatus === 'Token null') {
+      handleAlreadyLoggedOut(navigate);
     }
   };
 
-  const userName = 'OOO';
-
   return (
-      <header className={styles.header_container}>
-        <div className={styles.header_logo}>
-          <Logo />
-        </div>
-        <div className={styles.header_user_container}>
-          <span className={styles.header_welcome_message}>
-            <img src="/images/person_circle.png" alt="user" />
-            {userName} 님 반갑습니다!
-          </span>
-          <nav className={styles.header_navigation_container}>
-            <button className={styles.logout_button} onClick={handleLogout}>Logout</button>
-            <button className={styles.account_button} onClick={goAccount}>Account</button>
-            <button className={styles.aboutus_button} onClick={goAboutUs}>About Us</button>
-          </nav>
-        </div>
-      </header>
+    <header className={styles.header_container}>
+      <div className={styles.header_logo}>
+        <Logo />
+      </div>
+      <div className={styles.header_user_container}>
+        {tokenStatus === 'Token valid' ? (
+          location.pathname.startsWith('/admin') ? (
+            <span className={styles.header_welcome_message}>
+              현재 관리자 모드입니다
+            </span>
+          ) : (
+            <span className={styles.header_welcome_message}>
+              <img src="/images/person_circle.png" alt="user" />
+              {username} 님 반갑습니다!
+            </span>
+          )
+        ) : null}
+
+        <nav className={styles.header_navigation_container}>
+          {location.pathname === '/login' || location.pathname === '/signup' ? (
+            <button className={styles.aboutus_button} onClick={goAboutUs}>
+              About Us
+            </button>
+          ) : tokenStatus === 'Token valid' ? (
+            location.pathname.startsWith('/admin') ? (
+              <>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  About Us
+                </button>
+              </>
+            ) : location.pathname.startsWith('/dashboard') ||
+              location.pathname === '/' ? (
+              <>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                <button className={styles.account_button} onClick={goAccount}>
+                  Account
+                </button>
+                <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  About Us
+                </button>
+              </>
+            ) : (
+              <>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                <button className={styles.account_button} onClick={goAccount}>
+                  Dashboard
+                </button>
+                <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  About Us
+                </button>
+              </>
+            )
+          ) : (
+            <>
+              <button className={styles.login_button} onClick={goLogin}>
+                Login
+              </button>
+              <button className={styles.account_button} onClick={goAccount}>
+                Account
+              </button>
+              <button className={styles.aboutus_button} onClick={goAboutUs}>
+                About Us
+              </button>
+            </>
+          )}
+        </nav>
+      </div>
+    </header>
   );
 };
 

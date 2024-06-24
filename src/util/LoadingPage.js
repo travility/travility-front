@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getTokenfromCookie } from '../../api/memberApi';
+import { getTokenfromCookie } from '../api/memberApi';
 
 const LoadingPage = () => {
   const navigate = useNavigate();
