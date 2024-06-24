@@ -94,3 +94,22 @@
   margin-bottom: 10px;
   text-align: right;
 }
+
+.no_account_book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+.no_account_book_icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ccc;
+}
