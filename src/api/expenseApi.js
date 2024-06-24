@@ -1,7 +1,11 @@
-import axiosInstance from './memberApi';
+import axiosInstance from './axiosInterceptor';
 
-// 통계 데이터 가져오기
 export const getExpenseStatistics = async () => {
   const response = await axiosInstance.get('/accountbook/detail');
+  return response.data;
+};
+
+export const getUserInfo = async () => {
+  const response = await axiosInstance.get('/accountbook/userinfo');
   return response.data;
 };

@@ -23,8 +23,8 @@
 }
 
 .bar_container {
-  width: 300px; /* 막대 차트 너비 */
-  height: 100px; /* 막대 차트 높이 */
+  width: 450px; /* 막대 차트 너비 */
+  height: 120px; /* 막대 차트 높이 (이거 크게하면 차트 못생겨짐)*/
   margin-top: 20px;
 }
 
@@ -85,4 +85,12 @@
   color: red;
   font-weight: bold;
   font-size: 24px;
+}
+
+/* 화폐단위 : KRW */
+.currency_label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: right;
 }
