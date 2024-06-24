@@ -5,6 +5,28 @@
 .content {
   flex: 1;
   padding: 20px;
+  overflow-y: auto; /* 세로 스크롤을 위한 설정 */
+  max-width: 100%; /* 최대 너비를 100%로 설정 */
+  box-sizing: border-box; /* 패딩과 경계 상자를 포함한 전체 너비를 사용 */
+}
+
+.no_memberList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.no_memberList_icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ccc;
 }
 
 .header {
@@ -35,17 +57,40 @@
   color: #2a52be;
 }
 
+.memberList_container {
+  overflow-x: auto; /* 가로 스크롤을 위한 설정 */
+}
+
 .memberList {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  table-layout: fixed;
+}
+
+.sorttype_container {
+  float: right;
+}
+
+.sorttype {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .memberList th,
 .memberList td {
   border: 1px solid #ddd;
   padding: 12px 15px;
-  text-align: left;
+  text-align: center;
+  white-space: nowrap; /* 텍스트가 넘치지 않도록 */
+  overflow: hidden; /* 넘치는 부분 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분에 생략 부호 표시 */
 }
 
 .memberList th {
@@ -54,22 +99,24 @@
   color: #2c3e50;
 }
 
+.memberList th:first-child {
+  width: 10%;
+}
+
+.memberList th:nth-child(4) {
+  width: 10%;
+}
+
+.memberList th:nth-child(5) {
+  width: 20%;
+}
+
 .memberList tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
 .memberList tr:hover {
   background-color: #f1f1f1;
-}
-
-.memberList tr {
-  transition: background-color 0.2s ease-in-out;
-}
-
-.memberList th,
-.memberList td {
-  text-align: center;
-  white-space: nowrap; /* 텍스트가 넘치지 않도록 합니다. */
 }
 
 .img_socialtype {
@@ -84,29 +131,26 @@
   margin-top: 20px;
 }
 
+.prev_button,
+.next_button {
+  background-color: #f0f0f0;
+}
+
 .pagination span {
   cursor: pointer;
   padding: 8px 16px;
   margin: 0 4px;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.pagination span:hover {
-  background-color: #f0f0f0;
 }
 
 .pagination .activePage {
+  transition: background-color 0.3s ease;
   font-weight: bold;
   color: #333;
+  background-color: #f0f0f0; /* 진하게 표시할 배경색 */
 }
 
-.pagination span:first-child,
-.pagination span:last-child {
+.pagination .activePage:hover,
+.pagination .notActivePage:hover {
   background-color: #f0f0f0;
-}
-
-.pagination span:first-child:hover,
-.pagination span:last-child:hover {
-  background-color: #ddd;
 }
