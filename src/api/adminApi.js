@@ -7,3 +7,13 @@ export const getMemberList = async () => {
   const response = await axiosInstance.get('/admin/users');
   return response.data;
 };
+
+export const getTotalMembersCount = async () => {
+  const response = await axiosInstance.get('/admin/users/total-count');
+  return response.data;
+};
+
+export const getNewMembersCountToday = async () => {
+  const response = await axiosInstance.get('/admin/users/new-today');
+  return response.data;
+};

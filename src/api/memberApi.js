@@ -19,7 +19,7 @@ export const checkUsername = async (username) => {
 //회원가입
 export const signup = async (member) => {
   const response = await axios.post(`${API_SERVER_HOST}/signup`, member);
-  return response.data;
+  return response;
 };
 
 //로그인
