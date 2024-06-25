@@ -212,7 +212,10 @@ const MyReport = () => {
         {!hasAccountBook ? (
           <div className={styles.no_account_book}>
             <FontAwesomeIcon icon={faExclamationTriangle} className={styles.no_account_book_icon} />
-            <div>작성하신 가계부가 없습니다.</div>
+            <div>
+              작성하신 가계부가 없어요<br />
+              가계부를 작성하시면 통계화면을 볼 수 있어요
+            </div>
           </div> // 가계부 없을 때 표시
         ) : (
           <>
@@ -233,8 +236,8 @@ const MyReport = () => {
                 </div>
               </div>
             </div>
+            <div className={styles.currency_label}>화폐단위 : KRW</div> {/* 화폐단위 표시 */}
             <div className={styles.expenses}>
-              <div className={styles.currency_label}>화폐단위 : KRW</div> {/* 화폐단위 표시 */}
               {expenses.map((expense, index) => (
                 <div key={index} className={styles.expense_item}>
                   <FontAwesomeIcon icon={expense.icon} size="lg" />
