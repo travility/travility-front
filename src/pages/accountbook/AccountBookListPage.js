@@ -1,43 +1,66 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import CountryFlags from '../../components/CountryFlags';
 import styles from '../../styles/accountbook/AccountBookListPage.module.css';
 
+
 const dummyData = [
-  { id: 1, country: '서울', startDate: '2024-06-07', endDate: '2024-06-11', amount: 'KRW 652,500', image: null },
-  { id: 2, country: '호주', startDate: '2024-04-17', endDate: '2024-04-22', amount: 'KRW 3,652,500', image: '호주 이미지 경로' },
-  { id: 3, country: '일본', startDate: '2024-05-01', endDate: '2024-05-05', amount: 'KRW 1,500,000', image: '일본 이미지 경로' },
-  { id: 4, country: '몽골', startDate: '2024-07-10', endDate: '2024-07-15', amount: 'KRW 2,000,000', image: '몽골 이미지 경로' },
-  { id: 5, country: '스위스', startDate: '2024-08-01', endDate: '2024-08-10', amount: 'KRW 4,000,000', image: '스위스 이미지 경로' },
-  { id: 6, country: '영국', startDate: '2024-09-05', endDate: '2024-09-12', amount: 'KRW 3,200,000', image: '영국 이미지 경로' },
+  { id: 1, title: '서울 여행', startDate: '2024-06-07', endDate: '2024-06-11', amount: 'KRW 1,000,000', country: 'KR', imgName: '/images/account/seoul.jpeg' },
+  { id: 2, title: '호주', startDate: '2024-04-17', endDate: '2024-04-22', amount: 'KRW 3,652,500', country: 'AU', imgName: '' },
+  { id: 3, title: '일본', startDate: '2024-05-01', endDate: '2024-05-05', amount: 'KRW 1,500,000', country: 'JP', imgName: '' },
+  { id: 4, title: '몽골', startDate: '2024-07-10', endDate: '2024-07-15', amount: 'KRW 2,000,000', country: 'MN', imgName: '' },
+  { id: 5, title: '스위스', startDate: '2024-08-01', endDate: '2024-08-10', amount: 'KRW 4,000,000', country: 'CH', imgName: '' },
+  { id: 6, title: '영국', startDate: '2024-09-05', endDate: '2024-09-12', amount: 'KRW 3,200,000', country: 'GB', imgName: '' },
 ];
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
 
-  const handleBackClick = () => {
+  const handleHomeClick = () => {
     navigate('/addaccountbookpage');
   };
 
+
   return (
-    <div className={styles.accountBookPage}>
-      <div className={styles.header}>
-        <h2>전체 가계부</h2>
-        <button onClick={handleBackClick}>홈으로 돌아가기</button>
+    <div className={styles.accountBook_list_page}>
+      
+      <div className={styles.accountBook_list_header}>
+        <div className={styles.accountBook_list_header_container}>
+          <p className={styles.accountBook_list_header_total}>전체 가계부</p>
+          <div className={styles.accountBook_list_header_total_line}></div>
+        </div>
+          <button 
+          onClick={handleHomeClick}
+          className={styles.accountBook_list_home_button}
+          >홈으로 돌아가기
+          </button>
       </div>
-      <div className={styles.gridContainer}>
+
+      <div className={styles.accountBook_list_grid_container}>
         {dummyData.map((book) => (
-          <div key={book.id} className={styles.gridItem}>
-            <img src={book.image || '디폴트 이미지 경로'} alt={book.country} className={styles.image} />
-            <div className={styles.info}>
-              <span>{book.country}</span>
-              <span>{`${book.startDate} ~ ${book.endDate}`}</span>
-              <span>{book.amount}</span>
-            </div>
+          <div key={book.id} 
+          className={styles.accountBook_list_grid_item}
+          style={{ 
+            backgroundImage: `url(${book.imgName || '/public/images/dafault.jpg'})`
+           }}
+          onClick={()=> navigate(`/accountbook/main/:id`)}
+          alt={book.title} 
+          >
+                <div className={styles.accountBook_list_info}>
+                  <span className={styles.accountBook_list_title}>
+                    <CountryFlags countryCode={book.country} />
+                    {book.title}
+                    </span>
+                  <span className={styles.accountBook_list_dates}>
+                    {`${book.startDate} ~ ${book.endDate}`}</span>
+                  </div>
+                  <span className={styles.accountBook_list_amount}>{book.amount}</span>
           </div>
         ))}
       </div>
-    </div>
-  );
+    </div>      
+      );
 };
+
 
 export default AccountBookListPage;

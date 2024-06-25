@@ -87,19 +87,14 @@ function App() {
               </AuthenticatedRoute>
             }
           />
-          {/* <Route
+          <Route
           path="/accountbook/list/:id"
           element={
             <AuthenticatedRoute>
               <AccountBookListPage />
             </AuthenticatedRoute>
           }
-        /> */}
-          <Route
-            path="/accountbook/list/:id"
-            element={<AccountBookListPage />}
-          />
-
+        />
           <Route
             path="/accountbook/main/:id"
             element={
