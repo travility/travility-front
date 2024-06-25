@@ -1,10 +1,4 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';

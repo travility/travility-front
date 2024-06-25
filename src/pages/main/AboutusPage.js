@@ -1,14 +1,23 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "../../styles/main/AboutusPage.module.css";
-import Layout from "../../components/Layout.js";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from '../../styles/main/AboutusPage.module.css';
+import Layout from '../../components/Layout.js';
+import { TokenStateContext } from '../../App.js';
 
 const AboutUsPage = () => {
+  const { tokenStatus } = useContext(TokenStateContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate("/login");
+    navigate('/login');
   };
+
+  useEffect(() => {
+    if (tokenStatus === 'Token valid') {
+      setIsLoggedIn(true);
+    }
+  });
 
   return (
     <div className={styles.pageContainer}>
@@ -30,9 +39,16 @@ const AboutUsPage = () => {
                 여행을 더욱 편리하게 만들어준다는 의미입니다.
               </p>
             </div>
-            <button className={styles.login_button} onClick={handleLoginClick}>
-              <p>Login</p>
-            </button>
+            {isLoggedIn ? (
+              <></>
+            ) : (
+              <button
+                className={styles.login_button}
+                onClick={handleLoginClick}
+              >
+                <p>Login</p>
+              </button>
+            )}
           </div>
         </section>
       </div>
