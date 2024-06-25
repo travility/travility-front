@@ -109,6 +109,7 @@ const MyReport = () => {
   const [highestCategory, setHighestCategory] = useState(''); // 가장 높은 지출 카테고리
   const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제방법 [현금, 카드]
   const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부 상태 (작성한 가계부 없으면 통계 안뜨고 가계부 없다고 뜸)
+  const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 슬롯머신처럼 도로록
 
   useEffect(() => {
     async function fetchData() {
@@ -185,6 +186,22 @@ const MyReport = () => {
           amount: categoryAmounts[index],
         }));
         setExpenses(expenseList);
+
+          // 총 지출 도로록 애니메이션
+          let startAmount = 0;
+          const duration = 2000; // 애니메이션 지속 시간 (ms)
+          const increment = total / (duration / 16); // 각 프레임당 증가 금액
+
+          const animate = () => {
+            startAmount += increment;
+            if (startAmount < total) {
+              setDisplayAmount(Math.floor(startAmount));
+              requestAnimationFrame(animate);
+            } else {
+              setDisplayAmount(total);
+            }
+          };
+          requestAnimationFrame(animate);
       } catch (error) {
         setError(error); // 오류 발생 시 상태 업데이트
       } finally {
@@ -247,7 +264,7 @@ const MyReport = () => {
               ))}
             </div>
             <div className={styles.total_expenses}>
-              <span>총 지출</span> <span className={styles.total_amount}>₩ {totalAmount.toLocaleString()}</span>
+              <span>총 지출</span> <span className={styles.total_amount}>₩ {displayAmount.toLocaleString()}</span>
             </div>
           </>
         )}

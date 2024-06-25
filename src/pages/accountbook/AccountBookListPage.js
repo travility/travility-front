@@ -48,7 +48,7 @@ const AccountBookListPage = () => {
           >
                 <div className={styles.accountBook_list_info}>
                   <span className={styles.accountBook_list_title}>
-                    <CountryFlags countryCode={book.country} />
+                    {/* <div>국기 표시 영역</div> - 추후 수정 */}
                     {book.title}
                     </span>
                   <span className={styles.accountBook_list_dates}>
