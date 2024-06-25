@@ -92,15 +92,15 @@ function App() {
               </AuthenticatedRoute>
             }
           />
+          <Route
+            path="/admin/users"
+            element={
+              <AuthenticatedRoute>
+                <UsersPage />
+              </AuthenticatedRoute>
+            }
+          />
         </Route>
-        <Route
-          path="/admin/users"
-          element={
-            <AuthenticatedRoute>
-              <UsersPage />
-            </AuthenticatedRoute>
-          }
-        />
       </Routes>
     </TokenStateContext.Provider>
   );
