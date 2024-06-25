@@ -1,32 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../styles/components/Header.module.css';
-import { ReactComponent as Logo } from '../icon/Travility.svg';
-import { logout } from '../api/memberApi';
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../styles/components/Header.module.css";
+import { ReactComponent as Logo } from "../icon/Travility.svg";
+import { logout } from "../api/memberApi";
 import {
   handleAlreadyLoggedOut,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from '../util/logoutUtils';
-import { isTokenPresent } from '../util/tokenUtils';
-import { TokenStateContext } from '../App';
+} from "../util/logoutUtils";
+import { isTokenPresent } from "../util/tokenUtils";
+import { TokenStateContext } from "../App";
 
 const Header = () => {
   const { tokenStatus, memberInfo } = useContext(TokenStateContext);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   const goAboutUs = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const goAccount = () => {
-    navigate('/account');
+    navigate("/account");
   };
 
   const goLogin = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -36,12 +36,12 @@ const Header = () => {
   }, [memberInfo]);
 
   const handleLogout = () => {
-    if (tokenStatus === 'Token valid') {
+    if (tokenStatus === "Token valid") {
       logout().catch((error) => {
         console.log(error);
       });
       handleSuccessLogout(navigate);
-    } else if (tokenStatus === 'Token expired') {
+    } else if (tokenStatus === "Token expired") {
       logout()
         .then(() => {
           handleTokenExpirationLogout(navigate);
@@ -49,7 +49,7 @@ const Header = () => {
         .catch((error) => {
           console.log(error);
         });
-    } else if (tokenStatus === 'Token null') {
+    } else if (tokenStatus === "Token null") {
       handleAlreadyLoggedOut(navigate);
     }
   };
@@ -60,8 +60,8 @@ const Header = () => {
         <Logo />
       </div>
       <div className={styles.header_user_container}>
-        {tokenStatus === 'Token valid' ? (
-          location.pathname.startsWith('/admin') ? (
+        {tokenStatus === "Token valid" ? (
+          location.pathname.startsWith("/admin") ? (
             <span className={styles.header_welcome_message}>
               현재 관리자 모드입니다
             </span>
@@ -74,12 +74,12 @@ const Header = () => {
         ) : null}
 
         <nav className={styles.header_navigation_container}>
-          {location.pathname === '/login' || location.pathname === '/signup' ? (
+          {location.pathname === "/login" || location.pathname === "/signup" ? (
             <button className={styles.aboutus_button} onClick={goAboutUs}>
               About Us
             </button>
-          ) : tokenStatus === 'Token valid' ? (
-            location.pathname.startsWith('/admin') ? (
+          ) : tokenStatus === "Token valid" ? (
+            location.pathname.startsWith("/admin") ? (
               <>
                 <button className={styles.logout_button} onClick={handleLogout}>
                   Logout
@@ -88,8 +88,8 @@ const Header = () => {
                   About Us
                 </button>
               </>
-            ) : location.pathname.startsWith('/dashboard') ||
-              location.pathname === '/' ? (
+            ) : location.pathname.startsWith("/dashboard") ||
+              location.pathname === "/" ? (
               <>
                 <button className={styles.logout_button} onClick={handleLogout}>
                   Logout

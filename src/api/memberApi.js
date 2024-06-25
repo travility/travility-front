@@ -41,7 +41,6 @@ export const logout = async () => {
   const response = await axios.post(`${API_SERVER_HOST}/logout`);
   return response;
 };
-
 //JWT 존재 여부
 export const checkToken = async () => {
   const response = await axiosInstance.get('/auth/check-token');
