@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faBus, faShoppingCart, faUtensils, faLandmark, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBus, faShoppingCart, faUtensils, faLandmark, faEllipsisH, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/dashboard/MyReport.module.css';
 import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
@@ -197,7 +197,7 @@ const MyReport = () => {
 
   // 로딩 중일 때(예쁘게 수정가능)
   if (loading) {
-    return <div>정보를 불러오는 중이에요</div>;
+    return <div>Loading...</div>;
   }
 
   // 오류 발생했을 때 표시 메시지
@@ -210,7 +210,13 @@ const MyReport = () => {
       <DefaultSidebar />
       <div className={styles.content}>
         {!hasAccountBook ? (
-          <div>작성하신 가계부가 없습니다.</div> // 가계부 없을 때 표시
+          <div className={styles.no_account_book}>
+            <FontAwesomeIcon icon={faExclamationTriangle} className={styles.no_account_book_icon} />
+            <div>
+              작성하신 가계부가 없어요<br />
+              가계부를 작성하시면 통계화면을 볼 수 있어요
+            </div>
+          </div> // 가계부 없을 때 표시
         ) : (
           <>
             <div className={styles.header}>
@@ -236,7 +242,7 @@ const MyReport = () => {
                 <div key={index} className={styles.expense_item}>
                   <FontAwesomeIcon icon={expense.icon} size="lg" />
                   <p>{expense.name}</p>
-                  <p>{expense.amount.toLocaleString()}</p> {/* 카테고리(아이콘)별가격 나오는부분 */}
+                  <p>{expense.amount.toLocaleString()}</p> {/* KRW 제거 */}
                 </div>
               ))}
             </div>
