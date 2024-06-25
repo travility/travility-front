@@ -63,7 +63,29 @@ const dummyData = [
         category: "SHOPPING",
       },
     ],
-    budgets: [],
+    budgets: [
+      {
+        id: 1,
+        isShared: true,
+        curUnit: "KRW",
+        exchangeRate: 1.0,
+        amount: 500000,
+      },
+      {
+        id: 2,
+        isShared: true,
+        curUnit: "USD",
+        exchangeRate: 1200.0,
+        amount: 500,
+      },
+      {
+        id: 3,
+        isShared: true,
+        curUnit: "USD",
+        exchangeRate: 1100.0,
+        amount: 300,
+      },
+    ],
   },
   {
     id: 2,
