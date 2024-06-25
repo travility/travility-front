@@ -3,8 +3,10 @@ import axiosInstance from '../util/axiosInterceptor';
 
 const API_SERVER_HOST = 'http://localhost:8080/api';
 
-export const getMemberList = async () => {
-  const response = await axiosInstance.get('/admin/users');
+export const getMemberList = async (page, size, sort) => {
+  const response = await axiosInstance.get(
+    `/admin/users?page=${page}&size=${size}&sort=${sort}`
+  );
   return response.data;
 };
 

@@ -76,3 +76,37 @@
   width: 30px;
   height: 30px;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination span {
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination span:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .activePage {
+  font-weight: bold;
+  color: #333;
+}
+
+.pagination span:first-child,
+.pagination span:last-child {
+  background-color: #f0f0f0;
+}
+
+.pagination span:first-child:hover,
+.pagination span:last-child:hover {
+  background-color: #ddd;
+}

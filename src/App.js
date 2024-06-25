@@ -9,7 +9,6 @@ import Layout from './components/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';
 import AccountBookListPage from './pages/accountbook/AccountBookListPage';
-import AccountBookMain from './pages/accountbook/main/AccountBookMain';
 import LoginPage from './pages/member/LoginPage';
 import SignupPage from './pages/member/SignupPage';
 import MyInfo from './pages/dashboard/MyInfo';
@@ -98,15 +97,6 @@ function App() {
           <Route
             path="/accountbook/list/:id"
             element={<AccountBookListPage />}
-          />
-
-          <Route
-            path="/accountbook/main/:id"
-            element={
-              <AuthenticatedRoute>
-                <AccountBookMain />
-              </AuthenticatedRoute>
-            }
           />
           <Route
             path="/admin/users"

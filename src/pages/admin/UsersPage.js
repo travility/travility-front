@@ -4,7 +4,10 @@ import {
   getNewMembersCountToday,
   getTotalMembersCount,
 } from '../../api/adminApi';
-import { handleAccessDenied } from '../../util/logoutUtils';
+import {
+  handleAccessDenied,
+  handleTokenExpirationLogout,
+} from '../../util/logoutUtils';
 import { useNavigate } from 'react-router-dom';
 import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/admin/UserPage.module.css';
@@ -13,45 +16,58 @@ const UsersPage = () => {
   const [memberList, setMemberList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [todayCount, settodayCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const [sort, setSort] = useState('desc');
   const navigate = useNavigate();
 
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const fetchData = async () => {
+    try {
+      const totalMembers = await getTotalMembersCount();
+      setTotalCount(totalMembers);
+
+      const newMembersToday = await getNewMembersCountToday();
+      settodayCount(newMembersToday);
+
+      const members = await getMemberList(currentPage - 1, pageSize, sort);
+      setMemberList(members);
+      console.log(members);
+    } catch (error) {
+      console.log(error);
+      if (error.response?.data?.message === 'Access denied') {
+        handleAccessDenied(navigate);
+      } else if (error.response?.data?.message === 'Token expired') {
+        handleTokenExpirationLogout(navigate);
+      }
+    }
+  };
+
+  //총 페이지 수
+  const totalPages = Math.ceil(totalCount / pageSize);
+
+  //페이지 목록
+  const getPageNumbers = () => {
+    const pages = []; //페이지 목록 배열
+    const startPage = Math.floor((currentPage - 1) / pageSize) * 10 + 1; //해당 페이지의 페이지 목록 시작 페이지
+    for (let i = startPage; i < startPage + 10 && i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
+
+  const handleCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+
   useEffect(() => {
-    getTotalMembersCount()
-      .then((data) => {
-        console.log(data);
-        setTotalCount(data);
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data.message === 'Access denied') {
-          handleAccessDenied(navigate);
-        }
-      });
-
-    getNewMembersCountToday()
-      .then((data) => {
-        console.log(data);
-        settodayCount(data);
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data.message === 'Access denied') {
-          handleAccessDenied(navigate);
-        }
-      });
-
-    getMemberList()
-      .then((data) => {
-        console.log(data);
-        setMemberList(data);
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.data.message === 'Access denied') {
-          handleAccessDenied(navigate);
-        }
-      });
-  }, [navigate]);
+    console.log(totalPages);
+    fetchData();
+  }, [navigate, currentPage, sort]);
 
   return (
     <div className={styles.usersPage}>
@@ -74,6 +90,16 @@ const UsersPage = () => {
           </p>
         </div>
         <div className={styles.memberList_container}>
+          <div>
+            <select
+              className={styles.memberList_sorttype}
+              value={sort}
+              onChange={handleSort}
+            >
+              <option value="desc">최신순</option>
+              <option value="asc">오래된순</option>
+            </select>
+          </div>
           <table className={styles.memberList}>
             <thead>
               <tr>
@@ -92,25 +118,11 @@ const UsersPage = () => {
                   <td>{member.email}</td>
                   <td>
                     {member.socialType ? (
-                      member.socialType === 'naver' ? (
-                        <img
-                          className={styles.img_socialtype}
-                          src="/images/member/naver.png"
-                          alt="naver"
-                        ></img>
-                      ) : member.socialType === 'google' ? (
-                        <img
-                          className={styles.img_socialtype}
-                          src="/images/member/google.png"
-                          alt="naver"
-                        ></img>
-                      ) : (
-                        <img
-                          className={styles.img_socialtype}
-                          src="/images/member/kakao.png"
-                          alt="naver"
-                        ></img>
-                      )
+                      <img
+                        className={styles.img_socialtype}
+                        src={`/images/member/${member.socialType}.png`}
+                        alt="socialtype"
+                      ></img>
                     ) : (
                       '일반'
                     )}
@@ -120,6 +132,27 @@ const UsersPage = () => {
               ))}
             </tbody>
           </table>
+          <div className={styles.pagination}>
+            {currentPage > 10 && (
+              <span onClick={() => handleCurrentPage(currentPage - 10)}>
+                이전
+              </span>
+            )}
+            {getPageNumbers().map((page) => (
+              <span
+                key={page}
+                className={page === currentPage ? styles.activePage : ''}
+                onClick={() => handleCurrentPage(page)}
+              >
+                {page}
+              </span>
+            ))}
+            {totalPages > currentPage + 9 && (
+              <span onClick={() => handleCurrentPage(currentPage + 10)}>
+                다음
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
