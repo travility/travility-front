@@ -1,0 +1,25 @@
+.countryFlags {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 400px;
+    overflow-y: scroll;
+  }
+  
+  .dropdownItem {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .dropdownItem:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .flag {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  
