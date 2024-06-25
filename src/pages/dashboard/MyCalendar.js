@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import Modal from "react-modal";
 import { eachDayOfInterval, parseISO, format } from "date-fns";
-import styles from "../../styles/dashboard/MyCalendar2.module.css";
+import DefaultSidebar from '../../components/DefaultSidebar';import styles from "../../styles/dashboard/MyCalendar2.module.css";
 
 Modal.setAppElement("#root");
 
@@ -57,17 +57,9 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <nav>
-          <ul>
-            <li>마이 리포트</li>
-            <li>캘린더</li>
-            <li>내 정보</li>
-          </ul>
-        </nav>
-      </div>
-      <div className={styles.calendarContainer}>
+    <div className={styles.dashboard_container}>
+      <DefaultSidebar />
+      <div className={styles.content}>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
