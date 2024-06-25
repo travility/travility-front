@@ -10,18 +10,27 @@
 .header_logo {
   cursor: pointer;
   padding: 1rem;
+  width: 12rem;
+  height: auto;
+}
+
+.header_logo svg {
+  width: 100%;
+  height: auto;
 }
 
 .header_user_container {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 2rem;
 }
 
 .header_welcome_message {
   font-size: 0.8rem;
   color: #e89b29;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
 }
 
 .header_welcome_message img {
@@ -29,42 +38,30 @@
   padding-right: 0.5rem;
 }
 
-.header_navigation {
-  display: flex;
-  justify-content: flex-end;
-}
-
 .header_navigation_container {
+  display: flex;
   font-size: 0.8rem;
   text-decoration: none;
-  margin: 0.5rem;
   font-weight: bold;
   color: inherit;
-  background-color: none;
   align-items: center;
-  &:hover {
-    cursor: pointer;
-  }
 }
 
-.logout_button {
-  border: 0px;
-  display: inline;
+.header_navigation_container button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
 }
 
-.login_button {
-  border: 0px;
-  display: inline;
-}
-
-.account_button {
-  border: 0px;
-  display: inline;
-}
-
+.logout_button,
+.login_button,
+.account_button,
 .aboutus_button {
-  border: 0px;
+  border: none;
+  background: none;
   display: inline;
+  cursor: pointer;
 }
 
 .account_button::before {
@@ -73,4 +70,50 @@
 
 .account_button::after {
   content: '    |';
+}
+
+
+@media (max-width: 1024px) {
+  .header_logo {
+    width: 10rem;
+  }
+
+  .header_welcome_message,
+  .header_navigation_container,
+  .header_navigation_container button {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header_logo {
+    width: 8rem;
+  }
+
+  .header_welcome_message,
+  .header_navigation_container,
+  .header_navigation_container button {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header_logo {
+    width: 6rem;
+  }
+
+  .header_welcome_message,
+  .header_navigation_container,
+  .header_navigation_container button {
+    font-size: 0.5rem;
+  }
+
+  .header_welcome_message {
+    margin-right: 0.5rem;
+  }
+
+  .header_welcome_message img {
+    height: 0.5rem;
+    padding-right: 0.3rem;
+  }
 }
