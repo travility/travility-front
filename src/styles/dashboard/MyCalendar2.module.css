@@ -1,0 +1,134 @@
+/* MyCalendar.module.css */
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.calendarContainer {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.travelPeriod {
+  background-color: rgb(54, 131, 253) !important;
+}
+
+.expenseLabel {
+  background-color: lightblue !important;
+  color: black !important;
+}
+
+.react-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.react-modal-content {
+  position: relative;
+  background: #fff;
+  padding: 20px;
+  width: 500px;
+  max-width: 90%;
+  border-radius: 10px;
+  outline: none;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+  margin: 0;
+}
+
+.modalHeader button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modalImage {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.modalTabs button {
+  padding: 10px;
+  border: none;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.modalTabs button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.expenseDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.totalExpense {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalFooter button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modalFooter button:first-of-type {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.modalFooter button:last-of-type {
+  background-color: #dc3545;
+  color: #fff;
+}

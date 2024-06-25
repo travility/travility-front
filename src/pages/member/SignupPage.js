@@ -17,7 +17,7 @@ const SignupPage = () => {
   const [errorPassword, setErrorPassword] = useState('');
   const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
-  const [errorBirth, setErrorBirth] = useState('');
+  //const [errorBirth, setErrorBirth] = useState('');
   const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(null);
 
   const [seePassword, setSeePassword] = useState(false);
@@ -118,33 +118,33 @@ const SignupPage = () => {
   };
 
   //생일 유효성 검사
-  const validateBirth = (birth) => {
-    const currnetDate = new Date();
-    const inputDate = new Date(birth);
-    return inputDate <= currnetDate; //생년월일이 현재 날짜보다 이하여야 한다.
-  };
+  // const validateBirth = (birth) => {
+  //   const currnetDate = new Date();
+  //   const inputDate = new Date(birth);
+  //   return inputDate <= currnetDate; //생년월일이 현재 날짜보다 이하여야 한다.
+  // };
 
   //생일 에러 표시 여부
-  const handleBirth = (e) => {
-    const date = new Date(e.target.value);
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
+  // const handleBirth = (e) => {
+  //   const date = new Date(e.target.value);
+  //   const year = date.getFullYear();
+  //   let month = date.getMonth() + 1;
+  //   let day = date.getDate();
 
-    month = month < 10 ? '0' + month : month;
-    day = day < 10 ? '0' + day : day;
+  //   month = month < 10 ? '0' + month : month;
+  //   day = day < 10 ? '0' + day : day;
 
-    const formatDate = year + '-' + month + '-' + day;
+  //   const formatDate = year + '-' + month + '-' + day;
 
-    setBirth(formatDate);
+  //   setBirth(formatDate);
 
-    const isValid = validateBirth(e.target.value);
-    if (!isValid) {
-      setErrorBirth('생일이 올바르지 않습니다');
-    } else {
-      setErrorBirth('');
-    }
-  };
+  //   const isValid = validateBirth(e.target.value);
+  //   if (!isValid) {
+  //     setErrorBirth('생일이 올바르지 않습니다');
+  //   } else {
+  //     setErrorBirth('');
+  //   }
+  // };
 
   //회원 가입
   const handleSignup = (e) => {
@@ -168,19 +168,20 @@ const SignupPage = () => {
       !isUsernameDuplicate &&
       vaildateUsername(username) &&
       vaildatePassword(password) &&
-      validateEmail(email) &&
-      validateBirth(birth)
+      validateEmail(email)
+      //validateBirth(birth)
     ) {
       //유효성 검사를 모두 통과했을 경우
       const member = {
         username: username,
         password: password,
         email: email,
-        birth: birth,
-        createdDate: new Date(),
+        //birth: birth,
+        //createdDate: new Date().toLocaleString,
       };
       signup(member)
-        .then(() => {
+        .then((data) => {
+          console.log(data);
           console.log(member);
           Swal.fire({
             title: '회원가입 성공',
@@ -288,7 +289,7 @@ const SignupPage = () => {
               className={styles.signup_input_email}
             ></input>
             <div className={styles.signup_error}>{errorEmail}</div>
-            <div className={styles.signup_title}>생년월일</div>
+            {/* <div className={styles.signup_title}>생년월일</div>
             <input
               type="date"
               placeholder="yyyy-mm-dd"
@@ -297,7 +298,7 @@ const SignupPage = () => {
               required
               className={styles.signup_input_date}
             ></input>
-            <div className={styles.signup_error}>{errorBirth}</div>
+            <div className={styles.signup_error}>{errorBirth}</div> */}
             <div className={styles.signup_actions}>
               <input
                 type="submit"

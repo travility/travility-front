@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './Modal.module.css';
 
+
+
+//whereyougo랑 이어지는 모달입니다
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 

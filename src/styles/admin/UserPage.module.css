@@ -7,19 +7,13 @@
   padding: 20px;
 }
 
-.sidebar {
-  width: 250px;
-  background-color: #f0f0f0;
-  padding: 20px;
-}
-
 .header {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.image {
+.img_header {
   width: 40px;
   height: 40px;
   margin-right: 10px;
@@ -33,11 +27,86 @@
 
 .statistics {
   margin-bottom: 20px;
+  font-size: 18px;
 }
 
-.member {
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.statistics span {
+  font-weight: bold;
+  color: #2a52be;
+}
+
+.memberList {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.memberList th,
+.memberList td {
+  border: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.memberList th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.memberList tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.memberList tr:hover {
+  background-color: #f1f1f1;
+}
+
+.memberList tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.memberList th,
+.memberList td {
+  text-align: center;
+  white-space: nowrap; /* 텍스트가 넘치지 않도록 합니다. */
+}
+
+.img_socialtype {
+  width: 30px;
+  height: 30px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination span {
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination span:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .activePage {
+  font-weight: bold;
+  color: #333;
+}
+
+.pagination span:first-child,
+.pagination span:last-child {
+  background-color: #f0f0f0;
+}
+
+.pagination span:first-child:hover,
+.pagination span:last-child:hover {
+  background-color: #ddd;
 }

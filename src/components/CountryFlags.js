@@ -1,35 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { fetchCountryFlags } from '../api/accountbookApi';
+import axios from 'axios';
+import styles from './CountryFlags.module.css';
 
-const CountryFlags = () => {
-  const [data, setData] = useState([]);
+const CountryFlags = ({ onSelectCountry, searchCountry }) => {
+  const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCountryFlags = async () => {
       try {
-        const countryFlags = await fetchCountryFlags();
-        console.log('패치된 국기:', countryFlags);
-        if (Array.isArray(countryFlags)) {
-          setData(countryFlags);
-        } else {
-          throw new Error('데이터가 배열 형태가 아닙니다.');
-        }
+        const response = await axios.get(
+          'https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=z%2FJgcFj7mwylmN3DSWOtCJ3XE86974ujj%2F53Mfb1YbaHtY84TApx4CYY4ipu%2FLUt%2F7i7Us3aJ5FXWDFvGX3sJQ%3D%3D&numOfRows=220&returnType=JSON'
+        );
+        const countryData = response.data.data;
+        setCountries(countryData);
       } catch (error) {
         console.error('국가 국기 정보를 가져오는 중 오류 발생:', error.message);
       }
     };
 
-    fetchData();
+    fetchCountryFlags();
   }, []);
-  
+
+  const filteredCountries = countries.filter((country) =>
+    country.country_nm.includes(searchCountry)
+  );
+
   return (
-    <div>
-      {data.map((country, index) => (
-        <div key={index}>
+    <div className={styles.countryFlags}>
+      {filteredCountries.map((country) => (
+        <div
+          key={country.country_iso_alp2}
+          className={styles.dropdownItem}
+          onClick={() => onSelectCountry(country)}
+        >
+          <img src={country.download_url} alt={country.country_nm} className={styles.flag} />
           <div>{country.country_nm}</div>
-          <div>
-            <img src={country.downloadUrl} alt="country_flag" />
-          </div>
         </div>
       ))}
     </div>

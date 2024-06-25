@@ -1,28 +1,21 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import Layout from "./components/Layout";
-import AboutUsPage from "./pages/main/AboutusPage";
-import AddAccountBookPage from "./pages/accountbook/AddAccountBookPage";
-import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
-import AccountBookMain from "./pages/accountbook/main/AccountBookMain";
-import LoginPage from "./pages/member/LoginPage";
-import SignupPage from "./pages/member/SignupPage";
-import MyInfo from "./pages/dashboard/MyInfo";
-import MyCalendar from "./pages/dashboard/MyCalendar";
-import MyReport from "./pages/dashboard/MyReport";
-import LoadingPage from "./util/LoadingPage";
-import AuthenticatedRoute from "./util/AuthenticatedRoute";
-import "./App.css";
-import "./styles/dashboard/global.css";
-import { validateToken } from "./util/tokenUtils";
-import { createContext, useEffect, useState } from "react";
-import { getMemberInfo } from "./api/memberApi";
-import UsersPage from "./pages/admin/UsersPage";
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Layout from './components/Layout';
+import AboutUsPage from './pages/main/AboutusPage';
+import AccountBookListPage from './pages/accountbook/AccountBookListPage';
+import AccountBookMain from './pages/accountbook/main/AccountBookMain';
+import LoginPage from './pages/member/LoginPage';
+import SignupPage from './pages/member/SignupPage';
+import MyInfo from './pages/dashboard/MyInfo';
+import MyCalendar from './pages/dashboard/MyCalendar';
+import MyReport from './pages/dashboard/MyReport';
+import LoadingPage from './util/LoadingPage';
+import AuthenticatedRoute from './util/AuthenticatedRoute';
+import './App.css';
+import './styles/dashboard/global.css';
+import { validateToken } from './util/tokenUtils';
+import { createContext, useEffect, useState } from 'react';
+import { getMemberInfo } from './api/memberApi';
+import UsersPage from './pages/admin/UsersPage';
 export const TokenStateContext = createContext();
 
 function App() {
@@ -35,7 +28,7 @@ function App() {
       .then((result) => {
         console.log(result);
         setTokenStatus(result);
-        if (result === "Token valid") {
+        if (result === 'Token valid') {
           getMemberInfo().then((data) => {
             console.log(data);
             setMemberInfo(data);
@@ -43,7 +36,7 @@ function App() {
         }
       })
       .catch((error) => {
-        console.error("토큰 유효성 검사 중 오류 발생:", error);
+        console.error('토큰 유효성 검사 중 오류 발생:', error);
       });
   }, [navigate]);
 
@@ -79,22 +72,18 @@ function App() {
               </AuthenticatedRoute>
             }
           />
-          <Route
-            path="/accountbook/add/:id"
-            element={
-              <AuthenticatedRoute>
-                <AddAccountBookPage />
-              </AuthenticatedRoute>
-            }
-          />
-          <Route
+          {/* <Route
           path="/accountbook/list/:id"
           element={
             <AuthenticatedRoute>
               <AccountBookListPage />
             </AuthenticatedRoute>
           }
-        />
+        /> */}
+          <Route
+            path="/accountbook/list/:id"
+            element={<AccountBookListPage />}
+          />
           <Route
             path="/accountbook/main/:id"
             element={
@@ -103,15 +92,14 @@ function App() {
               </AuthenticatedRoute>
             }
           />
-
           <Route
-            path="/admin/users"
-            element={
-              <AuthenticatedRoute>
-                <UsersPage />
-              </AuthenticatedRoute>
-            }
-          />
+          path="/admin/users"
+          element={
+            <AuthenticatedRoute>
+              <UsersPage />
+            </AuthenticatedRoute>
+          }
+        />
         </Route>
       </Routes>
     </TokenStateContext.Provider>
