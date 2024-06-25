@@ -274,7 +274,7 @@ const SignupPage = () => {
                 onClick={seeConfirmPasswordHandler}
                 className={styles.toggle_checkpw_button}
               >
-                {seeConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </button>
             </div>
             <div className={styles.signup_error}>{errorConfirmPassword}</div>
