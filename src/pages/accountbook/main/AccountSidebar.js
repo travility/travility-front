@@ -79,6 +79,8 @@ const AccountSidebar = ({
     }
   };
 
+  console.log("accountBook:", accountBook); // accountBook 값 확인
+
   return (
     <aside className={styles.sidebar}>
       <div
@@ -162,6 +164,7 @@ const AccountSidebar = ({
           isOpen={isExpenseModalOpen}
           onClose={() => setIsExpenseModalOpen(false)}
           onSubmit={handleExpenseSubmit}
+          accountBookId={accountBook.id}
         />
       )}
     </aside>
