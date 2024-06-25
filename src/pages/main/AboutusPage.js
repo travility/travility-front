@@ -17,7 +17,7 @@ const AboutUsPage = () => {
     if (tokenStatus === 'Token valid') {
       setIsLoggedIn(true);
     }
-  });
+  }, [tokenStatus, isLoggedIn]);
 
   return (
     <div className={styles.pageContainer}>
