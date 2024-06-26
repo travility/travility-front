@@ -61,7 +61,29 @@ const dummyData = [
         category: "SHOPPING",
       },
     ],
-    budgets: [],
+    budgets: [
+      {
+        id: 1,
+        isShared: true,
+        curUnit: "KRW",
+        exchangeRate: 1.0,
+        amount: 500000,
+      },
+      {
+        id: 2,
+        isShared: true,
+        curUnit: "USD",
+        exchangeRate: 1200.0,
+        amount: 500,
+      },
+      {
+        id: 3,
+        isShared: true,
+        curUnit: "USD",
+        exchangeRate: 1100.0,
+        amount: 300,
+      },
+    ],
   },
   {
     id: 2,
@@ -123,36 +145,88 @@ const dummyData = [
 const AccountBookListPage = () => {
   const navigate = useNavigate();
 
-  const handleBackClick = () => {
-    navigate("/addaccountbookpage");
+  const handleHomeClick = () => {
+    navigate("/main");
   };
 
   const handleAccountBookClick = (book) => {
     navigate(`/accountbook/main/${book.id}`);
   };
 
+  const calculateAverageExchangeRate = (budgets, currency) => {
+    const relevantBudgets = budgets.filter((b) => b.curUnit === currency);
+    const totalAmount = relevantBudgets.reduce(
+      (sum, budget) => sum + budget.amount,
+      0
+    );
+    const weightedSum = relevantBudgets.reduce(
+      (sum, budget) => sum + budget.exchangeRate * budget.amount,
+      0
+    );
+    return weightedSum / totalAmount;
+  };
+
+  const calculateTotalAmountInKRW = (book) => {
+    if (!book.expenses.length || !book.budgets.length) return "KRW 0";
+
+    const averageExchangeRates = {};
+    book.budgets.forEach((budget) => {
+      if (!averageExchangeRates[budget.curUnit]) {
+        averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
+          book.budgets,
+          budget.curUnit
+        );
+      }
+    });
+
+    const totalAmount = book.expenses.reduce((total, expense) => {
+      const exchangeRate = averageExchangeRates[expense.currency] || 1;
+      return total + expense.amount * exchangeRate;
+    }, 0);
+
+    return `KRW ${totalAmount.toLocaleString()}`;
+  };
+
   return (
-    <div className={styles.accountBookPage}>
-      <div className={styles.header}>
-        <h2>전체 가계부</h2>
-        <button onClick={handleBackClick}>홈으로 돌아가기</button>
+    <div className={styles.accountBook_list_page}>
+      <div className={styles.accountBook_list_header}>
+        <div className={styles.accountBook_list_header_container}>
+          <p className={styles.accountBook_list_header_total}>전체 가계부</p>
+          <div className={styles.accountBook_list_header_total_line}></div>
+        </div>
+        <button
+          onClick={handleHomeClick}
+          className={styles.accountBook_list_home_button}
+        >
+          홈으로 돌아가기
+        </button>
       </div>
-      <div className={styles.gridContainer}>
+
+      <div className={styles.accountBook_list_grid_container}>
         {dummyData.map((book) => (
           <div
             key={book.id}
-            className={styles.gridItem}
+            className={styles.accountBook_list_grid_item}
+            style={{
+              backgroundImage: `url(${
+                book.imgName || "/public/images/default.jpg"
+              })`,
+            }}
             onClick={() => handleAccountBookClick(book)}
+            alt={book.title}
           >
-            <img
-              src={book.imgName || "디폴트 이미지 경로"}
-              alt={book.countryName}
-              className={styles.image}
-            />
-            <div className={styles.info}>
-              <span>{book.countryName}</span>
-              <span>{`${book.startDate} ~ ${book.endDate}`}</span>
+            <div className={styles.accountBook_list_info}>
+              <span className={styles.accountBook_list_title}>
+                {/* <div>국기 표시 영역</div> - 추후 수정 */}
+                {book.title}
+              </span>
+              <span className={styles.accountBook_list_dates}>
+                {`${book.startDate} ~ ${book.endDate}`}
+              </span>
             </div>
+            <span className={styles.accountBook_list_amount}>
+              {calculateTotalAmountInKRW(book)}
+            </span>
           </div>
         ))}
       </div>

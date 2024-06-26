@@ -52,3 +52,9 @@ export const getMemberInfo = async () => {
   const response = await axiosInstance.get('/users');
   return response.data;
 };
+
+//회원 탈퇴
+export const deleteMember = async () => {
+  const response = await axiosInstance.delete('/users');
+  return response;
+};
