@@ -1,0 +1,110 @@
+/* ScheduleDetail.module.css */
+.popupContainer {
+  position: absolute;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupContent {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 350px;
+  height: 600px; /* 세로로 더 길게 */
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.modalHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem; /* 여백 추가 */
+  margin-bottom: 1rem;
+}
+
+.modalImage img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.modalTabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.modalTabs button {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex-grow: 1; /* 버튼이 동일한 크기가 되도록 */
+}
+
+.modalTabs .activeTab {
+  font-weight: bold;
+  border-bottom: 2px solid black; /* 활성 탭 밑줄 추가 */
+}
+
+.modalExpenses {
+  margin-bottom: 1rem;
+  text-align: left; /* 왼쪽 정렬 */
+  padding: 0 10px; /* 좌우 패딩 */
+}
+
+.modalExpenses p {
+  margin: 0.5rem 0;
+}
+
+.modalFooter {
+  margin-top: 1rem;
+  text-align: left; /* 왼쪽 정렬 */
+  padding: 0 10px; /* 좌우 패딩 */
+}
+
+.modalButtons button {
+  margin: 0 5px;
+}
+
+.editButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px; /* 버튼 크기 조정 */
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100px; /* 버튼 크기 조정 */
+}
