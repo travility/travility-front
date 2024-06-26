@@ -23,7 +23,11 @@ const Header = () => {
   };
 
   const goAccount = () => {
-    navigate('/account');
+    navigate('/main');
+  };
+
+  const goDashboard = () => {
+    navigate('/dashboard/myreport');
   };
 
   const goAdmin = () => {
@@ -86,30 +90,63 @@ const Header = () => {
               </button>
               {role === 'ROLE_ADMIN' ? (
                 location.pathname === '/' ? (
-                  <button className={styles.aboutus_button} onClick={goAdmin}>
+                  <button
+                    className={styles.nav_second_button}
+                    onClick={goAdmin}
+                  >
                     관리
                   </button>
                 ) : (
-                  <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  <button
+                    className={styles.nav_second_button}
+                    onClick={goAboutUs}
+                  >
                     About us
                   </button>
                 )
               ) : location.pathname.startsWith('/accountbook') ? (
                 <>
-                  <button className={styles.account_button} onClick={goAccount}>
+                  <button
+                    className={styles.nav_first_button}
+                    onClick={goDashboard}
+                  >
                     Dashboard
                   </button>
-                  <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  <button
+                    className={styles.nav_second_button}
+                    onClick={goAboutUs}
+                  >
+                    About Us
+                  </button>
+                </>
+              ) : location.pathname.startsWith('/dashboard') ? (
+                <>
+                  <button
+                    className={styles.nav_first_button}
+                    onClick={goAccount}
+                  >
+                    Accountbook
+                  </button>
+                  <button
+                    className={styles.nav_second_button}
+                    onClick={goAboutUs}
+                  >
                     About Us
                   </button>
                 </>
               ) : (
                 <>
-                  <button className={styles.account_button} onClick={goAccount}>
-                    Account
+                  <button
+                    className={styles.nav_first_button}
+                    onClick={goAccount}
+                  >
+                    Accountbook
                   </button>
-                  <button className={styles.aboutus_button} onClick={goAboutUs}>
-                    About Us
+                  <button
+                    className={styles.nav_second_button}
+                    onClick={goDashboard}
+                  >
+                    Dashboard
                   </button>
                 </>
               )}
