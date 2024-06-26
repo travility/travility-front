@@ -8,7 +8,7 @@ const dummyData = [
     countryName: "대한민국",
     startDate: "2024-06-07",
     endDate: "2024-06-11",
-    imgName: "seoul.jpeg",
+    imgName: "/images/account/seoul.jpeg",
     title: "서울 여행",
     numberOfPeople: 3,
     expenses: [
@@ -209,7 +209,7 @@ const AccountBookListPage = () => {
             className={styles.accountBook_list_grid_item}
             style={{
               backgroundImage: `url(${
-                book.imgName || "/public/images/default.jpg"
+                book.imgName || "/public/images/default.png"
               })`,
             }}
             onClick={() => handleAccountBookClick(book)}
