@@ -55,6 +55,12 @@
   margin-bottom: 1%;
 }
 
+/*인풋 부모 컨테이너*/
+.login_input_seepw_container {
+  position: relative; 
+  width: 100%; 
+}
+
 /*아이디, 비밀번호 인풋 */
 .login_input {
   width: 100%;
@@ -63,8 +69,21 @@
   color: rgb(145, 145, 145);
   border: 1px solid var(--main-color);
   border-radius: 5px;
-  
+  padding-right: 40px; 
 }
+
+/*비밀번호 표시/비표시*/
+.toggle_pw_button {
+  position: absolute;
+  right: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
 
 /*로그인 버튼 컨테이너*/
 .login_actions_container {

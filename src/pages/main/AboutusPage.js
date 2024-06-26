@@ -54,7 +54,7 @@ const AboutUsPage = () => {
       </div>
       <div className="inner">
         <section className={styles.section2}>
-          <img src="/images/intro/main2.png" alt="main2" />
+          <img src="/images/main/main2.png" alt="main2" />
         </section>
         <section className={styles.section3}>
           <h1>
@@ -62,7 +62,7 @@ const AboutUsPage = () => {
             누구나 여행 가계부를 작성할 수 있어요
           </h1>
           <h3>여행 중 언제 어디서나 지출을 기록하고 관리하세요</h3>
-          <img src="/images/intro/accountPage.png" alt="accountPage" />
+          <img src="/images/main/accountPage.png" alt="accountPage" />
         </section>
         <section className={styles.section4}>
           <div className={styles.sec4_boxContainer}>
@@ -73,21 +73,21 @@ const AboutUsPage = () => {
                   예산 대비 지출 상황을 <br />
                   실시간으로 확인하세요.
                 </p>
-                <img src="/images/intro/woodenHand.png" alt="woodenHand" />
+                <img src="/images/main/woodenHand.png" alt="woodenHand" />
               </div>
               <div className={styles.imageGroup}>
                 <img
-                  src="/images/intro/purpleMonster.png"
+                  src="/images/main/purpleMonster.png"
                   alt="purpleMonster"
                   className={styles.purpleMonster}
                 />
                 <img
-                  src="/images/intro/pinkMonster.png"
+                  src="/images/main/pinkMonster.png"
                   alt="pinkMonster"
                   className={styles.pinkMonster}
                 />
                 <img
-                  src="/images/intro/like.png"
+                  src="/images/main/like.png"
                   alt="like"
                   className={styles.like}
                 />
@@ -99,7 +99,7 @@ const AboutUsPage = () => {
                 지출 현황을 다양한 그래프와 <br />
                 차트로 확인하세요.
               </p>
-              <img src="/images/intro/statistics.png" alt="statistics" />
+              <img src="/images/main/statistics.png" alt="statistics" />
             </div>
             <div className={`${styles.box} ${styles.box_center}`}>
               <h3>여행 어시스턴트</h3>
@@ -110,7 +110,7 @@ const AboutUsPage = () => {
                 <br />
                 당신만의 여행 어시스턴트가 되어드릴게요.
               </p>
-              <img src="/images/intro/worldBook.png" alt="worldBook" />
+              <img src="/images/main/worldBook.png" alt="worldBook" />
             </div>
             <div className={`${styles.box} ${styles.box_right}`}>
               <h3>다양한 카테고리 관리</h3>
@@ -118,7 +118,7 @@ const AboutUsPage = () => {
                 교통, 숙박, 음식, 관광 등 <br />
                 다양한 카테고리로 지출을 관리하세요.
               </p>
-              <img src="/images/intro/category.png" alt="category" />
+              <img src="/images/main/category.png" alt="category" />
             </div>
             <div className={`${styles.box} ${styles.box_bottom_center}`}>
               <h3>효율적인 여행 계획 수립</h3>
@@ -127,7 +127,7 @@ const AboutUsPage = () => {
                 <br />
                 여행 계획에 도움을 받을 수 있어요.
               </p>
-              <img src="/images/intro/checkPlan.png" alt="checkPlan" />
+              <img src="/images/main/checkPlan.png" alt="checkPlan" />
             </div>
             <div className={`${styles.box} ${styles.box_bottom_right}`}>
               <h3>직관적인 인터페이스</h3>
@@ -149,7 +149,7 @@ const AboutUsPage = () => {
               다음 여행을 준비할 수 있어요.
             </h3>
           </div>
-          <img src="/images/intro/myReport.svg" alt="myReport" />
+          <img src="/images/main/myReport.svg" alt="myReport" />
         </section>
         <section className={styles.section6}>
           <h1>
@@ -159,7 +159,7 @@ const AboutUsPage = () => {
             <br />
             똑똑하게
           </h1>
-          <img src="/images/intro/calendar.svg" alt="calendar" />
+          <img src="/images/main/calendar.svg" alt="calendar" />
           <div className={styles.calendarDetail}>
             <h2>캘린더 기능을 이용해보세요</h2>
             <h3>내 여행 기록과 일자별 소비 내역까지 한 번에 볼 수 있어요.</h3>
@@ -174,7 +174,7 @@ const AboutUsPage = () => {
         </div>
         <img
           className={styles.bgFooterImg}
-          src="/images/intro/bgFooter.png"
+          src="/images/main/bgFooter.png"
           alt="bg-img"
         />
       </div>
