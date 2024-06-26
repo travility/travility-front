@@ -7,6 +7,7 @@ import styles from '../../styles/dashboard/MyInfo.module.css';
 import Swal from 'sweetalert2';
 import { TokenStateContext } from '../../App';
 import { deleteMember } from '../../api/memberApi';
+import { handleSuccessLogout } from '../../util/logoutUtils';
 
 const MyInfo = () => {
   const { memberInfo } = useContext(TokenStateContext);
@@ -42,13 +43,13 @@ const MyInfo = () => {
         .then(() => {
           Swal.fire({
             icon: 'success',
-            title: '회원 탈퇴가 완료되었습니다.',
-            text: '메인 페이지로 이동합니다.',
+            title: '탈퇴 성공',
+            text: '회원 탈퇴가 성공적으로 되었습니다',
             confirmButtonText: '확인',
             confirmButtonColor: '#2a52be',
           }).then((res) => {
             if (res.isConfirmed) {
-              navigate('/');
+              handleSuccessLogout(navigate);
             }
           });
         })
@@ -56,7 +57,7 @@ const MyInfo = () => {
           console.log(error);
           Swal.fire({
             icon: 'error',
-            title: '회원 탈퇴 실패',
+            title: '탈퇴 실패',
             text: '회원 탈퇴 중 문제가 발생했습니다. 다시 시도해주세요.',
             confirmButtonText: '확인',
           });
