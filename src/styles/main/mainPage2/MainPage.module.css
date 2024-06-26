@@ -39,21 +39,34 @@
   cursor: pointer;
 }
 
-/*최근 내 가계부*/
+/******************************************************************************************/
+/*최근 내 가계부 : RecentAccountBooks*/
 .recent_accountBooks_container {
   min-height: 50%;
   padding: 20px;
   border: solid 1px #ccc;
   border-radius: 8px;
   box-shadow: 0px 0px 3px rgb(213, 213, 213);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.recent_accountBooks_container h3{
-  color: var(--main-color);
+.recent_accountBooks_header{
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1em;
+  color: #4568DC;
+  margin-top: 0;
 }
 
 .recent_accountBooks_list {
+  display: flex;
   flex-direction: column;
+  width: 100%;
+  position: relative;
 }
 
 .recent_accountBooks_item {
@@ -62,6 +75,7 @@
   justify-content: space-between;
   align-items: flex-start;
 
+  margin-top: 15px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   overflow: hidden;
@@ -70,7 +84,7 @@
   cursor: pointer;
   background-size: cover;
   background-position: center;
-  height: 164px;
+  height: 170px;
 
   position: relative;
   padding: 5px;
@@ -121,11 +135,36 @@
   z-index: 2;
 }
 
+.recent_accountBooks_navigation_buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  background-color: white;
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
 
-/* 이번 여행, 얼마가 필요할까? */
+  cursor: pointer;
+  font-size: 0.8em;
+  color: rgb(200, 200, 200);
+}
+
+.recent_accountBooks_navigation_buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+/******************************************************************************************/
+/* 이번 여행, 얼마가 필요할까? : AverageDailyExpense */
 .averageDailyExpenseContainer {
   padding: 20px;
   text-align: center;
+  margin-top: 30px;
   border: solid 1px #ccc;
   border-radius: 8px;
   box-shadow: 0px 0px 3px rgb(213, 213, 213);
@@ -140,7 +179,8 @@
 }
 
 .averageDailyExpenseContainer h3{
-  color: var(--main-color);
+  color: #4568DC;
+  margin-top: 0;
 }
 
 .result{
@@ -150,13 +190,15 @@
 }
 
 .countryName {
-  color: var(--main-color);
+  color: #4568DC;
   font-weight: bold;
 }
 
-/* 실시간 인기 여행지 top5 */
+/******************************************************************************************/
+/* 실시간 인기 여행지 top5 : TopDestinations*/
 
 .topDestinationsContainer{
+  text-align: center;
   padding: 20px;
   border-radius: 8px;
   border: solid 1px #ccc;
@@ -164,7 +206,7 @@
 }
 
 .topDestinationsContainer h3{
-  color: var(--main-color);
+  color: #4568DC;
 }
 
 .topDestinationsContainer li{

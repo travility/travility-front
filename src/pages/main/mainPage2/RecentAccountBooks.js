@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 //최근 내 가계부
 const dummyData = [
@@ -199,39 +201,45 @@ const RecentAccountBooks = () => {
 
 
   return (
+    <>
+      <p className={styles.recent_accountBooks_header}>최근 내 가계부</p>
       <div className={styles.recent_accountBooks_container}>
-      <h3>최근 내 가계부</h3>
-      <div className={styles.recent_accountBooks_list}>
+          <div className={styles.recent_accountBooks_navigation_buttons}>
+            <button 
+              onClick={handlePrevClick} 
+              disabled={visibleStartIndex === 0}>
+              <FontAwesomeIcon icon={faChevronUp} />
+            </button>
+          </div>
+        <div className={styles.recent_accountBooks_list}>
           {dummyData.slice(visibleStartIndex, visibleStartIndex + 2).map((book) => (
             <div
               key={book.id}
               className={styles.recent_accountBooks_item}
               style={{
-                backgroundImage: `url(${book.imgName || "/images/account/shabu.png"})`,
+                backgroundImage: `url(${book.imgName || "/images/default.png"})`,
               }}
               onClick={() => handleRecentAccountBooksClick(book)}
               alt={book.title}
             >
-            <div className={styles.recent_accountBooks_item_details}>
-              <span className={styles.recent_accountBooks_item_title}>(플래그){book.title}</span>
-              <span className={styles.recent_accountBooks_item_dates}>{`${book.startDate} ~ ${book.endDate}`}</span>
-              <span className={styles.recent_accountBooks_item_amount}>{calculateTotalAmountInKRW(book)}</span>
+              <div className={styles.recent_accountBooks_item_details}>
+                <span className={styles.recent_accountBooks_item_title}>{book.title}</span>
+                <span className={styles.recent_accountBooks_item_dates}>{`${book.startDate} ~ ${book.endDate}`}</span>
+                <span className={styles.recent_accountBooks_item_amount}>{calculateTotalAmountInKRW(book)}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+            <div className={styles.recent_accountBooks_navigation_buttons}>
+              <button
+                onClick={handleNextClick}
+                disabled={visibleStartIndex + 2 >= dummyData.length}
+              >
+              <FontAwesomeIcon icon={faChevronDown} />
+              </button>
+        </div>
       </div>
-      <div className={styles.navigationButtons}>
-        <button onClick={handlePrevClick} disabled={visibleStartIndex === 0}>
-          pre
-        </button>
-        <button
-          onClick={handleNextClick}
-          disabled={visibleStartIndex + 2 >= dummyData.length}
-        >
-          next
-        </button>
-      </div>
-    </div>
+    </>
   );
   
 };
