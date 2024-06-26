@@ -41,6 +41,7 @@
 
 /******************************************************************************************/
 /*최근 내 가계부 : RecentAccountBooks*/
+
 .recent_accountBooks_container {
   min-height: 50%;
   padding: 20px;
@@ -161,48 +162,58 @@
 
 /******************************************************************************************/
 /* 이번 여행, 얼마가 필요할까? : AverageDailyExpense */
-.averageDailyExpenseContainer {
+.average_daily_expense_container {
   padding: 20px;
-  text-align: center;
   margin-top: 30px;
   border: solid 1px #ccc;
   border-radius: 8px;
   box-shadow: 0px 0px 3px rgb(213, 213, 213);
+ 
+  display: flex;
+  flex-direction: column;
 }
 
-.searchContainer {
-  margin-bottom: 20px;
-}
-
-.result p {
-  margin: 5px 0;
-}
-
-.averageDailyExpenseContainer h3{
+.average_daily_expense_container h3{
   color: #4568DC;
   margin-top: 0;
-}
-
-.result{
-  display: inline;
-  font-weight: bold;
   text-align: center;
+  font-size: 1.3em;
 }
 
-.countryName {
+.average_daily_expense_search_container {
+  margin-bottom: 10px;
+  display: relative;
+}
+
+.average_daily_expense_countryName {
   color: #4568DC;
   font-weight: bold;
+  text-decoration: underline;
 }
+
+.average_daily_expense_search_result{
+  font-weight: 600;
+  font-size: 1.06em;
+  text-align: center;
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+
+
 
 /******************************************************************************************/
 /* 실시간 인기 여행지 top5 : TopDestinations*/
 
 .topDestinationsContainer{
-  text-align: center;
   padding: 20px;
   border-radius: 8px;
   border: solid 1px #ccc;
   box-shadow: 0px 0px 3px rgb(213, 213, 213);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
 }
 
 .topDestinationsContainer h3{

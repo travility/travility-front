@@ -13,21 +13,23 @@ const AverageDailyExpense = () => {
   };
 
   return (
-    <div className={styles.averageDailyExpenseContainer}>
+    <div className={styles.average_daily_expense_container}>
       <h3>이번 여행, 얼마가 필요할까?</h3>
-      <div className={styles.searchContainer}>
+      <div className={styles.average_daily_expense_search_container}>
         <WhereYouGo onCountrySelect={handleCountrySelect} />
       </div>
-      <div className={styles.result}>
-        <div className={styles.countryName}>{countryName} </div><div>(으)로 떠난 여행객들은</div>
-        
-        <div> 하루 평균 
-          {/*<div className={styles.averageAmount}>
-           sql 문 만들어서 사용 
-           밑줄 추가
-          </div>*/}
-          ???? 원을 썼어요!
-        </div>
+      <div className={styles.average_daily_expense_search_result}>
+            <div>
+              <span className={styles.average_daily_expense_countryName}>
+              {countryName ? countryName : "???"}
+                </span> (으)로 떠난 여행객들은
+            </div>
+            <div> 하루 평균  
+              {/*<span className={styles.averageAmount}>
+              sql 문 만들어서 사용
+              </span>*/}
+               ???? 원을 썼어요!
+            </div>
       </div>
     </div>
   );
