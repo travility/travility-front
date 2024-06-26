@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../../styles/member/LoginPage.module.css';
 import { login } from '../../api/memberApi';
-import Swal from 'sweetalert2';
 import { saveToken } from '../../util/tokenUtils';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import styles from '../../styles/member/LoginPage.module.css';
 
 const onNaverLogin = () => {
   window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
@@ -17,6 +18,8 @@ const LoginPage = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
+  const [seePassword, setSeePassword] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,6 +29,11 @@ const LoginPage = () => {
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
+  };
+
+  //비밀번호 공개 여부 표시
+  const seePasswordHandler = () => {
+    setSeePassword(!seePassword);
   };
 
   const handleLogin = (e) => {
@@ -68,9 +76,7 @@ const LoginPage = () => {
         <div className={styles.login_form}>
           <form onSubmit={handleLogin}>
             <div className={styles.login_field}>
-              <div htmlFor="username" className={styles.login_title}>
-                아이디
-              </div>
+              <div htmlFor="username" className={styles.login_title}>아이디</div>
               <input
                 type="text"
                 id="username"
@@ -82,11 +88,11 @@ const LoginPage = () => {
               />
             </div>
             <div className={styles.login_field}>
-              <div htmlFor="password" className={styles.login_title}>
-                비밀번호
-              </div>
+              <div htmlFor="password" className={styles.login_title}>비밀번호</div>
+               <div className={styles.login_input_seepw_container}>
+              
               <input
-                type="password"
+                type={seePassword ? 'text' : 'password'}
                 id="password"
                 placeholder="비밀번호를 입력하세요"
                 value={password}
@@ -94,7 +100,15 @@ const LoginPage = () => {
                 required
                 className={styles.login_input}
               />
-            </div>
+              <button
+                type="button"
+                onClick={seePasswordHandler}
+                className={styles.toggle_pw_button}
+              >
+                {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+              </button>
+              </div>
+            </div> 
             <div className={styles.login_actions_container}>
               <input
                 type="submit"

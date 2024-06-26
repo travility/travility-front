@@ -55,23 +55,33 @@
 }
 
 .logout_button,
-.login_button,
-.account_button,
-.aboutus_button {
+.nav_first_button,
+.nav_second_button {
   border: none;
   background: none;
   display: inline;
   cursor: pointer;
 }
 
-.account_button::before {
-  content: '|     ';
-}
-
-.account_button::after {
+.logout_button::after {
   content: '    |';
 }
 
+.nav_first_button::after {
+  content: '    |';
+}
+
+/* .account_button::before {
+  content: '|     ';
+} */
+
+/* .account_button::after {
+  content: '    |';
+} */
+
+/* .aboutus_button::before {
+  content: '|     ';
+} */
 
 @media (max-width: 1024px) {
   .header_logo {

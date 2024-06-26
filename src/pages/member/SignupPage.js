@@ -10,8 +10,7 @@ const SignupPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [birth, setBirth] = useState('');
-
+  
   //에러관리
   const [errorUsername, setErrorUsername] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
@@ -117,34 +116,7 @@ const SignupPage = () => {
     }
   };
 
-  //생일 유효성 검사
-  // const validateBirth = (birth) => {
-  //   const currnetDate = new Date();
-  //   const inputDate = new Date(birth);
-  //   return inputDate <= currnetDate; //생년월일이 현재 날짜보다 이하여야 한다.
-  // };
-
-  //생일 에러 표시 여부
-  // const handleBirth = (e) => {
-  //   const date = new Date(e.target.value);
-  //   const year = date.getFullYear();
-  //   let month = date.getMonth() + 1;
-  //   let day = date.getDate();
-
-  //   month = month < 10 ? '0' + month : month;
-  //   day = day < 10 ? '0' + day : day;
-
-  //   const formatDate = year + '-' + month + '-' + day;
-
-  //   setBirth(formatDate);
-
-  //   const isValid = validateBirth(e.target.value);
-  //   if (!isValid) {
-  //     setErrorBirth('생일이 올바르지 않습니다');
-  //   } else {
-  //     setErrorBirth('');
-  //   }
-  // };
+  
 
   //회원 가입
   const handleSignup = (e) => {
@@ -169,15 +141,12 @@ const SignupPage = () => {
       vaildateUsername(username) &&
       vaildatePassword(password) &&
       validateEmail(email)
-      //validateBirth(birth)
     ) {
       //유효성 검사를 모두 통과했을 경우
       const member = {
         username: username,
         password: password,
         email: email,
-        //birth: birth,
-        //createdDate: new Date().toLocaleString,
       };
       signup(member)
         .then((data) => {
@@ -212,13 +181,13 @@ const SignupPage = () => {
   };
 
   return (
-    <div className={styles.signup_container}>
-      <div className={styles.signup_container_content}>
+    <div className={styles.signup}>
+      <div className={styles.signup_content}>
         <div className={styles.signup_container_header}>
           <p>회원가입</p>
           <p>반가워요! 가입을 위해 몇 가지만 확인할게요.</p>
         </div>
-        <div className={styles.signup_container_form}>
+        <div className={styles.signup_form}>
           <form onSubmit={handleSignup}>
             <div className={styles.signup_title}>아이디</div>
             <div className={styles.signup_id_container}>
@@ -232,7 +201,7 @@ const SignupPage = () => {
               ></input>
               <button
                 onClick={handleDuplicateUsername}
-                className={styles.signup_check_button}
+                className={styles.signup_idcheck_button}
               >
                 중복 확인
               </button>
@@ -274,7 +243,7 @@ const SignupPage = () => {
                 onClick={seeConfirmPasswordHandler}
                 className={styles.toggle_checkpw_button}
               >
-                {seeConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
+                {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
               </button>
             </div>
             <div className={styles.signup_error}>{errorConfirmPassword}</div>
@@ -289,16 +258,6 @@ const SignupPage = () => {
               className={styles.signup_input_email}
             ></input>
             <div className={styles.signup_error}>{errorEmail}</div>
-            {/* <div className={styles.signup_title}>생년월일</div>
-            <input
-              type="date"
-              placeholder="yyyy-mm-dd"
-              value={birth}
-              onChange={handleBirth}
-              required
-              className={styles.signup_input_date}
-            ></input>
-            <div className={styles.signup_error}>{errorBirth}</div> */}
             <div className={styles.signup_actions}>
               <input
                 type="submit"
