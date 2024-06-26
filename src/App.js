@@ -52,9 +52,11 @@ function App() {
           <Route
             path="/main"
             element={
-              <AuthenticatedRoute>
-                <MainPage />
-              </AuthenticatedRoute>
+             <MainPage />
+
+              // <AuthenticatedRoute>
+               
+              // </AuthenticatedRoute>
             }
           />
           <Route
