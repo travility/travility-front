@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/AccountBookMain.module.css";
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 import AddBudget from "../../../components/AddBudget";
 import AddExpense from "../../../components/AddExpense";
+import { addBudgets } from "../../../api/budgetApi";
+import { addExpense } from "../../../api/expenseApi";
 
 const AccountSidebar = ({
   accountBook,
@@ -9,10 +11,18 @@ const AccountSidebar = ({
   onDateChange,
   onShowAll,
   onShowPreparation,
+  authToken,
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [totalBudget, setTotalBudget] = useState(
+    accountBook.budgets.reduce(
+      (sum, budget) =>
+        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
+      0
+    )
+  );
 
   const backgroundImage = accountBook.imgName
     ? `/images/account/${accountBook.imgName}`
@@ -42,44 +52,35 @@ const AccountSidebar = ({
   };
 
   const handleBudgetSubmit = async (budgets) => {
+    const totalBudget = budgets.reduce(
+      (sum, budget) =>
+        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
+      0
+    );
+    setTotalBudget(totalBudget.toFixed(2));
+
     try {
-      const response = await fetch("/api/accountbook/budget", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(budgets),
-      });
-      if (response.ok) {
-        console.log("Budgets updated successfully");
-      } else {
-        console.error("Failed to update budgets");
-      }
+      const budgetsResponse = await addBudgets(accountBook.id, budgets);
+      console.log("Budgets updated successfully:", budgetsResponse);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error updating budgets:", error);
+    } finally {
+      setIsBudgetModalOpen(false);
     }
   };
 
   const handleExpenseSubmit = async (expense) => {
     try {
-      const response = await fetch("/api/accountbook/expense", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(expense),
-      });
-      if (response.ok) {
-        console.log("Expense added successfully");
-      } else {
-        console.error("Failed to add expense");
-      }
+      const expenseResponse = await addExpense(expense);
+      console.log("Expense added successfully:", expenseResponse);
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsExpenseModalOpen(false);
     }
   };
 
-  console.log("accountBook:", accountBook); // accountBook 값 확인
+  console.log("accountBook:", accountBook);
 
   return (
     <aside className={styles.sidebar}>
@@ -93,6 +94,7 @@ const AccountSidebar = ({
         <p>
           {formatDate(dates[0])} - {formatDate(dates[dates.length - 1])}
         </p>
+        <p>총 예산: {totalBudget} KRW</p>
       </div>
       <div className={styles.dateButtons}>
         <button
@@ -157,6 +159,7 @@ const AccountSidebar = ({
           onClose={() => setIsBudgetModalOpen(false)}
           onSubmit={handleBudgetSubmit}
           accountBookId={accountBook.id}
+          initialBudgets={accountBook.budgets}
         />
       )}
       {isExpenseModalOpen && (
