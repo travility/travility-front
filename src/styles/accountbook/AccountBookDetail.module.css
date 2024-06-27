@@ -1,0 +1,207 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 2fr 6fr;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  position: relative;
+  padding: var(--component-padding);
+  border-right: 1px solid #E8E8E8;
+  height: 100%;
+}
+
+.tripInfo {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  padding: 2rem 0 4rem 2rem;
+  margin-bottom: 1rem;
+  color: white;
+  border-radius: 20px;
+}
+
+.tripInfo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  border-radius: 20px;
+}
+
+.tripInfo h2,
+.tripInfo p {
+  position: relative;
+  z-index: 2;
+}
+
+.tripInfo h2 {
+  font-size: 1em;
+  margin: 0;
+}
+
+.tripInfo p {
+  font-size: 0.5em;
+  margin: 5px 0 0;
+}
+
+.dateButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateButtons button {
+  margin-bottom: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #EAEEF8;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #000000;
+  font-weight: bolder;
+  font-size: 1em;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tripDate {
+  padding-left: 1rem;
+  font-weight: bolder;
+  color: #2952BE;
+  font-size: 0.8rem;
+}
+
+.dateButtons button.selected .tripDate {
+  color: #bbbbbb;
+}
+
+.dateButtons button.selected .selectedIcon {
+  color: #ffffff;
+}
+
+.selectedIcon {
+  color: #bbbbbb;
+  margin-left: auto;
+}
+
+.dateButtons button.selected {
+  background-color: var(--color);
+  color: white;
+  font-weight: bold;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: center;
+  font-size: 0.5em;
+  font-weight: bolder;
+  margin: 1rem 0;
+}
+
+.icons button {
+  padding: 1rem;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: var(--color);
+  margin: 0 auto;
+}
+
+.icons button:hover {
+  background-color: #002266;
+}
+
+.icons img {
+  display: block;
+  margin: 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* ExpenseList */
+.expenseListContainer {
+  width: 100%;
+  height: 100%;
+  padding: var(--component-padding);
+}
+
+.filterButtons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.filterButtons button {
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  background-color: #EAEEF8;
+  color: #000;
+  font-weight: bold;
+  box-shadow: 1px 1px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filterButtons button.selectedButton {
+  background: #7697F9;
+  color: white;
+}
+
+.expenseList {
+  overflow-y: auto;
+}
+
+.expenseDate {
+  font-weight: bold;
+  margin: 1rem 0 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #EAEEF8;
+  font-size: 0.8rem;
+}
+
+.expenseItem {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 2fr 5fr 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.currency,
+.amount,
+.description {
+  margin-left: 1rem;
+}
+
+.type {
+  color: var(--color);
+}
+
+.categoryImg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.amount {
+  text-align: right;
+}
+
+.expenseImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #EAEEF8;
+}
