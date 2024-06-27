@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
-import WhereYouGo from "../../../components/WhereYouGo";
+import WhereYouGo from "../../../components/Destination";
 
 //이번 여행, 얼마가 필요할까?
 const AverageDailyExpense = () => {
