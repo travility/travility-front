@@ -24,19 +24,41 @@
   gap: 2rem;
 }
 
-.navigationButtons {
+
+/*하단 네비게이션 버튼*/
+
+.navigationButtonsContainer {
   grid-column: 1 / 4;
   grid-row: 2 / 3;
   display: flex;
 }
 
+.navigationButtons {
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
 .navigationButtons button {
+  flex: 1;
   padding: 10px 20px;
-  color: white;
+  margin: 0 10px;
+  background-color: white;
   border: 1px solid var(--line-color);
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
   border-radius: 4px;
   font-size: 1em;
   cursor: pointer;
+  text-align: left;
+}
+
+.navigationButtons button img{
+  margin-top: 5px;
+  width: 32px;
+  display: block;
+  margin-bottom: 25px;
 }
 
 /******************************************************************************************/
@@ -177,11 +199,10 @@
   color: #4568DC;
   margin-top: 0;
   text-align: center;
-  font-size: 1.3em;
 }
 
 .average_daily_expense_search_container {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   display: relative;
 }
 
@@ -204,22 +225,87 @@
 /******************************************************************************************/
 /* 실시간 인기 여행지 top5 : TopDestinations*/
 
-.topDestinationsContainer{
+.top_destinations_container{
   padding: 20px;
   border-radius: 8px;
   border: solid 1px #ccc;
   box-shadow: 0px 0px 3px rgb(213, 213, 213);
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 }
 
-.topDestinationsContainer h3{
+.top_destinations_container h3{
   color: #4568DC;
 }
 
-.topDestinationsContainer li{
+.top_destinations_container li{
   text-align: center;
+  font-weight: 600;
+}
+
+.topDestinationsTitle {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #6A99F8; 
+  color: white; 
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.topDestinationsHighlight {
+  color: #FFD700; 
+}
+
+.swiperContainer {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 20px;
+  position: relative;
+  padding-top: 50px;
+}
+
+.mySwiper {
+  width: 100%;
+  height: 270px;
+  margin-top: 40px;
+}
+
+.swiperSlide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+.slideImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.slideText {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
 }
