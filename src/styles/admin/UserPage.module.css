@@ -4,7 +4,8 @@
 
 .content {
   flex: 1;
-  padding: 20px;
+  padding-left: 5%;
+  padding-right: 5%;
   overflow-y: auto; /* 세로 스크롤을 위한 설정 */
   max-width: 100%; /* 최대 너비를 100%로 설정 */
   box-sizing: border-box; /* 패딩과 경계 상자를 포함한 전체 너비를 사용 */
@@ -32,29 +33,23 @@
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.img_header {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
+  margin-bottom: 1%;
 }
 
 .title {
-  font-size: 24px;
+  font-size: 130%;
   font-weight: bold;
-  color: #2a52be;
+  color: #657df9;
 }
 
 .statistics {
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-bottom: 1%;
+  font-size: 90%;
 }
 
 .statistics span {
   font-weight: bold;
-  color: #2a52be;
+  color: #657df9;
 }
 
 .memberList_container {
@@ -64,7 +59,6 @@
 .memberList {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
   table-layout: fixed;
 }
 
@@ -75,7 +69,7 @@
 .sorttype {
   position: relative;
   display: inline-block;
-  margin-bottom: 20px;
+  margin-bottom: 0.7em;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -86,7 +80,8 @@
 .memberList th,
 .memberList td {
   border: 1px solid #ddd;
-  padding: 12px 15px;
+  padding: 1% 1%;
+  font-size: 70%;
   text-align: center;
   white-space: nowrap; /* 텍스트가 넘치지 않도록 */
   overflow: hidden; /* 넘치는 부분 숨김 */
@@ -111,6 +106,10 @@
   width: 20%;
 }
 
+.memberList th:nth-child(6) {
+  width: 10%;
+}
+
 .memberList tr:nth-child(even) {
   background-color: #f9f9f9;
 }
@@ -120,15 +119,21 @@
 }
 
 .img_socialtype {
-  width: 30px;
-  height: 30px;
+  width: 25%;
+  height: 25%;
+}
+
+.delete_icon {
+  color: #ccc;
+  font-size: 120%;
 }
 
 .pagination {
   display: flex;
+  font-size: 1%;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 2%;
 }
 
 .prev_button,
@@ -138,8 +143,8 @@
 
 .pagination span {
   cursor: pointer;
-  padding: 8px 16px;
-  margin: 0 4px;
+  padding: 1% 1%;
+  margin: 0 1%;
   border-radius: 4px;
 }
 

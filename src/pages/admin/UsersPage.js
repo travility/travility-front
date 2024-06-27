@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  deleteMemberByAdmin,
   getMemberList,
   getNewMembersCountToday,
   getTotalMembersCount,
@@ -12,7 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/admin/UserPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faExclamationTriangle,
+  faTrashCan,
+} from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 const UsersPage = () => {
   const [memberList, setMemberList] = useState([]);
@@ -27,6 +32,51 @@ const UsersPage = () => {
   const handleSort = (e) => {
     setSort(e.target.value);
     setCurrentPage(1);
+  };
+
+  const handleDeleteMember = async (username) => {
+    const { value: text } = await Swal.fire({
+      icon: 'warning',
+      text: '계정 삭제 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 해당 회원 계정을 삭제시키겠습니까?',
+      inputLabel: '계정 삭제를 위해 "삭제합니다"를 입력해주세요',
+      input: 'text',
+      inputPlaceholder: '삭제합니다',
+      showCancelButton: true,
+      confirmButtonText: '삭제하기',
+      confirmButtonColor: '#2a52be',
+      cancelButtonText: '취소',
+      preConfirm: (inputValue) => {
+        if (inputValue !== '삭제합니다') {
+          Swal.showValidationMessage('정확히 "삭제합니다"를 입력해주세요.');
+        }
+      },
+    });
+
+    if (text === '삭제합니다') {
+      deleteMemberByAdmin(username)
+        .then((response) => {
+          console.log(response);
+          Swal.fire({
+            icon: 'success',
+            title: '삭제 성공',
+            text: '해당 회원 계정 삭제가 성공적으로 되었습니다',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#2a52be',
+          }).then((res) => {
+            if (res.isConfirmed) {
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: '삭제 실패',
+            text: '해당 회원 계정 삭제 중 문제가 발생했습니다. 다시 시도해주세요.',
+            confirmButtonText: '확인',
+          });
+        });
+    }
   };
 
   const fetchData = async () => {
@@ -74,11 +124,10 @@ const UsersPage = () => {
     console.log(totalPages);
     console.log(memberList);
     fetchData();
-  }, [navigate, currentPage, sort]);
+  }, [navigate, totalPages, currentPage, sort]);
 
   return (
     <div className={styles.usersPage}>
-      <DefaultSidebar />
       {memberList.length === 0 ? (
         <div className={styles.no_memberList}>
           <FontAwesomeIcon
@@ -91,11 +140,6 @@ const UsersPage = () => {
         <>
           <div className={styles.content}>
             <div className={styles.header}>
-              <img
-                src="/images/admin/statistics.png"
-                alt="statics"
-                className={styles.img_header}
-              ></img>
               <span className={styles.title}>사용자 관리</span>
             </div>
             <div className={styles.statistics}>
@@ -125,6 +169,7 @@ const UsersPage = () => {
                     <th>이메일</th>
                     <th>소셜</th>
                     <th>가입일</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -146,6 +191,13 @@ const UsersPage = () => {
                       </td>
                       <td>
                         {new Date(member.createdDate).toLocaleDateString()}
+                      </td>
+                      <td>
+                        <FontAwesomeIcon
+                          icon={faTrashCan}
+                          className={styles.delete_icon}
+                          onClick={() => handleDeleteMember(member.username)}
+                        />
                       </td>
                     </tr>
                   ))}
