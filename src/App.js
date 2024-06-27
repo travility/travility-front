@@ -3,7 +3,7 @@ import Layout from "./components/Layout";
 import AboutUsPage from "./pages/main/AboutusPage";
 import MainPage from "./pages/main/mainPage2/MainPage";
 import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
-import AccountBookMain from "./pages/accountbook/main/AccountBookMain";
+import AccountBookDetail from "./pages/accountbook/detail/AccountBookDetail";
 import LoginPage from "./pages/member/LoginPage";
 import SignupPage from "./pages/member/SignupPage";
 import MyInfo from "./pages/dashboard/MyInfo";
@@ -52,9 +52,11 @@ function App() {
           <Route
             path="/main"
             element={
-              <AuthenticatedRoute>
-                <MainPage />
-              </AuthenticatedRoute>
+             <MainPage />
+
+              // <AuthenticatedRoute>
+               
+              // </AuthenticatedRoute>
             }
           />
           <Route
@@ -81,23 +83,19 @@ function App() {
               </AuthenticatedRoute>
             }
           />
-          {/* <Route
-          path="/accountbook/list/:id"
-          element={
-            <AuthenticatedRoute>
-              <AccountBookListPage />
-            </AuthenticatedRoute>
-          }
-        /> */}
           <Route
             path="/accountbook/list/:id"
-            element={<AccountBookListPage />}
-          />
-          <Route
-            path="/accountbook/main/:id"
             element={
               <AuthenticatedRoute>
-                <AccountBookMain />
+                <AccountBookListPage />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/accountbook/detail/:id"
+            element={
+              <AuthenticatedRoute>
+                <AccountBookDetail />
               </AuthenticatedRoute>
             }
           />

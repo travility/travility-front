@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/AccountBookMain.module.css";
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 
 const categoryImages = {
   TRANSPORTATION: "transportation.png",

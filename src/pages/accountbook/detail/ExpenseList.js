@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
-import styles from "../../../styles/accountbook/AccountBookMain.module.css";
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 
-const ExpenseList = ({ expenses }) => {
+const ExpenseList = ({ expenses = [] }) => {
   const [filter, setFilter] = useState("all");
 
   const groupedExpenses = expenses.reduce((acc, expense) => {
