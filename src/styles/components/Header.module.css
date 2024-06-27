@@ -10,14 +10,14 @@
 .header_logo {
   cursor: pointer;
   padding: 1rem;
-  width: 12rem;
-  height: auto;
 }
 
-.header_logo svg {
-  width: 100%;
-  height: auto;
+.header_logo h2 {
+  font-weight: bold;
+  color: var(--main-color);
+  font-size: 1.5rem;
 }
+
 
 .header_user_container {
   display: flex;

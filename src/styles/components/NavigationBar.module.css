@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    border-bottom: 1px solid var(--line-color);
+    margin: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .menuItem {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    position: relative;
+    font-size: 1rem;
+  }
+  
+  .menuItem::after {
+    content: '';
+    display: block;
+  }
+  
+  .menuItem.hovered::after {
+    width: 0;
+    height: 2px;
+    background-color: var(--main-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }  
+
+  .menuItem.active {
+    background-color: var(--main-color);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    color: #fff;
+    overflow: hidden;
+  }
