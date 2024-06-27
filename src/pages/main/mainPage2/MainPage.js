@@ -20,6 +20,7 @@ const MainPage = () => {
         <AverageDailyExpense />
         <TopDestinations />
       </div>
+      <div className={styles.navigationButtonsContainer}>
       <div className={styles.navigationButtons}>
         <button>
           <img src="/images/main/mainPage/accountIcon.png" alt="accountBook" />
@@ -36,6 +37,7 @@ const MainPage = () => {
           <img src="/images/main/mainPage/myReportIcon.png" alt="myReport" />
           마이리포트
         </button>
+        </div>
       </div>
     </div>
   );
