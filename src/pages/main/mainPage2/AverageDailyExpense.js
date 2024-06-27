@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
-import WhereYouGo from "../../../components/WhereYouGo";
+import WhereYouGo from "../../../components/Destination";
 
+//이번 여행, 얼마가 필요할까?
 const AverageDailyExpense = () => {
   const [countryName, setCountryName] = useState("");
   const [countryFlag, setCountryFlag] = useState("");
@@ -12,14 +13,23 @@ const AverageDailyExpense = () => {
   };
 
   return (
-    <div className={styles.averageDailyExpenseContainer}>
+    <div className={styles.average_daily_expense_container}>
       <h3>이번 여행, 얼마가 필요할까?</h3>
-      <div className={styles.searchContainer}>
+      <div className={styles.average_daily_expense_search_container}>
         <WhereYouGo onCountrySelect={handleCountrySelect} />
       </div>
-      <div className={styles.result}>
-        <p>???</p>
-        <p>로 떠난 여행객들은 하루 평균 ???원을 썼어요!</p>
+      <div className={styles.average_daily_expense_search_result}>
+            <div>
+              <span className={styles.average_daily_expense_countryName}>
+              {countryName ? countryName : "???"}
+                </span> (으)로 떠난 여행객들은
+            </div>
+            <div> 하루 평균  
+              {/*<span className={styles.averageAmount}>
+              sql 문 만들어서 사용
+              </span>*/}
+               ???? 원을 썼어요!
+            </div>
       </div>
     </div>
   );
