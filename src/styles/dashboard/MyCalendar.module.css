@@ -90,11 +90,11 @@
 }
 
 .fc .fc-daygrid-day {
-  transition: background-color 0.2s;
+  transition: background-color 0.3s ease; /* 색깔 변화 트랜지션 추가 */
 }
 
 .fc .fc-daygrid-day:hover {
-  background-color: #e3f2fd; /* 연한 파란색 hover 효과 */
+  background-color: #e0f7fa; /* 연한 파란색 hover 효과 */
 }
 
 .additionalEvent {
