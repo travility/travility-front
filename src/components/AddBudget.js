@@ -1,80 +1,51 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styles from "../styles/components/AddBudget.module.css";
+import { fetchCurrencyCodes, fetchExchangeRate } from "../api/budgetApi";
 
-const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
+const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   const [budgetType, setBudgetType] = useState("shared");
   const [currency, setCurrency] = useState("KRW");
   const [amount, setAmount] = useState("");
   const [exchangeRate, setExchangeRate] = useState("1.00");
-  const [budgets, setBudgets] = useState([]);
+  const [budgets, setBudgets] = useState(initialBudgets || []);
   const [currencies, setCurrencies] = useState([]);
   const [amountError, setAmountError] = useState("");
   const [exchangeRateError, setExchangeRateError] = useState("");
   const [editIndex, setEditIndex] = useState(null);
 
-  const apiKey = process.env.REACT_APP_EXCHANGERATE_API_KEY;
-
   useEffect(() => {
-    const fetchCurrencyCodes = async () => {
+    const loadCurrencyCodes = async () => {
       try {
-        const response = await fetch(
-          `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
+        const data = await fetchCurrencyCodes();
         if (data && data.supported_codes) {
           setCurrencies(data.supported_codes);
         }
       } catch (error) {
-        console.error("Error fetching currency codes:", error);
         alert("화폐 코드를 불러오는 중 오류가 발생했습니다.");
       }
     };
 
-    fetchCurrencyCodes();
-  }, [apiKey]);
+    loadCurrencyCodes();
+  }, []);
 
   useEffect(() => {
-    const fetchExchangeRate = async () => {
+    const loadExchangeRate = async () => {
       if (currency) {
         try {
-          const response = await axios.get(
-            `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${currency}`
-          );
-          if (
-            response.data &&
-            response.data.conversion_rates &&
-            response.data.conversion_rates.KRW
-          ) {
-            setExchangeRate(response.data.conversion_rates.KRW.toFixed(2));
+          const data = await fetchExchangeRate(currency);
+          if (data && data.conversion_rates && data.conversion_rates.KRW) {
+            setExchangeRate(data.conversion_rates.KRW.toFixed(2));
           } else {
             setExchangeRate("1.00");
           }
         } catch (error) {
-          console.error("Error fetching exchange rate:", error);
           setExchangeRate("1.00");
         }
       }
     };
 
-    fetchExchangeRate();
-  }, [currency, apiKey]);
-
-  useEffect(() => {
-    if (accountBookId) {
-      axios
-        .get(`/api/accountbook/${accountBookId}/budget`)
-        .then((response) => {
-          setBudgets(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching budgets:", error);
-        });
-    }
-  }, [accountBookId]);
+    loadExchangeRate();
+  }, [currency]);
 
   const handleAddBudget = () => {
     if (!amount) {
@@ -86,8 +57,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
       return;
     }
     const newBudget = {
-      type: budgetType,
-      currency,
+      isShared: budgetType === "shared",
+      curUnit: currency,
       amount: parseFloat(amount).toFixed(2),
       exchangeRate,
     };
@@ -108,8 +79,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
       index === editIndex
         ? {
             ...budget,
-            type: budgetType,
-            currency,
+            isShared: budgetType === "shared",
+            curUnit: currency,
             amount: parseFloat(amount).toFixed(2),
             exchangeRate,
           }
@@ -126,37 +97,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   };
 
   const handleRegister = () => {
-    if (!accountBookId) {
-      console.error("accountBookId is undefined");
-      return;
-    }
-
-    const budgetsToSubmit = budgets.map((budget) => ({
-      id: budget.id,
-      isShared: budget.type === "shared",
-      curUnit: budget.currency,
-      exchangeRate: parseFloat(budget.exchangeRate),
-      amount: parseFloat(budget.amount),
-      accountBookId: accountBookId,
-    }));
-
-    axios
-      .post(`/api/accountbook/${accountBookId}/budget`, budgetsToSubmit)
-      .then((response) => {
-        onSubmit(response.data);
-        onClose();
-      })
-      .catch((error) => {
-        console.error(
-          "Error submitting budgets:",
-          error.response ? error.response.data : error.message
-        );
-        alert(
-          `예산을 등록하는 중 오류가 발생했습니다: ${
-            error.response ? error.response.data : error.message
-          }`
-        );
-      });
+    onSubmit(budgets);
+    onClose();
   };
 
   const calculateTotalAmount = () => {

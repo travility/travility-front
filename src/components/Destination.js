@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styles from "../styles/components/WhereYouGo.module.css";
+import styles from "../styles/components/Destination.module.css";
 import ModalContent from "./SearchCountry";
 
 const WhereYouGo = ({ onCountrySelect }) => {

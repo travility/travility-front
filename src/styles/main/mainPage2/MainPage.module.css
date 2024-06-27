@@ -24,17 +24,288 @@
   gap: 2rem;
 }
 
-.navigationButtons {
+
+/*하단 네비게이션 버튼*/
+
+.navigationButtonsContainer {
   grid-column: 1 / 4;
   grid-row: 2 / 3;
   display: flex;
 }
 
+.navigationButtons {
+  display: flex;
+  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
 .navigationButtons button {
+  flex: 1;
   padding: 10px 20px;
-  color: white;
+  margin: 0 10px;
+  background-color: white;
   border: 1px solid var(--line-color);
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
   border-radius: 4px;
   font-size: 1em;
   cursor: pointer;
+  text-align: left;
+}
+
+.navigationButtons button img{
+  margin-top: 5px;
+  width: 32px;
+  display: block;
+  margin-bottom: 25px;
+}
+
+/******************************************************************************************/
+/*최근 내 가계부 : RecentAccountBooks*/
+
+.recent_accountBooks_container {
+  min-height: 50%;
+  padding: 20px;
+  border: solid 1px #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.recent_accountBooks_header{
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1em;
+  color: #4568DC;
+  margin-top: 0;
+}
+
+.recent_accountBooks_list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.recent_accountBooks_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  border-radius: 8px;
+  
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  height: 170px;
+
+  position: relative;
+  padding: 5px;
+}
+
+.recent_accountBooks_item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  border-radius: 8px;
+}
+
+
+.recent_accountBooks_item_details {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  color: rgb(254, 254, 254);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.recent_accountBooks_item_title{
+  text-align: left;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+/* .recent_accountBooks_item_countryflag {
+  font-size: 18px;
+} */
+
+.recent_accountBooks_item_dates{
+  font-size: 0.8em;
+}
+
+.recent_accountBooks_item_amount{
+  position: absolute;
+  font-size: 0.8em;
+  bottom: 12px;
+  right: 15px;
+  z-index: 2;
+}
+
+.recent_accountBooks_navigation_buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+  background-color: white;
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+
+  cursor: pointer;
+  font-size: 0.8em;
+  color: rgb(200, 200, 200);
+}
+
+.recent_accountBooks_navigation_buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+/******************************************************************************************/
+/* 이번 여행, 얼마가 필요할까? : AverageDailyExpense */
+.average_daily_expense_container {
+  padding: 20px;
+  margin-top: 30px;
+  border: solid 1px #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
+ 
+  display: flex;
+  flex-direction: column;
+}
+
+.average_daily_expense_container h3{
+  color: #4568DC;
+  margin-top: 0;
+  text-align: center;
+}
+
+.average_daily_expense_search_container {
+  margin-bottom: 5px;
+  display: relative;
+}
+
+.average_daily_expense_countryName {
+  color: #4568DC;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.average_daily_expense_search_result{
+  font-weight: 600;
+  font-size: 1.06em;
+  text-align: center;
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+
+
+
+/******************************************************************************************/
+/* 실시간 인기 여행지 top5 : TopDestinations*/
+
+.top_destinations_container{
+  padding: 20px;
+  border-radius: 8px;
+  border: solid 1px #ccc;
+  box-shadow: 0px 0px 3px rgb(213, 213, 213);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top_destinations_container h3{
+  color: #4568DC;
+}
+
+.top_destinations_container li{
+  text-align: center;
+  font-weight: 600;
+}
+
+.topDestinationsTitle {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #6A99F8; 
+  color: white; 
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.topDestinationsHighlight {
+  color: #FFD700; 
+}
+
+.swiperContainer {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 20px;
+  position: relative;
+  padding-top: 50px;
+}
+
+.mySwiper {
+  width: 100%;
+  height: 270px;
+  margin-top: 40px;
+}
+
+.swiperSlide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+}
+
+.slideImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.slideText {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
 }

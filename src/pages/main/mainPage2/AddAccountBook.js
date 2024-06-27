@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import WhereYouGo from "../../../components/WhereYouGo";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Destination from "../../../components/Destination";
+import AddBudget from "../../../components/AddBudget";
 import styles from "../../../styles/main/mainPage2/AddAccountBook.module.css";
-import axios from "axios";
+import { addAccountBook } from "../../../api/accountbookApi";
 
-const AddAccountBook = ({ memberId }) => {
+const AddAccountBook = ({ authToken }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState("");
@@ -11,6 +13,18 @@ const AddAccountBook = ({ memberId }) => {
   const [title, setTitle] = useState("");
   const [countryName, setCountryName] = useState("");
   const [countryFlag, setCountryFlag] = useState("");
+  const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
+  const [budgets, setBudgets] = useState([]);
+  const [username, setUsername] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      setUsername(payload.sub);
+    }
+  }, []);
 
   const handleAddAccountBook = async () => {
     const accountBookData = {
@@ -20,20 +34,34 @@ const AddAccountBook = ({ memberId }) => {
       countryFlag,
       numberOfPeople: parseInt(numberOfPeople),
       title,
-      member: { memberId },
+      member: { username },
+      budgets,
     };
 
-    // try {
-    //   const response = await axios.post("/api/accountBooks", accountBookData);
-    //   console.log("가계부가 성공적으로 추가되었습니다:", response.data);
-    // } catch (error) {
-    //   console.error("가계부 추가 중 오류가 발생했습니다:", error);
-    // }
+    console.log("전송되는 데이터:", accountBookData);
+
+    try {
+      const accountBookResponse = await addAccountBook(accountBookData);
+      navigate(`/accountbook/detail/${accountBookResponse.id}`);
+    } catch (error) {
+      console.error("가계부 추가 중 오류가 발생했습니다:", error);
+    }
   };
 
   const handleCountrySelect = (country) => {
     setCountryName(country.country_nm);
     setCountryFlag(country.download_url);
+  };
+
+  const handleBudgetSubmit = (budgets) => {
+    setBudgets(budgets);
+    // 총 예산 금액 계산
+    const totalBudget = budgets.reduce(
+      (sum, budget) =>
+        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
+      0
+    );
+    setBudget(totalBudget.toFixed(2));
   };
 
   return (
@@ -70,14 +98,17 @@ const AddAccountBook = ({ memberId }) => {
         </div>
         <div className={styles.addAccount_formGroup}>
           <label>어디로 떠나시나요?</label>
-          <WhereYouGo onCountrySelect={handleCountrySelect} />
+          <Destination onCountrySelect={handleCountrySelect} />
         </div>
-        <div className={styles.addAccount_formGroup}>
+        <div
+          className={styles.addAccount_formGroup}
+          onClick={() => setIsBudgetModalOpen(true)}
+        >
           <label>예산은 얼마인가요?</label>
           <input
             type="number"
             value={budget}
-            onChange={(e) => setBudget(e.target.value)}
+            readOnly
             placeholder="금액 입력"
             required
           />
@@ -100,6 +131,14 @@ const AddAccountBook = ({ memberId }) => {
           새 가계부 추가
         </button>
       </form>
+      {isBudgetModalOpen && (
+        <AddBudget
+          isOpen={isBudgetModalOpen}
+          onClose={() => setIsBudgetModalOpen(false)}
+          onSubmit={handleBudgetSubmit}
+          initialBudgets={budgets}
+        />
+      )}
     </div>
   );
 };
