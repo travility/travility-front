@@ -52,3 +52,9 @@
     border-radius: 0.5rem;
     font-size: 0.8em;
   }
+
+  .addAccount_errorDate {
+    font-size: 0.75em;
+    color: var(--pointor-color);
+    letter-spacing: -1px;
+  }

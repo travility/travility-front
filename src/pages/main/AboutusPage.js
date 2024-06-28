@@ -12,8 +12,6 @@ const AboutUsPage = () => {
   useEffect(() => {
     if (tokenStatus === "Token valid") {
       setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
     }
   }, [tokenStatus]);
 

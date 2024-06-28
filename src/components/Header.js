@@ -47,12 +47,16 @@ const Header = () => {
     }
   };
 
+  const logoStyle = {
+    color: location.pathname === "/" ? "#fff" : "var(--main-color)",
+  };
+
   return (
     <header className={styles.header_container}>
       <div
         className={styles.header_logo}
         onClick={handleLogoClick}
-        style={location.pathname === "/" ? { color: "#fff" } : {}}
+        style={logoStyle}
       >
         Travility
       </div>

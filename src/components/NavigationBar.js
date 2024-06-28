@@ -16,7 +16,7 @@ const NavigationBar = () => {
     { name: "마이페이지", path: "/dashboard/myinfo" },
   ];
 
-  if (location.pathname === "/") {
+  if (location.pathname === "/" || "/login" || "/signup") {
     return null;
   }
 
