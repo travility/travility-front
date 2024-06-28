@@ -8,13 +8,17 @@ html, body {
 
 :root {
 	--component-padding: 0 3rem;
-	--main-color:#657DF9;
-	--point-color:#E89B29;
+	--main-color:#4568DC;
+	--bold-color:#392385;
+	--second-color:#4C66F8;
+	--light-color:#EFF3FF;
+	--pointpk-color:#FF8BD2;
+	--pointor-color:#E89B29;
 	--line-color:#E8E8E8;
 }
 
 .inner {
-	max-width: 1440px;
+	max-width: 1280px;
 	margin: 0 auto;
 	position: relative;
 }
