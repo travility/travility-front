@@ -16,6 +16,8 @@ const AddAccountBook = ({ authToken }) => {
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [budgets, setBudgets] = useState([]);
   const [username, setUsername] = useState(null);
+  const [titleError, setTitleError] = useState(""); //글자수 에러 메세지
+  const [inputCount, setInputCount] = useState(0); //글자수 변경 카운트
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +66,23 @@ const AddAccountBook = ({ authToken }) => {
     setBudget(totalBudget.toFixed(2));
   };
 
+  //여행제목 글자수 제한
+  const handleTitleChange = (e) => {
+    const input = e.target.value;
+  
+    if (input.length <= 22) {
+      setTitle(input);
+      setTitleError("");
+    } else {
+      setTitleError("제목은 공백 포함 22 글자까지 입력 가능합니다."); 
+    }
+  
+    setInputCount(input.length); // 글자 수를 inputCount에 저장
+  };
+
+  
+
+
   return (
     <div className={styles.addAccountBookContainer}>
       <h2>계획 중이신 여행에 대해 알려주세요.</h2>
@@ -93,6 +112,7 @@ const AddAccountBook = ({ authToken }) => {
             value={numberOfPeople}
             onChange={(e) => setNumberOfPeople(e.target.value)}
             placeholder="인원 입력"
+            min="1"
             required
           />
         </div>
@@ -118,10 +138,15 @@ const AddAccountBook = ({ authToken }) => {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             placeholder="제목 입력"
+            maxLength="22"
             required
           />
+          <div className={styles.addAccount_title_container}>
+          <span className={styles.addAccount_title_error}>{titleError}</span>
+          <span className={styles.addAccount_title_count}>{inputCount}/22 자</span>
+          </div>
         </div>
         <button
           className={styles.addAccount_button}

@@ -1,74 +1,32 @@
 .accountBook_list_page {
-    padding: 20px;
-}
-
-.accountBook_list_header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1.6em;
-}
-
-.accountBook_list_header_container {
-  display: flex;
-  flex: 1;
-  align-items: flex-end;
-}
-
-.accountBook_list_header_total{
-  font-weight: bold;
-  font-size: 2em;
-  position: relative;
-  margin: 0em 0em 0em 0em;
-  padding: 0.3em 3.25em 0.3em 3.25em;
-  /*상 우 하 좌*/
-  background-color: #eef0f6;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-}
-
-.accountBook_list_header_total_line {
-  flex-grow: 1;
-  height: 0.3em;
-  margin-right: -12em;
-  bottom: 0;
-  background-color: var(--main-color);
-  margin-left: -2em;
-}
-
-.accountBook_list_home_button {
-  font-size: 1.3em;
-    background-color: var(--main-color);
-    border-radius: 5px;
-    border: none;
-    color: #f6f4f4;
-    padding: 0.3em 1.25em 0.3em 1.25em;
-    /*상 우 하 좌*/
-    margin-bottom: 2em;
-  
-    &:hover{
-      font-weight: bold;
-      cursor: pointer;
-    }
+    padding: 0.5rem;
 }
 
   /* item 들을 grid 로 구분*/
   .accountBook_list_grid_container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1.4em;
   }
   
   /* item 이미지*/
   .accountBook_list_grid_item {
-    position: relative;
-    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    
+    border: 1px solid #ccc;
     overflow: hidden;
+    border-radius: 8px;
+    
     cursor: pointer;
     background-size: cover;
     background-position: center;
-    height: 200px;
-    display: flex;
-    justify-content: center;
+    height: 170px;
+
+    position: relative;
+    padding: 5px;
   }
 
   /*item 이미지 투명도 조정*/
@@ -81,34 +39,47 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
-    border-radius: 20px;
+    border-radius: 5px;
   }
   
   /*item 정보*/
-  .accountBook_list_info {
+  .accountBook_list_item_detail{
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    z-index: 2;
-    color: #ffffff;
-    margin: 1.5em -2em 0em 0em;
-    /*상 우 하 좌*/
+    padding: 10px;
+    color: rgb(254, 254, 254);
+    align-items: flex-start;
+    width: 100%;
   }
 
-  .accountBook_list_title {
-    font-size: 1.3em;
-    font-weight: bold;
+  .accountBook_list_title_and_flag {
+    display: flex;
+    align-items: center; 
   }
-  
-  .accountBook_list_dates {
+
+  .accountBook_list_flag img{
+    width: 30px;
+    height: 23 px;
+    margin-right: 10px;
+    border-radius:10%;
+  }
+
+  .accountBook_list_title{
+    text-align: left;
+    font-weight: bold;
     font-size: 1em;
+    margin-bottom: 5px;
   }
-  
-  .accountBook_list_amount {
-    align-self: flex-end;
-    font-size: 1.2em;
-    font-weight: bold;
+
+  .accountBook_list_dates{
+    font-size: 0.8em;
+  }
+
+  .accountBook_list_amount{
+    position: absolute;
+    font-size: 0.8em;
+    bottom: 12px;
+    right: 15px;
     z-index: 2;
-    color: #ffffff;
-    margin: 0em 1em 1em 6em;
-    /*상 우 하 좌*/
   }
