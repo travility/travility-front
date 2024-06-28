@@ -1,27 +1,25 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { login } from '../../api/memberApi';
-import { saveToken } from '../../util/tokenUtils';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import Swal from 'sweetalert2';
-import styles from '../../styles/member/LoginPage.module.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../api/memberApi";
+import { saveToken } from "../../util/tokenUtils";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import Swal from "sweetalert2";
+import styles from "../../styles/member/LoginPage.module.css";
 
 const onNaverLogin = () => {
-  window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
+  window.location.href = "http://localhost:8080/oauth2/authorization/naver";
 };
 
 const onGoogleLogin = () => {
-  window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  window.location.href = "http://localhost:8080/oauth2/authorization/google";
 };
 
 const LoginPage = () => {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -44,25 +42,25 @@ const LoginPage = () => {
     };
     login(data)
       .then((response) => {
-        const token = response.headers.get('Authorization');
+        const token = response.headers.get("Authorization");
         console.log(token);
         saveToken(token);
         Swal.fire({
-          title: '로그인 성공',
+          title: "로그인 성공",
           //text: ' 페이지로 이동합니다.',
-          icon: 'success',
-          confirmButtonColor: '#2a52be',
+          icon: "success",
+          confirmButtonColor: "#2a52be",
         }).then(() => {
-          navigate('/');
+          navigate("/main");
         });
       })
       .catch((error) => {
         console.log(error);
         Swal.fire({
-          title: '로그인 실패',
-          text: '아이디와 비밀번호가 맞지 않습니다.',
-          icon: 'error',
-          confirmButtonColor: '#2a52be',
+          title: "로그인 실패",
+          text: "아이디와 비밀번호가 맞지 않습니다.",
+          icon: "error",
+          confirmButtonColor: "#2a52be",
         });
       });
   };
@@ -76,7 +74,9 @@ const LoginPage = () => {
         <div className={styles.login_form}>
           <form onSubmit={handleLogin}>
             <div className={styles.login_field}>
-              <div htmlFor="username" className={styles.login_title}>아이디</div>
+              <div htmlFor="username" className={styles.login_title}>
+                아이디
+              </div>
               <input
                 type="text"
                 id="username"
@@ -88,27 +88,28 @@ const LoginPage = () => {
               />
             </div>
             <div className={styles.login_field}>
-              <div htmlFor="password" className={styles.login_title}>비밀번호</div>
-               <div className={styles.login_input_seepw_container}>
-              
-              <input
-                type={seePassword ? 'text' : 'password'}
-                id="password"
-                placeholder="비밀번호를 입력하세요"
-                value={password}
-                onChange={handlePassword}
-                required
-                className={styles.login_input}
-              />
-              <button
-                type="button"
-                onClick={seePasswordHandler}
-                className={styles.toggle_pw_button}
-              >
-                {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-              </button>
+              <div htmlFor="password" className={styles.login_title}>
+                비밀번호
               </div>
-            </div> 
+              <div className={styles.login_input_seepw_container}>
+                <input
+                  type={seePassword ? "text" : "password"}
+                  id="password"
+                  placeholder="비밀번호를 입력하세요"
+                  value={password}
+                  onChange={handlePassword}
+                  required
+                  className={styles.login_input}
+                />
+                <button
+                  type="button"
+                  onClick={seePasswordHandler}
+                  className={styles.toggle_pw_button}
+                >
+                  {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                </button>
+              </div>
+            </div>
             <div className={styles.login_actions_container}>
               <input
                 type="submit"
@@ -137,7 +138,7 @@ const LoginPage = () => {
           <span className={styles.login_signup_text}>계정이 없으신가요?</span>
           <button
             className={styles.login_signup_button}
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate("/signup")}
           >
             회원가입
           </button>

@@ -17,7 +17,7 @@ const AccountBookDetail = () => {
       try {
         const data = await getAccountBookById(id);
         setAccountBook(data);
-        setFilteredExpenses(data.expenses);
+        setFilteredExpenses(data.expenses || []); // 기본값으로 빈 배열 설정
       } catch (err) {
         setError(err);
       } finally {
@@ -55,7 +55,8 @@ const AccountBookDetail = () => {
   const dateList = getDateRange(accountBook.startDate, accountBook.endDate);
 
   const handleDateChange = (selectedDate) => {
-    const filtered = accountBook.expenses.filter(
+    const expenses = accountBook.expenses || [];
+    const filtered = expenses.filter(
       (expense) =>
         new Date(expense.expenseDate).toLocaleDateString() === selectedDate
     );
@@ -63,11 +64,12 @@ const AccountBookDetail = () => {
   };
 
   const handleShowAll = () => {
-    setFilteredExpenses(accountBook.expenses);
+    setFilteredExpenses(accountBook.expenses || []);
   };
 
   const handleShowPreparation = () => {
-    const filtered = accountBook.expenses.filter(
+    const expenses = accountBook.expenses || [];
+    const filtered = expenses.filter(
       (expense) =>
         new Date(expense.expenseDate) < new Date(accountBook.startDate)
     );
@@ -82,6 +84,7 @@ const AccountBookDetail = () => {
         onDateChange={handleDateChange}
         onShowAll={handleShowAll}
         onShowPreparation={handleShowPreparation}
+        expenses={accountBook.expenses || []}
       />
       <ExpenseList expenses={filteredExpenses} />
     </div>
