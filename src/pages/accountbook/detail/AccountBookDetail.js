@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getAccountBookById } from "../../../api/accountbookApi";
-import Sidebar from "./AccountSidebar";
-import ExpenseList from "./ExpenseList";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getAccountBookById } from '../../../api/accountbookApi';
+import Sidebar from './AccountSidebar';
+import ExpenseList from './ExpenseList';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 
 const AccountBookDetail = () => {
   const { id } = useParams();

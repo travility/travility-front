@@ -71,15 +71,12 @@ const MyInfo = () => {
 
   return (
     <div className={styles.myinfo_page}>
-      <DefaultSidebar />
       <div className={styles.myinfo_container}>
         <ul className={styles.myinfo_item}>
           <li>아이디</li>
           <li>{memberInfo.username}</li>
           <li>이메일</li>
           <li>{memberInfo.email}</li>
-          {/* <li>생년월일</li>
-          <li>{}</li> */}
         </ul>
         <button className={styles.deleteMember} onClick={handleDeleteMember}>
           회원탈퇴
