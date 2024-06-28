@@ -1,169 +1,50 @@
-import React, { useState } from "react";
-import styles from "../../../styles/main/mainPage2/MainPage.module.css";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAccountBooks } from "../../../api/accountbookApi";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import styles from "../../../styles/main/mainPage2/MainPage.module.css";
+
+
 
 //최근 내 가계부
-const dummyData = [
-  {
-    id: 1,
-    countryName: "대한민국",
-    startDate: "2024-06-07",
-    endDate: "2024-06-11",
-    imgName: "/images/account/seoul.jpeg",
-    title: "서울 여행",
-    numberOfPeople: 3,
-    expenses: [
-      {
-        id: 1,
-        title: "KTX (부산-서울)",
-        expenseDate: "2024-06-05",
-        currency: "KRW",
-        amount: 100000,
-        isShared: true,
-        imgName: "transport.png",
-        memo: "KTX 기차표",
-        paymentMethod: "CARD",
-        category: "TRANSPORTATION",
-      },
-      {
-        id: 2,
-        title: "샤브샤브",
-        expenseDate: "2024-06-07",
-        currency: "KRW",
-        amount: 40000,
-        isShared: false,
-        imgName: "shabu.png",
-        memo: "점심 식사",
-        paymentMethod: "CASH",
-        category: "FOOD",
-      },
-      {
-        id: 3,
-        title: "관광",
-        expenseDate: "2024-06-07",
-        currency: "USD",
-        amount: 2000,
-        isShared: true,
-        imgName: "tourism.png",
-        memo: "관광지 입장료",
-        paymentMethod: "CARD",
-        category: "TOURISM",
-      },
-      {
-        id: 4,
-        title: "쇼핑",
-        expenseDate: "2024-06-08",
-        currency: "KRW",
-        amount: 25000,
-        isShared: false,
-        imgName: "shopping.png",
-        memo: "기념품 구매",
-        paymentMethod: "CASH",
-        category: "SHOPPING",
-      },
-    ],
-    budgets: [
-      {
-        id: 1,
-        isShared: true,
-        curUnit: "KRW",
-        exchangeRate: 1.0,
-        amount: 500000,
-      },
-      {
-        id: 2,
-        isShared: true,
-        curUnit: "USD",
-        exchangeRate: 1200.0,
-        amount: 500,
-      },
-      {
-        id: 3,
-        isShared: true,
-        curUnit: "USD",
-        exchangeRate: 1100.0,
-        amount: 300,
-      },
-    ],
-  },
-  {
-    id: 2,
-    countryName: "호주",
-    startDate: "2024-04-17",
-    endDate: "2024-04-22",
-    imgName: "호주 이미지 경로",
-    title: "호주 여행",
-    numberOfPeople: 3,
-    expenses: [],
-    budgets: [],
-  },
-  {
-    id: 3,
-    countryName: "일본",
-    startDate: "2024-05-01",
-    endDate: "2024-05-05",
-    imgName: "일본 이미지 경로",
-    title: "일본 여행",
-    numberOfPeople: 3,
-    expenses: [],
-    budgets: [],
-  },
-  {
-    id: 4,
-    countryName: "몽골",
-    startDate: "2024-07-10",
-    endDate: "2024-07-15",
-    imgName: "몽골 이미지 경로",
-    title: "몽골 여행",
-    numberOfPeople: 3,
-    expenses: [],
-    budgets: [],
-  },
-  {
-    id: 5,
-    countryName: "스위스",
-    startDate: "2024-08-01",
-    endDate: "2024-08-10",
-    imgName: "스위스 이미지 경로",
-    title: "스위스 여행",
-    numberOfPeople: 3,
-    expenses: [],
-    budgets: [],
-  },
-  {
-    id: 6,
-    countryName: "영국",
-    startDate: "2024-09-05",
-    endDate: "2024-09-12",
-    imgName: "영국 이미지 경로",
-    title: "영국 여행",
-    numberOfPeople: 3,
-    expenses: [],
-    budgets: [],
-  },
-];
-
 const RecentAccountBooks = () => {
 
   const navigate = useNavigate();
-
+  const { id } = useParams();
+  const [accountBooks, setAccountBooks] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
 
-  const handleRecentAccountBooksClick = (book) => {
-    navigate(`/accountbook/main/${book.id}`);
-  };
+  
+  useEffect(() => {
+    const fetchAccountBooks = async () => {
+      try {
+        const data = await getAccountBooks(id);
+        if (Array.isArray(data)) {
+          setAccountBooks(data);
+        } else {
+          setError(new Error("Unexpected response format"));
+        }
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handlePrevClick = () => {
-    setVisibleStartIndex((prevIndex) => (prevIndex - 2 >= 0 ? prevIndex - 2 : 0));
-  };
+    fetchAccountBooks();
+  }, [id]);
 
-  const handleNextClick = () => {
-    setVisibleStartIndex((prevIndex) =>
-      prevIndex + 2 < dummyData.length ? prevIndex + 2 : prevIndex
-    );
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  
 
   const calculateAverageExchangeRate = (budgets, currency) => {
     const relevantBudgets = budgets.filter((b) => b.curUnit === currency);
@@ -179,9 +60,17 @@ const RecentAccountBooks = () => {
   };
 
   const calculateTotalAmountInKRW = (book) => {
-    if (!book.expenses.length || !book.budgets.length) return "KRW 0";
+    if (
+      !book ||
+      !book.expenses ||
+      !book.budgets ||
+      !book.expenses.length ||
+      !book.budgets.length
+    ) {
+      return "KRW 0";
+    }
 
-    const averageExchangeRates = {};
+  const averageExchangeRates = {};
     book.budgets.forEach((budget) => {
       if (!averageExchangeRates[budget.curUnit]) {
         averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
@@ -191,7 +80,7 @@ const RecentAccountBooks = () => {
       }
     });
 
-    const totalAmount = book.expenses.reduce((total, expense) => {
+  const totalAmount = book.expenses.reduce((total, expense) => {
       const exchangeRate = averageExchangeRates[expense.currency] || 1;
       return total + expense.amount * exchangeRate;
     }, 0);
@@ -199,49 +88,83 @@ const RecentAccountBooks = () => {
     return `KRW ${totalAmount.toLocaleString()}`;
   };
 
+   
+  const handleRecentAccountBooksClick = (book) => {
+      navigate(`/accountbook/main/${book.id}`);
+    };
 
-  return (
-    <>
-      <p className={styles.recent_accountBooks_header}>최근 내 가계부</p>
-      <div className={styles.recent_accountBooks_container}>
-          <div className={styles.recent_accountBooks_navigation_buttons}>
-            <button 
-              onClick={handlePrevClick} 
-              disabled={visibleStartIndex === 0}>
-              <FontAwesomeIcon icon={faChevronUp} />
-            </button>
-          </div>
-        <div className={styles.recent_accountBooks_list}>
-          {dummyData.slice(visibleStartIndex, visibleStartIndex + 2).map((book) => (
-            <div
-              key={book.id}
-              className={styles.recent_accountBooks_item}
-              style={{
-                backgroundImage: `url(${book.imgName || "/images/default.png"})`,
-              }}
-              onClick={() => handleRecentAccountBooksClick(book)}
-              alt={book.title}
-            >
-              <div className={styles.recent_accountBooks_item_details}>
-                <span className={styles.recent_accountBooks_item_title}>{book.title}</span>
-                <span className={styles.recent_accountBooks_item_dates}>{`${book.startDate} ~ ${book.endDate}`}</span>
-                <span className={styles.recent_accountBooks_item_amount}>{calculateTotalAmountInKRW(book)}</span>
+
+  const handlePrevClick = () => {
+    setVisibleStartIndex((prevIndex) => (prevIndex - 2 >= 0 ? prevIndex - 2 : 0));
+  };
+
+  const handleNextClick = () => {
+    setVisibleStartIndex((prevIndex) =>
+      prevIndex + 2 < accountBooks.length ? prevIndex + 2 : prevIndex
+    );
+  };
+
+  const formatDate = (dateString) => {
+    return dateString.split('T')[0];
+  };
+
+
+
+    return (
+      <>
+        <p className={styles.recent_accountBooks_header}>최근 내 가계부</p>
+        <div className={styles.recent_accountBooks_container}>
+          {accountBooks.length === 0 ? (
+            <div className={styles.recent_accountBooks_no_item_message}>
+              아직 등록된 여행이 없어요 😅 </div>
+          ) : (
+            <>
+              <div className={styles.recent_accountBooks_navigation_buttons}>
+                <button 
+                  onClick={handlePrevClick} 
+                  disabled={visibleStartIndex === 0}>
+                  <FontAwesomeIcon icon={faChevronUp} />
+                </button>
               </div>
-            </div>
-          ))}
+              <div className={styles.recent_accountBooks_list}>
+                {accountBooks.slice(visibleStartIndex, visibleStartIndex + 2).map((book) => (
+                  <div
+                    key={book.id}
+                    className={styles.recent_accountBooks_item}
+                    style={{
+                      backgroundImage: `url(${book.imgName || "/images/default.png"})`,
+                    }}
+                    onClick={() => handleRecentAccountBooksClick(book)}
+                    alt={book.title}
+                  >
+                    <div className={styles.recent_accountBooks_item_details}>
+                    <div className={styles.recent_accountBooks_title_and_flag}>
+                      <span className={styles.recent_accountBook_flag}>
+                        <img src={book.countryFlag} alt="국기" />
+                      </span>
+                      <span className={styles.recent_accountBooks_item_title}>
+                        {book.title}
+                      </span>
+                      </div>
+                      <span className={styles.recent_accountBooks_item_dates}>{`${formatDate(book.startDate)} ~ ${formatDate(book.endDate)}`}</span>
+                      <span className={styles.recent_accountBooks_item_amount}>{calculateTotalAmountInKRW(book)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.recent_accountBooks_navigation_buttons}>
+                <button
+                  onClick={handleNextClick}
+                  disabled={visibleStartIndex + 2 >= accountBooks.length}
+                >
+                  <FontAwesomeIcon icon={faChevronDown} />
+                </button>
+              </div>
+            </>
+          )}
         </div>
-            <div className={styles.recent_accountBooks_navigation_buttons}>
-              <button
-                onClick={handleNextClick}
-                disabled={visibleStartIndex + 2 >= dummyData.length}
-              >
-              <FontAwesomeIcon icon={faChevronDown} />
-              </button>
-        </div>
-      </div>
-    </>
-  );
-  
-};
+      </>
+    );
+  };
 
 export default RecentAccountBooks;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 import { getAccountBooks } from "../../api/accountbookApi";
+import { fetchCountryFlags } from "../../api/accountbookApi";
+import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -37,9 +38,6 @@ const AccountBookListPage = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const handleHomeClick = () => {
-    navigate("/main");
-  };
 
   const handleAccountBookClick = (book) => {
     navigate(`/accountbook/detail/${book.id}`);
@@ -87,21 +85,12 @@ const AccountBookListPage = () => {
     return `KRW ${totalAmount.toLocaleString()}`;
   };
 
+  const formatDate = (dateString) => {
+    return dateString.split('T')[0];
+  };
+
   return (
     <div className={styles.accountBook_list_page}>
-      <div className={styles.accountBook_list_header}>
-        <div className={styles.accountBook_list_header_container}>
-          <p className={styles.accountBook_list_header_total}>전체 가계부</p>
-          <div className={styles.accountBook_list_header_total_line}></div>
-        </div>
-        <button
-          onClick={handleHomeClick}
-          className={styles.accountBook_list_home_button}
-        >
-          홈으로 돌아가기
-        </button>
-      </div>
-
       <div className={styles.accountBook_list_grid_container}>
         {accountBooks.map((book) => (
           <div
@@ -109,23 +98,28 @@ const AccountBookListPage = () => {
             className={styles.accountBook_list_grid_item}
             style={{
               backgroundImage: `url(${
-                book.imgName || "/public/images/default.png"
+                book.imgName || "/images/default.png"
               })`,
             }}
             onClick={() => handleAccountBookClick(book)}
             alt={book.title}
           >
-            <div className={styles.accountBook_list_info}>
-              <span className={styles.accountBook_list_title}>
-                {book.title}
-              </span>
+            <div className={styles.accountBook_list_item_detail}>
+              <div className={styles.accountBook_list_title_and_flag}>
+                <span className={styles.accountBook_list_flag}>
+                  <img src={book.countryFlag} alt="국기" />
+                </span>
+                <span className={styles.accountBook_list_title}>
+                  {book.title}
+                </span>
+              </div>
               <span className={styles.accountBook_list_dates}>
-                {`${book.startDate} ~ ${book.endDate}`}
+                {`${formatDate(book.startDate)} ~ ${formatDate(book.endDate)}`}
+              </span>
+              <span className={styles.accountBook_list_amount}>
+                {calculateTotalAmountInKRW(book)}
               </span>
             </div>
-            <span className={styles.accountBook_list_amount}>
-              {calculateTotalAmountInKRW(book)}
-            </span>
           </div>
         ))}
       </div>
