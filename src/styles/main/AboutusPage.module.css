@@ -4,7 +4,7 @@
   height: auto;
   display: flex;
   flex-direction: column;
-  background-color: #FAFAFC;
+  background-color: var(--light-color);
   font-size: 1rem;
 }
 
@@ -28,15 +28,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
-  background: linear-gradient(180deg, #6B37FF 0%, #4A95FF 40%, #2FC4FF 60%, rgba(250, 250, 252, 0) 100%);
+  height: 100vh;
+  background: linear-gradient(0deg, var(--light-color) 0%, #C397F1 30%, #8D84F5 45%, var(--second-color) 65%, var(--bold-color) 100%);
 }
 
 .footerSectionContainer {
   position: relative;
   display: flex;
   width: 100%;
-  margin: 0;
+  padding: 10vw 0;
 }
 
 .bgFooterImg {
@@ -55,11 +57,10 @@ section {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 2vw;
+  padding: 10vw 2vw;
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin: 20vw 0;
 }
 
 section img {
@@ -81,13 +82,13 @@ section img {
   margin-bottom: 3em;
 }
 
-.section1 span {
+/* .section1 span {
   background: linear-gradient(90deg, #FAFF00 0%, #FFB800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-}
+} */
 
 .login_button {
   color: white;
@@ -100,6 +101,10 @@ section img {
 .login_button p {
   padding: 0.6em 1.5em;
   margin: 0;
+}
+
+.section2 {
+  padding-top: 10vw;
 }
 
 .section2 img {
@@ -116,7 +121,7 @@ section img {
 }
 
 .section3 img {
-  width: 40%;
+  width: 40rem;
   margin-top: 1em;
 }
 
@@ -378,7 +383,7 @@ section img {
   position: relative;
 }
 
-@media (max-width: 1312px) {
+@media (max-width: 1280px) {
   .pageContainer h1 {
     font-size: 2.3rem;
   }
@@ -397,7 +402,7 @@ section img {
 
   .section3 img,
   .section4 .box img {
-    max-height: 50%;
+    max-width: 50%;
   }
 }
 
