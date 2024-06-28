@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
 import AboutUsPage from "./pages/main/AboutusPage";
 import MainPage from "./pages/main/mainPage2/MainPage";
@@ -23,23 +23,30 @@ function App() {
   const [tokenStatus, setTokenStatus] = useState();
   const [memberInfo, setMemberInfo] = useState();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     validateToken()
       .then((result) => {
         console.log(result);
         setTokenStatus(result);
+
         if (result === "Token valid") {
           getMemberInfo().then((data) => {
             console.log(data);
             setMemberInfo(data);
           });
+        } else if (result === "Token expired" && location.pathname !== "/") {
+          navigate("/login");
         }
       })
       .catch((error) => {
         console.error("토큰 유효성 검사 중 오류 발생:", error);
+        if (location.pathname !== "/") {
+          navigate("/login");
+        }
       });
-  }, [navigate]);
+  }, [navigate, location]);
 
   return (
     <TokenStateContext.Provider value={{ tokenStatus, memberInfo }}>
@@ -52,10 +59,10 @@ function App() {
           <Route
             path="/main"
             element={
-             <MainPage />
+              <MainPage />
 
               // <AuthenticatedRoute>
-               
+
               // </AuthenticatedRoute>
             }
           />

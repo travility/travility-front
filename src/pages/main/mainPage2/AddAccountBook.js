@@ -8,13 +8,14 @@ import { addAccountBook } from "../../../api/accountbookApi";
 const AddAccountBook = ({ authToken }) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [errorDate, setErrorDate] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState("");
-  const [budget, setBudget] = useState("");
-  const [title, setTitle] = useState("");
   const [countryName, setCountryName] = useState("");
   const [countryFlag, setCountryFlag] = useState("");
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
+  const [budget, setBudget] = useState("");
   const [budgets, setBudgets] = useState([]);
+  const [title, setTitle] = useState("");
   const [username, setUsername] = useState(null);
   const [titleError, setTitleError] = useState(""); //글자수 에러 메세지
   const [inputCount, setInputCount] = useState(0); //글자수 변경 카운트
@@ -40,7 +41,7 @@ const AddAccountBook = ({ authToken }) => {
       budgets,
     };
 
-    console.log("전송되는 데이터:", accountBookData);
+    console.log("전송되는 데이터:", accountBookData); // 데이터 확인
 
     try {
       const accountBookResponse = await addAccountBook(accountBookData);
@@ -57,13 +58,38 @@ const AddAccountBook = ({ authToken }) => {
 
   const handleBudgetSubmit = (budgets) => {
     setBudgets(budgets);
-    // 총 예산 금액 계산
+    // 총 예산 금액
     const totalBudget = budgets.reduce(
       (sum, budget) =>
         sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
       0
     );
-    setBudget(totalBudget.toFixed(2));
+    setBudget(totalBudget.toLocaleString());
+  };
+
+  const handleStartDateChange = (e) => {
+    const newStartDate = e.target.value;
+    setStartDate(newStartDate);
+    if (endDate && newStartDate > endDate) {
+      setEndDate(newStartDate);
+    }
+  };
+
+  const handleEndDateChange = (e) => {
+    const newEndDate = e.target.value;
+    if (newEndDate < startDate) {
+      setErrorDate("여행 시작일 이전 날짜는 선택할 수 없습니다.");
+    } else {
+      setEndDate(newEndDate);
+      setErrorDate("");
+    }
+  };
+
+  const handleNumberOfPeopleChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (value >= 0) {
+      setNumberOfPeople(value);
+    }
   };
 
   //여행제목 글자수 제한
@@ -93,24 +119,27 @@ const AddAccountBook = ({ authToken }) => {
             <input
               type="date"
               value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              onChange={handleStartDateChange}
               required
             />
             <span>~</span>
             <input
               type="date"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={handleEndDateChange}
               required
             />
           </div>
+          {errorDate && (
+            <p className={styles.addAccount_errorDate}>{errorDate}</p>
+          )}
         </div>
         <div className={styles.addAccount_formGroup}>
           <label>몇 명이서 떠나시나요?</label>
           <input
             type="number"
             value={numberOfPeople}
-            onChange={(e) => setNumberOfPeople(e.target.value)}
+            onChange={handleNumberOfPeopleChange}
             placeholder="인원 입력"
             min="1"
             required
@@ -126,7 +155,7 @@ const AddAccountBook = ({ authToken }) => {
         >
           <label>예산은 얼마인가요?</label>
           <input
-            type="number"
+            type="text"
             value={budget}
             readOnly
             placeholder="금액 입력"
