@@ -10,7 +10,6 @@ import {
   handleTokenExpirationLogout,
 } from '../../util/logoutUtils';
 import { useNavigate } from 'react-router-dom';
-import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/admin/UserPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -64,10 +63,12 @@ const UsersPage = () => {
             confirmButtonColor: '#2a52be',
           }).then((res) => {
             if (res.isConfirmed) {
+              fetchData();
             }
           });
         })
         .catch((error) => {
+          console.log(username);
           console.log(error);
           Swal.fire({
             icon: 'error',
@@ -116,6 +117,7 @@ const UsersPage = () => {
     return pages;
   };
 
+  //현재 페이지
   const handleCurrentPage = (page) => {
     setCurrentPage(page);
   };
@@ -139,9 +141,6 @@ const UsersPage = () => {
       ) : (
         <>
           <div className={styles.content}>
-            <div className={styles.header}>
-              <span className={styles.title}>사용자 관리</span>
-            </div>
             <div className={styles.statistics}>
               <p>
                 총 회원 수는 <span>{totalCount}</span> 명입니다.
@@ -169,7 +168,7 @@ const UsersPage = () => {
                     <th>이메일</th>
                     <th>소셜</th>
                     <th>가입일</th>
-                    <th></th>
+                    <th>삭제</th>
                   </tr>
                 </thead>
                 <tbody>

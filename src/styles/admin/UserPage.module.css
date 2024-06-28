@@ -138,7 +138,8 @@
 
 .prev_button,
 .next_button {
-  background-color: #f0f0f0;
+  color: white;
+  background-color: #657df9;
 }
 
 .pagination span {
@@ -151,11 +152,10 @@
 .pagination .activePage {
   transition: background-color 0.3s ease;
   font-weight: bold;
-  color: #333;
-  background-color: #f0f0f0; /* 진하게 표시할 배경색 */
+  color: white;
+  background-color: #bfc9ff; /* 진하게 표시할 배경색 */
 }
 
-.pagination .activePage:hover,
 .pagination .notActivePage:hover {
   background-color: #f0f0f0;
 }

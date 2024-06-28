@@ -1,0 +1,124 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #fff;
+  padding-top: 1%;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1%;
+  margin: 0 5%;
+}
+
+.modalHeader_title {
+  font-size: 110%;
+  font-weight: bold;
+  color: #333;
+  margin-right: auto;
+}
+
+.closeButton {
+  padding: 0;
+  margin-left: auto;
+  background-color: transparent;
+  border: none;
+  font-size: 100%;
+  cursor: pointer;
+  color: #657df9;
+}
+
+.closeButton:hover {
+  color: #4160f8;
+}
+
+.modalContent {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 80%;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.countryName {
+  font-size: 80%;
+  border: 1px solid #ccc; /* 연한 회색 테두리 */
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.dates {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.startDate,
+.endDate {
+  flex: 1;
+  padding: 1%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #333;
+}
+
+.separator {
+  padding: 1%;
+}
+
+.imageContainer {
+  display: flex;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.image {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.modifyButton {
+  background-color: #657df9;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-size: 70%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modifyButton:hover {
+  background-color: #4160f8;
+}
