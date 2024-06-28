@@ -1,159 +1,103 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../styles/components/Header.module.css';
-import { ReactComponent as Logo } from '../icon/Travility.svg';
-import { logout } from '../api/memberApi';
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../styles/components/Header.module.css";
+import { logout } from "../api/memberApi";
 import {
   handleAlreadyLoggedOut,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from '../util/logoutUtils';
-import { isTokenPresent } from '../util/tokenUtils';
-import { TokenStateContext } from '../App';
+} from "../util/logoutUtils";
+import { TokenStateContext } from "../App";
 
 const Header = () => {
   const { tokenStatus, memberInfo } = useContext(TokenStateContext);
-  const [username, setUsername] = useState('');
-  const [role, setRole] = useState('');
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
-  const goAboutUs = () => {
-    navigate('/');
-  };
-
-  const goAccount = () => {
-    navigate('/main');
-  };
-
-  const goDashboard = () => {
-    navigate('/dashboard/myreport');
-  };
-
-  const goAdmin = () => {
-    navigate('/admin/users');
-  };
-
   useEffect(() => {
     if (memberInfo) {
-      if (memberInfo.username) {
-        setUsername(memberInfo.username);
-      }
-      if (memberInfo.role) {
-        setRole(memberInfo.role);
-      }
+      setUsername(memberInfo.username || "");
+      setRole(memberInfo.role || "");
     }
   }, [memberInfo]);
 
-  const handleLogout = () => {
-    if (tokenStatus === 'Token valid') {
-      logout().catch((error) => {
-        console.log(error);
-      });
-      handleSuccessLogout(navigate);
-    } else if (tokenStatus === 'Token expired') {
-      logout()
-        .then(() => {
-          handleTokenExpirationLogout(navigate);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else if (tokenStatus === 'Token null') {
-      handleAlreadyLoggedOut(navigate);
+  const handleLogout = async () => {
+    try {
+      if (tokenStatus === "Token valid") {
+        await logout();
+        handleSuccessLogout(navigate);
+      } else if (tokenStatus === "Token expired") {
+        await logout();
+        handleTokenExpirationLogout(navigate);
+      } else if (tokenStatus === "Token null") {
+        handleAlreadyLoggedOut(navigate);
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  const handleLogoClick = () => {
+    if (tokenStatus === "Token valid") {
+      navigate("/main");
+    } else {
+      navigate("/");
+    }
+  };
+
+  const logoStyle = {
+    color: location.pathname === "/" ? "#fff" : "var(--main-color)",
   };
 
   return (
     <header className={styles.header_container}>
-      <div className={styles.header_logo}>
-        <Logo />
+      <div
+        className={styles.header_logo}
+        onClick={handleLogoClick}
+        style={logoStyle}
+      >
+        Travility
       </div>
-      <div className={styles.header_user_container}>
-        {tokenStatus === 'Token valid' ? (
-          role === 'ROLE_ADMIN' ? (
-            <span className={styles.header_welcome_message}>
-              현재 관리자 모드입니다
-            </span>
-          ) : (
-            <span className={styles.header_welcome_message}>
-              <img src="/images/person_circle.png" alt="user" />
-              {username} 님 반갑습니다!
-            </span>
-          )
-        ) : null}
-        <nav className={styles.header_navigation_container}>
-          {tokenStatus === 'Token valid' && (
+      {(tokenStatus === "Token valid" || location.pathname !== "/") && (
+        <div className={styles.header_user_container}>
+          {tokenStatus === "Token valid" && (
             <>
-              <button className={styles.logout_button} onClick={handleLogout}>
-                Logout
-              </button>
-              {role === 'ROLE_ADMIN' ? (
-                location.pathname === '/' ? (
+              <span className={styles.header_welcome_message}>
+                {role === "ROLE_ADMIN" ? (
+                  <>현재 관리자 모드입니다</>
+                ) : (
+                  <>
+                    <img src="/images/person_circle.png" alt="user" />
+                    {username} 님 반갑습니다!
+                  </>
+                )}
+              </span>
+              <nav className={styles.header_navigation_container}>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                {role === "ROLE_ADMIN" ? (
                   <button
                     className={styles.nav_second_button}
-                    onClick={goAdmin}
+                    onClick={() => navigate("/admin/users")}
                   >
                     관리
                   </button>
                 ) : (
                   <button
                     className={styles.nav_second_button}
-                    onClick={goAboutUs}
-                  >
-                    About us
-                  </button>
-                )
-              ) : location.pathname.startsWith('/accountbook') ? (
-                <>
-                  <button
-                    className={styles.nav_first_button}
-                    onClick={goDashboard}
-                  >
-                    Dashboard
-                  </button>
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={goAboutUs}
+                    onClick={() => navigate("/")}
                   >
                     About Us
                   </button>
-                </>
-              ) : location.pathname.startsWith('/dashboard') ? (
-                <>
-                  <button
-                    className={styles.nav_first_button}
-                    onClick={goAccount}
-                  >
-                    Accountbook
-                  </button>
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={goAboutUs}
-                  >
-                    About Us
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className={styles.nav_first_button}
-                    onClick={goAccount}
-                  >
-                    Accountbook
-                  </button>
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={goDashboard}
-                  >
-                    Dashboard
-                  </button>
-                </>
-              )}
+                )}
+              </nav>
             </>
           )}
-        </nav>
-      </div>
+        </div>
+      )}
     </header>
   );
 };
