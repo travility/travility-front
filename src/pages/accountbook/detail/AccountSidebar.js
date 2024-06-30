@@ -12,7 +12,7 @@ const AccountSidebar = ({
   onDateChange,
   onShowAll,
   onShowPreparation,
-  authToken,
+  expenses = [],
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
@@ -41,6 +41,13 @@ const AccountSidebar = ({
   const handleDateChange = (date) => {
     setSelectedOption(date);
     onDateChange(date.toLocaleDateString());
+
+    const validExpenses = Array.isArray(expenses) ? expenses : [];
+
+    const filteredExpenses = validExpenses.filter(
+      (expense) =>
+        new Date(expense.expenseDate).toDateString() === date.toDateString()
+    );
   };
 
   const handleShowAll = () => {
@@ -97,7 +104,7 @@ const AccountSidebar = ({
         <p>
           {formatDate(dates[0])} - {formatDate(dates[dates.length - 1])}
         </p>
-        <p>총 예산: {totalBudget} KRW</p>
+        <p>총 예산: {totalBudget.toLocaleString()} KRW</p>
       </div>
       <div className={styles.dateButtons}>
         <button

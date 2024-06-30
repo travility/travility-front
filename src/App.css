@@ -1,34 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-
 html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 :root {
-	--component-padding: 0 3rem;
-	--main-color:#4568DC;
-	--bold-color:#392385;
-	--second-color:#4C66F8;
-	--light-color:#EFF3FF;
-	--pointpk-color:#FF8BD2;
-	--pointor-color:#E89B29;
-	--line-color:#E8E8E8;
+    --component-padding: 0 3rem;
+    --main-color: #4568DC;
+    --bold-color: #392385;
+    --second-color: #4C66F8;
+    --light-color: #EFF3FF;
+    --pointpk-color: #FF8BD2;
+    --pointor-color: #E89B29;
+    --line-color: #E8E8E8;
 }
 
 .inner {
-	max-width: 1280px;
-	margin: 0 auto;
-	position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
 }
 
 h1, h2, h3, h4, h5, h6, span, p, div, button, input {
     word-break: keep-all;
     white-space: pre-wrap;
-	font-family: "Noto Sans KR", "Inter", "Open Sans", "malgun gothic","Nanum Gothic", "";
+    font-family: "Noto Sans KR", "Inter", "Open Sans", "Malgun Gothic", "Nanum Gothic", sans-serif;
 }
 
-*,:after,:before {
+*, :after, :before {
     box-sizing: border-box;
 }
