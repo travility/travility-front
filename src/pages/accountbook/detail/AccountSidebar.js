@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 import AddBudget from '../../../components/AddBudget';
 import AddExpense from '../../../components/AddExpense';
 import { addBudgets } from '../../../api/budgetApi';
 import { addExpense } from '../../../api/expenseApi';
 import TripInfo from './TripInfo';
+import { updateAccountBook } from '../../../api/accountbookApi';
+import {
+  handleSuccessSubject,
+  handlefailureSubject,
+} from '../../../util/logoutUtils';
 
 const AccountSidebar = ({
-  id,
   accountBook,
   dates,
   onDateChange,
@@ -26,10 +30,6 @@ const AccountSidebar = ({
       0
     )
   );
-
-  const backgroundImage = accountBook.imgName
-    ? `/images/account/${accountBook.imgName}`
-    : '';
 
   const formatDate = (date) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -65,8 +65,10 @@ const AccountSidebar = ({
     try {
       const budgetsResponse = await addBudgets(accountBook.id, budgets);
       console.log('Budgets updated successfully:', budgetsResponse);
+      handleSuccessSubject('예산', '수정');
     } catch (error) {
       console.error('Error updating budgets:', error);
+      handlefailureSubject('예산', '수정');
     } finally {
       setIsBudgetModalOpen(false);
     }
@@ -76,21 +78,43 @@ const AccountSidebar = ({
     try {
       const expenseResponse = await addExpense(expense);
       console.log('Expense added successfully:', expenseResponse);
+      handleSuccessSubject('지출', '추가');
     } catch (error) {
       console.error('Error:', error);
+      handlefailureSubject('지출', '추가');
     } finally {
       setIsExpenseModalOpen(false);
     }
   };
 
-  console.log('accountBook:', accountBook);
+  const handleAccountBookSubmit = async (tripInfo) => {
+    try {
+      const accountBookResponse = await updateAccountBook(
+        accountBook.id,
+        tripInfo
+      );
+      console.log('AccountBook updated successfully: ', accountBookResponse);
+      handleSuccessSubject('가계부', '수정');
+    } catch (error) {
+      console.log('Error updating AccountBook: ', error);
+      handlefailureSubject('가계부', '수정');
+    } finally {
+      setIsTripInfoModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('accountBook:', accountBook);
+  }, [accountBook]);
 
   return (
     <aside className={styles.sidebar}>
       <div
         className={styles.tripInfo}
         style={{
-          backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+          backgroundImage: `url(
+            http://localhost:8080/images/${accountBook.imgName}
+          )`,
         }}
         onClick={() => setIsTripInfoModalOpen(true)}
       >
@@ -176,9 +200,9 @@ const AccountSidebar = ({
       )}
       {isTripInfoModalOpen && (
         <TripInfo
-          id={id}
           isOpen={isTripInfoModalOpen}
           onClose={() => setIsTripInfoModalOpen(false)}
+          onSubmit={handleAccountBookSubmit}
           accountBook={accountBook}
         />
       )}

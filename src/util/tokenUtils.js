@@ -1,4 +1,3 @@
-import base64 from 'base-64';
 import { checkToken } from '../api/memberApi';
 
 //토큰 저장
@@ -19,17 +18,6 @@ export const removeToken = () => {
 //토큰 추출
 export const getToken = () => {
   return localStorage.getItem('Authorization');
-};
-
-//토큰 페이로드 디코딩
-export const decodeToken = () => {
-  const token = getToken().substring(7);
-  const payload = token.substring(
-    token.indexOf('.') + 1,
-    token.lastIndexOf('.')
-  );
-  const decordingInfo = JSON.parse(base64.decode(payload));
-  return decordingInfo;
 };
 
 //토큰 유효성 검사

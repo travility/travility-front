@@ -15,8 +15,9 @@ import './App.css';
 import './styles/dashboard/global.css';
 import { validateToken } from './util/tokenUtils';
 import { createContext, useEffect, useState } from 'react';
-import { getMemberInfo } from './api/memberApi';
+import { getMemberInfo, logout } from './api/memberApi';
 import UsersPage from './pages/admin/UsersPage';
+import { handleTokenExpirationLogout } from './util/logoutUtils';
 export const TokenStateContext = createContext();
 
 function App() {
@@ -36,8 +37,9 @@ function App() {
             console.log(data);
             setMemberInfo(data);
           });
-        } else if (result === 'Token expired' && location.pathname !== '/') {
-          navigate('/login');
+        } else if (result === 'Token expired') {
+          handleTokenExpirationLogout(navigate);
+          logout();
         }
       })
       .catch((error) => {
