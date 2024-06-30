@@ -42,13 +42,6 @@ const AccountSidebar = ({
   const handleDateChange = (date) => {
     setSelectedOption(date);
     onDateChange(date.toLocaleDateString());
-
-    const validExpenses = Array.isArray(expenses) ? expenses : [];
-
-    const filteredExpenses = validExpenses.filter(
-      (expense) =>
-        new Date(expense.expenseDate).toDateString() === date.toDateString()
-    );
   };
 
   const handleShowAll = () => {
