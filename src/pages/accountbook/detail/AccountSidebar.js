@@ -7,6 +7,7 @@ import { addExpense } from '../../../api/expenseApi';
 import TripInfo from './TripInfo';
 
 const AccountSidebar = ({
+  id,
   accountBook,
   dates,
   onDateChange,
@@ -182,6 +183,7 @@ const AccountSidebar = ({
       )}
       {isTripInfoModalOpen && (
         <TripInfo
+          id={id}
           isOpen={isTripInfoModalOpen}
           onClose={() => setIsTripInfoModalOpen(false)}
           accountBook={accountBook}

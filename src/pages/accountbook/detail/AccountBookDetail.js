@@ -16,6 +16,7 @@ const AccountBookDetail = () => {
     const fetchAccountBook = async () => {
       try {
         const data = await getAccountBookById(id);
+        console.log(data);
         setAccountBook(data);
         setFilteredExpenses(data.expenses || []); // 기본값으로 빈 배열 설정
       } catch (err) {
@@ -79,6 +80,7 @@ const AccountBookDetail = () => {
   return (
     <div className={styles.dashboard}>
       <Sidebar
+        id={id}
         accountBook={accountBook}
         dates={dateList}
         onDateChange={handleDateChange}
