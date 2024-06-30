@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getAccountBooks } from "../../api/accountbookApi";
-import { fetchCountryFlags } from "../../api/accountbookApi";
-import styles from "../../styles/accountbook/AccountBookListPage.module.css";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAccountBooks } from '../../api/accountbookApi';
+import { fetchCountryFlags } from '../../api/accountbookApi';
+import styles from '../../styles/accountbook/AccountBookListPage.module.css';
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -14,11 +14,12 @@ const AccountBookListPage = () => {
   useEffect(() => {
     const fetchAccountBooks = async () => {
       try {
-        const data = await getAccountBooks(id);
+        const data = await getAccountBooks();
+        console.log(data);
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
-          setError(new Error("Unexpected response format"));
+          setError(new Error('Unexpected response format'));
         }
       } catch (error) {
         setError(error);
@@ -37,7 +38,6 @@ const AccountBookListPage = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
 
   const handleAccountBookClick = (book) => {
     navigate(`/accountbook/detail/${book.id}`);
@@ -64,7 +64,7 @@ const AccountBookListPage = () => {
       !book.expenses.length ||
       !book.budgets.length
     ) {
-      return "KRW 0";
+      return 'KRW 0';
     }
 
     const averageExchangeRates = {};
@@ -97,9 +97,7 @@ const AccountBookListPage = () => {
             key={book.id}
             className={styles.accountBook_list_grid_item}
             style={{
-              backgroundImage: `url(${
-                book.imgName || "/images/default.png"
-              })`,
+              backgroundImage: `url(${book.imgName || '/images/default.png'})`,
             }}
             onClick={() => handleAccountBookClick(book)}
             alt={book.title}
