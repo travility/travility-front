@@ -21,23 +21,26 @@ axiosInstance.interceptors.request.use(
 );
 
 //응답 전 실행
-axiosInstance.interceptors.response.use(
-  (response) => {
-    //2xx 범위에 있는 상태 코드 or 응답 데이터가 있는 작업 수행
-    return response;
-  },
-  (error) => {
-    //2xx 외의 범위에 있는 상태 코드 or 응답 오류가 있는 작업 수행
-    console.log(error);
-    if (
-      //토큰이 만료되었을 경우
-      error.response.status === 401 &&
-      error.response.data.message === 'Token expired'
-    ) {
-      return Promise.reject('Token expired');
-    }
-    return Promise.reject(error);
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   (response) => {
+//     //2xx 범위에 있는 상태 코드 or 응답 데이터가 있는 작업 수행
+//     return response;
+//   },
+//   (error) => {
+//     //2xx 외의 범위에 있는 상태 코드 or 응답 오류가 있는 작업 수행
+//     console.log(error);
+//     if (
+//       //토큰이 만료되었을 경우
+//       error.response.status === 401 &&
+//       error.response.data.message === 'Token expired'
+//     ) {
+//       return Promise.reject('Token expired');
+//     } else if (error.response.status === 403) {
+//       console.log(error.response.status);
+//       return Promise.reject('Forbidden Error');
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default axiosInstance;

@@ -1,4 +1,10 @@
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Layout from './components/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import AddAccountBookPage from './pages/accountbook/AddAccountBookPage';
@@ -16,7 +22,7 @@ import './styles/dashboard/global.css';
 import { validateToken } from './util/tokenUtils';
 import { createContext, useEffect, useState } from 'react';
 import { getMemberInfo } from './api/memberApi';
-import { handleTokenExpirationLogout } from './util/logoutUtils';
+import UsersPage from './pages/admin/UsersPage';
 export const TokenStateContext = createContext();
 
 function App() {
@@ -32,11 +38,8 @@ function App() {
         if (result === 'Token valid') {
           getMemberInfo().then((data) => {
             console.log(data);
-            console.log(data.username);
             setMemberInfo(data);
           });
-        } else if (result === 'Token expired') {
-          handleTokenExpirationLogout(navigate);
         }
       })
       .catch((error) => {
@@ -53,7 +56,7 @@ function App() {
           <Route path="/loading" element={<LoadingPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route
-            path="/myreport"
+            path="/dashboard/myreport"
             element={
               <AuthenticatedRoute>
                 <MyReport />
@@ -61,7 +64,7 @@ function App() {
             }
           />
           <Route
-            path="/myinfo"
+            path="/dashboard/myinfo"
             element={
               <AuthenticatedRoute>
                 <MyInfo />
@@ -69,7 +72,7 @@ function App() {
             }
           />
           <Route
-            path="/mycalendar"
+            path="/dashboard/mycalendar"
             element={
               <AuthenticatedRoute>
                 <MyCalendar />
@@ -102,6 +105,14 @@ function App() {
             element={
               <AuthenticatedRoute>
                 <AccountBookMain />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AuthenticatedRoute>
+                <UsersPage />
               </AuthenticatedRoute>
             }
           />

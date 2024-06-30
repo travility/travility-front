@@ -34,3 +34,14 @@ export const handleAlreadyLoggedOut = (navigate) => {
     navigate('/login');
   });
 };
+
+export const handleAccessDenied = (navigate) => {
+  Swal.fire({
+    title: '접근 거부',
+    text: '접근 권한이 없습니다.',
+    icon: 'error',
+    confirmButtonColor: '#2a52be',
+  }).then(() => {
+    navigate('/');
+  });
+};

@@ -16,7 +16,6 @@ const Header = () => {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  const isLoggedIn = isTokenPresent();
 
   const goAboutUs = () => {
     navigate('/');
@@ -31,14 +30,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    console.log(tokenStatus);
-    console.log(location.pathname);
-    console.log(memberInfo);
     if (memberInfo && memberInfo.username) {
-      console.log(memberInfo.username);
       setUsername(memberInfo.username);
     }
-  }, [location.pathname, memberInfo, tokenStatus]);
+  }, [memberInfo]);
 
   const handleLogout = () => {
     if (tokenStatus === 'Token valid') {
@@ -65,12 +60,18 @@ const Header = () => {
         <Logo />
       </div>
       <div className={styles.header_user_container}>
-        {isLoggedIn && username && (
-          <span className={styles.header_welcome_message}>
-            <img src="/images/person_circle.png" alt="user" />
-            {username} 님 반갑습니다!
-          </span>
-        )}
+        {tokenStatus === 'Token valid' ? (
+          location.pathname.startsWith('/admin') ? (
+            <span className={styles.header_welcome_message}>
+              현재 관리자 모드입니다
+            </span>
+          ) : (
+            <span className={styles.header_welcome_message}>
+              <img src="/images/person_circle.png" alt="user" />
+              {username} 님 반갑습니다!
+            </span>
+          )
+        ) : null}
 
         <nav className={styles.header_navigation_container}>
           {location.pathname === '/login' || location.pathname === '/signup' ? (
@@ -78,17 +79,41 @@ const Header = () => {
               About Us
             </button>
           ) : tokenStatus === 'Token valid' ? (
-            <>
-              <button className={styles.logout_button} onClick={handleLogout}>
-                Logout
-              </button>
-              <button className={styles.account_button} onClick={goAccount}>
-                Account
-              </button>
-              <button className={styles.aboutus_button} onClick={goAboutUs}>
-                About Us
-              </button>
-            </>
+            location.pathname.startsWith('/admin') ? (
+              <>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  About Us
+                </button>
+              </>
+            ) : location.pathname.startsWith('/dashboard') ||
+              location.pathname === '/' ? (
+              <>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                <button className={styles.account_button} onClick={goAccount}>
+                  Account
+                </button>
+                <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  About Us
+                </button>
+              </>
+            ) : (
+              <>
+                <button className={styles.logout_button} onClick={handleLogout}>
+                  Logout
+                </button>
+                <button className={styles.account_button} onClick={goAccount}>
+                  Dashboard
+                </button>
+                <button className={styles.aboutus_button} onClick={goAboutUs}>
+                  About Us
+                </button>
+              </>
+            )
           ) : (
             <>
               <button className={styles.login_button} onClick={goLogin}>

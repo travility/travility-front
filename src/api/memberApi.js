@@ -48,7 +48,7 @@ export const checkToken = async () => {
   return response.data;
 };
 
-//username 추출
+//사용자 정보 추출
 export const getMemberInfo = async () => {
   const response = await axiosInstance.get('/users');
   return response.data;
