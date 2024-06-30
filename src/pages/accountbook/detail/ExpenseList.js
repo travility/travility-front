@@ -5,6 +5,7 @@ import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 const ExpenseList = ({ expenses = [] }) => {
   const [filter, setFilter] = useState("all");
 
+  // 지출 그룹화
   const groupedExpenses = expenses.reduce((acc, expense) => {
     const date = new Date(expense.expenseDate).toLocaleDateString();
     if (!acc[date]) {
@@ -14,6 +15,7 @@ const ExpenseList = ({ expenses = [] }) => {
     return acc;
   }, {});
 
+  // 지출 필터링
   const filteredExpenses = Object.keys(groupedExpenses).reduce((acc, date) => {
     const filtered = groupedExpenses[date].filter((expense) => {
       if (filter === "all") return true;
@@ -52,22 +54,26 @@ const ExpenseList = ({ expenses = [] }) => {
         </button>
       </div>
       <div className={styles.expenseList}>
-        {Object.keys(filteredExpenses).map((date, index) => (
-          <div key={index}>
-            <div className={styles.expenseDate}>{date}</div>
-            {filteredExpenses[date].map((expense, idx) => (
-              <ExpenseItem
-                key={idx}
-                type={expense.isShared ? "공동경비" : "개인경비"}
-                category={expense.category}
-                currency={expense.currency}
-                amount={expense.amount}
-                description={expense.title}
-                imgName={expense.imgName}
-              />
-            ))}
-          </div>
-        ))}
+        {Object.keys(filteredExpenses).length === 0 ? (
+          <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
+        ) : (
+          Object.keys(filteredExpenses).map((date, index) => (
+            <div key={index}>
+              <div className={styles.expenseDate}>{date}</div>
+              {filteredExpenses[date].map((expense, idx) => (
+                <ExpenseItem
+                  key={idx}
+                  type={expense.isShared ? "공동경비" : "개인경비"}
+                  category={expense.category}
+                  currency={expense.currency}
+                  amount={expense.amount}
+                  description={expense.title}
+                  imgName={expense.imgName}
+                />
+              ))}
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

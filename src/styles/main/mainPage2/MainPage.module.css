@@ -1,79 +1,35 @@
 .mainPageContainer {
   display: grid;
-  grid-template-columns: 3fr 2fr 2fr;
-  grid-template-rows: auto 1fr;
-  gap: 3rem;
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: auto;
+  gap: 2rem;
   padding: 2rem;
 }
 
 .leftPanel {
   grid-column: 1 / 2;
-  grid-row: 1 / 2;
-}
-
-.centerPanel {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
+  padding-right: 6rem;
 }
 
 .rightPanel {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-
-/*하단 네비게이션 버튼*/
-
-.navigationButtonsContainer {
-  grid-column: 1 / 4;
-  grid-row: 2 / 3;
-  display: flex;
-}
-
-.navigationButtons {
-  display: flex;
-  justify-content: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.navigationButtons button {
-  flex: 1;
-  padding: 10px 20px;
-  margin: 0 10px;
-  background-color: white;
-  border: 1px solid var(--line-color);
-  box-shadow: 0px 0px 3px rgb(213, 213, 213);
-  border-radius: 4px;
-  font-size: 1em;
-  cursor: pointer;
-  text-align: left;
-}
-
-.navigationButtons button img{
-  margin-top: 5px;
-  width: 32px;
-  display: block;
-  margin-bottom: 25px;
+  grid-column: 2 / 3;
+  padding-right: -2rem;
+  
 }
 
 /******************************************************************************************/
 /*최근 내 가계부 : RecentAccountBooks*/
 
 .recent_accountBooks_container {
+  width: 100%;
   min-height: 50%;
   padding: 20px;
   border: solid 1px #ccc;
   border-radius: 8px;
-  box-shadow: 0px 0px 3px rgb(213, 213, 213);
-  
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 516px;
 }
 
 .recent_accountBooks_header{
@@ -81,7 +37,7 @@
   margin-bottom: 0.5rem;
   font-weight: bold;
   font-size: 1em;
-  color: #4568DC;
+  color: var(--main-color);
   margin-top: 0;
 }
 
@@ -122,7 +78,7 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1;
-  border-radius: 8px;
+  border-radius: 5px;
 }
 
 
@@ -136,15 +92,26 @@
   width: 100%;
 }
 
-.recent_accountBooks_item_title{
-  text-align: left;
-  font-weight: bold;
-  font-size: 1em;
+
+.recent_accountBooks_title_and_flag {
+  display: flex;
+  align-items: center; 
 }
 
-/* .recent_accountBooks_item_countryflag {
-  font-size: 18px;
-} */
+.recent_accountBook_flag img{
+  width: 30px;
+  margin-right: 10px;
+  border-radius:10%;
+}
+
+.recent_accountBooks_item_title{
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 1em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 
 .recent_accountBooks_item_dates{
   font-size: 0.8em;
@@ -181,104 +148,33 @@
 }
 
 
-
-/******************************************************************************************/
-/* 이번 여행, 얼마가 필요할까? : AverageDailyExpense */
-.average_daily_expense_container {
-  padding: 20px;
-  margin-top: 30px;
-  border: solid 1px #ccc;
-  border-radius: 8px;
-  box-shadow: 0px 0px 3px rgb(213, 213, 213);
- 
-  display: flex;
-  flex-direction: column;
-}
-
-.average_daily_expense_container h3{
-  color: #4568DC;
-  margin-top: 0;
-  text-align: center;
-}
-
-.average_daily_expense_search_container {
-  margin-bottom: 5px;
-  display: relative;
-}
-
-.average_daily_expense_countryName {
-  color: #4568DC;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.average_daily_expense_search_result{
-  font-weight: 600;
-  font-size: 1.06em;
-  text-align: center;
-  line-height: 2;
-  letter-spacing: 0.05em;
-}
-
-
-
 /******************************************************************************************/
 /* 실시간 인기 여행지 top5 : TopDestinations*/
-
-.top_destinations_container{
-  padding: 20px;
-  border-radius: 8px;
-  border: solid 1px #ccc;
-  box-shadow: 0px 0px 3px rgb(213, 213, 213);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.top_destinations_container h3{
-  color: #4568DC;
-}
-
-.top_destinations_container li{
-  text-align: center;
-  font-weight: 600;
-}
-
-.topDestinationsTitle {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #6A99F8; 
-  color: white; 
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 1.2em;
+.topDestinationsTitle{
+  display: block;
+  margin-bottom: 0.5rem;
   font-weight: bold;
-}
-
-.topDestinationsHighlight {
-  color: #FFD700; 
+  font-size: 1em;
+  color: var(--main-color);
+  margin-top: 0;
 }
 
 .swiperContainer {
-  width: 100%;
-  max-width: 350px;
+  width: 80%;
+  min-height: 100%;
+  max-width: 340px;
   margin: 0 auto;
-  position: relative;
-  padding-top: 20px;
-  position: relative;
-  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
 }
 
 .mySwiper {
   width: 100%;
-  height: 270px;
-  margin-top: 40px;
+  height: 516px;
 }
 
 .swiperSlide {
-  display: flex;
+  padding-top: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -287,7 +183,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
-  position: relative;
+  
   background-size: cover;
   background-position: center;
 }
@@ -304,8 +200,6 @@
   left: 50%;
   transform: translateX(-50%);
   color: white;
-  background: rgba(0, 0, 0, 0.5);
   padding: 5px 10px;
-  border-radius: 4px;
   font-weight: bold;
 }
