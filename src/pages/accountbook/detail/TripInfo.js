@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styles from '../../../styles/accountbook/TripInfo.module.css';
 import Destination from '../../../components/Destination';
 import Swal from 'sweetalert2';
-import { updateAccountBook } from '../../../api/accountbookApi';
-import { useLocation } from 'react-router-dom';
 
-const TripInfo = ({ id, isOpen, onClose, accountBook }) => {
+const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [countryName, setCountryName] = useState(accountBook.countryName);
   const [countryFlag, setCountryFlag] = useState(accountBook.countryFlag);
   const [title, setTitle] = useState(accountBook.title);
@@ -76,7 +74,8 @@ const TripInfo = ({ id, isOpen, onClose, accountBook }) => {
     reader.readAsDataURL(file); //파일 데이터를 url로 바꿔서 reader.result에 저장
   };
 
-  const handleModifyTripInfo = () => {
+  const handleUpdateTripInfo = (e) => {
+    e.preventDefault();
     const newTripInfo = {
       countryName: countryName,
       countryFlag: countryFlag,
@@ -88,27 +87,11 @@ const TripInfo = ({ id, isOpen, onClose, accountBook }) => {
 
     const formData = new FormData(); //문자열 or Blob 객체만 추가 가능
     formData.append('tripInfo', JSON.stringify(newTripInfo)); //json 문자열로 변환
-    formData.append('img', newImg);
+    if (newImg) {
+      formData.append('img', newImg);
+    }
 
-    updateAccountBook(id, formData)
-      .then((response) => {
-        console.log(response);
-        Swal.fire({
-          title: '수정 성공',
-          text: '가계부 수정 성공했습니다',
-          icon: 'success',
-          confirmButtonColor: '#2a52be',
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        Swal.fire({
-          title: '수정 실패',
-          text: '가계부 수정 실패했습니다',
-          icon: 'error',
-          confirmButtonColor: '#2a52be',
-        });
-      });
+    onSubmit(formData);
   };
 
   return (
@@ -122,80 +105,86 @@ const TripInfo = ({ id, isOpen, onClose, accountBook }) => {
               </button>
               <div className={styles.modalHeader_title}>여행 정보</div>
             </div>
-            <div className={styles.modalContent}>
-              <Destination
-                initialCountryName={countryName}
-                initialCountryFlag={countryFlag}
-                onCountrySelect={handleCountrySelect}
-              />
-              <input
-                type="text"
-                className={styles.title}
-                value={title}
-                onChange={handleTitle}
-              ></input>
-              <input
-                type="text"
-                className={styles.numberOfPeople}
-                value={numberOfPeople}
-                onChange={handleNumberOfPeople}
-              ></input>
+            <form onSubmit={handleUpdateTripInfo}>
+              <div className={styles.modalContent}>
+                <Destination
+                  initialCountryName={countryName}
+                  initialCountryFlag={countryFlag}
+                  onCountrySelect={handleCountrySelect}
+                />
+                <input
+                  type="text"
+                  className={styles.title}
+                  value={title}
+                  onChange={handleTitle}
+                  required
+                ></input>
+                <input
+                  type="text"
+                  className={styles.numberOfPeople}
+                  value={numberOfPeople}
+                  onChange={handleNumberOfPeople}
+                  required
+                ></input>
 
-              <div className={styles.dates}>
-                <input
-                  type="date"
-                  className={styles.startDate}
-                  value={formatDate(startDate)}
-                  onChange={handleStartDate}
-                ></input>
-                <span className={styles.separator}>~</span>
-                <input
-                  type="date"
-                  className={styles.startDate}
-                  value={formatDate(endDate)}
-                  onChange={handleEndDate}
-                ></input>
-              </div>
-              <div className={styles.imageContainer}>
-                {isDefaultImage && (
-                  <div className={styles.addPhotoContainer}>
-                    <div className={styles.addPhoto_imageContainer}>
-                      <img
-                        className={styles.addPhoto_image}
-                        src="/images/account/add_photo.png"
-                        alt="사진 추가"
-                      ></img>
-                    </div>
-                    <div className={styles.addPhoto_text}>
-                      사진을 추가하세요
-                    </div>
-                  </div>
-                )}
-                <input
-                  id="fileInput"
-                  className={styles.fileInput}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleNewImg}
-                ></input>
-                <div className={styles.imageWrapper} onClick={handleImageClick}>
-                  <img
-                    className={styles.image}
-                    src={
-                      previewImg ||
-                      'http://localhost:8080/images/' + accountBook.imgName
-                    }
-                    alt="대표이미지"
-                  />
+                <div className={styles.dates}>
+                  <input
+                    type="date"
+                    className={styles.startDate}
+                    value={formatDate(startDate)}
+                    onChange={handleStartDate}
+                    required
+                  ></input>
+                  <span className={styles.separator}>~</span>
+                  <input
+                    type="date"
+                    className={styles.startDate}
+                    value={formatDate(endDate)}
+                    onChange={handleEndDate}
+                    required
+                  ></input>
                 </div>
+                <div className={styles.imageContainer}>
+                  {isDefaultImage && (
+                    <div className={styles.addPhotoContainer}>
+                      <div className={styles.addPhoto_imageContainer}>
+                        <img
+                          className={styles.addPhoto_image}
+                          src="/images/account/add_photo.png"
+                          alt="사진 추가"
+                        ></img>
+                      </div>
+                      <div className={styles.addPhoto_text}>
+                        사진을 추가하세요
+                      </div>
+                    </div>
+                  )}
+                  <input
+                    id="fileInput"
+                    className={styles.fileInput}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleNewImg}
+                  ></input>
+                  <div
+                    className={styles.imageWrapper}
+                    onClick={handleImageClick}
+                  >
+                    <img
+                      className={styles.image}
+                      src={
+                        previewImg ||
+                        'http://localhost:8080/images/' + accountBook.imgName
+                      }
+                      alt="대표이미지"
+                    />
+                  </div>
+                </div>
+                <button type="submit" className={styles.modifyButton}>
+                  수정
+                </button>
               </div>
-              <button
-                className={styles.modifyButton}
-                onClick={handleModifyTripInfo}
-              >
-                수정
-              </button>
-            </div>
+            </form>
           </div>
         </div>
       )}

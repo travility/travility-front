@@ -80,7 +80,6 @@ const AccountBookDetail = () => {
   return (
     <div className={styles.dashboard}>
       <Sidebar
-        id={id}
         accountBook={accountBook}
         dates={dateList}
         onDateChange={handleDateChange}
