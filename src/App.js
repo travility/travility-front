@@ -1,3 +1,4 @@
+import { createContext, useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
@@ -9,14 +10,13 @@ import SignupPage from './pages/member/SignupPage';
 import MyInfo from './pages/dashboard/MyInfo';
 import MyCalendar from './pages/dashboard/MyCalendar';
 import MyReport from './pages/dashboard/MyReport';
+import UsersPage from './pages/admin/UsersPage';
 import LoadingPage from './util/LoadingPage';
 import AuthenticatedRoute from './util/AuthenticatedRoute';
 import './App.css';
 import './styles/dashboard/global.css';
-import { validateToken } from './util/tokenUtils';
-import { createContext, useEffect, useState } from 'react';
 import { getMemberInfo, logout } from './api/memberApi';
-import UsersPage from './pages/admin/UsersPage';
+import { validateToken } from './util/tokenUtils';
 import { handleTokenExpirationLogout } from './util/logoutUtils';
 export const TokenStateContext = createContext();
 
@@ -27,27 +27,26 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    validateToken()
-      .then((result) => {
-        console.log(result);
+    const checkTokenStatus = async () => {
+      try {
+        const result = await validateToken();
         setTokenStatus(result);
-
         if (result === 'Token valid') {
-          getMemberInfo().then((data) => {
-            console.log(data);
-            setMemberInfo(data);
-          });
+          const info = await getMemberInfo();
+          setMemberInfo(info);
         } else if (result === 'Token expired') {
+          await logout();
           handleTokenExpirationLogout(navigate);
-          logout();
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('토큰 유효성 검사 중 오류 발생:', error);
         if (location.pathname !== '/') {
           navigate('/login');
         }
-      });
+      }
+    };
+
+    checkTokenStatus();
   }, [navigate, location]);
 
   return (
@@ -61,11 +60,9 @@ function App() {
           <Route
             path="/main"
             element={
-              <MainPage />
-
-              // <AuthenticatedRoute>
-
-              // </AuthenticatedRoute>
+              <AuthenticatedRoute>
+                <MainPage />
+              </AuthenticatedRoute>
             }
           />
           <Route

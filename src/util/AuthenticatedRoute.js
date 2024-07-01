@@ -1,17 +1,22 @@
-import { useContext, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { handleAlreadyLoggedOut } from './logoutUtils';
-import { TokenStateContext } from '../App';
+import { validateToken } from './tokenUtils';
 
 const AuthenticatedRoute = ({ children }) => {
-  const { tokenStatus } = useContext(TokenStateContext);
+  const [tokenStatus, setTokenStatus] = useState();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (tokenStatus === 'Token null') {
-      handleAlreadyLoggedOut(navigate);
-    }
+    const checkToken = async () => {
+      const status = await validateToken();
+      setTokenStatus(status);
+      if (status === 'Token null') {
+        handleAlreadyLoggedOut(navigate);
+      }
+    };
+    checkToken();
   }, [tokenStatus, navigate, location.pathname]);
 
   return tokenStatus === 'Token valid' ? children : null;
