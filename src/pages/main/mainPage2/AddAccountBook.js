@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Destination from "../../../components/Destination";
 import AddBudget from "../../../components/AddBudget";
-import styles from "../../../styles/main/mainPage2/AddAccountBook.module.css";
 import { addAccountBook } from "../../../api/accountbookApi";
+import styles from "../../../styles/main/mainPage2/AddAccountBook.module.css";
+import Swal from "sweetalert2";
+import { Colors } from "chart.js";
+
 
 const AddAccountBook = ({ authToken }) => {
   const [startDate, setStartDate] = useState("");
@@ -29,7 +32,8 @@ const AddAccountBook = ({ authToken }) => {
     }
   }, []);
 
-  const handleAddAccountBook = async () => {
+  const handleAddAccountBook = async (e) => {
+    e.preventDefault();
     const accountBookData = {
       startDate,
       endDate,
@@ -45,9 +49,22 @@ const AddAccountBook = ({ authToken }) => {
 
     try {
       const accountBookResponse = await addAccountBook(accountBookData);
-      navigate(`/accountbook/detail/${accountBookResponse.id}`);
+      Swal.fire({
+        title: "가계부 등록 완료!",
+        text:"가계부 상세 등록 페이지로 이동합니다.",
+        icon: "success",
+        confirmButtonColor: "var(--main-color)",
+      }).then(()=>{
+        navigate(`/accountbook/detail/${accountBookResponse.id}`);
+      });
     } catch (error) {
       console.error("가계부 추가 중 오류가 발생했습니다:", error);
+      Swal.fire({
+        title:"등록실패",
+        text: "여행 가계부 등록 중 오류가 발생했습니다. 다시 시도해주세요.",
+        icon: "error",
+        confirmButtonColor: "#4568DC",
+      });
     }
   };
 
