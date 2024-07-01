@@ -1,112 +1,96 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import Modal from "react-modal";
-import { eachDayOfInterval, parseISO, format } from "date-fns";
-import styles from "../../styles/dashboard/MyCalendar2.module.css";
-
-Modal.setAppElement("#root");
+import DefaultSidebar from "../../components/DefaultSidebar";
+import styles from "../../styles/dashboard/MyCalendar.module.css";
+import koLocale from '@fullcalendar/core/locales/ko';
+import axios from "../../util/axiosInterceptor";
+import ScheduleDetail from '../../components/ScheduleDetail';
 
 const MyCalendar = () => {
+  const calendarRef = useRef(null);
+  const containerRef = useRef(null);
   const [events, setEvents] = useState([]);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [popupInfo, setPopupInfo] = useState({ show: false, date: null, position: { top: 0, left: 0 } });
 
   useEffect(() => {
-    const data = {
-      startDate: "2024-06-10",
-      endDate: "2024-06-20",
-      country: "Japan",
-      expenses: [
-        { expenseDate: "2024-06-12", amount: 10000000 },
-        { expenseDate: "2024-06-13", amount: 50000000 },
-        { expenseDate: "2024-06-18", amount: 20000000 },
-      ],
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get('/accountBook/schedule');
+        const fetchedEvents = response.data.map(event => ({
+          title: event.title,
+          start: event.start,
+          end: event.end,
+          className: styles.additionalEvent
+        }));
+        setEvents(fetchedEvents);
+      } catch (error) {
+        console.error('Error fetching account books', error);
+      }
     };
 
-    const travelDays = eachDayOfInterval({
-      start: parseISO(data.startDate),
-      end: parseISO(data.endDate),
-    }).map((date, index) => ({
-      title: index === 0 ? data.country : "",
-      start: format(date, "yyyy-MM-dd"),
-      className: styles.travelPeriod,
-    }));
-
-    const expenseEvents = data.expenses.map((expense) => ({
-      title: `KRW ${expense.amount}`,
-      start: expense.expenseDate,
-      className: styles.expenseLabel,
-    }));
-
-    setEvents([...travelDays, ...expenseEvents]);
+    fetchEvents();
   }, []);
 
   const handleDateClick = (arg) => {
-    const event = events.find((event) => event.start === arg.dateStr);
-    if (event) {
-      setSelectedEvent(event);
-      setIsOpen(true);
+    const cell = arg.dayEl;
+    if (cell && containerRef.current) {
+      const rect = cell.getBoundingClientRect();
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const popupWidth = 350;
+      const popupHeight = 700;
+
+      let topPosition = rect.top + window.scrollY - 200;
+      let leftPosition = rect.left + window.scrollX;
+
+      if (leftPosition + popupWidth > containerRect.right) {
+        leftPosition = containerRect.right - popupWidth;
+      }
+
+      if (topPosition + popupHeight > containerRect.bottom) {
+        topPosition = containerRect.bottom - popupHeight;
+      }
+
+      setPopupInfo({ show: true, date: arg.dateStr, position: { top: topPosition, left: leftPosition } });
     }
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
-    setSelectedEvent(null);
+  const handleClosePopup = () => {
+    setPopupInfo({ show: false, date: null, position: { top: 0, left: 0 } });
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.sidebar}>
-        <nav>
-          <ul>
-            <li>마이 리포트</li>
-            <li>캘린더</li>
-            <li>내 정보</li>
-          </ul>
-        </nav>
-      </div>
-      <div className={styles.calendarContainer}>
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={events}
-          dateClick={handleDateClick}
-        />
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          className={styles.modalContent}
-          overlayClassName={styles.modalOverlay}
-        >
-          <div className={styles.modalHeader}>
-            <h2>{selectedEvent ? selectedEvent.title : ""}</h2>
-            <button onClick={closeModal}>&times;</button>
-          </div>
-          <div className={styles.modalBody}>
-            {selectedEvent && (
-              <>
-                <div>{selectedEvent.start}</div>
-                <img src="/path/to/image.png" alt="서울" className={styles.modalImage} />
-                <div className={styles.modalTabs}>
-                  <button>모두</button>
-                  <button>개인</button>
-                  <button>공용</button>
-                </div>
-                <div className={styles.expenseDetail}>
-                  <div>식비 28000원</div>
-                  <div>샤브샤브</div>
-                </div>
-                <div className={styles.totalExpense}>총 사용 비용</div>
-              </>
+    <div className={styles.dashboard_container} onClick={handleClosePopup}>
+      <DefaultSidebar />
+      <div className={styles.content}>
+        <div ref={containerRef} className={styles.calendar_container} onClick={(e) => e.stopPropagation()}>
+          <FullCalendar
+            ref={calendarRef}
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            locale={koLocale}
+            headerToolbar={{
+              left: 'title',
+              center: '',
+              right: 'today prev,next'
+            }}
+            events={events}
+            dateClick={handleDateClick}
+            eventContent={(eventInfo) => (
+              <div className={eventInfo.event.classNames.join(" ")}>
+                {eventInfo.isStart ? eventInfo.event.title : ''}
+              </div>
             )}
-          </div>
-          <div className={styles.modalFooter}>
-            <button>편집하기</button>
-            <button>삭제하기</button>
-          </div>
-        </Modal>
+          />
+        </div>
+        {popupInfo.show && (
+          <ScheduleDetail 
+            date={popupInfo.date} 
+            onClose={handleClosePopup} 
+            position={popupInfo.position} 
+          />
+        )}
       </div>
     </div>
   );
