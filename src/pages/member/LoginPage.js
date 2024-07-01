@@ -14,6 +14,10 @@ const onGoogleLogin = () => {
   window.location.href = "http://localhost:8080/oauth2/authorization/google";
 };
 
+const onKakaoLogin = () => {
+  window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+};
+
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -82,6 +86,7 @@ const LoginPage = () => {
 
 
   };
+
   return (
     <div className={styles.login}>
       <div className={styles.login_content}>
@@ -145,7 +150,7 @@ const LoginPage = () => {
           >
             <img src="/images/member/google.png" alt="구글 로그인" />
           </button>
-          <button className={styles.login_social_button}>
+          <button className={styles.login_social_button} onClick={onKakaoLogin}>
             <img src="/images/member/kakao.png" alt="카카오 로그인" />
           </button>
           <button className={styles.login_social_button} onClick={onNaverLogin}>
