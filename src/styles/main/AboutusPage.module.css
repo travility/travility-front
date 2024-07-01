@@ -92,16 +92,9 @@ section img {
 } */
 
 .login_button {
-  color: white;
-  background-color: #000000;
-  border: none;
-  border-radius: 0.5em;
-  cursor: pointer;
-}
-
-.login_button p {
-  padding: 0.6em 1.5em;
-  margin: 0;
+  background-color: #000;
+  width: 20%;
+  padding: 0;
 }
 
 .section2 {
