@@ -126,11 +126,12 @@
 .delete_icon {
   color: #ccc;
   font-size: 120%;
+  cursor: pointer;
 }
 
 .pagination {
   display: flex;
-  font-size: 1%;
+  font-size: 80%;
   justify-content: center;
   align-items: center;
   margin-top: 2%;
@@ -144,7 +145,7 @@
 
 .pagination span {
   cursor: pointer;
-  padding: 1% 1%;
+  padding: 0.5% 1%;
   margin: 0 1%;
   border-radius: 4px;
 }
