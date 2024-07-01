@@ -18,10 +18,10 @@ const Header = () => {
 
   useEffect(() => {
     if (memberInfo) {
-      setName(memberInfo.name || '');
-      setRole(memberInfo.role || '');
+      setName(memberInfo.name);
+      setRole(memberInfo.role);
     }
-  }, [memberInfo]);
+  }, [tokenStatus, memberInfo]);
 
   const handleLogout = async () => {
     try {
