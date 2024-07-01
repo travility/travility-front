@@ -1,28 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import DefaultSidebar from "../../components/DefaultSidebar";
-import styles from "../../styles/dashboard/MyCalendar.module.css";
+import React, { useState, useEffect, useRef } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import DefaultSidebar from '../../components/DefaultSidebar';
+import styles from '../../styles/dashboard/MyCalendar.module.css';
 import koLocale from '@fullcalendar/core/locales/ko';
-import axios from "../../util/axiosInterceptor";
+import axios from '../../util/axiosInterceptor';
 import ScheduleDetail from '../../components/ScheduleDetail';
 
 const MyCalendar = () => {
   const calendarRef = useRef(null);
   const containerRef = useRef(null);
   const [events, setEvents] = useState([]);
-  const [popupInfo, setPopupInfo] = useState({ show: false, date: null, position: { top: 0, left: 0 } });
+  const [popupInfo, setPopupInfo] = useState({
+    show: false,
+    date: null,
+    position: { top: 0, left: 0 },
+  });
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get('/accountBook/schedule');
-        const fetchedEvents = response.data.map(event => ({
+        const fetchedEvents = response.data.map((event) => ({
           title: event.title,
           start: event.start,
           end: event.end,
-          className: styles.additionalEvent
+          className: styles.additionalEvent,
         }));
         setEvents(fetchedEvents);
       } catch (error) {
@@ -52,7 +56,11 @@ const MyCalendar = () => {
         topPosition = containerRect.bottom - popupHeight;
       }
 
-      setPopupInfo({ show: true, date: arg.dateStr, position: { top: topPosition, left: leftPosition } });
+      setPopupInfo({
+        show: true,
+        date: arg.dateStr,
+        position: { top: topPosition, left: leftPosition },
+      });
     }
   };
 
@@ -62,9 +70,12 @@ const MyCalendar = () => {
 
   return (
     <div className={styles.dashboard_container} onClick={handleClosePopup}>
-      <DefaultSidebar />
       <div className={styles.content}>
-        <div ref={containerRef} className={styles.calendar_container} onClick={(e) => e.stopPropagation()}>
+        <div
+          ref={containerRef}
+          className={styles.calendar_container}
+          onClick={(e) => e.stopPropagation()}
+        >
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin]}
@@ -73,22 +84,22 @@ const MyCalendar = () => {
             headerToolbar={{
               left: 'title',
               center: '',
-              right: 'today prev,next'
+              right: 'today prev,next',
             }}
             events={events}
             dateClick={handleDateClick}
             eventContent={(eventInfo) => (
-              <div className={eventInfo.event.classNames.join(" ")}>
+              <div className={eventInfo.event.classNames.join(' ')}>
                 {eventInfo.isStart ? eventInfo.event.title : ''}
               </div>
             )}
           />
         </div>
         {popupInfo.show && (
-          <ScheduleDetail 
-            date={popupInfo.date} 
-            onClose={handleClosePopup} 
-            position={popupInfo.position} 
+          <ScheduleDetail
+            date={popupInfo.date}
+            onClose={handleClosePopup}
+            position={popupInfo.position}
           />
         )}
       </div>

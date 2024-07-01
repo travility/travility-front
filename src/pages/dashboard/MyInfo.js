@@ -73,6 +73,8 @@ const MyInfo = () => {
     <div className={styles.myinfo_page}>
       <div className={styles.myinfo_container}>
         <ul className={styles.myinfo_item}>
+          <li>닉네임</li>
+          <li>{memberInfo.name}</li>
           <li>아이디</li>
           <li>{memberInfo.username}</li>
           <li>이메일</li>
