@@ -1,39 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Destination from "../../../components/Destination";
-import AddBudget from "../../../components/AddBudget";
-import { addAccountBook } from "../../../api/accountbookApi";
-import styles from "../../../styles/main/mainPage2/AddAccountBook.module.css";
-import Swal from "sweetalert2";
-import { Colors } from "chart.js";
-
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Destination from '../../../components/Destination';
+import AddBudget from '../../../components/AddBudget';
+import styles from '../../../styles/main/mainPage2/AddAccountBook.module.css';
+import { addAccountBook } from '../../../api/accountbookApi';
+import { TokenStateContext } from '../../../App';
 
 const AddAccountBook = ({ authToken }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [errorDate, setErrorDate] = useState("");
-  const [numberOfPeople, setNumberOfPeople] = useState("");
-  const [countryName, setCountryName] = useState("");
-  const [countryFlag, setCountryFlag] = useState("");
+  const { memberInfo } = useContext(TokenStateContext);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [errorDate, setErrorDate] = useState('');
+  const [numberOfPeople, setNumberOfPeople] = useState('');
+  const [countryName, setCountryName] = useState('');
+  const [countryFlag, setCountryFlag] = useState('');
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
-  const [budget, setBudget] = useState("");
+  const [budget, setBudget] = useState('');
   const [budgets, setBudgets] = useState([]);
-  const [title, setTitle] = useState("");
-  const [username, setUsername] = useState(null);
-  const [titleError, setTitleError] = useState(""); //글자수 에러 메세지
+  const [title, setTitle] = useState('');
+  const [titleError, setTitleError] = useState(''); //글자수 에러 메세지
   const [inputCount, setInputCount] = useState(0); //글자수 변경 카운트
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("Authorization");
-    if (token) {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      setUsername(payload.sub);
-    }
-  }, []);
-
-  const handleAddAccountBook = async (e) => {
-    e.preventDefault();
+  const handleAddAccountBook = async () => {
     const accountBookData = {
       startDate,
       endDate,
@@ -41,30 +30,17 @@ const AddAccountBook = ({ authToken }) => {
       countryFlag,
       numberOfPeople: parseInt(numberOfPeople),
       title,
-      member: { username },
       budgets,
     };
 
-    console.log("전송되는 데이터:", accountBookData); // 데이터 확인
+    console.log('전송되는 데이터:', accountBookData); // 데이터 확인
 
     try {
       const accountBookResponse = await addAccountBook(accountBookData);
-      Swal.fire({
-        title: "가계부 등록 완료!",
-        text:"가계부 상세 등록 페이지로 이동합니다.",
-        icon: "success",
-        confirmButtonColor: "var(--main-color)",
-      }).then(()=>{
-        navigate(`/accountbook/detail/${accountBookResponse.id}`);
-      });
+      console.log(accountBookResponse);
+      navigate(`/accountbook/detail/${accountBookResponse.id}`);
     } catch (error) {
-      console.error("가계부 추가 중 오류가 발생했습니다:", error);
-      Swal.fire({
-        title:"등록실패",
-        text: "여행 가계부 등록 중 오류가 발생했습니다. 다시 시도해주세요.",
-        icon: "error",
-        confirmButtonColor: "#4568DC",
-      });
+      console.error('가계부 추가 중 오류가 발생했습니다:', error);
     }
   };
 
@@ -95,10 +71,10 @@ const AddAccountBook = ({ authToken }) => {
   const handleEndDateChange = (e) => {
     const newEndDate = e.target.value;
     if (newEndDate < startDate) {
-      setErrorDate("여행 시작일 이전 날짜는 선택할 수 없습니다.");
+      setErrorDate('여행 시작일 이전 날짜는 선택할 수 없습니다.');
     } else {
       setEndDate(newEndDate);
-      setErrorDate("");
+      setErrorDate('');
     }
   };
 
@@ -112,19 +88,16 @@ const AddAccountBook = ({ authToken }) => {
   //여행제목 글자수 제한
   const handleTitleChange = (e) => {
     const input = e.target.value;
-  
+
     if (input.length <= 22) {
       setTitle(input);
-      setTitleError("");
+      setTitleError('');
     } else {
-      setTitleError("제목은 공백 포함 22 글자까지 입력 가능합니다."); 
+      setTitleError('제목은 공백 포함 22 글자까지 입력 가능합니다.');
     }
-  
+
     setInputCount(input.length); // 글자 수를 inputCount에 저장
   };
-
-  
-
 
   return (
     <div className={styles.addAccountBookContainer}>
@@ -190,8 +163,10 @@ const AddAccountBook = ({ authToken }) => {
             required
           />
           <div className={styles.addAccount_title_container}>
-          <span className={styles.addAccount_title_error}>{titleError}</span>
-          <span className={styles.addAccount_title_count}>{inputCount}/22 자</span>
+            <span className={styles.addAccount_title_error}>{titleError}</span>
+            <span className={styles.addAccount_title_count}>
+              {inputCount}/22 자
+            </span>
           </div>
         </div>
         <button

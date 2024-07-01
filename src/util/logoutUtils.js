@@ -45,3 +45,21 @@ export const handleAccessDenied = (navigate) => {
     navigate('/');
   });
 };
+
+export const handleSuccessSubject = (subject, action) => {
+  Swal.fire({
+    title: `${action} 성공`,
+    text: `${subject} ${action} 성공했습니다`,
+    icon: 'success',
+    confirmButtonColor: '#2a52be',
+  });
+};
+
+export const handlefailureSubject = (subject, action) => {
+  Swal.fire({
+    title: `${action} 실패`,
+    text: `${subject} ${action} 실패했습니다`,
+    icon: 'error',
+    confirmButtonColor: '#2a52be',
+  });
+};

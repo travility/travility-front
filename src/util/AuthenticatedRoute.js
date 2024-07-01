@@ -1,10 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  handleAlreadyLoggedOut,
-  handleTokenExpirationLogout,
-} from './logoutUtils';
-import { logout } from '../api/memberApi';
+import { handleAlreadyLoggedOut } from './logoutUtils';
 import { TokenStateContext } from '../App';
 
 const AuthenticatedRoute = ({ children }) => {
@@ -13,15 +9,7 @@ const AuthenticatedRoute = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (tokenStatus === 'Token expired') {
-      logout()
-        .then(() => {
-          handleTokenExpirationLogout(navigate);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else if (tokenStatus === 'Token null') {
+    if (tokenStatus === 'Token null') {
       handleAlreadyLoggedOut(navigate);
     }
   }, [tokenStatus, navigate, location.pathname]);
