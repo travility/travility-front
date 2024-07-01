@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styles from "../styles/components/Destination.module.css";
-import ModalContent from "./SearchCountry";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import styles from '../styles/components/Destination.module.css';
+import ModalContent from './SearchCountry';
 
-const WhereYouGo = ({ onCountrySelect }) => {
-  const [searchCountry, setSearchCountry] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState(null);
+const Destination = ({
+  initialCountryName,
+  initialCountryFlag,
+  onCountrySelect,
+}) => {
+  const [searchCountry, setSearchCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState({
+    country_nm: initialCountryName,
+    download_url: initialCountryFlag,
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [countries, setCountries] = useState([]);
 
@@ -13,12 +20,12 @@ const WhereYouGo = ({ onCountrySelect }) => {
     const fetchCountryFlags = async () => {
       try {
         const response = await axios.get(
-          "https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=z%2FJgcFj7mwylmN3DSWOtCJ3XE86974ujj%2F53Mfb1YbaHtY84TApx4CYY4ipu%2FLUt%2F7i7Us3aJ5FXWDFvGX3sJQ%3D%3D&numOfRows=220&returnType=JSON"
+          'https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=z%2FJgcFj7mwylmN3DSWOtCJ3XE86974ujj%2F53Mfb1YbaHtY84TApx4CYY4ipu%2FLUt%2F7i7Us3aJ5FXWDFvGX3sJQ%3D%3D&numOfRows=220&returnType=JSON'
         );
         const countryData = response.data.data;
         setCountries(countryData);
       } catch (error) {
-        console.error("국가 국기 정보를 가져오는 중 오류 발생:", error.message);
+        console.error('국가 국기 정보를 가져오는 중 오류 발생:', error.message);
       }
     };
 
@@ -43,7 +50,7 @@ const WhereYouGo = ({ onCountrySelect }) => {
     <div className={styles.whereYouGo}>
       <div className={styles.inputContainer}>
         <div className={styles.selectedCountryInput} onClick={openModal}>
-          {selectedCountry ? (
+          {selectedCountry.country_nm ? (
             <>
               <img
                 src={selectedCountry.download_url}
@@ -78,4 +85,4 @@ const WhereYouGo = ({ onCountrySelect }) => {
   );
 };
 
-export default WhereYouGo;
+export default Destination;
