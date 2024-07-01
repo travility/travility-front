@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAccountBooks } from "../../../api/accountbookApi";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
-
-
 
 //최근 내 가계부
 const RecentAccountBooks = () => {
-
   const navigate = useNavigate();
   const { id } = useParams();
   const [accountBooks, setAccountBooks] = useState([]);
@@ -17,7 +17,6 @@ const RecentAccountBooks = () => {
   const [loading, setLoading] = useState(true);
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
 
-  
   useEffect(() => {
     const fetchAccountBooks = async () => {
       try {
@@ -44,7 +43,6 @@ const RecentAccountBooks = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  
 
   const calculateAverageExchangeRate = (budgets, currency) => {
     const relevantBudgets = budgets.filter((b) => b.curUnit === currency);
@@ -70,7 +68,7 @@ const RecentAccountBooks = () => {
       return "KRW 0";
     }
 
-  const averageExchangeRates = {};
+    const averageExchangeRates = {};
     book.budgets.forEach((budget) => {
       if (!averageExchangeRates[budget.curUnit]) {
         averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
@@ -80,7 +78,7 @@ const RecentAccountBooks = () => {
       }
     });
 
-  const totalAmount = book.expenses.reduce((total, expense) => {
+    const totalAmount = book.expenses.reduce((total, expense) => {
       const exchangeRate = averageExchangeRates[expense.currency] || 1;
       return total + expense.amount * exchangeRate;
     }, 0);
@@ -88,14 +86,14 @@ const RecentAccountBooks = () => {
     return `KRW ${totalAmount.toLocaleString()}`;
   };
 
-   
   const handleRecentAccountBooksClick = (book) => {
-      navigate(`/accountbook/main/${book.id}`);
-    };
-
+    navigate(`/accountbook/detail/${book.id}`);
+  };
 
   const handlePrevClick = () => {
-    setVisibleStartIndex((prevIndex) => (prevIndex - 2 >= 0 ? prevIndex - 2 : 0));
+    setVisibleStartIndex((prevIndex) =>
+      prevIndex - 2 >= 0 ? prevIndex - 2 : 0
+    );
   };
 
   const handleNextClick = () => {
@@ -105,66 +103,78 @@ const RecentAccountBooks = () => {
   };
 
   const formatDate = (dateString) => {
-    return dateString.split('T')[0];
+    return dateString.split("T")[0];
   };
 
-
-
-    return (
-      <>
+  return (
+    <>
+      <div className={styles.recent_accountBooks_container}>
         <p className={styles.recent_accountBooks_header}>최근 내 가계부</p>
-        <div className={styles.recent_accountBooks_container}>
-          {accountBooks.length === 0 ? (
-            <div className={styles.recent_accountBooks_no_item_message}>
-              아직 등록된 여행이 없어요 😅 </div>
-          ) : (
-            <>
-              <div className={styles.recent_accountBooks_navigation_buttons}>
-                <button 
-                  onClick={handlePrevClick} 
-                  disabled={visibleStartIndex === 0}>
-                  <FontAwesomeIcon icon={faChevronUp} />
-                </button>
-              </div>
-              <div className={styles.recent_accountBooks_list}>
-                {accountBooks.slice(visibleStartIndex, visibleStartIndex + 2).map((book) => (
+        {accountBooks.length === 0 ? (
+          <div className={styles.recent_accountBooks_no_item_message}>
+            아직 등록된 여행이 없어요 😅
+          </div>
+        ) : (
+          <div className={styles.recent_accountBooks_wrapper}>
+            <div className={styles.recent_accountBooks_navigation_buttons}>
+              <button
+                onClick={handlePrevClick}
+                disabled={visibleStartIndex === 0}
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </button>
+            </div>
+            <div className={styles.recent_accountBooks_list}>
+              {accountBooks
+                .slice(visibleStartIndex, visibleStartIndex + 2)
+                .map((book) => (
                   <div
                     key={book.id}
                     className={styles.recent_accountBooks_item}
                     style={{
-                      backgroundImage: `url(${book.imgName || "/images/default.png"})`,
+                      backgroundImage: `url(${
+                        book.imgName || "/images/default.png"
+                      })`,
                     }}
                     onClick={() => handleRecentAccountBooksClick(book)}
                     alt={book.title}
                   >
                     <div className={styles.recent_accountBooks_item_details}>
-                    <div className={styles.recent_accountBooks_title_and_flag}>
-                      <span className={styles.recent_accountBook_flag}>
-                        <img src={book.countryFlag} alt="국기" />
-                      </span>
-                      <span className={styles.recent_accountBooks_item_title}>
-                        {book.title}
-                      </span>
+                      <div
+                        className={styles.recent_accountBooks_title_and_flag}
+                      >
+                        <span className={styles.recent_accountBook_flag}>
+                          <img src={book.countryFlag} alt="국기" />
+                        </span>
+                        <span className={styles.recent_accountBooks_item_title}>
+                          {book.title}
+                        </span>
                       </div>
-                      <span className={styles.recent_accountBooks_item_dates}>{`${formatDate(book.startDate)} ~ ${formatDate(book.endDate)}`}</span>
-                      <span className={styles.recent_accountBooks_item_amount}>{calculateTotalAmountInKRW(book)}</span>
+                      <span className={styles.recent_accountBooks_item_dates}>
+                        {`${formatDate(book.startDate)} ~ ${formatDate(
+                          book.endDate
+                        )}`}
+                      </span>
+                      <span className={styles.recent_accountBooks_item_amount}>
+                        {calculateTotalAmountInKRW(book)}
+                      </span>
                     </div>
                   </div>
                 ))}
-              </div>
-              <div className={styles.recent_accountBooks_navigation_buttons}>
-                <button
-                  onClick={handleNextClick}
-                  disabled={visibleStartIndex + 2 >= accountBooks.length}
-                >
-                  <FontAwesomeIcon icon={faChevronDown} />
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-      </>
-    );
-  };
+            </div>
+            <div className={styles.recent_accountBooks_navigation_buttons}>
+              <button
+                onClick={handleNextClick}
+                disabled={visibleStartIndex + 2 >= accountBooks.length}
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
 
 export default RecentAccountBooks;
