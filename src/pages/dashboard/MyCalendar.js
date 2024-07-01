@@ -5,36 +5,32 @@ import interactionPlugin from "@fullcalendar/interaction";
 import DefaultSidebar from "../../components/DefaultSidebar";
 import styles from "../../styles/dashboard/MyCalendar.module.css";
 import koLocale from '@fullcalendar/core/locales/ko';
+import axios from "../../util/axiosInterceptor";
 import ScheduleDetail from '../../components/ScheduleDetail';
-import { getAccountBooks } from '../../api/scheduleApi';
 
 const MyCalendar = () => {
-  const [events, setEvents] = useState([]);
-  const [popupInfo, setPopupInfo] = useState({ show: false, date: null, position: { top: 0, left: 0 } });
   const calendarRef = useRef(null);
   const containerRef = useRef(null);
+  const [events, setEvents] = useState([]);
+  const [popupInfo, setPopupInfo] = useState({ show: false, date: null, position: { top: 0, left: 0 } });
 
   useEffect(() => {
-    const fetchAccountBooks = async () => {
+    const fetchEvents = async () => {
       try {
-        const accountBooks = await getAccountBooks();
-        const events = accountBooks.map(book => {
-          const startDate = book.startDate ? book.startDate.split(' ')[0] : null;
-          const endDate = book.endDate ? book.endDate.split(' ')[0] : null;
-          return {
-            title: book.title,
-            start: startDate,
-            end: endDate,
-            className: styles.additionalEvent
-          };
-        }).filter(event => event.start && event.end); // 필터링하여 유효한 이벤트만 반환
-        setEvents(events);
+        const response = await axios.get('/accountBook/schedule');
+        const fetchedEvents = response.data.map(event => ({
+          title: event.title,
+          start: event.start,
+          end: event.end,
+          className: styles.additionalEvent
+        }));
+        setEvents(fetchedEvents);
       } catch (error) {
-        console.error("Error fetching account books", error);
+        console.error('Error fetching account books', error);
       }
     };
 
-    fetchAccountBooks();
+    fetchEvents();
   }, []);
 
   const handleDateClick = (arg) => {
@@ -42,23 +38,21 @@ const MyCalendar = () => {
     if (cell && containerRef.current) {
       const rect = cell.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
-      const popupWidth = 350; // ScheduleDetail 컴포넌트의 가로 크기
-      const popupHeight = 700; // ScheduleDetail 컴포넌트의 세로 크기
+      const popupWidth = 350;
+      const popupHeight = 700;
 
-      let top = rect.top + window.scrollY - 200;
-      let left = rect.left + window.scrollX;
+      let topPosition = rect.top + window.scrollY - 200;
+      let leftPosition = rect.left + window.scrollX;
 
-      // 오른쪽 끝을 넘어가는 경우
-      if (left + popupWidth > containerRect.right) {
-        left = containerRect.right - popupWidth;
+      if (leftPosition + popupWidth > containerRect.right) {
+        leftPosition = containerRect.right - popupWidth;
       }
 
-      // 아래쪽 끝을 넘어가는 경우
-      if (top + popupHeight > containerRect.bottom) {
-        top = containerRect.bottom - popupHeight;
+      if (topPosition + popupHeight > containerRect.bottom) {
+        topPosition = containerRect.bottom - popupHeight;
       }
 
-      setPopupInfo({ show: true, date: arg.dateStr, position: { top, left } });
+      setPopupInfo({ show: true, date: arg.dateStr, position: { top: topPosition, left: leftPosition } });
     }
   };
 
@@ -75,13 +69,13 @@ const MyCalendar = () => {
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
-            events={events}
             locale={koLocale}
             headerToolbar={{
               left: 'title',
               center: '',
               right: 'today prev,next'
             }}
+            events={events}
             dateClick={handleDateClick}
             eventContent={(eventInfo) => (
               <div className={eventInfo.event.classNames.join(" ")}>
