@@ -19,3 +19,10 @@ export const getNewMembersCountToday = async () => {
   const response = await axiosInstance.get('/admin/users/new-today');
   return response.data;
 };
+
+export const deleteMemberByAdmin = async (username) => {
+  const response = await axiosInstance.delete('/admin/users', {
+    data: username,
+  });
+  return response;
+};

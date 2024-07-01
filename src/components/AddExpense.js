@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import styles from "../styles/components/AddExpense.module.css"; // AddExpense CSS를 가져와 사용합니다.
+import styles from "../styles/components/AddExpense.module.css";
 
-const AddExpense = ({ isOpen, onClose, onSubmit }) => {
+const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   const [expense, setExpense] = useState({
     title: "",
     category: "OTHERS",
@@ -55,7 +55,11 @@ const AddExpense = ({ isOpen, onClose, onSubmit }) => {
   const handleSubmit = () => {
     const { expenseDate, expenseTime, ...otherFields } = expense;
     const combinedDateTime = new Date(`${expenseDate}T${expenseTime}`);
-    const expenseData = { ...otherFields, expenseDate: combinedDateTime };
+    const expenseData = {
+      ...otherFields,
+      expenseDate: combinedDateTime,
+      accountBookId,
+    };
     onSubmit(expenseData);
     onClose();
   };
@@ -216,7 +220,6 @@ const AddExpense = ({ isOpen, onClose, onSubmit }) => {
               placeholder="메모를 입력하세요"
               rows="4"
               className={styles.textArea}
-              readOnly
             />
             <div className={styles.submitButton}>
               <button onClick={handleSubmit}>등록</button>

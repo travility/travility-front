@@ -4,54 +4,110 @@
 
 .content {
   flex: 1;
+  padding-left: 5%;
+  padding-right: 5%;
+  overflow-y: auto; /* 세로 스크롤을 위한 설정 */
+  max-width: 100%; /* 최대 너비를 100%로 설정 */
+  box-sizing: border-box; /* 패딩과 경계 상자를 포함한 전체 너비를 사용 */
+}
+
+.no_memberList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
   padding: 20px;
+  border-radius: 10px;
+}
+
+.no_memberList_icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ccc;
 }
 
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.img_header {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
+  margin-bottom: 1%;
 }
 
 .title {
-  font-size: 24px;
+  font-size: 130%;
   font-weight: bold;
-  color: #2a52be;
+  color: #657df9;
 }
 
 .statistics {
-  margin-bottom: 20px;
-  font-size: 18px;
+  margin-bottom: 1%;
+  font-size: 90%;
 }
 
 .statistics span {
   font-weight: bold;
-  color: #2a52be;
+  color: #657df9;
+}
+
+.memberList_container {
+  overflow-x: auto; /* 가로 스크롤을 위한 설정 */
 }
 
 .memberList {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  table-layout: fixed;
+}
+
+.sorttype_container {
+  float: right;
+}
+
+.sorttype {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.7em;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .memberList th,
 .memberList td {
   border: 1px solid #ddd;
-  padding: 12px 15px;
-  text-align: left;
+  padding: 1% 1%;
+  font-size: 70%;
+  text-align: center;
+  white-space: nowrap; /* 텍스트가 넘치지 않도록 */
+  overflow: hidden; /* 넘치는 부분 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분에 생략 부호 표시 */
 }
 
 .memberList th {
   background-color: #f4f4f4;
   font-weight: bold;
   color: #2c3e50;
+}
+
+.memberList th:first-child {
+  width: 10%;
+}
+
+.memberList th:nth-child(4) {
+  width: 10%;
+}
+
+.memberList th:nth-child(5) {
+  width: 20%;
+}
+
+.memberList th:nth-child(6) {
+  width: 10%;
 }
 
 .memberList tr:nth-child(even) {
@@ -62,51 +118,44 @@
   background-color: #f1f1f1;
 }
 
-.memberList tr {
-  transition: background-color 0.2s ease-in-out;
-}
-
-.memberList th,
-.memberList td {
-  text-align: center;
-  white-space: nowrap; /* 텍스트가 넘치지 않도록 합니다. */
-}
-
 .img_socialtype {
-  width: 30px;
-  height: 30px;
+  width: 25%;
+  height: 25%;
+}
+
+.delete_icon {
+  color: #ccc;
+  font-size: 120%;
 }
 
 .pagination {
   display: flex;
+  font-size: 1%;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 2%;
+}
+
+.prev_button,
+.next_button {
+  color: white;
+  background-color: #657df9;
 }
 
 .pagination span {
   cursor: pointer;
-  padding: 8px 16px;
-  margin: 0 4px;
+  padding: 1% 1%;
+  margin: 0 1%;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.pagination span:hover {
-  background-color: #f0f0f0;
 }
 
 .pagination .activePage {
+  transition: background-color 0.3s ease;
   font-weight: bold;
-  color: #333;
+  color: white;
+  background-color: #bfc9ff; /* 진하게 표시할 배경색 */
 }
 
-.pagination span:first-child,
-.pagination span:last-child {
+.pagination .notActivePage:hover {
   background-color: #f0f0f0;
-}
-
-.pagination span:first-child:hover,
-.pagination span:last-child:hover {
-  background-color: #ddd;
 }

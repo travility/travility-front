@@ -10,7 +10,15 @@ export const getUserInfo = async () => {
   return response.data;
 };
 
-export const addExpense = async (expense) => {
-  const response = await axiosInstance.post("/accountbook/expense", expense);
-  return response.data;
+export const addExpense = async (expenseData) => {
+  try {
+    const response = await axiosInstance.post(
+      "/accountbook/expense",
+      expenseData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error adding expense:", error);
+    throw error;
+  }
 };
