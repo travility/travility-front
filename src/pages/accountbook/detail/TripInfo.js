@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../../../styles/accountbook/TripInfo.module.css';
-import Destination from '../../../components/Destination';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styles from "../../../styles/accountbook/TripInfo.module.css";
+import { formatDate } from "../../../api/accountbookApi";
+import Swal from "sweetalert2";
+import SearchCountry from "../../../components/SearchCountry";
 
 const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [countryName, setCountryName] = useState(accountBook.countryName);
@@ -15,15 +17,28 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [isDefaultImage, setIsDefaultImage] = useState(true);
   const [previewImg, setPreviewImg] = useState(null);
   const [newImg, setNewImg] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [countries, setCountries] = useState([]);
 
-  const formatDate = (inputDate) => {
-    const date = new Date(inputDate);
-    return date.toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식으로 변환
-  };
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get(
+          "https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=z%2FJgcFj7mwylmN3DSWOtCJ3XE86974ujj%2F53Mfb1YbaHtY84TApx4CYY4ipu%2FLUt%2F7i7Us3aJ5FXWDFvGX3sJQ%3D%3D&numOfRows=220&returnType=JSON"
+        );
+        setCountries(response.data.data);
+      } catch (error) {
+        console.error("국가 국기 정보를 가져오는 중 오류 발생:", error.message);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   const handleCountrySelect = (country) => {
     setCountryName(country.country_nm);
     setCountryFlag(country.download_url);
+    setIsModalOpen(false);
   };
 
   const handleTitle = (e) => {
@@ -43,23 +58,23 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   };
 
   const handleImageClick = () => {
-    document.getElementById('fileInput').click();
+    document.getElementById("fileInput").click();
   };
 
   const handleNewImg = (e) => {
     if (e.target.files.length === 0) {
-      //파일 선택 안했을 때
+      // 파일 선택 안 했을 때
       return;
     }
 
     const file = e.target.files[0];
 
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       Swal.fire({
-        title: '이미지 파일 아님',
-        text: '이미지 파일만 업로드 가능합니다',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
+        title: "이미지 파일 아님",
+        text: "이미지 파일만 업로드 가능합니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
       });
       return;
     }
@@ -71,7 +86,7 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     reader.onload = () => {
       setPreviewImg(reader.result);
     };
-    reader.readAsDataURL(file); //파일 데이터를 url로 바꿔서 reader.result에 저장
+    reader.readAsDataURL(file); // 파일 데이터를 URL로 바꿔서 reader.result에 저장
   };
 
   const handleUpdateTripInfo = (e) => {
@@ -85,10 +100,10 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
       endDate: endDate,
     };
 
-    const formData = new FormData(); //문자열 or Blob 객체만 추가 가능
-    formData.append('tripInfo', JSON.stringify(newTripInfo)); //json 문자열로 변환
+    const formData = new FormData(); // 문자열 or Blob 객체만 추가 가능
+    formData.append("tripInfo", JSON.stringify(newTripInfo)); // json 문자열로 변환
     if (newImg) {
-      formData.append('img', newImg);
+      formData.append("img", newImg);
     }
 
     onSubmit(formData);
@@ -100,49 +115,60 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
             <div className={styles.modalHeader}>
+              <div className={styles.modalHeader_title}>여행 정보</div>
               <button className={styles.closeButton} onClick={onClose}>
                 &times;
               </button>
-              <div className={styles.modalHeader_title}>여행 정보</div>
             </div>
             <form onSubmit={handleUpdateTripInfo}>
               <div className={styles.modalContent}>
-                <Destination
-                  initialCountryName={countryName}
-                  initialCountryFlag={countryFlag}
-                  onCountrySelect={handleCountrySelect}
-                />
-                <input
-                  type="text"
-                  className={styles.title}
-                  value={title}
-                  onChange={handleTitle}
-                  required
-                ></input>
-                <input
-                  type="text"
-                  className={styles.numberOfPeople}
-                  value={numberOfPeople}
-                  onChange={handleNumberOfPeople}
-                  required
-                ></input>
-
-                <div className={styles.dates}>
+                <div className={styles.inputGroup}>
+                  <label>여행지</label>
+                  <div
+                    onClick={() => setIsModalOpen(true)}
+                    className={styles.selectedCountryInput}
+                  >
+                    <img
+                      src={countryFlag}
+                      alt={countryName}
+                      className={styles.flag}
+                    />
+                    <span>{countryName}</span>
+                  </div>
+                  <label>여행 타이틀</label>
                   <input
-                    type="date"
-                    className={styles.startDate}
-                    value={formatDate(startDate)}
-                    onChange={handleStartDate}
+                    type="text"
+                    className={styles.title}
+                    value={title}
+                    onChange={handleTitle}
                     required
-                  ></input>
-                  <span className={styles.separator}>~</span>
+                  />
+                  <label>인원 수</label>
                   <input
-                    type="date"
-                    className={styles.startDate}
-                    value={formatDate(endDate)}
-                    onChange={handleEndDate}
+                    type="text"
+                    className={styles.numberOfPeople}
+                    value={numberOfPeople}
+                    onChange={handleNumberOfPeople}
                     required
-                  ></input>
+                  />
+                  <label>여행 일정</label>
+                  <div className={styles.datesRow}>
+                    <input
+                      type="date"
+                      className={styles.startDate}
+                      value={formatDate(startDate)}
+                      onChange={handleStartDate}
+                      required
+                    />
+                    <span className={styles.separator}>~</span>
+                    <input
+                      type="date"
+                      className={styles.endDate}
+                      value={formatDate(endDate)}
+                      onChange={handleEndDate}
+                      required
+                    />
+                  </div>
                 </div>
                 <div className={styles.imageContainer}>
                   {isDefaultImage && (
@@ -152,7 +178,7 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                           className={styles.addPhoto_image}
                           src="/images/account/add_photo.png"
                           alt="사진 추가"
-                        ></img>
+                        />
                       </div>
                       <div className={styles.addPhoto_text}>
                         사진을 추가하세요
@@ -161,11 +187,11 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   )}
                   <input
                     id="fileInput"
-                    className={styles.fileInput}
+                    className={styles.hiddenInput}
                     type="file"
                     accept="image/*"
                     onChange={handleNewImg}
-                  ></input>
+                  />
                   <div
                     className={styles.imageWrapper}
                     onClick={handleImageClick}
@@ -174,9 +200,9 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                       className={styles.image}
                       src={
                         previewImg ||
-                        'http://localhost:8080/images/' + accountBook.imgName
+                        "http://localhost:8080/images/" + accountBook.imgName
                       }
-                      alt="대표이미지"
+                      alt="대표 이미지"
                     />
                   </div>
                 </div>
@@ -186,6 +212,13 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
               </div>
             </form>
           </div>
+          {isModalOpen && (
+            <SearchCountry
+              countries={countries}
+              onSelectCountry={handleCountrySelect}
+              closeModal={() => setIsModalOpen(false)}
+            />
+          )}
         </div>
       )}
     </>
