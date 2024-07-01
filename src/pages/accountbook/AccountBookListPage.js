@@ -97,7 +97,9 @@ const AccountBookListPage = () => {
             key={book.id}
             className={styles.accountBook_list_grid_item}
             style={{
-              backgroundImage: `url(${book.imgName || '/images/default.png'})`,
+              backgroundImage: `url(
+            http://localhost:8080/images/${book.imgName}
+          )`,
             }}
             onClick={() => handleAccountBookClick(book)}
             alt={book.title}

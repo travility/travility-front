@@ -7,16 +7,17 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
-  
+
   //에러관리
   const [errorUsername, setErrorUsername] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
   const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
-  //const [errorBirth, setErrorBirth] = useState('');
+  const [errorNickname, setErrorNickname] = useState('');
   const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(null);
 
   const [seePassword, setSeePassword] = useState(false);
@@ -116,7 +117,20 @@ const SignupPage = () => {
     }
   };
 
-  
+  const validateNickname = (nickname) => {
+    const regex = /^[가-힣a-zA-Z0-9]*[가-힣a-zA-Z0-9]{2,20}$/;
+    return regex.test(nickname);
+  };
+
+  const handleNickname = (e) => {
+    setNickname(e.target.value);
+    const isValid = validateNickname(e.target.value);
+    if (!isValid) {
+      setErrorNickname('닉네임 형식이 올바르지 않습니다');
+    } else {
+      setErrorNickname('');
+    }
+  };
 
   //회원 가입
   const handleSignup = (e) => {
@@ -140,13 +154,15 @@ const SignupPage = () => {
       !isUsernameDuplicate &&
       vaildateUsername(username) &&
       vaildatePassword(password) &&
-      validateEmail(email)
+      validateEmail(email) &&
+      validateNickname(nickname)
     ) {
       //유효성 검사를 모두 통과했을 경우
       const member = {
         username: username,
         password: password,
         email: email,
+        name: nickname,
       };
       signup(member)
         .then((data) => {
@@ -258,6 +274,16 @@ const SignupPage = () => {
               className={styles.signup_input_email}
             ></input>
             <div className={styles.signup_error}>{errorEmail}</div>
+            <div className={styles.signup_title}>닉네임</div>
+            <input
+              type="text"
+              placeholder="닉네임을 입력해주세요"
+              value={nickname}
+              onChange={handleNickname}
+              required
+              className={styles.signup_input_nickname}
+            ></input>
+            <div className={styles.signup_error}>{errorNickname}</div>
             <div className={styles.signup_actions}>
               <input
                 type="submit"
