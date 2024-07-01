@@ -16,7 +16,7 @@
     justify-content: space-between;
     align-items: flex-start;
     
-    border: 1px solid #ccc;
+    border: 1px solid var(--line-color);
     overflow: hidden;
     border-radius: 8px;
     
@@ -82,4 +82,28 @@
     bottom: 12px;
     right: 15px;
     z-index: 2;
+  }
+
+  /*삭제*/
+  .action_buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    width: 10rem;
+  }
+  
+  .delete_button {
+    margin-top: 0;
+  }
+
+  .confirm_delete_button {
+    margin-top: 0;
+    margin-left: 0.5rem;
+  }
+
+  .select_overlay {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3;
   }
