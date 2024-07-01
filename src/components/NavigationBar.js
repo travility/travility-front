@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "../styles/components/NavigationBar.module.css";
 
@@ -15,6 +15,16 @@ const NavigationBar = () => {
     { name: "마이리포트", path: "/dashboard/myreport" },
     { name: "마이페이지", path: "/dashboard/myinfo" },
   ];
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const activeMenu = menus.find((menu) =>
+      currentPath.includes(menu.path.split("/:")[0])
+    );
+    if (activeMenu) {
+      setActiveMenu(activeMenu.path);
+    }
+  }, [location, menus]);
 
   if (
     location.pathname === "/" ||

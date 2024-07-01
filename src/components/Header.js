@@ -51,6 +51,10 @@ const Header = () => {
     color: location.pathname === "/" ? "#fff" : "var(--main-color)",
   };
 
+  const buttonStyle = {
+    color: location.pathname === "/" ? "#fff" : "#000",
+  };
+
   return (
     <header className={styles.header_container}>
       <div
@@ -58,7 +62,15 @@ const Header = () => {
         onClick={handleLogoClick}
         style={logoStyle}
       >
-        Travility
+        <div className={styles.logoContainer}>
+          <img src="/images/main/logo.png" alt="logo" className={styles.logo} />
+          <img
+            src="/images/main/logo2.png"
+            alt="logo"
+            className={styles.logoMove}
+          />
+        </div>
+        TRAVILITY
       </div>
       {(tokenStatus === "Token valid" || location.pathname !== "/") && (
         <div className={styles.header_user_container}>
@@ -75,13 +87,18 @@ const Header = () => {
                 )}
               </span>
               <nav className={styles.header_navigation_container}>
-                <button className={styles.logout_button} onClick={handleLogout}>
+                <button
+                  className={styles.logout_button}
+                  onClick={handleLogout}
+                  style={buttonStyle}
+                >
                   Logout
                 </button>
                 {role === "ROLE_ADMIN" ? (
                   <button
                     className={styles.nav_second_button}
                     onClick={() => navigate("/admin/users")}
+                    style={buttonStyle}
                   >
                     관리
                   </button>
@@ -89,6 +106,7 @@ const Header = () => {
                   <button
                     className={styles.nav_second_button}
                     onClick={() => navigate("/")}
+                    style={buttonStyle}
                   >
                     About Us
                   </button>
