@@ -24,7 +24,7 @@ const TopDestinations = () => {
   return (
     <div className={styles.swiperContainer}>
       <div className={styles.topDestinationsTitle}>
-        실시간 인기 여행지 <span className={styles.topDestinationsHighlight}>Top 5</span>
+        실시간 인기 여행지
       </div>
       <Swiper
         spaceBetween={50}

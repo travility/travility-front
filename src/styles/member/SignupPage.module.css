@@ -51,7 +51,7 @@
   margin-top: 1%;
 
   color: rgb(145, 145, 145);
-  border: 1px solid #2a52be;
+  border: 1px solid #657DF9;
   border-radius: 5px;
   padding: 2%;
 
@@ -67,9 +67,9 @@
 
 /*중복검사 버튼*/
 .signup_idcheck_button {
-  background-color: #2a52be;
+  background-color: #657DF9;
   color: whitesmoke;
-  border: 1px solid #2a52be;
+  border: 1px solid #657DF9;
   border-radius: 5px;
   padding: 1%;
   position: absolute;
@@ -107,7 +107,7 @@
 
 .signup_input_pw {
   color: rgb(145, 145, 145);
-  border: 1px solid #2a52be;
+  border: 1px solid #657DF9;
   width: 500px;
   border-radius: 5px;
   padding: 2%;
@@ -132,7 +132,7 @@
 
 .signup_input_checkpw {
   color: rgb(145, 145, 145);
-  border: 1px solid #2a52be;
+  border: 1px solid #657DF9;
   width: 500px;
   border-radius: 5px;
   padding: 2%;
@@ -152,7 +152,7 @@
 
 .signup_input_email {
   color: rgb(145, 145, 145);
-  border: 1px solid #2a52be;
+  border: 1px solid #657DF9;
   width: 500px;
   border-radius: 5px;
   padding: 2%;
@@ -165,9 +165,9 @@
 }
 
 .signup_button {
-  background-color: #2a52be;
+  background-color: #657DF9;
   color: whitesmoke;
-  border: 1px solid #2a52be;
+  border: 1px solid #657DF9;
   border-radius: 5px;
   padding: 1.5%;
   width: 175px;
