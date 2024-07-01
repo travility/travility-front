@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 /* 지금 index.js 9번째 줄에 axios.defaults.withCredentials = true; 있습니다.
 withCredentials = true -> 요청에 쿠키나 인증정보 포함시켜준다는 뜻으로 axios.defaults.withCredentials = true;는 즉, 모든 axios 요청에 쿠키나 인증 정보 포함시킨다는 뜻입니다.
