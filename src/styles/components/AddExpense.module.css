@@ -2,41 +2,53 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-.modalContent {
-  background: #fff;
-  width: 30rem;
+.modal {
+  background-color: #fff;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 8px;
+  width: 30%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  font-size: 0.8rem;
-  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHeader_title {
+  font-size: 1.5em;
+  font-weight: 700;
 }
 
 .closeButton {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
+  padding: 0;
+  margin-top: 0;
+  width: auto;
+  background-color: transparent;
+  font-size: 1.5em;
+  color: var(--main-color);
 }
 
-h2 {
-  margin-top: 0;
-  font-size: 1.5rem;
+.closeButton:hover {
+  color: var(--second-color);
+}
+
+.modalContent {
+  margin-top: 1rem;
+  font-size: 0.8em;
+  font-weight: 600;
 }
 
 .titleInput {
@@ -44,18 +56,30 @@ h2 {
   padding: 0.5rem;
   border: 1px solid var(--line-color);
   border-radius: 5px;
+  width: 100%;
 }
 
 .categoryContainer {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+  font-size: 0.6em;
+  color: #ccc;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--line-color);
+  border-bottom: 1px solid var(--line-color);
 }
 
-.categoryContainer img {
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   cursor: pointer;
-  width: 2rem;
-  height: 2rem;
+}
+
+.categoryItem img {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .selected {
@@ -95,8 +119,6 @@ h2 {
   display: flex;
   justify-content: flex-start;
   gap: 1rem;
-  font-size: 0.8rem;
-  font-weight: bold;
 }
 
 .paymentMethods {
@@ -128,15 +150,16 @@ h2 {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 1;
 }
 
-.formGroup label {
+.formGroupRow label {
   flex: 1;
   margin-right: 0.5rem;
 }
 
-.formGroup input,
-.formGroup select {
+.formGroupRow input,
+.formGroupRow select {
   flex: 2;
   padding: 0.5rem;
   border: 1px solid var(--line-color);
@@ -188,6 +211,7 @@ h2 {
   border-radius: 5px;
   margin-bottom: 1rem;
   resize: none;
+  width: 100%;
 }
 
 .submitButton {
