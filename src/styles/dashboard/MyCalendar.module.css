@@ -1,5 +1,3 @@
-/* MyCalendar.module.css */
-
 .dashboard_container {
   display: flex;
   height: 100vh;
@@ -90,7 +88,7 @@
 }
 
 .fc .fc-daygrid-day {
-  transition: background-color 0.3s ease; /* 색깔 변화 트랜지션 추가 */
+  transition: background-color 0.3s ease;
 }
 
 .fc .fc-daygrid-day:hover {
@@ -111,7 +109,6 @@
   margin: 2px 0;
 }
 
-/* Modal styling */
 .modalContent {
   text-align: center;
 }
