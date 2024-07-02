@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import DefaultSidebar from "../../components/DefaultSidebar";
 import styles from "../../styles/dashboard/MyCalendar.module.css";
 import koLocale from '@fullcalendar/core/locales/ko';
 import axios from "../../util/axiosInterceptor";
@@ -62,7 +61,6 @@ const MyCalendar = () => {
 
   return (
     <div className={styles.dashboard_container} onClick={handleClosePopup}>
-      <DefaultSidebar />
       <div className={styles.content}>
         <div ref={containerRef} className={styles.calendar_container} onClick={(e) => e.stopPropagation()}>
           <FullCalendar
