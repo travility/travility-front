@@ -3,7 +3,8 @@ import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // **********
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faBed, faBus, faShoppingCart, faUtensils, faLandmark, faEllipsisH, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/dashboard/MyReport.module.css';
 import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
 
