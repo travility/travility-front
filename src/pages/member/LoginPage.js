@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/memberApi";
-import { saveToken } from "../../util/tokenUtils";
+import { login, getMemberInfo } from "../../api/memberApi";
+import { saveToken, validateToken } from "../../util/tokenUtils";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Swal from "sweetalert2";
 import styles from "../../styles/member/LoginPage.module.css";
@@ -38,6 +38,8 @@ const LoginPage = () => {
     setSeePassword(!seePassword);
   };
 
+   //로그인 할 때 user -> main
+  //admin -> /admin/users 로 이동
   const handleLogin = (e) => {
     e.preventDefault();
     const data = {
@@ -53,10 +55,10 @@ const LoginPage = () => {
           title: "로그인 성공",
           //text: ' 페이지로 이동합니다.',
           icon: "success",
-          confirmButtonColor: "#2a52be",
+          confirmButtonColor: "#4568DC",
         }).then(() => {
           navigate("/main");
-        });
+        }); 
       })
       .catch((error) => {
         console.log(error);
@@ -64,10 +66,11 @@ const LoginPage = () => {
           title: "로그인 실패",
           text: "아이디와 비밀번호가 맞지 않습니다.",
           icon: "error",
-          confirmButtonColor: "#2a52be",
+          confirmButtonColor: "#4568DC",
         });
-      });
+   });
   };
+
 
   return (
     <div className={styles.login}>

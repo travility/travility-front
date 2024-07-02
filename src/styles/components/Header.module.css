@@ -13,6 +13,53 @@
   font-weight: bold;
   color: var(--main-color);
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'GoryeongStrawberry';
+}
+
+.logoContainer {
+  position: relative;
+  display: inline-block;
+  width: 2.5rem;
+  height: 3rem;
+  margin-right: 0.2rem;
+}
+
+.logoContainer img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0.5rem;
+}
+
+.logoContainer .logoMove {
+  opacity: 0;
+}
+
+.logoContainer:hover .logo,
+.logoContainer:hover .logoMove {
+  animation: logoAnimation 0.5s infinite;
+}
+
+@keyframes logoAnimation {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.1%, 100% {
+    opacity: 0;
+  }
+}
+
+.logoContainer:hover .logo {
+  animation-delay: 0s;
+}
+
+.logoContainer:hover .logoMove {
+  animation-delay: 0.25s;
 }
 
 .header_user_container {
@@ -36,86 +83,21 @@
 
 .header_navigation_container {
   display: flex;
-  font-size: 0.8rem;
-  text-decoration: none;
-  font-weight: bold;
-  color: inherit;
   align-items: center;
+  margin-bottom: 0.2rem;
 }
 
 .header_navigation_container button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: inherit;
+  font-size: 0.7rem;
+  font-weight: 500;
+  width: auto;
+  margin-top: 0;
 }
 
-.logout_button,
-.nav_first_button,
-.nav_second_button {
-  border: none;
-  background: none;
-  display: inline;
-  cursor: pointer;
-}
-
-.logout_button::after {
-  content: '    |';
-}
-
+.logout_button::after,
 .nav_first_button::after {
   content: '    |';
-}
-
-@media (max-width: 1024px) {
-  .header_logo {
-    font-size: 1.4rem;
-}
-
-  .header_welcome_message,
-  .header_navigation_container {
-      font-size: 0.7rem;
-  }
-
-  .header_navigation_container button {
-      font-size: inherit;
-  }
-}
-
-@media (max-width: 768px) {
-  .header_logo {
-      font-size: 50%;
-  }
-
-  .header_welcome_message,
-  .header_navigation_container {
-      font-size: 0.6rem;
-  }
-
-  .header_navigation_container button {
-      font-size: inherit;
-  }
-}
-
-@media (max-width: 480px) {
-  .header_logo {
-    font-size: 30%;
-}
-  .header_welcome_message,
-  .header_navigation_container {
-      font-size: 0.5rem;
-  }
-
-  .header_navigation_container button {
-      font-size: inherit;
-  }
-
-  .header_welcome_message {
-      margin-right: 0.5rem;
-  }
-
-  .header_welcome_message img {
-      height: 0.5rem;
-      padding-right: 0.3rem;
-  }
 }

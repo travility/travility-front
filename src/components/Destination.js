@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from '../styles/components/Destination.module.css';
 import ModalContent from './SearchCountry';
 
+
 const Destination = ({
   initialCountryName,
   initialCountryFlag,
@@ -47,7 +48,7 @@ const Destination = ({
   };
 
   return (
-    <div className={styles.whereYouGo}>
+    <div className={styles.destination}>
       <div className={styles.inputContainer}>
         <div className={styles.selectedCountryInput} onClick={openModal}>
           {selectedCountry.country_nm ? (
@@ -80,6 +81,7 @@ const Destination = ({
           onSelectCountry={handleSelectCountry}
           closeModal={closeModal}
         />
+
       )}
     </div>
   );

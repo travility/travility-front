@@ -5,11 +5,12 @@ html, body {
     width: 100%;
     display: flex;
     flex-direction: column;
+    font-family: "Noto Sans KR", "Inter", "Open Sans", "Malgun Gothic", "Nanum Gothic", sans-serif;
 }
 
 :root {
     --component-padding: 0 3rem;
-    --main-color: #4568DC;
+    --main-color: #657DF9;
     --bold-color: #392385;
     --second-color: #4C66F8;
     --light-color: #EFF3FF;
@@ -27,9 +28,30 @@ html, body {
 h1, h2, h3, h4, h5, h6, span, p, div, button, input {
     word-break: keep-all;
     white-space: pre-wrap;
-    font-family: "Noto Sans KR", "Inter", "Open Sans", "Malgun Gothic", "Nanum Gothic", sans-serif;
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
 
 *, :after, :before {
     box-sizing: border-box;
+}
+
+/* button {
+    padding: 0.5rem;    
+    margin-top: 1rem;
+    width: 100%;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} */
+  
+
+@font-face {
+    font-family: 'GoryeongStrawberry';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/GoryeongStrawberry.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }

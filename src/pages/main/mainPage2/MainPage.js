@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import AddAccountBook from "./AddAccountBook";
 import RecentAccountBooks from "./RecentAccountBooks";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
@@ -9,12 +8,13 @@ const MainPage = () => {
 
   return (
     <div className={styles.mainPageContainer}>
-      <div className={styles.leftPanel}>
+      <div className={styles.addAccountBook}>
         <AddAccountBook memberId={memberId} />
       </div>
-      <div className={styles.rightPanel}>
+      <div className={styles.recentAccountBooks}>
         <RecentAccountBooks />
       </div>
+      <div className={styles.deco}>뭐 넣을까요...</div>
     </div>
   );
 };
