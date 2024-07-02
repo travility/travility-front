@@ -98,14 +98,11 @@ const AccountSidebar = ({
       console.log('Error updating AccountBook: ', error);
       handlefailureSubject('가계부', '수정');
     } finally {
-      handleCloseModal();
+      setIsTripInfoModalOpen(false);
     }
   };
 
-  const handleCloseModal = () => {
-    setIsTripInfoModalOpen(false);
-    window.location.reload();
-  };
+  const handleCloseModal = () => {};
 
   useEffect(() => {
     console.log('accountBook:', accountBook);
@@ -222,7 +219,7 @@ const AccountSidebar = ({
       {isTripInfoModalOpen && (
         <TripInfo
           isOpen={isTripInfoModalOpen}
-          onClose={handleCloseModal}
+          onClose={() => setIsTripInfoModalOpen(false)}
           onSubmit={handleAccountBookSubmit}
           accountBook={accountBook}
         />

@@ -15,7 +15,7 @@
   background-color: #fff;
   padding: 2rem;
   border-radius: 8px;
-  width: 30%;
+  width: 35%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -84,7 +84,6 @@
   height: 20px;
   margin-right: 0.5rem;
 }
-
 
 .datesRow {
   display: grid;
@@ -165,7 +164,7 @@
 
 .imageWrapper {
   margin: 1rem 0;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
   border: 1px solid var(--line-color);
   background-color: var(--line-color);
   border-radius: 5px;

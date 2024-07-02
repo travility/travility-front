@@ -12,7 +12,7 @@ const NavigationBar = () => {
 
   const usersMenus = [
     { name: '가계부 홈', path: '/main' },
-    { name: '전체가계부', path: '/accountbook/list/:id' },
+    { name: '전체가계부', path: '/accountbook/list' },
     { name: '캘린더', path: '/dashboard/mycalendar' },
     { name: '마이리포트', path: '/dashboard/myreport' },
     { name: '마이페이지', path: '/dashboard/myinfo' },

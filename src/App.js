@@ -90,7 +90,7 @@ function App() {
             }
           />
           <Route
-            path="/accountbook/list/:id"
+            path="/accountbook/list"
             element={
               <AuthenticatedRoute>
                 <AccountBookListPage />
