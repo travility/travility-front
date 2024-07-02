@@ -38,7 +38,7 @@ const LoginPage = () => {
     setSeePassword(!seePassword);
   };
 
-  //로그인 할 때 user -> main
+   //로그인 할 때 user -> main
   //admin -> /admin/users 로 이동
   const handleLogin = (e) => {
     e.preventDefault();
@@ -47,45 +47,30 @@ const LoginPage = () => {
       password: password,
     };
     login(data)
-    .then((response) => {
-      const token = response.headers.get("Authorization");
-      if (token) {
-        saveToken(token); 
-
-        return getMemberInfo(); 
-      } else {
-        throw new Error("토큰이 없습니다.");
-      }
-    })
-    .then((data) => {
-      console.log(data); 
-      const role = data.role; 
-      Swal.fire({
-        title: "로그인 성공",
-        icon: "success",
-        confirmButtonColor: "#4568DC",
-      }).then(() => {
-        if (role === "ROLE_USER") {
-          navigate("/main"); 
-        } else if (role === "ROLE_ADMIN") {
-          navigate("/admin/users"); 
-        }
-      });
-    })
-    .catch((error) => {
-      console.error("로그인 중 오류 발생:", error);
-      
-      Swal.fire({
-        title: "로그인 실패",
-        text: "아이디와 비밀번호가 맞지 않습니다.",
-        icon: "error",
-        confirmButtonColor: "#4568DC",
-      });
-    });
-
-
-
+      .then((response) => {
+        const token = response.headers.get("Authorization");
+        console.log(token);
+        saveToken(token);
+        Swal.fire({
+          title: "로그인 성공",
+          //text: ' 페이지로 이동합니다.',
+          icon: "success",
+          confirmButtonColor: "#4568DC",
+        }).then(() => {
+          navigate("/main");
+        }); 
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          title: "로그인 실패",
+          text: "아이디와 비밀번호가 맞지 않습니다.",
+          icon: "error",
+          confirmButtonColor: "#4568DC",
+        });
+   });
   };
+
 
   return (
     <div className={styles.login}>

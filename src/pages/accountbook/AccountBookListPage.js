@@ -104,7 +104,7 @@ const AccountBookListPage = () => {
             }`}
             style={{
               backgroundImage: `url(
-            http://localhost:8080/images/${book.imgName}
+            http://localhost:8080/images/${accountBook.imgName}
           )`,
             }}
             onClick={() => handleAccountBookClick(accountBook)}
