@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'; // **********
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faBus, faShoppingCart, faUtensils, faLandmark, faEllipsisH, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import DefaultSidebar from '../../components/DefaultSidebar';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/dashboard/MyReport.module.css';
 import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
 
-// 차트 구성요소
+// 차트 구성요소 등록
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
+ChartJS.register(ChartDataLabels); // **********
 
-// 도넛차트 옵션
+// 도넛 차트 옵션
 const options = {
   maintainAspectRatio: false,
   responsive: true,
@@ -21,6 +22,11 @@ const options = {
     tooltip: {
       enabled: true,
     },
+    datalabels: {
+      formatter: (value) => value.toLocaleString(),
+      color: '#fff',
+      display: true,
+    },
   },
   elements: {
     arc: {
@@ -29,8 +35,8 @@ const options = {
   },
 };
 
-// 막대차트 옵션
-const barOptions = {
+// 가로 막대 차트 옵션
+const horizontalBarOptions = {
   indexAxis: 'y',
   maintainAspectRatio: false,
   responsive: true,
@@ -40,6 +46,13 @@ const barOptions = {
     },
     tooltip: {
       enabled: true,
+    },
+    datalabels: {
+      formatter: (value) => value.toLocaleString(),
+      color: '#000',
+      anchor: 'end',
+      align: 'end',
+      display: true,
     },
   },
   scales: {
@@ -52,33 +65,34 @@ const barOptions = {
   },
 };
 
-// 카테고리별로 아이콘 가져오기
-const getCategoryIcon = (category) => {
-  switch (category) {
-    case '숙박':
-    case 'ACCOMMODATION':
-      return faBed;
-    case '교통':
-    case 'TRANSPORTATION':
-      return faBus;
-    case '쇼핑':
-    case 'SHOPPING':
-      return faShoppingCart;
-    case '식비':
-    case 'FOOD':
-      return faUtensils;
-    case '관광':
-    case 'TOURISM':
-      return faLandmark;
-    case '기타':
-    case 'OTHERS':
-      return faEllipsisH;
-    default:
-      return faEllipsisH;
-  }
+// 세로 막대 차트 옵션
+const verticalBarOptions = {
+  maintainAspectRatio: false,
+  responsive: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    tooltip: {
+      enabled: true,
+    },
+    datalabels: {
+      formatter: (value) => value.toLocaleString(),
+      color: '#000',
+      anchor: 'end',
+      align: 'end',
+      offset: -10, // ********** 항목 값 위치 조정
+      display: true,
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
 };
 
-// 가져온 카테고리 이름 변환 (영어 -> 한국어)
+// 카테고리 이름 변환 (영어 -> 한국어)
 const getCategoryName = (category) => {
   switch (category) {
     case 'ACCOMMODATION':
@@ -94,22 +108,22 @@ const getCategoryName = (category) => {
     case 'OTHERS':
       return '기타';
     default:
-      return category; // 반환값은 원래 이름(영어)
+      return category; // 기본적으로 원래 카테고리 이름 반환
   }
 };
 
 const MyReport = () => {
   const [totalAmount, setTotalAmount] = useState(0); // 총 지출 금액 상태
-  const [categoryData, setCategoryData] = useState({ labels: [], datasets: [{ data: [] }] }); // 도넛차트 데이터
-  const [paymentData, setPaymentData] = useState({ labels: [], datasets: [{ data: [] }] }); // 막대차트 데이터
-  const [expenses, setExpenses] = useState([]); // 개별 지출 항목
-  const [loading, setLoading] = useState(true); // 로딩중인지 아닌지
-  const [error, setError] = useState(null); // 지금 오류인지 아닌지
+  const [categoryData, setCategoryData] = useState({ labels: [], datasets: [{ data: [] }] }); // 도넛 차트 데이터
+  const [paymentData, setPaymentData] = useState({ labels: [], datasets: [{ data: [] }] }); // 가로 막대 차트 데이터
+  const [categoryBarData, setCategoryBarData] = useState({ labels: [], datasets: [{ data: [] }] }); // 세로 막대 차트 데이터
+  const [loading, setLoading] = useState(true); // 로딩 중 여부
+  const [error, setError] = useState(null); // 오류 상태
   const [userName, setUserName] = useState(''); // 사용자 이름
   const [highestCategory, setHighestCategory] = useState(''); // 가장 높은 지출 카테고리
-  const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제방법 [현금, 카드]
-  const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부 상태 (작성한 가계부 없으면 통계 안뜨고 가계부 없다고 뜸)
-  const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 슬롯머신처럼 도로록
+  const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제 방법
+  const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부
+  const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 애니메이션
 
   useEffect(() => {
     async function fetchData() {
@@ -123,7 +137,7 @@ const MyReport = () => {
         const paymentMethods = data.paymentMethods || [];
         const total = data.totalAmount || 0;
 
-        // 카테고리 없으면 가계부가 없는거임
+        // 카테고리가 없으면 가계부가 없는 것
         if (categories.length === 0) {
           setHasAccountBook(false); // 가계부 없을 때 상태 업데이트
           setLoading(false);
@@ -139,11 +153,11 @@ const MyReport = () => {
           return index !== -1 ? amounts[index] : 0;
         });
 
-        // 가장 지출이 높은 카테고리 찾기
+        // 가장 높은 지출 카테고리 찾기
         const maxCategoryIndex = categoryAmounts.indexOf(Math.max(...categoryAmounts));
-        setHighestCategory(getCategoryName(allCategories[maxCategoryIndex]));
+        setHighestCategory(allCategories[maxCategoryIndex]);
 
-        // 도넛차트 설정 (색상 등)
+        // 도넛 차트 설정
         setCategoryData({
           labels: allCategories.map(getCategoryName),
           datasets: [
@@ -164,7 +178,7 @@ const MyReport = () => {
         // 가장 많이 사용한 결제 방법 찾기
         setHighestPaymentMethod(paymentMethodAmounts.CARD > paymentMethodAmounts.CASH ? '카드' : '현금');
 
-        // 막대차트 설정
+        // 가로 막대 차트 설정
         setPaymentData({
           labels: ['현금', '카드'],
           datasets: [
@@ -176,32 +190,43 @@ const MyReport = () => {
           ],
         });
 
-        // 총 지출금액 설정
+        // 총 지출 금액 설정
         setTotalAmount(total);
 
-        // 개별 지출 항목 리스트 설정
-        const expenseList = allCategories.map((category, index) => ({
-          icon: getCategoryIcon(category),
-          name: getCategoryName(category),
-          amount: categoryAmounts[index],
-        }));
-        setExpenses(expenseList);
+        // 총 지출 애니메이션
+        let startAmount = 0;
+        const duration = 2000; // 애니메이션 지속 시간 (ms)
+        const frames = 60; // 초당 프레임 수
+        const totalFrames = (duration / 1000) * frames; // 전체 프레임 수
+        let currentFrame = 0;
 
-          // 총 지출 도로록 애니메이션
-          let startAmount = 0;
-          const duration = 2000; // 애니메이션 지속 시간 (ms)
-          const increment = total / (duration / 16); // 각 프레임당 증가 금액
+        const animate = () => {
+          const progress = currentFrame / totalFrames;
+          const easeOutQuad = progress * (2 - progress);
+          const amount = Math.floor(total * easeOutQuad);
+          setDisplayAmount(amount);
+          currentFrame++;
+          if (currentFrame < totalFrames) {
+            requestAnimationFrame(animate);
+          } else {
+            setDisplayAmount(total);
+          }
+        };
 
-          const animate = () => {
-            startAmount += increment;
-            if (startAmount < total) {
-              setDisplayAmount(Math.floor(startAmount));
-              requestAnimationFrame(animate);
-            } else {
-              setDisplayAmount(total);
-            }
-          };
-          requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
+
+        // 세로 막대 차트 설정
+        setCategoryBarData({
+          labels: allCategories.map(getCategoryName),
+          datasets: [
+            {
+              label: 'KRW',
+              data: categoryAmounts,
+              backgroundColor: ['#4bc0c0', '#36a2eb', '#ffcd56', '#ff9f40', '#9966ff', '#c9cbcf'],
+            },
+          ],
+        });
+
       } catch (error) {
         setError(error); // 오류 발생 시 상태 업데이트
       } finally {
@@ -212,19 +237,18 @@ const MyReport = () => {
     fetchData();
   }, []);
 
-  // 로딩 중일 때(예쁘게 수정가능)
+  // 로딩 중일 때
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // 오류 발생했을 때 표시 메시지
+  // 오류 발생했을 때
   if (error) {
     return <div>Error fetching data: {error.message}</div>;
   }
 
   return (
     <div className={styles.dashboard_container}>
-      <DefaultSidebar />
       <div className={styles.content}>
         {!hasAccountBook ? (
           <div className={styles.no_account_book}>
@@ -233,39 +257,35 @@ const MyReport = () => {
               작성하신 가계부가 없어요<br />
               가계부를 작성하시면 통계화면을 볼 수 있어요
             </div>
-          </div> // 가계부 없을 때 표시
+          </div>
         ) : (
           <>
             <div className={styles.header}>
               <h1>지출 통계</h1>
             </div>
-            <div className={styles.stats}>
+            <div className={styles.chart_section}>
               <div className={styles.chart_container}>
+                <div className={styles.summary}>
+                  <p>
+                    {userName}님은 <span className={styles.highlight_category}>{getCategoryName(highestCategory)}</span>에 가장 많은 소비를 하고,{' '}<br />
+                    <span className={styles.highlight_paymentMethod}>{highestPaymentMethod}</span>{highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이 결제하셨어요.
+                  </p>
+                </div>
                 <Doughnut data={categoryData} options={options} />
               </div>
-              <div className={styles.summary}>
-                <p>
-                  {userName}님은 <span className={styles.highlight_category}>{highestCategory}</span>에 가장 많은 소비를 하고,{' '}<br />
-                  <span className={styles.highlight_paymentMethod}>{highestPaymentMethod}</span>{highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이 결제하셨어요.
-                </p>
-                <div className={styles.bar_container}>
-                  <Bar data={paymentData} options={barOptions} />
+              <div className={styles.payment_summary_container}>
+                <div className={styles.payment_summary}>
+                  <Bar data={paymentData} options={horizontalBarOptions} />
+                </div>
+                <div className={styles.total_expenses}>
+                  <span>총 지출</span> <span className={styles.total_amount}>₩ {displayAmount.toLocaleString()}</span>
                 </div>
               </div>
             </div>
-            <div className={styles.currency_label}>화폐단위 : KRW</div> {/* 화폐단위 표시 */}
-            <div className={styles.expenses}>
-              {expenses.map((expense, index) => (
-                <div key={index} className={styles.expense_item}>
-                  <FontAwesomeIcon icon={expense.icon} size="lg" />
-                  <p>{expense.name}</p>
-                  <p>{expense.amount.toLocaleString()}</p> {/* KRW 제거 */}
-                </div>
-              ))}
+            <div className={styles.bar_container}>
+              <Bar data={categoryBarData} options={verticalBarOptions} />
             </div>
-            <div className={styles.total_expenses}>
-              <span>총 지출</span> <span className={styles.total_amount}>₩ {displayAmount.toLocaleString()}</span>
-            </div>
+            <div className={styles.currency_label}>화폐단위 : KRW</div>
           </>
         )}
       </div>
