@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels'; // **********
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBed, faBus, faShoppingCart, faUtensils, faLandmark, faEllipsisH, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import DefaultSidebar from '../../components/DefaultSidebar';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/dashboard/MyReport.module.css';
 import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
 
 // 차트 구성요소 등록
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
-ChartJS.register(ChartDataLabels); // **********
+ChartJS.register(ChartDataLabels); // 차트에 항목 표시
 
 // 도넛 차트 옵션
 const options = {
@@ -26,7 +25,7 @@ const options = {
     datalabels: {
       formatter: (value) => value.toLocaleString(),
       color: '#fff',
-      display: true,
+      display: true, // 차트에 항목 표시
     },
   },
   elements: {
@@ -51,9 +50,9 @@ const horizontalBarOptions = {
     datalabels: {
       formatter: (value) => value.toLocaleString(),
       color: '#000',
-      anchor: 'end',
+      anchor: 'end', // 항목 위치
       align: 'end',
-      display: true,
+      display: true, // 차트에 항목 표시
     },
   },
   scales: {
@@ -240,12 +239,12 @@ const MyReport = () => {
 
   // 로딩 중일 때
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>통계 불러오는 중</div>;
   }
 
   // 오류 발생했을 때
   if (error) {
-    return <div>Error fetching data: {error.message}</div>;
+    return <div>통계 불러오기 오류 : {error.message}</div>;
   }
 
   return (
