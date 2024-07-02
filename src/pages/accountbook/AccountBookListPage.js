@@ -103,9 +103,9 @@ const AccountBookListPage = () => {
               selectedBooks.includes(accountBook.id) ? styles.selected : ""
             }`}
             style={{
-              backgroundImage: `url(${
-                accountBook.imgName || "/images/default.png"
-              })`,
+              backgroundImage: `url(
+            http://localhost:8080/images/${book.imgName}
+          )`,
             }}
             onClick={() => handleAccountBookClick(accountBook)}
           >

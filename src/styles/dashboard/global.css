@@ -100,3 +100,14 @@
     position: relative;
     white-space: nowrap;
 }
+
+/* 스크롤바 */
+.ScrollbarsCustom-Track, 
+.ScrollbarsCustom-TrackY{
+ background-color: rgb(246, 246, 246) !important;
+}
+
+.ScrollbarsCustom-Thumb, 
+.ScrollbarsCustom-ThumbY{
+  background-color: var(--main-color) !important;
+}
