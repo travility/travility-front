@@ -1,8 +1,23 @@
-import React, { useState } from "react";
-import styles from "../styles/components/SearchCountry.module.css";
+import React, { useEffect, useState } from 'react';
+import styles from '../styles/components/SearchCountry.module.css';
+import { fetchCountryFlags } from '../api/accountbookApi';
 
-const SearchCountry = ({ countries, onSelectCountry, closeModal }) => {
-  const [modalSearchCountry, setModalSearchCountry] = useState("");
+const SearchCountry = ({ onSelectCountry, closeModal }) => {
+  const [modalSearchCountry, setModalSearchCountry] = useState('');
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await fetchCountryFlags();
+        setCountries(response.data);
+      } catch (error) {
+        console.error('국가 국기 정보를 가져오는 중 오류 발생:', error.message);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   const filteredCountries = countries.filter((country) =>
     country.country_nm.includes(modalSearchCountry)

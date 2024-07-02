@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Destination from '../../../components/Destination';
+import SearchCountry from '../../../components/SearchCountry';
 import AddBudget from '../../../components/AddBudget';
 import styles from '../../../styles/main/mainPage2/AddAccountBook.module.css';
 import { addAccountBook } from '../../../api/accountbookApi';
 
-const AddAccountBook = ({ authToken }) => {
+const AddAccountBook = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [errorDate, setErrorDate] = useState('');
@@ -13,6 +13,7 @@ const AddAccountBook = ({ authToken }) => {
   const [countryName, setCountryName] = useState('');
   const [countryFlag, setCountryFlag] = useState('');
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
+  const [isCountryModalOpen, setIsCountryModalOpen] = useState(false);
   const [budget, setBudget] = useState('');
   const [budgets, setBudgets] = useState([]);
   const [title, setTitle] = useState('');
@@ -21,6 +22,7 @@ const AddAccountBook = ({ authToken }) => {
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
+  //여행 추가
   const handleAddAccountBook = async () => {
     const errors = {};
 
@@ -58,11 +60,13 @@ const AddAccountBook = ({ authToken }) => {
     }
   };
 
+  //여행 국가
   const handleCountrySelect = (country) => {
     setCountryName(country.country_nm);
     setCountryFlag(country.download_url);
   };
 
+  //예산 제출
   const handleBudgetSubmit = (budgets) => {
     setBudgets(budgets);
     // 총 예산 금액
@@ -74,6 +78,7 @@ const AddAccountBook = ({ authToken }) => {
     setBudget(totalBudget.toLocaleString());
   };
 
+  //여행 시작일
   const handleStartDateChange = (e) => {
     const newStartDate = e.target.value;
     setStartDate(newStartDate);
@@ -82,6 +87,7 @@ const AddAccountBook = ({ authToken }) => {
     }
   };
 
+  //여행 종료일
   const handleEndDateChange = (e) => {
     const newEndDate = e.target.value;
     if (newEndDate < startDate) {
@@ -92,6 +98,7 @@ const AddAccountBook = ({ authToken }) => {
     }
   };
 
+  //인원 수
   const handleNumberOfPeopleChange = (e) => {
     const value = parseInt(e.target.value);
     if (value >= 0) {
@@ -164,23 +171,49 @@ const AddAccountBook = ({ authToken }) => {
         </div>
         <div className={styles.addAccount_formGroup}>
           <label>어디로 떠나시나요?</label>
-          <Destination onCountrySelect={handleCountrySelect} />
+          {/* <Destination onCountrySelect={handleCountrySelect} /> */}
+          <div
+            className={styles.selectedCountryInput}
+            onClick={() => setIsCountryModalOpen(true)}
+          >
+            {countryName ? (
+              <>
+                <img
+                  src={countryFlag}
+                  alt={countryName}
+                  className={styles.flag}
+                />
+                <span>{countryName}</span>
+              </>
+            ) : (
+              <input
+                type="text"
+                placeholder="여행지 선택"
+                readOnly
+                className={styles.searchInput}
+              />
+            )}
+            <button
+              className={styles.searchButton}
+              onClick={() => setIsCountryModalOpen(true)}
+            >
+              <img src="/images/main/mainPage/search_br.png" alt="Search" />
+            </button>
+          </div>
           {formErrors.countryName && (
             <p className={styles.addAccount_errorDate}>
               {formErrors.countryName}
             </p>
           )}
         </div>
-        <div
-          className={styles.addAccount_formGroup}
-          onClick={() => setIsBudgetModalOpen(true)}
-        >
+        <div className={styles.addAccount_formGroup}>
           <label>예산은 얼마인가요?</label>
           <input
             type="text"
             value={budget}
             readOnly
             placeholder="금액 입력"
+            onClick={() => setIsBudgetModalOpen(true)}
             required
           />
           {formErrors.budget && (
@@ -221,6 +254,12 @@ const AddAccountBook = ({ authToken }) => {
           onClose={() => setIsBudgetModalOpen(false)}
           onSubmit={handleBudgetSubmit}
           initialBudgets={budgets}
+        />
+      )}
+      {isCountryModalOpen && (
+        <SearchCountry
+          onSelectCountry={handleCountrySelect}
+          closeModal={() => setIsCountryModalOpen(false)}
         />
       )}
     </div>

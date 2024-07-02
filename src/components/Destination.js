@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import styles from '../styles/components/Destination.module.css';
-import ModalContent from './SearchCountry';
+import SearchCountry from './SearchCountry';
 
 const Destination = ({
   initialCountryName,
   initialCountryFlag,
   onCountrySelect,
 }) => {
-  const [searchCountry, setSearchCountry] = useState('');
   const [selectedCountry, setSelectedCountry] = useState({
     country_nm: initialCountryName,
     download_url: initialCountryFlag,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [countries, setCountries] = useState([]);
+  //const [countries, setCountries] = useState([]);
 
-  useEffect(() => {
-    const fetchCountryFlags = async () => {
-      try {
-        const response = await axios.get(
-          'https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=z%2FJgcFj7mwylmN3DSWOtCJ3XE86974ujj%2F53Mfb1YbaHtY84TApx4CYY4ipu%2FLUt%2F7i7Us3aJ5FXWDFvGX3sJQ%3D%3D&numOfRows=220&returnType=JSON'
-        );
-        const countryData = response.data.data;
-        setCountries(countryData);
-      } catch (error) {
-        console.error('국가 국기 정보를 가져오는 중 오류 발생:', error.message);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCountryFlags = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         'https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=z%2FJgcFj7mwylmN3DSWOtCJ3XE86974ujj%2F53Mfb1YbaHtY84TApx4CYY4ipu%2FLUt%2F7i7Us3aJ5FXWDFvGX3sJQ%3D%3D&numOfRows=220&returnType=JSON'
+  //       );
+  //       const countryData = response.data.data;
+  //       setCountries(countryData);
+  //     } catch (error) {
+  //       console.error('국가 국기 정보를 가져오는 중 오류 발생:', error.message);
+  //     }
+  //   };
 
-    fetchCountryFlags();
-  }, []);
+  //   fetchCountryFlags();
+  // }, []);
 
   const handleSelectCountry = (country) => {
     setSelectedCountry(country);
@@ -63,7 +61,6 @@ const Destination = ({
             <input
               type="text"
               placeholder="여행지 선택"
-              value={searchCountry}
               readOnly
               className={styles.searchInput}
             />
@@ -75,8 +72,8 @@ const Destination = ({
       </div>
 
       {isModalOpen && (
-        <ModalContent
-          countries={countries}
+        <SearchCountry
+          //countries={countries}
           onSelectCountry={handleSelectCountry}
           closeModal={closeModal}
         />
