@@ -141,14 +141,14 @@ const SignupPage = () => {
         title: '회원가입 실패',
         text: '아이디 중복 검사 하세요',
         icon: 'error',
-        confirmButtonColor: '#2a52be',
+        confirmButtonColor: '#4568DC',
       });
     } else if (isUsernameDuplicate) {
       Swal.fire({
         title: '회원가입 실패',
         text: '중복된 아이디입니다.',
         icon: 'error',
-        confirmButtonColor: '#2a52be',
+        confirmButtonColor: '#4568DC',
       });
     } else if (
       !isUsernameDuplicate &&
@@ -172,7 +172,7 @@ const SignupPage = () => {
             title: '회원가입 성공',
             text: '로그인 페이지로 이동합니다.',
             icon: 'success',
-            confirmButtonColor: '#2a52be',
+            confirmButtonColor: '#4568DC',
           }).then(() => {
             navigate('/login');
           });
@@ -183,7 +183,7 @@ const SignupPage = () => {
             title: '회원가입 실패',
             text: '회원가입 중 문제가 발생했습니다.',
             icon: 'error',
-            confirmButtonColor: '#2a52be',
+            confirmButtonColor: '#4568DC',
           });
         });
     } else {
@@ -191,7 +191,7 @@ const SignupPage = () => {
         title: '회원가입 실패',
         text: '양식이 올바르지 않습니다.',
         icon: 'error',
-        confirmButtonColor: '#2a52be',
+        confirmButtonColor: '#4568DC',
       });
     }
   };

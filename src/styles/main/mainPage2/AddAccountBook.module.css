@@ -34,6 +34,12 @@
   align-items: center;
 }
 
+.addAccount_errorDate {
+  font-size: 0.75em;
+  color: var(--pointor-color);
+  letter-spacing: -1px;
+}
+
 .addAccount_dateRange input {
   flex: 1;
 }
@@ -58,14 +64,15 @@
 }
 
 .addAccount_title_error {
-  font-size: 0.8rem;
-  color: rgb(200, 200, 200);
-  flex-grow: 1;
+  font-size: 0.75em;
+  color: var(--pointor-color);
+  letter-spacing: -1px;
 }
 
 .addAccount_title_count {
-  font-size: 0.8rem;
+  font-size: 0.75em;
   text-align: right;
+  letter-spacing: -1px;
 }
 
 .selectedCountryInput {

@@ -6,6 +6,8 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
+  font-family: 'Noto Sans KR', 'Inter', 'Open Sans', 'Malgun Gothic',
+    'Nanum Gothic', sans-serif;
 }
 
 :root {
@@ -50,18 +52,18 @@ input {
   box-sizing: border-box;
 }
 
-button {
-  padding: 0.5rem;
-  margin-top: 1rem;
-  width: 100%;
-  background-color: var(--main-color);
-  /* color: white; */
-  border: none;
-  border-radius: 5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+/* button {
+    padding: 0.5rem;    
+    margin-top: 1rem;
+    width: 100%;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} */
 
 @font-face {
   font-family: 'GoryeongStrawberry';
