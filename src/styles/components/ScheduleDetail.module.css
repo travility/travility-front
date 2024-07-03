@@ -5,7 +5,7 @@
   padding: 20px;
   width: 100%;
   max-width: 400px;
-
+  border: 1px solid #e0e0e0;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -67,18 +67,19 @@
 /* 총 사용 비용 */
 .schedule_detail_modalFooter {
   flex-direction: column; 
-  align-items: flex-start; 
 }
 
-.totalCost {
+.total_cost_container{
+  display: flex;
+  justify-content:space-between;
   position: relative;
   font-weight: bold;
   text-align: left;
   padding-top: 10px;
-  font-size: 1.2rem;
+  
 }
 
-.totalCost::before {
+.total_cost_containert::before {
   content: "";
   display: block;
   width: 100%; 
@@ -87,6 +88,15 @@
   position: absolute; 
   top: 0; 
   left: 0; 
+}
+
+.total_cost_text{
+  font-size: 1rem;
+}
+
+.total_cost_amount{
+  font-size: 1rem;
+  color: #4C66F8;
 }
 
 /* 버튼 영역 */
