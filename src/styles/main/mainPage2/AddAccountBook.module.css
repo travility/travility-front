@@ -1,76 +1,135 @@
 .addAccountBookContainer {
-    width: 100%;
-    font-size: 1rem;
-  }
-  .addAccountBookContainer h2{
-    margin-top: 0px;
-  }
+  width: 100%;
+  font-size: 1rem;
+}
+.addAccountBookContainer h2 {
+  margin-top: 0px;
+}
 
-  .addAccount_button {
-    font-size: 0.8em;
-    margin-top: 20px;
-  }
-  
-  .addAccount_form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .addAccount_formGroup {
-    margin-bottom: 1rem;
-    position: relative;
-  }
-  
-  .addAccount_formGroup label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    font-size: 1em;
-    color: var(--main-color);
-  }
-  
-  .addAccount_dateRange {
-    display: flex;
-    align-items: center;
-  }
-  
-  .addAccount_errorDate {
-    font-size: 0.75em;
-    color: var(--pointor-color);
-    letter-spacing: -1px;
-  }
+.addAccount_button {
+  font-size: 0.8em;
+  margin-top: 20px;
+}
 
-  .addAccount_dateRange input {
-    flex: 1;
-  }
-  
-  .addAccount_dateRange span {
-    margin: 0 1rem;
-  }
-  
-  .addAccount_formGroup input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--line-color);
-    border-radius: 0.5rem;
-    font-size: 0.8em;
-  }
+.addAccount_form {
+  display: flex;
+  flex-direction: column;
+}
 
-  .addAccount_title_container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.3rem;
-  }
+.addAccount_formGroup {
+  margin-bottom: 1rem;
+  position: relative;
+}
 
-  .addAccount_title_error{
-    font-size: 0.75em;
-    color: var(--pointor-color);
-    letter-spacing: -1px;
-  }
+.addAccount_formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--main-color);
+}
 
-  .addAccount_title_count{
-    font-size: 0.75em;
-    text-align: right;
-    letter-spacing: -1px;
-  }
+.addAccount_dateRange {
+  display: flex;
+  align-items: center;
+}
+
+.addAccount_errorDate {
+  font-size: 0.75em;
+  color: var(--pointor-color);
+  letter-spacing: -1px;
+}
+
+.addAccount_dateRange input {
+  flex: 1;
+}
+
+.addAccount_dateRange span {
+  margin: 0 1rem;
+}
+
+.addAccount_formGroup input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 0.5rem;
+  font-size: 0.8em;
+}
+
+.addAccount_title_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+.addAccount_title_error {
+  font-size: 0.75em;
+  color: var(--pointor-color);
+  letter-spacing: -1px;
+}
+
+.addAccount_title_count {
+  font-size: 0.75em;
+  text-align: right;
+  letter-spacing: -1px;
+}
+
+.selectedCountryInput {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.selectedCountryInput input {
+  border: none !important;
+  padding: 0 !important;
+}
+
+.selectedCountryInput img.flag {
+  width: auto;
+  height: 1rem;
+  margin-right: 10px;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.searchButton {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.searchButton img {
+  width: auto;
+  height: 1rem;
+}
+
+.selectedCountry {
+  display: flex;
+  align-items: center;
+}
+
+.selectedCountry img.flag {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  border-radius: 50%;
+}

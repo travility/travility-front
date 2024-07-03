@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login, getMemberInfo } from "../../api/memberApi";
-import { saveToken, validateToken } from "../../util/tokenUtils";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import Swal from "sweetalert2";
-import styles from "../../styles/member/LoginPage.module.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getMemberInfo, login } from '../../api/memberApi';
+import { saveToken } from '../../util/tokenUtils';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import styles from '../../styles/member/LoginPage.module.css';
 
 const onNaverLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+  window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
 };
 
 const onGoogleLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  window.location.href = 'http://localhost:8080/oauth2/authorization/google';
 };
 
 const onKakaoLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+  window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
 };
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [seePassword, setSeePassword] = useState(false);
 
   const navigate = useNavigate();
@@ -38,39 +38,41 @@ const LoginPage = () => {
     setSeePassword(!seePassword);
   };
 
-   //로그인 할 때 user -> main
-  //admin -> /admin/users 로 이동
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const data = {
       username: username,
       password: password,
     };
-    login(data)
-      .then((response) => {
-        const token = response.headers.get("Authorization");
-        console.log(token);
-        saveToken(token);
-        Swal.fire({
-          title: "로그인 성공",
-          //text: ' 페이지로 이동합니다.',
-          icon: "success",
-          confirmButtonColor: "#4568DC",
-        }).then(() => {
-          navigate("/main");
-        }); 
-      })
-      .catch((error) => {
-        console.log(error);
-        Swal.fire({
-          title: "로그인 실패",
-          text: "아이디와 비밀번호가 맞지 않습니다.",
-          icon: "error",
-          confirmButtonColor: "#4568DC",
-        });
-   });
-  };
 
+    try {
+      const response = await login(data);
+      const token = response.headers.get('Authorization');
+      saveToken(token);
+      const memberInfo = await getMemberInfo();
+      console.log(memberInfo);
+      Swal.fire({
+        title: '로그인 성공',
+        //text: ' 페이지로 이동합니다.',
+        icon: 'success',
+        confirmButtonColor: '#2a52be',
+      }).then(() => {
+        if (memberInfo.role === 'ROLE_USER') {
+          navigate('/main');
+        } else {
+          navigate('/admin/users');
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        title: '로그인 실패',
+        text: '아이디와 비밀번호가 맞지 않습니다.',
+        icon: 'error',
+        confirmButtonColor: '#2a52be',
+      });
+    }
+  };
 
   return (
     <div className={styles.login}>
@@ -101,7 +103,7 @@ const LoginPage = () => {
               </div>
               <div className={styles.login_input_seepw_container}>
                 <input
-                  type={seePassword ? "text" : "password"}
+                  type={seePassword ? 'text' : 'password'}
                   id="password"
                   placeholder="비밀번호를 입력하세요"
                   value={password}
@@ -146,7 +148,7 @@ const LoginPage = () => {
           <span className={styles.login_signup_text}>계정이 없으신가요?</span>
           <button
             className={styles.login_signup_button}
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate('/signup')}
           >
             회원가입
           </button>

@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import ScheduleCalendar from "../../components/ScheduleCalendar";
+import React, { useState } from 'react';
+import ScheduleCalendar from '../../components/ScheduleCalendar';
 import ScheduleDetail from '../../components/ScheduleDetail';
-import styles from "../../styles/dashboard/MyCalendar.module.css";
+import styles from '../../styles/dashboard/MyCalendar.module.css';
 
 const MyCalendar = () => {
   const [popupInfo, setPopupInfo] = useState({ show: false, date: null });
 
   const handleDateClick = (date) => {
-    setPopupInfo({ 
-      show: true, 
-      date: date.toISOString().split("T")[0]
+    setPopupInfo({
+      show: true,
+      date: date.toISOString().split('T')[0],
     });
   };
 
   const handleClosePopup = () => {
-    setPopupInfo({ 
-      show: false, 
-      date: null
+    setPopupInfo({
+      show: false,
+      date: null,
     });
   };
 
@@ -28,10 +28,7 @@ const MyCalendar = () => {
         </div>
         {popupInfo.show && (
           <div className={styles.schedule_detail_container}>
-            <ScheduleDetail 
-              date={popupInfo.date} 
-              onClose={handleClosePopup} 
-            />
+            <ScheduleDetail date={popupInfo.date} onClose={handleClosePopup} />
           </div>
         )}
       </div>
