@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/components/SearchCountry.module.css';
 import { fetchCountryFlags } from '../api/accountbookApi';
+import { Scrollbar } from 'react-scrollbars-custom';
 
 const SearchCountry = ({ onSelectCountry, closeModal }) => {
   const [modalSearchCountry, setModalSearchCountry] = useState('');

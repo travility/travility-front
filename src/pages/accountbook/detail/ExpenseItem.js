@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import React, { useState } from 'react';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 
 const categoryImages = {
-  TRANSPORTATION: "transportation.png",
-  ACCOMMODATION: "accommodation.png",
-  FOOD: "food.png",
-  TOURISM: "tourism.png",
-  SHOPPING: "shopping.png",
-  OTHERS: "others.png",
+  TRANSPORTATION: 'transportation.png',
+  ACCOMMODATION: 'accommodation.png',
+  FOOD: 'food.png',
+  TOURISM: 'tourism.png',
+  SHOPPING: 'shopping.png',
+  OTHERS: 'others.png',
 };
 
 const ExpenseItem = ({
@@ -19,7 +19,7 @@ const ExpenseItem = ({
   imgName,
 }) => {
   const [imgError, setImgError] = useState(false);
-  const categoryImage = categoryImages[category] || "others.png";
+  const categoryImage = categoryImages[category] || 'others.png';
 
   return (
     <div className={styles.expenseItem}>
@@ -37,7 +37,7 @@ const ExpenseItem = ({
       ) : (
         <img
           className={styles.expenseImg}
-          src={`/images/account/${imgName}`}
+          src={`http://localhost:8080/images/${imgName}`}
           alt=""
           onError={() => setImgError(true)}
         />

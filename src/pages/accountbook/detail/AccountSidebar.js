@@ -102,8 +102,6 @@ const AccountSidebar = ({
     }
   };
 
-  const handleCloseModal = () => {};
-
   useEffect(() => {
     console.log('accountBook:', accountBook);
   }, [accountBook]);

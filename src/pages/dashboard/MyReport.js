@@ -19,7 +19,6 @@ import {
   faEllipsisH,
   faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
-import DefaultSidebar from '../../components/DefaultSidebar';
 import styles from '../../styles/dashboard/MyReport.module.css';
 import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
 
