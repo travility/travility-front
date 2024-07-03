@@ -1,7 +1,7 @@
 
 .calendar {
   border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border-radius: 30px;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -15,7 +15,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.header_years_month{
+  font-size: 1.5rem;
+  color: #727272b3;
+  font-weight: 550;
 }
 
 .navButton {
@@ -36,14 +43,16 @@
   flex: 1;
   text-align: center;
   font-weight: bold;
+  color: #c6c6c6;
+  font-size:1.2rem;
 }
 
 .day:first-child {
-  color: red;
+  color: rgb(251, 15, 15);
 }
 
 .day:last-child {
-  color: blue;
+  color: #4C66F8;
 }
 
 .body {
@@ -63,15 +72,44 @@
   cursor: pointer;
   box-sizing: border-box; 
   height: 100px;
+  position: relative;
+}
+
+.cellWithEvent::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 15px;
+  background-color: rgba(246, 255, 144, 0.752);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .disabled {
-  color: #ccc;
+  color: #ccccccbb;
 }
 
-.selected {
-  background-color: #d3d3d3;
+/* today */
+.selected::before{
+  content: 'today';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--second-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
+
+/* .selected {
+  background-color: #EFF3FF;
+  width: 3px;
+  height: 10px;
+  border-radius: 50%
+} */
 
 .number {
   font-size: 16px;

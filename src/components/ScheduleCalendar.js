@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay, parseISO } from "date-fns";
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isSameDay, parseISO, isWithinInterval } from "date-fns";
 import axios from "../util/axiosInterceptor";
 import styles from "../styles/components/ScheduleCalendar.module.css";
 
@@ -30,7 +30,7 @@ const ScheduleCalendar = ({ onDateClick }) => {
     return (
       <div className={styles.header}>
         <button className={styles.navButton} onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>{"<"}</button>
-        <div>{format(currentMonth, "MMM yyyy")}</div>
+        <div className={styles.header_years_month}>{format(currentMonth, "MMM yyyy")}</div>
         <button className={styles.navButton} onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>{">"}</button>
       </div>
     );
@@ -68,21 +68,29 @@ const ScheduleCalendar = ({ onDateClick }) => {
         const eventsForDay = events.filter(event => 
           isSameDay(event.start, cloneDay)
         );
+        const hasEvent = events.some(event => 
+          isWithinInterval(cloneDay, { start: event.start, end: event.end })
+        );
+
         days.push(
           <div
             className={`${styles.cell} ${
               !isSameMonth(day, monthStart)
-                ? styles.disabled
-                : isSameDay(day, new Date())
-                ? styles.selected
-                : ""
+              ? styles.disabled
+              : isSameDay(day, new Date())
+              ? styles.selected
+              : hasEvent
+              ? styles.cellWithEvent
+              : ""
             }`}
             key={day}
             onClick={() => onDateClick(cloneDay)}
           >
             <span className={styles.number}>{formattedDate}</span>
             {eventsForDay.map(event => (
-              <div key={event.title} className={event.className}>
+              <div 
+                key={event.title} 
+                className={event.className}>
                 {event.title}
               </div>
             ))}
