@@ -61,6 +61,7 @@ const NavigationBar = () => {
           {menu.name}
         </div>
       ))}
+      <span className={styles.animationEffect}></span>
     </nav>
   );
 };
