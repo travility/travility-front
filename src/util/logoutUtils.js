@@ -52,6 +52,8 @@ export const handleSuccessSubject = (subject, action) => {
     text: `${subject} ${action} 성공했습니다`,
     icon: 'success',
     confirmButtonColor: '#2a52be',
+  }).then(() => {
+    window.location.reload();
   });
 };
 

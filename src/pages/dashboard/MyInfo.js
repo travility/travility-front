@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/dashboard/MyInfo.module.css';
 import Swal from 'sweetalert2';
 import { TokenStateContext } from '../../App';
-import { deleteMember } from '../../api/memberApi';
+import { deleteMember, getMemberInfo } from '../../api/memberApi';
 import { handleSuccessLogout } from '../../util/logoutUtils';
 
 const MyInfo = () => {
@@ -72,6 +72,8 @@ const MyInfo = () => {
     <div className={styles.myinfo_page}>
       <div className={styles.myinfo_container}>
         <ul className={styles.myinfo_item}>
+          <li>닉네임</li>
+          <li>{memberInfo.name}</li>
           <li>아이디</li>
           <li>{memberInfo.username}</li>
           <li>이메일</li>

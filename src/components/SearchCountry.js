@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import styles from '../styles/components/SearchCountry.module.css';
+import { fetchCountryFlags } from '../api/accountbookApi';
 import { Scrollbar } from 'react-scrollbars-custom';
-import styles from "../styles/components/SearchCountry.module.css";
 
+const SearchCountry = ({ onSelectCountry, closeModal }) => {
+  const [modalSearchCountry, setModalSearchCountry] = useState('');
+  const [countries, setCountries] = useState([]);
 
-const SearchCountry = ({ countries, onSelectCountry, closeModal }) => {
-  const [modalSearchCountry, setModalSearchCountry] = useState("");
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await fetchCountryFlags();
+        setCountries(response.data);
+      } catch (error) {
+        console.error('국가 국기 정보를 가져오는 중 오류 발생:', error.message);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   const filteredCountries = countries.filter((country) =>
     country.country_nm.includes(modalSearchCountry)
@@ -24,7 +38,10 @@ const SearchCountry = ({ countries, onSelectCountry, closeModal }) => {
             onChange={(e) => setModalSearchCountry(e.target.value)}
             className={styles.modalSearchInput}
           />
-          <Scrollbar style={{ height: '200px' }} className={styles.customScrollbar}>
+          <Scrollbar
+            style={{ height: '200px' }}
+            className={styles.customScrollbar}
+          >
             <div className={styles.countryFlags}>
               {filteredCountries
                 .filter((country) =>
