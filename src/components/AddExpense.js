@@ -97,9 +97,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   };
 
   const handleSubmit = () => {
-    const combinedDateTime = new Date(
-      `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`
-    ); //날짜 + 시간
+    const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`; //날짜 + 시간
     const { expenseTime, amount, ...expenseDataWithoutTime } =
       newExpense.expense; //expenseTime만 추출하고 나머지는 expenseDataWithoutTime에 담기
     const expenseData = {
