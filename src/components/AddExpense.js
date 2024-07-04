@@ -1,98 +1,148 @@
 import React, { useState } from "react";
 import styles from "../styles/components/AddExpense.module.css";
+import Swal from "sweetalert2";
+import {
+  ModalOverlay,
+  Modal,
+  ModalHeader,
+  CloseButton,
+  Button,
+} from "../styles/StyledComponents";
+
+const categories = [
+  { name: "TRANSPORTATION", label: "교통" },
+  { name: "FOOD", label: "식비" },
+  { name: "TOURISM", label: "관광" },
+  { name: "ACCOMMODATION", label: "숙박" },
+  { name: "SHOPPING", label: "쇼핑" },
+  { name: "OTHERS", label: "기타" },
+];
+
+const paymentMethod = [
+  { name: "CASH", label: "현금" },
+  { name: "CARD", label: "카드" },
+];
 
 const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "OTHERS",
-    isShared: false,
-    paymentMethod: "CASH",
-    curUnit: "",
-    amount: "",
-    expenseDate: "",
-    expenseTime: "",
-    imgName: "",
-    memo: "",
+  const [newExpense, setNewExpense] = useState({
+    expense: {
+      title: "",
+      category: "OTHERS",
+      isShared: false,
+      paymentMethod: "CASH",
+      curUnit: "",
+      amount: "",
+      expenseDate: "",
+      expenseTime: "",
+      memo: "",
+    },
+    newImg: null,
+    previewImg: null,
+    isDefaultImage: true,
   });
 
-  const [imagePreview, setImagePreview] = useState(null);
+  //const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setExpense((prev) => ({ ...prev, [name]: value }));
+    setNewExpense((prev) => ({
+      ...prev,
+      expense: { ...prev.expense, [name]: value },
+    }));
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setExpense((prev) => ({ ...prev, imgName: file.name }));
-      setImagePreview(URL.createObjectURL(file));
+    if (e.target.files.length === 0) {
+      // 파일 선택 안 했을 때
+      return;
     }
+    const file = e.target.files[0];
+    if (!file.type.startsWith("image/")) {
+      Swal.fire({
+        title: "이미지 파일 아님",
+        text: "이미지 파일만 업로드 가능합니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
+      });
+      return;
+    }
+
+    setNewExpense((prev) => ({
+      ...prev,
+      previewImg: URL.createObjectURL(file),
+      newImg: file,
+      isDefaultImage: false,
+    }));
   };
 
   const handleCategoryChange = (category) => {
-    setExpense((prev) => ({ ...prev, category }));
+    setNewExpense((prev) => ({
+      ...prev,
+      expense: { ...prev.expense, category },
+    }));
   };
 
   const handlePaymentMethodChange = (paymentMethod) => {
-    setExpense((prev) => ({ ...prev, paymentMethod }));
+    setNewExpense((prev) => ({
+      ...prev,
+      expense: { ...prev.expense, paymentMethod },
+    }));
   };
 
   const getCategoryImage = (category) => {
-    const isSelected = expense.category === category;
+    const isSelected = newExpense.expense.category === category;
     return `/images/account/category/${category.toLowerCase()}${
       isSelected ? "_bk" : ""
     }.png`;
   };
 
   const getPaymentMethodImage = (method) => {
-    const isSelected = expense.paymentMethod === method;
+    const isSelected = newExpense.expense.paymentMethod === method;
     return `/images/account/${method.toLowerCase()}${
       isSelected ? "_bk" : ""
     }.png`;
   };
 
   const handleSubmit = () => {
-    const { expenseDate, expenseTime, ...otherFields } = expense;
-    const combinedDateTime = new Date(`${expenseDate}T${expenseTime}`);
+    const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`; //날짜 + 시간
+    const { expenseTime, amount, ...expenseDataWithoutTime } =
+      newExpense.expense; //expenseTime만 추출하고 나머지는 expenseDataWithoutTime에 담기
     const expenseData = {
-      ...otherFields,
+      ...expenseDataWithoutTime,
+      amount: parseFloat(amount),
       expenseDate: combinedDateTime,
       accountBookId,
     };
-    onSubmit(expenseData);
+    const formData = new FormData();
+    formData.append("expenseInfo", JSON.stringify(expenseData));
+    if (newExpense.newImg) {
+      formData.append("img", newExpense.newImg);
+    }
+    console.log(formData.get("expenseInfo"));
+    onSubmit(formData);
     onClose();
   };
 
   return (
     <>
       {isOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <div className={styles.modalHeader}>
-              <div className={styles.modalHeader_title}>지출 등록</div>
-              <button className={styles.closeButton} onClick={onClose}>
-                &times;
-              </button>
-            </div>
+        <ModalOverlay>
+          <Modal>
+            <ModalHeader>
+              <h4>지출 등록</h4>
+              <CloseButton onClick={onClose}>&times;</CloseButton>
+            </ModalHeader>
             <div className={styles.modalContent}>
               <input
                 type="text"
                 name="title"
-                value={expense.title}
+                value={newExpense.expense.title}
                 onChange={handleChange}
                 placeholder="항목명을 입력해 주세요."
                 className={styles.titleInput}
               />
               <div className={styles.categoryContainer}>
-                {[
-                  { name: "TRANSPORTATION", label: "교통" },
-                  { name: "FOOD", label: "식비" },
-                  { name: "TOURISM", label: "관광" },
-                  { name: "ACCOMMODATION", label: "숙박" },
-                  { name: "SHOPPING", label: "쇼핑" },
-                  { name: "OTHERS", label: "기타" },
-                ].map((category) => (
+                {categories.map((category) => (
                   <div
                     key={category.name}
                     className={styles.categoryItem}
@@ -110,14 +160,14 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                 <input
                   type="date"
                   name="expenseDate"
-                  value={expense.expenseDate}
+                  value={newExpense.expense.expenseDate}
                   onChange={handleChange}
                   className={styles.dateInput}
                 />
                 <input
                   type="time"
                   name="expenseTime"
-                  value={expense.expenseTime}
+                  value={newExpense.expense.expenseTime}
                   onChange={handleChange}
                   className={styles.timeInput}
                 />
@@ -129,9 +179,12 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                       type="radio"
                       name="isShared"
                       value={true}
-                      checked={expense.isShared === true}
+                      checked={newExpense.expense.isShared === true}
                       onChange={() =>
-                        setExpense((prev) => ({ ...prev, isShared: true }))
+                        setNewExpense((prev) => ({
+                          ...prev,
+                          expense: { ...prev.expense, isShared: true },
+                        }))
                       }
                     />
                     공동경비
@@ -141,25 +194,32 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                       type="radio"
                       name="isShared"
                       value={false}
-                      checked={expense.isShared === false}
+                      checked={newExpense.expense.isShared === false}
                       onChange={() =>
-                        setExpense((prev) => ({ ...prev, isShared: false }))
+                        setNewExpense((prev) => ({
+                          ...prev,
+                          expense: { ...prev.expense, isShared: false },
+                        }))
                       }
                     />
                     개인경비
                   </label>
                 </div>
                 <div className={styles.paymentMethods}>
-                  <img
-                    src={getPaymentMethodImage("CASH")}
-                    alt="현금"
-                    onClick={() => handlePaymentMethodChange("CASH")}
-                  />
-                  <img
+                  {paymentMethod.map((method) => (
+                    <img
+                      key={method.name}
+                      src={getPaymentMethodImage(method.name)}
+                      alt={method.label}
+                      onClick={() => handlePaymentMethodChange(method.name)}
+                    />
+                  ))}
+
+                  {/* <img
                     src={getPaymentMethodImage("CARD")}
                     alt="카드"
                     onClick={() => handlePaymentMethodChange("CARD")}
-                  />
+                  /> */}
                 </div>
               </div>
               <div className={styles.addFormContainer}>
@@ -169,7 +229,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                     type="text"
                     name="curUnit"
                     id="curUnit"
-                    value={expense.curUnit}
+                    value={newExpense.expense.curUnit}
                     onChange={handleChange}
                     placeholder="화폐 선택"
                   />
@@ -180,7 +240,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                     type="number"
                     name="amount"
                     id="amount"
-                    value={expense.amount}
+                    value={newExpense.expense.amount}
                     onChange={handleChange}
                     placeholder="금액 입력"
                   />
@@ -198,9 +258,9 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                   onChange={handleImageChange}
                   className={styles.hiddenInput}
                 />
-                {imagePreview && (
+                {newExpense.previewImg && (
                   <img
-                    src={imagePreview}
+                    src={newExpense.previewImg}
                     alt="Preview"
                     className={styles.imagePreview}
                   />
@@ -208,18 +268,18 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
               </div>
               <textarea
                 name="memo"
-                value={expense.memo}
+                value={newExpense.expense.memo}
                 onChange={handleChange}
                 placeholder="메모를 입력하세요"
                 rows="4"
                 className={styles.textArea}
               />
               <div className={styles.submitButton}>
-                <button onClick={handleSubmit}>등록</button>
+                <Button onClick={handleSubmit}>등록</Button>
               </div>
             </div>
-          </div>
-        </div>
+          </Modal>
+        </ModalOverlay>
       )}
     </>
   );

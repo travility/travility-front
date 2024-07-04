@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAccountBooks } from "../../../api/accountbookApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
 
 //최근 내 가계부
@@ -115,48 +112,46 @@ const RecentAccountBooks = () => {
             아직 등록된 여행이 없어요 😅
           </div>
         ) : (
-          <div className={styles.recent_accountBooks_wrapper}>
+          <div className={styles.recent_accountBooks_contents}>
             <div className={styles.recent_accountBooks_navigation_buttons}>
               <button
                 onClick={handlePrevClick}
                 disabled={visibleStartIndex === 0}
               >
-                <FontAwesomeIcon icon={faChevronLeft} />
+                <FontAwesomeIcon icon={faChevronUp} />
               </button>
             </div>
             <div className={styles.recent_accountBooks_list}>
               {accountBooks
                 .slice(visibleStartIndex, visibleStartIndex + 2)
-                .map((book) => (
+                .map((accountBook) => (
                   <div
-                    key={book.id}
+                    key={accountBook.id}
                     className={styles.recent_accountBooks_item}
                     style={{
-                      backgroundImage: `url(${
-                        book.imgName || "/images/default.png"
-                      })`,
+                      backgroundImage: `url(
+            http://localhost:8080/images/${accountBook.imgName}
+          )`,
                     }}
-                    onClick={() => handleRecentAccountBooksClick(book)}
-                    alt={book.title}
+                    onClick={() => handleRecentAccountBooksClick(accountBook)}
+                    alt={accountBook.title}
                   >
-                    <div className={styles.recent_accountBooks_item_details}>
-                      <div
-                        className={styles.recent_accountBooks_title_and_flag}
-                      >
-                        <span className={styles.recent_accountBook_flag}>
-                          <img src={book.countryFlag} alt="국기" />
+                    <div className={styles.recent_accountBooks_item_contents}>
+                      <div className={styles.recent_accountBooks_item_header}>
+                        <span className={styles.recent_accountBook_item_flag}>
+                          <img src={accountBook.countryFlag} alt="국기" />
                         </span>
                         <span className={styles.recent_accountBooks_item_title}>
-                          {book.title}
+                          {accountBook.title}
                         </span>
                       </div>
                       <span className={styles.recent_accountBooks_item_dates}>
-                        {`${formatDate(book.startDate)} ~ ${formatDate(
-                          book.endDate
+                        {`${formatDate(accountBook.startDate)} ~ ${formatDate(
+                          accountBook.endDate
                         )}`}
                       </span>
                       <span className={styles.recent_accountBooks_item_amount}>
-                        {calculateTotalAmountInKRW(book)}
+                        {calculateTotalAmountInKRW(accountBook)}
                       </span>
                     </div>
                   </div>
@@ -167,7 +162,7 @@ const RecentAccountBooks = () => {
                 onClick={handleNextClick}
                 disabled={visibleStartIndex + 2 >= accountBooks.length}
               >
-                <FontAwesomeIcon icon={faChevronRight} />
+                <FontAwesomeIcon icon={faChevronDown} />
               </button>
             </div>
           </div>

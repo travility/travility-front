@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ExpenseItem from "./ExpenseItem";
 import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import { Button } from "../../../styles/StyledComponents";
 
 const ExpenseList = ({ expenses = [] }) => {
   const [filter, setFilter] = useState("all");
+
+  useEffect(() => {
+    console.log(expenses);
+  });
 
   // 지출 그룹화
   const groupedExpenses = expenses.reduce((acc, expense) => {
@@ -34,24 +39,24 @@ const ExpenseList = ({ expenses = [] }) => {
   return (
     <div className={styles.expenseListContainer}>
       <div className={styles.filterButtons}>
-        <button
+        <Button
           className={filter === "all" ? styles.selectedButton : ""}
           onClick={() => setFilter("all")}
         >
           모두보기
-        </button>
-        <button
+        </Button>
+        <Button
           className={filter === "shared" ? styles.selectedButton : ""}
           onClick={() => setFilter("shared")}
         >
           공동경비
-        </button>
-        <button
+        </Button>
+        <Button
           className={filter === "personal" ? styles.selectedButton : ""}
           onClick={() => setFilter("personal")}
         >
           개인경비
-        </button>
+        </Button>
       </div>
       <div className={styles.expenseList}>
         {Object.keys(filteredExpenses).length === 0 ? (
@@ -61,15 +66,7 @@ const ExpenseList = ({ expenses = [] }) => {
             <div key={index}>
               <div className={styles.expenseDate}>{date}</div>
               {filteredExpenses[date].map((expense, idx) => (
-                <ExpenseItem
-                  key={idx}
-                  type={expense.isShared ? "공동경비" : "개인경비"}
-                  category={expense.category}
-                  currency={expense.currency}
-                  amount={expense.amount}
-                  description={expense.title}
-                  imgName={expense.imgName}
-                />
+                <ExpenseItem key={idx} expense={expense} />
               ))}
             </div>
           ))

@@ -7,6 +7,7 @@ import {
   deleteAccountBook,
 } from "../../api/accountbookApi";
 import styles from "../../styles/accountbook/AccountBookListPage.module.css";
+import { Button } from "../../styles/StyledComponents";
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -82,17 +83,17 @@ const AccountBookListPage = () => {
   return (
     <div className={styles.accountBook_list_page}>
       <div className={styles.action_buttons}>
-        <button className={styles.delete_button} onClick={toggleDeleteMode}>
+        <Button className="margin_btn" onClick={toggleDeleteMode}>
           {isDeleteMode ? "취소" : "삭제"}
-        </button>
+        </Button>
         {isDeleteMode && (
-          <button
-            className={styles.confirm_delete_button}
+          <Button
+            className="point_btn"
             onClick={handleDeleteBooks}
             disabled={selectedBooks.length === 0}
           >
             선택 삭제
-          </button>
+          </Button>
         )}
       </div>
       <div className={styles.accountBook_list_grid_container}>

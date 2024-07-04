@@ -1,4 +1,3 @@
-
 .signup {
   display: flex;
   flex-direction: column;
@@ -51,10 +50,9 @@
   margin-top: 1%;
 
   color: rgb(145, 145, 145);
-  border: 1px solid #657DF9;
+  border: 1px solid #657df9;
   border-radius: 5px;
   padding: 2%;
-
 }
 
 .signup_id_container button {
@@ -67,9 +65,9 @@
 
 /*중복검사 버튼*/
 .signup_idcheck_button {
-  background-color: #657DF9;
+  background-color: #657df9;
   color: whitesmoke;
-  border: 1px solid #657DF9;
+  border: 1px solid #657df9;
   border-radius: 5px;
   padding: 1%;
   position: absolute;
@@ -107,7 +105,7 @@
 
 .signup_input_pw {
   color: rgb(145, 145, 145);
-  border: 1px solid #657DF9;
+  border: 1px solid #657df9;
   width: 500px;
   border-radius: 5px;
   padding: 2%;
@@ -132,7 +130,7 @@
 
 .signup_input_checkpw {
   color: rgb(145, 145, 145);
-  border: 1px solid #657DF9;
+  border: 1px solid #657df9;
   width: 500px;
   border-radius: 5px;
   padding: 2%;
@@ -150,9 +148,10 @@
   padding: 8px;
 }
 
-.signup_input_email {
+.signup_input_email,
+.signup_input_nickname {
   color: rgb(145, 145, 145);
-  border: 1px solid #657DF9;
+  border: 1px solid #657df9;
   width: 500px;
   border-radius: 5px;
   padding: 2%;
@@ -165,9 +164,9 @@
 }
 
 .signup_button {
-  background-color: #657DF9;
+  background-color: #657df9;
   color: whitesmoke;
-  border: 1px solid #657DF9;
+  border: 1px solid #657df9;
   border-radius: 5px;
   padding: 1.5%;
   width: 175px;
@@ -183,53 +182,60 @@
 
 /* 미디어 쿼리 */
 @media (max-width: 1024px) {
-
   .signup_id_container {
     width: 100%;
     flex-direction: column;
   }
 
-  .signup_id_container input, .signup_id_container button {
+  .signup_id_container input,
+  .signup_id_container button {
     width: 100%;
     margin-top: 10px;
   }
 
-  .signup_input_pw, .signup_input_checkpw, .signup_input_email {
+  .signup_input_pw,
+  .signup_input_checkpw,
+  .signup_input_email,
+  .signup_input_nickname {
     width: 100%;
     padding: 2%;
   }
 
-  .toggle_pw_button, .toggle_checkpw_button {
+  .toggle_pw_button,
+  .toggle_checkpw_button {
     right: 10px;
   }
 }
 
 @media (max-width: 768px) {
-
   .signup_container_header p:first-of-type {
-    font-size: 1.75rem; 
+    font-size: 1.75rem;
   }
 
   .signup_container_header p:last-of-type {
-    font-size: 0.875rem; 
+    font-size: 0.875rem;
   }
 
   .signup_title {
-    font-size: 0.8rem; 
+    font-size: 0.8rem;
   }
 
   .signup_error {
-    font-size: 0.625rem; 
+    font-size: 0.625rem;
   }
 
-  .signup_input_id, .signup_idcheck_button, .signup_input_pw, .signup_input_checkpw, .signup_input_email {
+  .signup_input_id,
+  .signup_idcheck_button,
+  .signup_input_pw,
+  .signup_input_checkpw,
+  .signup_input_email .signup_input_nickname {
     font-size: 0.6rem;
   }
 
   .signup_button {
     width: 150px;
     padding: 1.25%;
-    font-size: 0.6rem; 
+    font-size: 0.6rem;
   }
 }
 
@@ -238,9 +244,9 @@
     height: auto;
     padding: 10px;
   }
-  
+
   .signup_container_header p:first-of-type {
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
   }
 
   .signup_container_header p:last-of-type {
@@ -248,11 +254,11 @@
   }
 
   .signup_title {
-    font-size: 0.75rem; 
+    font-size: 0.75rem;
   }
 
   .signup_error {
-    font-size: 0.5625rem; 
+    font-size: 0.5625rem;
   }
 
   .signup_actions.signup_button {
@@ -260,12 +266,16 @@
     padding: 1rem;
   }
 
-  .signup_input_pw, .signup_input_checkpw, .signup_input_email {
+  .signup_input_pw,
+  .signup_input_checkpw,
+  .signup_input_email,
+  .signup_input_nickname {
     width: 100%;
     padding: 1.5%;
   }
 
-  .toggle_pw_button, .toggle_checkpw_button {
+  .toggle_pw_button,
+  .toggle_checkpw_button {
     right: 10px;
   }
 }

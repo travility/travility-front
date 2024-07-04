@@ -15,7 +15,7 @@
   font-size: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   font-family: 'GoryeongStrawberry';
 }
 
@@ -46,10 +46,12 @@
 }
 
 @keyframes logoAnimation {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 1;
   }
-  50.1%, 100% {
+  50.1%,
+  100% {
     opacity: 0;
   }
 }
@@ -97,7 +99,21 @@
   margin-top: 0;
 }
 
-.logout_button::after,
-.nav_first_button::after {
-  content: '    |';
+.nav_second_button::before {
+  content: '|   ';
+}
+
+@media (max-width: 1024px) {
+  .header_logo {
+    font-size: 1.4rem;
+  }
+
+  .header_welcome_message,
+  .header_navigation_container {
+    font-size: 0.7rem;
+  }
+
+  .header_navigation_container button {
+    font-size: inherit;
+  }
 }

@@ -4,16 +4,13 @@ import AddBudget from "../../../components/AddBudget";
 import AddExpense from "../../../components/AddExpense";
 import { addBudgets } from "../../../api/budgetApi";
 import { addExpense } from "../../../api/expenseApi";
-import {
-  updateAccountBook,
-  calculateTotalAmountInKRW,
-  formatDate,
-} from "../../../api/accountbookApi";
+import { updateAccountBook, formatDate } from "../../../api/accountbookApi";
 import TripInfo from "./TripInfo";
 import {
   handleSuccessSubject,
   handlefailureSubject,
 } from "../../../util/logoutUtils";
+import { Button } from "../../../styles/StyledComponents";
 
 const AccountSidebar = ({
   accountBook,
@@ -99,13 +96,8 @@ const AccountSidebar = ({
       console.log("Error updating AccountBook: ", error);
       handlefailureSubject("가계부", "수정");
     } finally {
-      handleCloseModal();
+      setIsTripInfoModalOpen(false);
     }
-  };
-
-  const handleCloseModal = () => {
-    setIsTripInfoModalOpen(false);
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -118,9 +110,9 @@ const AccountSidebar = ({
         key={accountBook.id}
         className={styles.tripInfo}
         style={{
-          backgroundImage: `url(${
-            accountBook.imgName || "/images/default.png"
-          })`,
+          backgroundImage: `url(
+        http://localhost:8080/images/${accountBook.imgName}
+      )`,
         }}
         onClick={() => setIsTripInfoModalOpen(true)}
       >
@@ -145,7 +137,7 @@ const AccountSidebar = ({
         </div>
       </div>
       <div className={styles.dateButtons}>
-        <button
+        <Button
           onClick={handleShowAll}
           className={selectedOption === "all" ? styles.selected : ""}
         >
@@ -153,8 +145,8 @@ const AccountSidebar = ({
           <span className={styles.selectedIcon}>
             {selectedOption === "all" ? "<" : ">"}
           </span>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={handleShowPreparation}
           className={selectedOption === "preparation" ? styles.selected : ""}
         >
@@ -162,9 +154,9 @@ const AccountSidebar = ({
           <span className={styles.selectedIcon}>
             {selectedOption === "preparation" ? "<" : ">"}
           </span>
-        </button>
+        </Button>
         {dates.map((date, index) => (
-          <button
+          <Button
             key={index}
             onClick={() => handleDateChange(date)}
             className={
@@ -180,26 +172,26 @@ const AccountSidebar = ({
             <span className={styles.selectedIcon}>
               {selectedOption?.getTime?.() === date.getTime() ? "<" : ">"}
             </span>
-          </button>
+          </Button>
         ))}
       </div>
       <div className={styles.accountbook_icons}>
         <span>
           <button onClick={onShowStatistics}>
             <img src="/images/account/statistic.png" alt="statistic" />
-          </button>
+          </Button>
           <p>지출 통계</p>
         </span>
         <span>
-          <button onClick={() => setIsBudgetModalOpen(true)}>
+          <Button onClick={() => setIsBudgetModalOpen(true)}>
             <img src="/images/account/local_atm.png" alt="budget" />
-          </button>
+          </Button>
           <p>화폐/예산 추가</p>
         </span>
         <span>
-          <button onClick={() => setIsExpenseModalOpen(true)}>
+          <Button onClick={() => setIsExpenseModalOpen(true)}>
             <img src="/images/account/write.png" alt="addExpense" />
-          </button>
+          </Button>
           <p>지출내역 추가</p>
         </span>
       </div>
@@ -223,7 +215,7 @@ const AccountSidebar = ({
       {isTripInfoModalOpen && (
         <TripInfo
           isOpen={isTripInfoModalOpen}
-          onClose={handleCloseModal}
+          onClose={() => setIsTripInfoModalOpen(false)}
           onSubmit={handleAccountBookSubmit}
           accountBook={accountBook}
         />
