@@ -1,17 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../styles/components/UpdateExpense.module.css';
-import Swal from 'sweetalert2';
-import { deleteExpense, updateExpense } from '../api/expenseApi';
+import React, { useEffect, useState } from "react";
+import styles from "../styles/components/UpdateExpense.module.css";
+import Swal from "sweetalert2";
+import { deleteExpense, updateExpense } from "../api/expenseApi";
 import {
   handleSuccessSubject,
   handlefailureSubject,
-} from '../util/logoutUtils';
+} from "../util/logoutUtils";
+import {
+  ModalOverlay,
+  Modal,
+  ModalHeader,
+  CloseButton,
+  Button,
+  Input,
+} from "../styles/StyledComponents";
+
+const categories = [
+  { name: "TRANSPORTATION", label: "교통" },
+  { name: "FOOD", label: "식비" },
+  { name: "TOURISM", label: "관광" },
+  { name: "ACCOMMODATION", label: "숙박" },
+  { name: "SHOPPING", label: "쇼핑" },
+  { name: "OTHERS", label: "기타" },
+];
 
 const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
   const [newExpense, setNewExpense] = useState({
     expense: {
-      expenseDate: expense.expenseDate.split('T')[0],
-      expenseTime: expense.expenseDate.split('T')[1],
+      expenseDate: expense.expenseDate.split("T")[0],
+      expenseTime: expense.expenseDate.split("T")[1],
       title: expense.title,
       category: expense.category,
       memo: expense.memo,
@@ -24,6 +41,7 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
     isDefaultImage: true,
   });
   const [isEditable, setIsEditable] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
 
   useEffect(() => {
     console.log(expense);
@@ -41,7 +59,6 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
     });
   };
 
-  //공유 경비 여부
   const handleSelectChange = (e) => {
     setNewExpense({
       ...newExpense,
@@ -54,24 +71,23 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
 
   const handleImageClick = () => {
     if (isEditable) {
-      document.getElementById('fileInput').click();
+      document.getElementById("fileInput").click();
     }
   };
 
   const handleNewImg = (e) => {
     if (e.target.files.length === 0) {
-      // 파일 선택 안 했을 때
       return;
     }
 
     const file = e.target.files[0];
 
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       Swal.fire({
-        title: '이미지 파일 아님',
-        text: '이미지 파일만 업로드 가능합니다',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
+        title: "이미지 파일 아님",
+        text: "이미지 파일만 업로드 가능합니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
       });
       return;
     }
@@ -84,76 +100,114 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
     });
   };
 
-  //수정
   const handleUpdateExpense = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('expenseInfo', JSON.stringify(newExpense.expense));
+    formData.append("expenseInfo", JSON.stringify(newExpense.expense));
     if (newExpense.newImg) {
-      formData.append('img', newExpense.newImg);
+      formData.append("img", newExpense.newImg);
     }
 
     updateExpense(formData)
       .then(() => {
-        handleSuccessSubject('지출', '수정');
+        handleSuccessSubject("지출", "수정");
       })
       .catch((error) => {
         console.log(error);
-        handlefailureSubject('지출', '수정');
+        handlefailureSubject("지출", "수정");
       });
   };
 
-  //삭제
   const handleDeleteExpense = (e) => {
     e.preventDefault();
     deleteExpense()
       .then(() => {
-        handleSuccessSubject('지출', '삭제');
+        handleSuccessSubject("지출", "삭제");
       })
       .catch((error) => {
         console.log(error);
-        handlefailureSubject('지출', '삭제');
+        handlefailureSubject("지출", "삭제");
       });
+  };
+
+  const handleCategoryClick = () => {
+    setShowCategories(!showCategories);
+  };
+
+  const selectCategory = (category) => {
+    setNewExpense({
+      ...newExpense,
+      expense: {
+        ...newExpense.expense,
+        category: category.name,
+      },
+    });
+    setShowCategories(false);
+  };
+
+  const getCategoryImage = (category) => {
+    const isSelected = newExpense.expense.category === category;
+    return `/images/account/category/${category.toLowerCase()}${
+      isSelected ? "_bk" : ""
+    }.png`;
   };
 
   return (
     <>
       {isOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <button className={styles.closeButton} onClick={onClose}>
-              &times;
-            </button>
+        <ModalOverlay>
+          <Modal>
             <form onSubmit={handleUpdateExpense}>
-              <div className={styles.modalContent}>
-                <div>
-                  <span>{countryName}</span>
-                  <span>
-                    <input
-                      type="date"
-                      name="expenseDate"
-                      value={newExpense.expense.expenseDate}
-                      readOnly={!isEditable}
-                      onChange={handleInputChange}
-                    ></input>
-                    <input
-                      type="time"
-                      name="expenseTime"
-                      value={newExpense.expense.expenseTime}
-                      readOnly={!isEditable}
-                      onChange={handleInputChange}
-                    ></input>
+              <ModalHeader>
+                <div className={styles.expenseTitle}>
+                  <span onClick={handleCategoryClick}>
+                    {newExpense.expense.category}
                   </span>
-                </div>
-                <div>
-                  <span>{newExpense.expense.category}</span>
-                  <input
+                  <Input
                     type="title"
                     name="title"
                     value={newExpense.expense.title}
                     readOnly={!isEditable}
                     onChange={handleInputChange}
-                  ></input>
+                  ></Input>
+                </div>
+                <CloseButton onClick={onClose}>&times;</CloseButton>
+              </ModalHeader>
+              {showCategories && (
+                <div className={styles.categoryContainer}>
+                  {categories.map((category) => (
+                    <div
+                      key={category.name}
+                      className={styles.categoryItem}
+                      onClick={() => selectCategory(category)}
+                    >
+                      <img
+                        src={getCategoryImage(category.name)}
+                        alt={category.label}
+                      />
+                      <span>{category.label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className={styles.modalContent}>
+                <div>
+                  <div className={styles.expenseDate}>
+                    <Input
+                      type="date"
+                      name="expenseDate"
+                      value={newExpense.expense.expenseDate}
+                      readOnly={!isEditable}
+                      onChange={handleInputChange}
+                    ></Input>
+                    <Input
+                      type="time"
+                      name="expenseTime"
+                      value={newExpense.expense.expenseTime}
+                      readOnly={!isEditable}
+                      onChange={handleInputChange}
+                    ></Input>
+                  </div>
                 </div>
                 <div className={styles.imageContainer}>
                   {newExpense.isDefaultImage && (
@@ -170,7 +224,7 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
                       </div>
                     </div>
                   )}
-                  <input
+                  <Input
                     id="fileInput"
                     className={styles.hiddenInput}
                     type="file"
@@ -191,7 +245,7 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
                     />
                   </div>
                 </div>
-                <div>
+                <div className={styles.expenseMemo}>
                   <input
                     type="text"
                     name="memo"
@@ -200,7 +254,7 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
                     onChange={handleInputChange}
                   ></input>
                 </div>
-                <div>
+                <div className={styles.expenseDetail}>
                   <span>
                     <select
                       value={newExpense.expense.isShared}
@@ -211,46 +265,51 @@ const UpdateExpense = ({ isOpen, onClose, countryName, expense }) => {
                       <option value="false">개인 경비</option>
                     </select>
                   </span>
-                  <span>
-                    <input
+                  <div className={styles.expenseAmount}>
+                    <Input
                       type="text"
                       name="curUnit"
                       value={newExpense.expense.curUnit}
-                    ></input>
-                    <input
+                      readOnly={!isEditable}
+                      onChange={handleInputChange}
+                    ></Input>
+                    <Input
                       type="text"
+                      name="amount"
                       value={newExpense.expense.amount}
-                    ></input>
-                  </span>
+                      readOnly={!isEditable}
+                      onChange={handleInputChange}
+                    ></Input>
+                  </div>
                 </div>
                 {isEditable ? (
-                  <button
+                  <Button
                     type="submit"
                     name="update"
                     className={styles.updateButton}
                   >
                     편집완료
-                  </button>
+                  </Button>
                 ) : (
-                  <button
+                  <Button
                     className={styles.updateButton}
                     onClick={() => setIsEditable(true)}
                   >
                     편집하기
-                  </button>
+                  </Button>
                 )}
 
-                <button
+                <Button
                   name="delete"
                   className={styles.deleteButton}
                   onClick={handleDeleteExpense}
                 >
-                  삭제하기
-                </button>
+                  삭제
+                </Button>
               </div>
             </form>
-          </div>
-        </div>
+          </Modal>
+        </ModalOverlay>
       )}
     </>
   );

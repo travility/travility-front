@@ -275,7 +275,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                 className={styles.textArea}
               />
               <div className={styles.submitButton}>
-                <button onClick={handleSubmit}>등록</button>
+                <Button onClick={handleSubmit}>등록</Button>
               </div>
             </div>
           </Modal>
