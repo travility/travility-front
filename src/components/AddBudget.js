@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/components/AddBudget.module.css";
 import { fetchCurrencyCodes, fetchExchangeRate } from "../api/budgetApi";
+import {
+  ModalOverlay,
+  Modal,
+  ModalHeader,
+  CloseButton,
+  Button,
+} from "../styles/StyledComponents";
 
 const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   const [budgetType, setBudgetType] = useState("shared");
@@ -155,14 +162,12 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   return (
     <>
       {isOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <div className={styles.modalHeader}>
-              <div className={styles.modalHeader_title}>예산 등록</div>
-              <button className={styles.closeButton} onClick={onClose}>
-                &times;
-              </button>
-            </div>
+        <ModalOverlay>
+          <Modal>
+            <ModalHeader>
+              <h4>예산 등록</h4>
+              <CloseButton onClick={onClose}>&times;</CloseButton>
+            </ModalHeader>
             <div className={styles.modalContent}>
               <div className={styles.radioGroup}>
                 <div className={styles.budgetType}>
@@ -243,14 +248,14 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                 </div>
               </div>
               <div className={styles.buttonContainer}>
-                <button
+                <Button
                   className={styles.addButton}
                   onClick={
                     editIndex !== null ? handleEditBudget : handleAddBudget
                   }
                 >
                   {editIndex !== null ? "수정" : "예산 추가하기"}
-                </button>
+                </Button>
                 {editIndex !== null && (
                   <button
                     className={styles.deleteButton}
@@ -283,15 +288,15 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                   총 예산 금액 : <span>KRW {calculateTotalAmount()}</span>
                 </div>
               </div>
-              <button
+              <Button
                 className={styles.registerButton}
                 onClick={handleRegister}
               >
                 등록
-              </button>
+              </Button>
             </div>
-          </div>
-        </div>
+          </Modal>
+        </ModalOverlay>
       )}
     </>
   );

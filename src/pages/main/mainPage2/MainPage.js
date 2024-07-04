@@ -7,14 +7,15 @@ const MainPage = () => {
   const memberId = 1;
 
   return (
-    <div className={styles.mainPageContainer}>
-      <div className={styles.addAccountBook}>
-        <AddAccountBook memberId={memberId} />
+    <div className="wrapper">
+      <div className={styles.mainpage_container}>
+        <div className={styles.addAccountBook}>
+          <AddAccountBook memberId={memberId} />
+        </div>
+        <div className={styles.recentAccountBooks}>
+          <RecentAccountBooks />
+        </div>
       </div>
-      <div className={styles.recentAccountBooks}>
-        <RecentAccountBooks />
-      </div>
-      <div className={styles.deco}>뭐 넣을까요...</div>
     </div>
   );
 };
