@@ -1,27 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../styles/components/Header.module.css";
-import { logout } from "../api/memberApi";
+import styles from "../../styles/components/Header.module.css";
+import { logout } from "../../api/memberApi";
 import {
   handleAlreadyLoggedOut,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from "../util/logoutUtils";
-import { TokenStateContext } from "../App";
+} from "../../util/logoutUtils";
+import { TokenStateContext } from "../../App";
 
 const Header = () => {
   const { tokenStatus, memberInfo } = useContext(TokenStateContext);
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if (memberInfo) {
-      setUsername(memberInfo.username || "");
-      setRole(memberInfo.role || "");
+      setName(memberInfo.name);
+      setRole(memberInfo.role);
     }
-  }, [memberInfo]);
+  }, [tokenStatus, memberInfo]);
 
   const handleLogout = async () => {
     try {
@@ -52,7 +52,7 @@ const Header = () => {
   };
 
   const buttonStyle = {
-    color: location.pathname === "/" ? "#fff" : "#000",
+    color: location.pathname === "/" ? "#fff" : "var(--text-color)",
   };
 
   return (
@@ -82,7 +82,7 @@ const Header = () => {
                 ) : (
                   <>
                     <img src="/images/person_circle.png" alt="user" />
-                    {username} 님 반갑습니다!
+                    {name} 님 반갑습니다!
                   </>
                 )}
               </span>
@@ -102,6 +102,8 @@ const Header = () => {
                   >
                     관리
                   </button>
+                ) : location.pathname === "/" ? (
+                  <></>
                 ) : (
                   <button
                     className={styles.nav_second_button}
