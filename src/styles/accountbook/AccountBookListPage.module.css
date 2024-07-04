@@ -107,3 +107,23 @@
     right: 1rem;
     z-index: 3;
   }
+
+  .no_accountBooks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: #666;
+    font-size: 1.2rem;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .no_accountBooks_icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #ccc;
+  }
