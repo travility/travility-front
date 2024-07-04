@@ -1,9 +1,8 @@
 .navbar {
     display: flex;
     border-bottom: 1px solid var(--line-color);
-    margin: 1rem;
-    padding: 0 1rem;
-    font-family: "Noto Sans KR";
+    margin: 0 1rem;
+    padding: 0 2rem;
   }
   
   .menuItem {
@@ -11,7 +10,7 @@
     margin: 0 0.5rem;
     cursor: pointer;
     position: relative;
-    font-size: 1rem;
+    font-size: 0.9em;
     font-weight: 600;
   }
 

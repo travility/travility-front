@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import ExpenseItem from './ExpenseItem';
-import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
+import React, { useState, useEffect } from "react";
+import ExpenseItem from "./ExpenseItem";
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import { Button } from "../../../styles/StyledComponents";
 
 const ExpenseList = ({ expenses = [] }) => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     console.log(expenses);
@@ -22,9 +23,9 @@ const ExpenseList = ({ expenses = [] }) => {
   // 지출 필터링
   const filteredExpenses = Object.keys(groupedExpenses).reduce((acc, date) => {
     const filtered = groupedExpenses[date].filter((expense) => {
-      if (filter === 'all') return true;
-      if (filter === 'shared' && expense.isShared) return true;
-      if (filter === 'personal' && !expense.isShared) return true;
+      if (filter === "all") return true;
+      if (filter === "shared" && expense.isShared) return true;
+      if (filter === "personal" && !expense.isShared) return true;
       return false;
     });
 
@@ -38,24 +39,24 @@ const ExpenseList = ({ expenses = [] }) => {
   return (
     <div className={styles.expenseListContainer}>
       <div className={styles.filterButtons}>
-        <button
-          className={filter === 'all' ? styles.selectedButton : ''}
-          onClick={() => setFilter('all')}
+        <Button
+          className={filter === "all" ? styles.selectedButton : ""}
+          onClick={() => setFilter("all")}
         >
           모두보기
-        </button>
-        <button
-          className={filter === 'shared' ? styles.selectedButton : ''}
-          onClick={() => setFilter('shared')}
+        </Button>
+        <Button
+          className={filter === "shared" ? styles.selectedButton : ""}
+          onClick={() => setFilter("shared")}
         >
           공동경비
-        </button>
-        <button
-          className={filter === 'personal' ? styles.selectedButton : ''}
-          onClick={() => setFilter('personal')}
+        </Button>
+        <Button
+          className={filter === "personal" ? styles.selectedButton : ""}
+          onClick={() => setFilter("personal")}
         >
           개인경비
-        </button>
+        </Button>
       </div>
       <div className={styles.expenseList}>
         {Object.keys(filteredExpenses).length === 0 ? (

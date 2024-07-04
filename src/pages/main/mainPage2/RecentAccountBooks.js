@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getAccountBooks } from '../../../api/accountbookApi';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronLeft,
-  faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-import styles from '../../../styles/main/mainPage2/MainPage.module.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAccountBooks } from "../../../api/accountbookApi";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../../styles/main/mainPage2/MainPage.module.css";
 
 //최근 내 가계부
 const RecentAccountBooks = () => {
@@ -24,7 +21,7 @@ const RecentAccountBooks = () => {
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
-          setError(new Error('Unexpected response format'));
+          setError(new Error("Unexpected response format"));
         }
       } catch (error) {
         setError(error);
@@ -65,7 +62,7 @@ const RecentAccountBooks = () => {
       !book.expenses.length ||
       !book.budgets.length
     ) {
-      return 'KRW 0';
+      return "KRW 0";
     }
 
     const averageExchangeRates = {};
@@ -103,7 +100,7 @@ const RecentAccountBooks = () => {
   };
 
   const formatDate = (dateString) => {
-    return dateString.split('T')[0];
+    return dateString.split("T")[0];
   };
 
   return (
@@ -115,13 +112,13 @@ const RecentAccountBooks = () => {
             아직 등록된 여행이 없어요 😅
           </div>
         ) : (
-          <div className={styles.recent_accountBooks_wrapper}>
+          <div className={styles.recent_accountBooks_contents}>
             <div className={styles.recent_accountBooks_navigation_buttons}>
               <button
                 onClick={handlePrevClick}
                 disabled={visibleStartIndex === 0}
               >
-                <FontAwesomeIcon icon={faChevronLeft} />
+                <FontAwesomeIcon icon={faChevronUp} />
               </button>
             </div>
             <div className={styles.recent_accountBooks_list}>
@@ -139,11 +136,9 @@ const RecentAccountBooks = () => {
                     onClick={() => handleRecentAccountBooksClick(accountBook)}
                     alt={accountBook.title}
                   >
-                    <div className={styles.recent_accountBooks_item_details}>
-                      <div
-                        className={styles.recent_accountBooks_title_and_flag}
-                      >
-                        <span className={styles.recent_accountBook_flag}>
+                    <div className={styles.recent_accountBooks_item_contents}>
+                      <div className={styles.recent_accountBooks_item_header}>
+                        <span className={styles.recent_accountBook_item_flag}>
                           <img src={accountBook.countryFlag} alt="국기" />
                         </span>
                         <span className={styles.recent_accountBooks_item_title}>
@@ -167,7 +162,7 @@ const RecentAccountBooks = () => {
                 onClick={handleNextClick}
                 disabled={visibleStartIndex + 2 >= accountBooks.length}
               >
-                <FontAwesomeIcon icon={faChevronRight} />
+                <FontAwesomeIcon icon={faChevronDown} />
               </button>
             </div>
           </div>
