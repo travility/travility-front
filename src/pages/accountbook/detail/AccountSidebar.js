@@ -22,6 +22,7 @@ const AccountSidebar = ({
   onShowAll,
   onShowPreparation,
   expenses = [],
+  onShowStatistics // 추가된 부분
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
@@ -184,7 +185,7 @@ const AccountSidebar = ({
       </div>
       <div className={styles.accountbook_icons}>
         <span>
-          <button>
+          <button onClick={onShowStatistics}>
             <img src="/images/account/statistic.png" alt="statistic" />
           </button>
           <p>지출 통계</p>
