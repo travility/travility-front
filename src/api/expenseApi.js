@@ -12,11 +12,6 @@ export const getExpenseStatistics = async () => {
   return response.data;
 };
 
-export const getUserInfo = async () => {
-  const response = await axiosInstance.get("/accountbook/userinfo");
-  return response.data;
-};
-
 //지출 등록
 export const addExpense = async (expenseData) => {
   try {
