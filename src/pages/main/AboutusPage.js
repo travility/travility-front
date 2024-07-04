@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/main/AboutusPage.module.css';
-import Layout from '../../components/Layout.js';
-import { TokenStateContext } from '../../App.js';
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "../../styles/main/AboutusPage.module.css";
+import Layout from "../../components/header/Layout.js";
+import { TokenStateContext } from "../../App.js";
+import { Button } from "../../styles/StyledComponents.js";
 
 const AboutUsPage = () => {
   const { tokenStatus } = useContext(TokenStateContext);
@@ -16,10 +17,10 @@ const AboutUsPage = () => {
   // }, [tokenStatus]);
 
   const handleButtonClick = () => {
-    if (tokenStatus === 'Token valid') {
-      navigate('/main');
+    if (tokenStatus === "Token valid") {
+      navigate("/main");
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   };
 
@@ -43,9 +44,9 @@ const AboutUsPage = () => {
                 여행을 더욱 편리하게 만들어준다는 의미입니다.
               </p>
             </div>
-            <button className={styles.login_button} onClick={handleButtonClick}>
-              <p>{tokenStatus === 'Token valid' ? 'Main' : 'Login'}</p>
-            </button>
+            <Button className={styles.login_button} onClick={handleButtonClick}>
+              <p>{tokenStatus === "Token valid" ? "Main" : "Login"}</p>
+            </Button>
           </div>
         </section>
       </div>
