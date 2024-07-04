@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getAccountBookById } from '../../../api/accountbookApi';
 import Sidebar from './AccountSidebar';
 import ExpenseList from './ExpenseList';
+import ExpenseStatistic from '../../../components/ExpenseStatistic';
 import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 
 const AccountBookDetail = () => {
@@ -11,6 +12,7 @@ const AccountBookDetail = () => {
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showStatistics, setShowStatistics] = useState(false);
 
   useEffect(() => {
     const fetchAccountBook = async () => {
@@ -18,7 +20,7 @@ const AccountBookDetail = () => {
         const data = await getAccountBookById(id);
         console.log(data);
         setAccountBook(data);
-        setFilteredExpenses(data.expenses || []); // 기본값으로 빈 배열 설정
+        setFilteredExpenses(data.expenses || []);
       } catch (err) {
         setError(err);
       } finally {
@@ -28,6 +30,10 @@ const AccountBookDetail = () => {
 
     fetchAccountBook();
   }, [id]);
+
+  const handleShowStatistics = () => {
+    setShowStatistics(true);
+  };
 
   if (loading) {
     return <div>Loading...🐷</div>;
@@ -86,8 +92,13 @@ const AccountBookDetail = () => {
         onShowAll={handleShowAll}
         onShowPreparation={handleShowPreparation}
         expenses={accountBook.expenses || []}
+        onShowStatistics={handleShowStatistics}
       />
-      <ExpenseList expenses={filteredExpenses} />
+      {showStatistics ? ( // 기본적으로 ExpenseList를 표시, 지출통계 누르면 ExpenseStatistic 랜더링
+        <ExpenseStatistic accountBookId={id} />
+      ) : (
+        <ExpenseList expenses={filteredExpenses} />
+      )}
     </div>
   );
 };
