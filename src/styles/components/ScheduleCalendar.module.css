@@ -92,7 +92,7 @@
 
 /* today */
 .selected::before{
-  content: 'today';
+  content: '';
   display: block;
   width: 10px;
   height: 10px;
@@ -104,14 +104,13 @@
   transform: translate(-50%, -50%);
 }
 
-/* .selected {
-  background-color: #EFF3FF;
-  width: 3px;
-  height: 10px;
-  border-radius: 50%
-} */
-
 .number {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
 }
+
+.totalAmount{
+  font-size: 0.8rem;
+  margin-top: 35%;
+}
+
