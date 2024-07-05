@@ -8,6 +8,12 @@ import {
 } from "../../api/accountbookApi";
 import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 import { Button } from "../../styles/StyledComponents";
+} from '../../api/accountbookApi';
+import styles from '../../styles/accountbook/AccountBookListPage.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -82,6 +88,87 @@ const AccountBookListPage = () => {
 
   return (
     <div className={styles.accountBook_list_page}>
+      {accountBooks.length > 0 && (
+        <div className={styles.action_buttons}>
+          <button className={styles.delete_button} onClick={toggleDeleteMode}>
+            {isDeleteMode ? '취소' : '삭제'}
+          </button>
+          {isDeleteMode && (
+            <button
+              className={styles.confirm_delete_button}
+              onClick={handleDeleteBooks}
+              disabled={selectedBooks.length === 0}
+            >
+              선택 삭제
+            </button>
+          )}
+        </div>
+      )}
+      {accountBooks.length === 0 ? (
+        <div className={styles.no_accountBooks}>
+          <FontAwesomeIcon
+            icon={faExclamationTriangle}
+            className={styles.no_accountBooks_icon}
+          />
+          <div>
+              작성하신 가계부가 없어요
+              <br />
+              가계부를 작성하시면 전체 가계부를 볼 수 있어요🐷
+          </div>
+        </div>
+      ) : (
+        <div className={styles.accountBook_list_grid_container}>
+          {accountBooks.map((accountBook) => (
+            <div
+              key={accountBook.id}
+              className={`${styles.accountBook_list_grid_item} ${
+                selectedBooks.includes(accountBook.id) ? styles.selected : ''
+              }`}
+              style={{
+                backgroundImage: `url(http://localhost:8080/images/${accountBook.imgName})`,
+              }}
+              onClick={() => handleAccountBookClick(accountBook)}
+            >
+              {isDeleteMode && (
+                <div
+                  className={styles.select_overlay}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleSelectBook(accountBook);
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedBooks.includes(accountBook.id)}
+                    onChange={(event) => {
+                      event.stopProgation();
+                      handleSelectBook(accountBook);
+                    }}
+                  />
+                </div>
+              )}
+              <div className={styles.accountBook_list_item_detail}>
+                <div className={styles.accountBook_list_title_and_flag}>
+                  <span className={styles.accountBook_list_flag}>
+                    <img src={accountBook.countryFlag} alt="국기" />
+                  </span>
+                  <span className={styles.accountBook_list_title}>
+                    {accountBook.title}
+                  </span>
+                </div>
+                <span className={styles.accountBook_list_dates}>
+                  {`${formatDate(accountBook.startDate)} ~ ${formatDate(
+                    accountBook.endDate
+                  )}`}
+                </span>
+                <span className={styles.accountBook_list_amount}>
+                  {calculateTotalAmountInKRW(accountBook)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       <div className={styles.action_buttons}>
         <Button className="margin_btn" onClick={toggleDeleteMode}>
           {isDeleteMode ? "취소" : "삭제"}
