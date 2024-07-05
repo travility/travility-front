@@ -177,7 +177,8 @@ const AccountSidebar = ({
       </div>
       <div className={styles.accountbook_icons}>
         <span>
-          <button onClick={onShowStatistics}>
+          {/* <button onClick={onShowStatistics}> */}
+          <Button onClick={onShowStatistics}>
             <img src="/images/account/statistic.png" alt="statistic" />
           </Button>
           <p>지출 통계</p>
@@ -189,9 +190,9 @@ const AccountSidebar = ({
           <p>화폐/예산 추가</p>
         </span>
         <span>
-          <Button onClick={() => setIsExpenseModalOpen(true)}>
+          <button onClick={() => setIsExpenseModalOpen(true)}>
             <img src="/images/account/write.png" alt="addExpense" />
-          </Button>
+          </button>
           <p>지출내역 추가</p>
         </span>
       </div>
