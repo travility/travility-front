@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "../util/axiosInterceptor";
 import styles from "../styles/components/ScheduleDetail.module.css";
 
 const ScheduleDetail = ({ date, onClose }) => {
@@ -31,6 +32,18 @@ const ScheduleDetail = ({ date, onClose }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get('/accountBook/schedule');
+      } catch (error) {
+        console.error('Error fetching account books', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
 
 
   return (
@@ -56,7 +69,10 @@ const ScheduleDetail = ({ date, onClose }) => {
           </div>
           {renderTabContent()}
           <div className={styles.schedule_detail_modalFooter}>
-            <p className={styles.totalCost}>총 사용 비용</p>
+            <div className={styles.total_cost_container}>
+            <p className={styles.total_cost_text}>총 사용 비용</p>
+            <p className={styles.total_cost_amount}>28000 원</p>
+            </div>
             <div className={styles.schedule_detail_Buttons_container}>
               <button className={styles.editButton}>편집하기</button>
               <button className={styles.deleteButton}>삭제하기</button>
