@@ -33,6 +33,7 @@ export const updateExpense = async (id, newExpenseData) => {
   return response;
 };
 
+//지출 삭제
 export const deleteExpense = async (id) => {
   const response = await axiosInstance.delete(`/accountbook/expense/${id}`);
   return response;

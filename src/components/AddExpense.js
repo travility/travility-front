@@ -1,40 +1,40 @@
-import React, { useState } from "react";
-import styles from "../styles/components/AddExpense.module.css";
-import Swal from "sweetalert2";
+import React, { useState } from 'react';
+import styles from '../styles/components/AddExpense.module.css';
+import Swal from 'sweetalert2';
 import {
   ModalOverlay,
   Modal,
   ModalHeader,
   CloseButton,
   Button,
-} from "../styles/StyledComponents";
+} from '../styles/StyledComponents';
 
 const categories = [
-  { name: "TRANSPORTATION", label: "교통" },
-  { name: "FOOD", label: "식비" },
-  { name: "TOURISM", label: "관광" },
-  { name: "ACCOMMODATION", label: "숙박" },
-  { name: "SHOPPING", label: "쇼핑" },
-  { name: "OTHERS", label: "기타" },
+  { name: 'TRANSPORTATION', label: '교통' },
+  { name: 'FOOD', label: '식비' },
+  { name: 'TOURISM', label: '관광' },
+  { name: 'ACCOMMODATION', label: '숙박' },
+  { name: 'SHOPPING', label: '쇼핑' },
+  { name: 'OTHERS', label: '기타' },
 ];
 
 const paymentMethod = [
-  { name: "CASH", label: "현금" },
-  { name: "CARD", label: "카드" },
+  { name: 'CASH', label: '현금' },
+  { name: 'CARD', label: '카드' },
 ];
 
 const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   const [newExpense, setNewExpense] = useState({
     expense: {
-      title: "",
-      category: "OTHERS",
+      title: '',
+      category: 'OTHERS',
       isShared: false,
-      paymentMethod: "CASH",
-      curUnit: "",
-      amount: "",
-      expenseDate: "",
-      expenseTime: "",
-      memo: "",
+      paymentMethod: 'CASH',
+      curUnit: '',
+      amount: '',
+      expenseDate: '',
+      expenseTime: '',
+      memo: '',
     },
     newImg: null,
     previewImg: null,
@@ -57,12 +57,12 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
       return;
     }
     const file = e.target.files[0];
-    if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith('image/')) {
       Swal.fire({
-        title: "이미지 파일 아님",
-        text: "이미지 파일만 업로드 가능합니다",
-        icon: "error",
-        confirmButtonColor: "#2a52be",
+        title: '이미지 파일 아님',
+        text: '이미지 파일만 업로드 가능합니다',
+        icon: 'error',
+        confirmButtonColor: '#2a52be',
       });
       return;
     }
@@ -92,14 +92,14 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
   const getCategoryImage = (category) => {
     const isSelected = newExpense.expense.category === category;
     return `/images/account/category/${category.toLowerCase()}${
-      isSelected ? "_bk" : ""
+      isSelected ? '_bk' : ''
     }.png`;
   };
 
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
     return `/images/account/${method.toLowerCase()}${
-      isSelected ? "_bk" : ""
+      isSelected ? '_bk' : ''
     }.png`;
   };
 
@@ -114,11 +114,11 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
       accountBookId,
     };
     const formData = new FormData();
-    formData.append("expenseInfo", JSON.stringify(expenseData));
+    formData.append('expenseInfo', JSON.stringify(expenseData));
     if (newExpense.newImg) {
-      formData.append("img", newExpense.newImg);
+      formData.append('img', newExpense.newImg);
     }
-    console.log(formData.get("expenseInfo"));
+    console.log(formData.get('expenseInfo'));
     onSubmit(formData);
     onClose();
   };
@@ -214,12 +214,6 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                       onClick={() => handlePaymentMethodChange(method.name)}
                     />
                   ))}
-
-                  {/* <img
-                    src={getPaymentMethodImage("CARD")}
-                    alt="카드"
-                    onClick={() => handlePaymentMethodChange("CARD")}
-                  /> */}
                 </div>
               </div>
               <div className={styles.addFormContainer}>
