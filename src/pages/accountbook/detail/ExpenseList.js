@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import ExpenseItem from "./ExpenseItem";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
-import { Button } from "../../../styles/StyledComponents";
+import React, { useState, useEffect } from 'react';
+import ExpenseItem from './ExpenseItem';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
+import { Button } from '../../../styles/StyledComponents';
+import { useNavigate } from 'react-router-dom';
 
-const ExpenseList = ({ expenses = [] }) => {
-  const [filter, setFilter] = useState("all");
+const ExpenseList = ({ expenses = [], settlement }) => {
+  const [filter, setFilter] = useState('all');
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(expenses);
@@ -23,9 +25,9 @@ const ExpenseList = ({ expenses = [] }) => {
   // 지출 필터링
   const filteredExpenses = Object.keys(groupedExpenses).reduce((acc, date) => {
     const filtered = groupedExpenses[date].filter((expense) => {
-      if (filter === "all") return true;
-      if (filter === "shared" && expense.isShared) return true;
-      if (filter === "personal" && !expense.isShared) return true;
+      if (filter === 'all') return true;
+      if (filter === 'shared' && expense.isShared) return true;
+      if (filter === 'personal' && !expense.isShared) return true;
       return false;
     });
 
@@ -36,36 +38,68 @@ const ExpenseList = ({ expenses = [] }) => {
     return acc;
   }, {});
 
+  // 정산 모드일 때 필터링된 지출 중 공동경비인 것만 보여줌
+  const settlementFilteredExpenses = Object.keys(filteredExpenses).reduce(
+    (acc, date) => {
+      const filtered = filteredExpenses[date].filter((expense) => {
+        if (settlement && expense.isShared) return true; // 정산 모드일때 공동경비인 경우만 필터링
+        return !settlement; // 정산 모드가 아닌 경우에는 모두 필터링하지 않음
+      });
+
+      if (filtered.length > 0) {
+        acc[date] = filtered;
+      }
+
+      return acc;
+    },
+    {}
+  );
+
+  const goSettlement = () => {
+    const accountBookId =
+      expenses.length > 0 ? expenses[0].accountBookId : null;
+    navigate(`/settlement/${accountBookId}`);
+  };
+
   return (
     <div className={styles.expenseListContainer}>
-      <div className={styles.filterButtons}>
-        <Button
-          className={filter === "all" ? styles.selectedButton : ""}
-          onClick={() => setFilter("all")}
-        >
-          모두보기
-        </Button>
-        <Button
-          className={filter === "shared" ? styles.selectedButton : ""}
-          onClick={() => setFilter("shared")}
-        >
-          공동경비
-        </Button>
-        <Button
-          className={filter === "personal" ? styles.selectedButton : ""}
-          onClick={() => setFilter("personal")}
-        >
-          개인경비
-        </Button>
+      <div className={styles.expenseListHeader}>
+        {!settlement && (
+          <div className={styles.filterButtons}>
+            <Button
+              className={filter === 'all' ? styles.selectedButton : ''}
+              onClick={() => setFilter('all')}
+            >
+              모두보기
+            </Button>
+            <Button
+              className={filter === 'shared' ? styles.selectedButton : ''}
+              onClick={() => setFilter('shared')}
+            >
+              공동경비
+            </Button>
+            <Button
+              className={filter === 'personal' ? styles.selectedButton : ''}
+              onClick={() => setFilter('personal')}
+            >
+              개인경비
+            </Button>
+          </div>
+        )}
+        {!settlement && (
+          <div className={styles.settlementButton}>
+            <Button onClick={goSettlement}>정산하기</Button>
+          </div>
+        )}
       </div>
       <div className={styles.expenseList}>
-        {Object.keys(filteredExpenses).length === 0 ? (
+        {Object.keys(settlementFilteredExpenses).length === 0 ? (
           <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
         ) : (
-          Object.keys(filteredExpenses).map((date, index) => (
+          Object.keys(settlementFilteredExpenses).map((date, index) => (
             <div key={index}>
               <div className={styles.expenseDate}>{date}</div>
-              {filteredExpenses[date].map((expense, idx) => (
+              {settlementFilteredExpenses[date].map((expense, idx) => (
                 <ExpenseItem key={idx} expense={expense} />
               ))}
             </div>

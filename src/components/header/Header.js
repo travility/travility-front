@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../../styles/components/Header.module.css";
-import { logout } from "../../api/memberApi";
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styles from '../../styles/components/Header.module.css';
+import { logout } from '../../api/memberApi';
 import {
   handleAlreadyLoggedOut,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from "../../util/logoutUtils";
-import { TokenStateContext } from "../../App";
+} from '../../util/logoutUtils';
+import { TokenStateContext } from '../../App';
 
 const Header = () => {
   const { tokenStatus, memberInfo } = useContext(TokenStateContext);
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,13 +25,13 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      if (tokenStatus === "Token valid") {
+      if (tokenStatus === 'Token valid') {
         await logout();
         handleSuccessLogout(navigate);
-      } else if (tokenStatus === "Token expired") {
+      } else if (tokenStatus === 'Token expired') {
         await logout();
         handleTokenExpirationLogout(navigate);
-      } else if (tokenStatus === "Token null") {
+      } else if (tokenStatus === 'Token null') {
         handleAlreadyLoggedOut(navigate);
       }
     } catch (error) {
@@ -40,19 +40,19 @@ const Header = () => {
   };
 
   const handleLogoClick = () => {
-    if (tokenStatus === "Token valid") {
-      navigate("/main");
+    if (tokenStatus === 'Token valid') {
+      navigate('/main');
     } else {
-      navigate("/");
+      navigate('/');
     }
   };
 
   const logoStyle = {
-    color: location.pathname === "/" ? "#fff" : "var(--main-color)",
+    color: location.pathname === '/' ? '#fff' : 'var(--main-color)',
   };
 
   const buttonStyle = {
-    color: location.pathname === "/" ? "#fff" : "var(--text-color)",
+    color: location.pathname === '/' ? '#fff' : 'var(--text-color)',
   };
 
   return (
@@ -72,12 +72,13 @@ const Header = () => {
         </div>
         TRAVILITY
       </div>
-      {(tokenStatus === "Token valid" || location.pathname !== "/") && (
+      {(tokenStatus === 'Token valid' || location.pathname !== '/') /*&&
+        location.pathname !== '/settlement'*/ && (
         <div className={styles.header_user_container}>
-          {tokenStatus === "Token valid" && (
+          {tokenStatus === 'Token valid' && (
             <>
               <span className={styles.header_welcome_message}>
-                {role === "ROLE_ADMIN" ? (
+                {role === 'ROLE_ADMIN' ? (
                   <>현재 관리자 모드입니다</>
                 ) : (
                   <>
@@ -94,20 +95,20 @@ const Header = () => {
                 >
                   Logout
                 </button>
-                {role === "ROLE_ADMIN" ? (
+                {role === 'ROLE_ADMIN' ? (
                   <button
                     className={styles.nav_second_button}
-                    onClick={() => navigate("/admin/users")}
+                    onClick={() => navigate('/admin/users')}
                     style={buttonStyle}
                   >
                     관리
                   </button>
-                ) : location.pathname === "/" ? (
+                ) : location.pathname === '/' ? (
                   <></>
                 ) : (
                   <button
                     className={styles.nav_second_button}
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate('/')}
                     style={buttonStyle}
                   >
                     About Us

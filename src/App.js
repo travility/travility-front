@@ -1,25 +1,27 @@
 // src/App.js
-import { createContext, useEffect, useState } from "react";
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
-import { GlobalStyle, Button } from "./styles/StyledComponents";
-import { lightTheme, darkTheme, toggleTheme, loadTheme } from "./styles/Theme";
-import Layout from "./components/header/Layout";
-import AboutUsPage from "./pages/main/AboutusPage";
-import MainPage from "./pages/main/mainPage2/MainPage";
-import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
-import AccountBookDetail from "./pages/accountbook/detail/AccountBookDetail";
-import LoginPage from "./pages/member/LoginPage";
-import SignupPage from "./pages/member/SignupPage";
-import MyInfo from "./pages/dashboard/MyInfo";
-import MyCalendar from "./pages/dashboard/MyCalendar";
-import MyReport from "./pages/dashboard/MyReport";
-import UsersPage from "./pages/admin/UsersPage";
-import LoadingPage from "./util/LoadingPage";
-import AuthenticatedRoute from "./util/AuthenticatedRoute";
-import { getMemberInfo, logout } from "./api/memberApi";
-import { validateToken } from "./util/tokenUtils";
-import { handleTokenExpirationLogout } from "./util/logoutUtils";
+import { createContext, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyle, Button } from './styles/StyledComponents';
+import { lightTheme, darkTheme, toggleTheme, loadTheme } from './styles/Theme';
+import Layout from './components/header/Layout';
+import AboutUsPage from './pages/main/AboutusPage';
+import MainPage from './pages/main/mainPage2/MainPage';
+import AccountBookListPage from './pages/accountbook/AccountBookListPage';
+import AccountBookDetail from './pages/accountbook/detail/AccountBookDetail';
+import LoginPage from './pages/member/LoginPage';
+import SignupPage from './pages/member/SignupPage';
+import MyInfo from './pages/dashboard/MyInfo';
+import MyCalendar from './pages/dashboard/MyCalendar';
+import MyReport from './pages/dashboard/MyReport';
+import UsersPage from './pages/admin/UsersPage';
+import LoadingPage from './util/LoadingPage';
+import AuthenticatedRoute from './util/AuthenticatedRoute';
+import { getMemberInfo, logout } from './api/memberApi';
+import { validateToken } from './util/tokenUtils';
+import { handleTokenExpirationLogout } from './util/logoutUtils';
+import SettlementPage from './pages/accountbook/settlement/SettlementPage';
+import SettlementExpenseListPage from './pages/accountbook/settlement/SettlementExpenseListPage';
 
 export const TokenStateContext = createContext();
 
@@ -36,17 +38,17 @@ function App() {
       try {
         const result = await validateToken();
         setTokenStatus(result);
-        if (result === "Token valid") {
+        if (result === 'Token valid') {
           const info = await getMemberInfo();
           setMemberInfo(info);
-        } else if (result === "Token expired") {
+        } else if (result === 'Token expired') {
           await logout();
           handleTokenExpirationLogout(navigate);
         }
       } catch (error) {
-        console.error("토큰 유효성 검사 중 오류 발생:", error);
-        if (location.pathname !== "/") {
-          navigate("/login");
+        console.error('토큰 유효성 검사 중 오류 발생:', error);
+        if (location.pathname !== '/') {
+          navigate('/login');
         }
       }
     };
@@ -55,7 +57,7 @@ function App() {
   }, [navigate, location]);
 
   const currentTheme =
-    document.documentElement.getAttribute("data-theme") === "dark"
+    document.documentElement.getAttribute('data-theme') === 'dark'
       ? darkTheme
       : lightTheme;
 
@@ -71,6 +73,11 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/loading" element={<LoadingPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/settlement/:id" element={<SettlementPage />} />
+              <Route
+                path="/settlement/:id/expenses"
+                element={<SettlementExpenseListPage />}
+              />
               <Route
                 path="/main"
                 element={

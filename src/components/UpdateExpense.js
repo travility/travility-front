@@ -185,6 +185,19 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
     }.png`;
   };
 
+  //공동경비 or 개인경비
+  const handleSharedChange = (e) => {
+    const isShared = e.target.name === 'isShared';
+    setNewExpense({
+      ...newExpense,
+      expense: {
+        ...newExpense.expense,
+        isShared: isShared,
+      },
+    });
+  };
+
+  //편집 가능 상태 여부
   const toggleEditable = (e) => {
     e.preventDefault();
     if (isEditable) {
@@ -315,19 +328,17 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
                     <Input
                       type="checkbox"
                       name="isShared"
-                      value={true}
                       checked={newExpense.expense.isShared}
                       disabled={!isEditable}
-                      onChange={handleInputChange}
+                      onChange={handleSharedChange}
                     />
                     <label>공동 경비</label>
                     <Input
                       type="checkbox"
-                      name="isShared"
-                      value={false}
+                      name="isNotShared"
                       checked={!newExpense.expense.isShared}
                       disabled={!isEditable}
-                      onChange={handleInputChange}
+                      onChange={handleSharedChange}
                     />
                     <label>개인 경비</label>
                   </span>
