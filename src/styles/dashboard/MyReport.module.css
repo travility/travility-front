@@ -1,36 +1,98 @@
-.dashboard_container {
-  display: flex;
-}
-
-.content {
-  padding: 20px;
-  flex-grow: 1;
-}
-
-.header h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+.header h2 {
+  color: var(--main-color);
 }
 
 .chart_section {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.chart_container {
-  width: 500px; /* 도넛차트 넓이 */
-  height: 400px; /* 도넛 차트 높이 */
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 1fr auto 1fr;
+  gap: 1rem 2rem;
+  align-items: center;
+  justify-items: center;
 }
 
 .summary {
-  margin-bottom: 20px;
-  width: 100%; /* summary를 감싸는 박스의 너비를 100%로 설정 */
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+}
+
+.doughnutChart {
+  grid-column: 1 / 2;
+  grid-row: 2 / 4;
+  height: 100%;
+}
+
+.barChart_paymentMethod {
+  grid-column: 2 / 4;
+  grid-row: 2 / 3;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  height: 7rem;
+  width: 80%;
+  padding: 0.8rem;
+  justify-self: start;
+  background-color: var(--light-color);
+  border-radius: 1rem;
+}
+
+.barChart_paymentMethod span {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: 1rem;
+}
+
+.barChart {
+  background-color: var(--opposite-color);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  width: 80% !important;
+}
+
+.total_expenses {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-between;
+  width: 90%;
+  background-color: var(--light-color);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  justify-self: start;
+}
+
+.total_amount {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  padding-left: 5rem;
+}
+
+.barChart_expense {
+  grid-column: 2 / 4;
+  grid-row: 3 / 4;
+  width: 100%;
+}
+
+.decoImg {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.decoImg img {
+  height: 7rem;
+}
+
+.total_expenses span{
+  color: var(--text-color);
+  font-weight: 700;
 }
 
 .summary p {
-  font-size: 24px; 
-  font-weight: bold; 
+  font-size: 1em; 
+  font-weight: 700; 
   margin-bottom: 20px;
   white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
   overflow: hidden; /* 텍스트가 박스를 넘어서지 않도록 설정 */
@@ -39,74 +101,14 @@
 
 .highlight_category {
   color: green;
-  font-weight: bold;
-  font-size: 28px; 
+  font-weight: 700;
+  font-size: 1.5em; 
 }
 
 .highlight_paymentMethod {
   color: blue;
-  font-weight: bold;
-  font-size: 28px; 
-}
-
-.payment_summary_container {
-  display: flex;
-  flex-direction: column; /* 세로 정렬을 위해 column으로 변경 */
-  align-items: center; /* 수평 정렬을 위한 flex 설정 */
-  width: 300px; /* 고정 너비 추가 */
-  margin-right: 20px; /* 오른쪽에서 살짝 띄우기 */
-}
-
-/* [현금, 카드] 막대그래프 */
-.payment_summary {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 150px; /* 세로 폭 줄이기 */
-  width: 150%; /* 늘리면 왼쪽으로 옮겨짐 */
-  margin-right: 300px; /* .total_expenses와 같게 해야 예쁨 */
-}
-
-/* 총 지출 */
-.total_expenses {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-  background-color: #3b82f6;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  width: 150%; /* 늘리면 왼쪽으로 옮겨짐 */
-  margin-top: 20px;
-  margin-right: 300px; /* .payment_summary와 같게 해야 예쁨 */
-}
-
-.total_expenses span:first-child {
-  margin-right: 10px;
-}
-
-.total_amount {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-}
-
-.bar_container {
-  width: 40%; /* 막대 차트 너비 */
-  height: 300px; /* 막대 차트 높이 */
-  margin-top: -100px; /* 결제 수단 막대 차트와의 간격 조정 */
-  margin-left: auto; /* 오른쪽으로 붙이기 */
-  margin-right: 100px; /* 오른쪽에서 살짝 띄우기 */
-}
-
-.currency_label {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 10px;
-  text-align: right;
+  font-weight: 700;
+  font-size: 1.5em; 
 }
 
 .no_account_book {
