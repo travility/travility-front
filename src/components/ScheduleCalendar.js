@@ -24,7 +24,7 @@ const ScheduleCalendar = ({ onDateClick }) => {
   //사용자가 가진 모든 가계부의 (제목, 여행 시작일, 여행 종료일, 가계부 id)
   //가계부 id로 List<ExpenseDTO>(모든 지출)를 가져온다.
   //지출을 날짜별로 분류, 날짜별로 amount 합치기 (총합)
-  
+
   //여행 날짜 누르면 디테일
   //날짜별 지출 목록, 총합
 
@@ -58,7 +58,10 @@ const ScheduleCalendar = ({ onDateClick }) => {
         for (const event of fetchedEvents) {
           const accountbookId = event.accountbookId;
           const expensesData = await fetchDailyExpenses(accountbookId);
-          console.log(`Fetched daily expenses for accountbookId ${accountbookId}:`, expensesData);
+          console.log(
+            `Fetched daily expenses for accountbookId ${accountbookId}:`,
+            expensesData
+          );
 
           Object.entries(expensesData).forEach(([date, amount]) => {
             if (!allExpenses[date]) {
@@ -77,7 +80,6 @@ const ScheduleCalendar = ({ onDateClick }) => {
 
     loadEvents();
   }, []);
-
 
   //년월일
   const renderHeader = () => {
@@ -157,7 +159,9 @@ const ScheduleCalendar = ({ onDateClick }) => {
               </div>
             ))}
             {totalAmount > 0 && (
-              <div className={styles.totalAmount}>₩{totalAmount.toLocaleString()}</div>
+              <div className={styles.totalAmount}>
+                ₩{totalAmount.toLocaleString()}
+              </div>
             )}
           </div>
         );
@@ -181,6 +185,5 @@ const ScheduleCalendar = ({ onDateClick }) => {
     </div>
   );
 };
-
 
 export default ScheduleCalendar;
