@@ -87,7 +87,7 @@ const AccountBookDetail = () => {
         onShowPreparation={handleShowPreparation}
         expenses={accountBook.expenses || []}
       />
-      <ExpenseList expenses={filteredExpenses} />
+      <ExpenseList expenses={filteredExpenses} settlement={false} />
     </div>
   );
 };
