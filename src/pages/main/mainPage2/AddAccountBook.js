@@ -124,7 +124,7 @@ const AddAccountBook = () => {
       setTitleError("제목은 공백 포함 22 글자까지 입력 가능합니다.");
     }
 
-    setInputCount(input.length); // 글자 수를 inputCount에 저장
+    setInputCount(input.length > 22 ? 22 : input.length);
     setFormErrors((prevErrors) => ({ ...prevErrors, title: "" }));
   };
 
