@@ -8,8 +8,6 @@ import {
 } from "../../api/accountbookApi";
 import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 import { Button } from "../../styles/StyledComponents";
-} from '../../api/accountbookApi';
-import styles from '../../styles/accountbook/AccountBookListPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faExclamationTriangle,

@@ -1,0 +1,22 @@
+/* ExpenseStatistic.module.css */
+.statisticsContainer {
+  padding: 20px;
+}
+
+.selectContainer {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.chartsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* 차트크기조절 */
+.chart {
+  height: 300px;
+  width: 350px;
+}

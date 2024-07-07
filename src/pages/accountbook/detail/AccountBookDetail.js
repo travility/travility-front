@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getAccountBookById } from '../../../api/accountbookApi';
 import Sidebar from './AccountSidebar';
 import ExpenseList from './ExpenseList';
-import ExpenseStatistic from '../../../components/ExpenseStatistic';
+import ExpenseStatistic from '../../../components/statistic/ExpenseStatistic';
 import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 
 const AccountBookDetail = () => {
