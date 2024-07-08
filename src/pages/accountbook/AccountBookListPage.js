@@ -8,8 +8,6 @@ import {
 } from "../../api/accountbookApi";
 import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 import { Button } from "../../styles/StyledComponents";
-} from '../../api/accountbookApi';
-import styles from '../../styles/accountbook/AccountBookListPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faExclamationTriangle,
@@ -90,17 +88,17 @@ const AccountBookListPage = () => {
     <div className={styles.accountBook_list_page}>
       {accountBooks.length > 0 && (
         <div className={styles.action_buttons}>
-          <button className={styles.delete_button} onClick={toggleDeleteMode}>
+          <Button className={styles.delete_button} onClick={toggleDeleteMode}>
             {isDeleteMode ? '취소' : '삭제'}
-          </button>
+          </Button>
           {isDeleteMode && (
-            <button
+            <Button
               className={styles.confirm_delete_button}
               onClick={handleDeleteBooks}
               disabled={selectedBooks.length === 0}
             >
               선택 삭제
-            </button>
+            </Button>
           )}
         </div>
       )}
@@ -141,7 +139,7 @@ const AccountBookListPage = () => {
                     type="checkbox"
                     checked={selectedBooks.includes(accountBook.id)}
                     onChange={(event) => {
-                      event.stopProgation();
+                      event.stopPropagation();
                       handleSelectBook(accountBook);
                     }}
                   />
@@ -169,75 +167,9 @@ const AccountBookListPage = () => {
           ))}
         </div>
       )}
-      <div className={styles.action_buttons}>
-        <Button className="margin_btn" onClick={toggleDeleteMode}>
-          {isDeleteMode ? "취소" : "삭제"}
-        </Button>
-        {isDeleteMode && (
-          <Button
-            className="point_btn"
-            onClick={handleDeleteBooks}
-            disabled={selectedBooks.length === 0}
-          >
-            선택 삭제
-          </Button>
-        )}
-      </div>
-      <div className={styles.accountBook_list_grid_container}>
-        {accountBooks.map((accountBook) => (
-          <div
-            key={accountBook.id}
-            className={`${styles.accountBook_list_grid_item} ${
-              selectedBooks.includes(accountBook.id) ? styles.selected : ""
-            }`}
-            style={{
-              backgroundImage: `url(
-            http://localhost:8080/images/${accountBook.imgName}
-          )`,
-            }}
-            onClick={() => handleAccountBookClick(accountBook)}
-          >
-            {isDeleteMode && (
-              <div
-                className={styles.select_overlay}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleSelectBook(accountBook);
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedBooks.includes(accountBook.id)}
-                  onChange={(event) => {
-                    event.stopPropagation();
-                    handleSelectBook(accountBook);
-                  }}
-                />
-              </div>
-            )}
-            <div className={styles.accountBook_list_item_detail}>
-              <div className={styles.accountBook_list_title_and_flag}>
-                <span className={styles.accountBook_list_flag}>
-                  <img src={accountBook.countryFlag} alt="국기" />
-                </span>
-                <span className={styles.accountBook_list_title}>
-                  {accountBook.title}
-                </span>
-              </div>
-              <span className={styles.accountBook_list_dates}>
-                {`${formatDate(accountBook.startDate)} ~ ${formatDate(
-                  accountBook.endDate
-                )}`}
-              </span>
-              <span className={styles.accountBook_list_amount}>
-                {calculateTotalAmountInKRW(accountBook)}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
+
 
 export default AccountBookListPage;
