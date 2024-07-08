@@ -82,6 +82,10 @@ const ScheduleCalendar = ({ onDateClick, events, totalAmount, hasEvent }) => {
                 {event.title}
               </div>
             ))}
+            {totalAmount > 0 && (
+              <div className={styles.totalAmount}>
+                ₩{totalAmount.toLocaleString()}
+              </div>
             {dayTotalAmount > 0 && (
               <div className={styles.totalAmount}>₩{dayTotalAmount.toLocaleString()}</div>
             )}
