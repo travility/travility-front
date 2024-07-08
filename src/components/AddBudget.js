@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import styles from "../styles/components/AddBudget.module.css";
-import { fetchCurrencyCodes, fetchExchangeRate } from "../api/budgetApi";
+import React, { useState, useEffect } from 'react';
+import styles from '../styles/components/AddBudget.module.css';
+import { fetchCurrencyCodes, fetchExchangeRate } from '../api/budgetApi';
 import {
   ModalOverlay,
   Modal,
   ModalHeader,
   CloseButton,
   Button,
-} from "../styles/StyledComponents";
+} from '../styles/StyledComponents';
 
 const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
-  const [budgetType, setBudgetType] = useState("shared");
-  const [currency, setCurrency] = useState("KRW");
-  const [amount, setAmount] = useState("");
-  const [exchangeRate, setExchangeRate] = useState("1.00");
+  const [budgetType, setBudgetType] = useState('shared');
+  const [currency, setCurrency] = useState('KRW');
+  const [amount, setAmount] = useState('');
+  const [exchangeRate, setExchangeRate] = useState('1.00');
   const [budgets, setBudgets] = useState(initialBudgets || []);
   const [currencies, setCurrencies] = useState([]);
-  const [amountError, setAmountError] = useState("");
-  const [exchangeRateError, setExchangeRateError] = useState("");
+  const [amountError, setAmountError] = useState('');
+  const [exchangeRateError, setExchangeRateError] = useState('');
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
           setCurrencies(data.supported_codes);
         }
       } catch (error) {
-        alert("화폐 코드를 불러오는 중 오류가 발생했습니다.");
+        alert('화폐 코드를 불러오는 중 오류가 발생했습니다.');
       }
     };
 
@@ -43,10 +43,10 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
           if (data && data.conversion_rates && data.conversion_rates.KRW) {
             setExchangeRate(data.conversion_rates.KRW.toFixed(2));
           } else {
-            setExchangeRate("1.00");
+            setExchangeRate('1.00');
           }
         } catch (error) {
-          setExchangeRate("1.00");
+          setExchangeRate('1.00');
         }
       }
     };
@@ -56,15 +56,15 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
 
   const handleAddBudget = () => {
     if (!amount) {
-      setAmountError("금액을 입력하세요.");
+      setAmountError('금액을 입력하세요.');
       return;
     }
     if (!exchangeRate) {
-      setExchangeRateError("환율을 입력하세요.");
+      setExchangeRateError('환율을 입력하세요.');
       return;
     }
     const newBudget = {
-      isShared: budgetType === "shared",
+      isShared: budgetType === 'shared',
       curUnit: currency,
       amount: parseFloat(amount).toFixed(2),
       exchangeRate,
@@ -75,18 +75,18 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
 
   const handleEditBudget = () => {
     if (!amount) {
-      setAmountError("금액을 입력하세요.");
+      setAmountError('금액을 입력하세요.');
       return;
     }
     if (!exchangeRate) {
-      setExchangeRateError("환율을 입력하세요.");
+      setExchangeRateError('환율을 입력하세요.');
       return;
     }
     const updatedBudgets = budgets.map((budget, index) =>
       index === editIndex
         ? {
             ...budget,
-            isShared: budgetType === "shared",
+            isShared: budgetType === 'shared',
             curUnit: currency,
             amount: parseFloat(amount).toFixed(2),
             exchangeRate,
@@ -104,6 +104,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   };
 
   const handleRegister = () => {
+    console.log(budgets);
     onSubmit(budgets);
     onClose();
   };
@@ -122,10 +123,10 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
     if (regex.test(value)) {
-      setAmountError("");
+      setAmountError('');
       setAmount(value);
     } else {
-      setAmountError("숫자를 입력하세요.");
+      setAmountError('숫자를 입력하세요.');
     }
   };
 
@@ -133,16 +134,16 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
     if (regex.test(value)) {
-      setExchangeRateError("");
+      setExchangeRateError('');
       setExchangeRate(value);
     } else {
-      setExchangeRateError("숫자를 입력하세요.");
+      setExchangeRateError('숫자를 입력하세요.');
     }
   };
 
   const handleBudgetClick = (index) => {
     const budget = budgets[index];
-    setBudgetType(budget.isShared ? "shared" : "personal");
+    setBudgetType(budget.isShared ? 'shared' : 'personal');
     setCurrency(budget.curUnit);
     setAmount(budget.amount.toString());
     setExchangeRate(budget.exchangeRate.toString());
@@ -150,13 +151,13 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   };
 
   const resetForm = () => {
-    setBudgetType("shared");
-    setCurrency("KRW");
-    setAmount("");
-    setExchangeRate("1.00");
+    setBudgetType('shared');
+    setCurrency('KRW');
+    setAmount('');
+    setExchangeRate('1.00');
     setEditIndex(null);
-    setAmountError("");
-    setExchangeRateError("");
+    setAmountError('');
+    setExchangeRateError('');
   };
 
   return (
@@ -177,8 +178,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                       id="budgetTypeShared"
                       name="budgetType"
                       value="shared"
-                      checked={budgetType === "shared"}
-                      onChange={() => setBudgetType("shared")}
+                      checked={budgetType === 'shared'}
+                      onChange={() => setBudgetType('shared')}
                     />
                     공동경비
                   </label>
@@ -188,8 +189,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                       id="budgetTypePersonal"
                       name="budgetType"
                       value="personal"
-                      checked={budgetType === "personal"}
-                      onChange={() => setBudgetType("personal")}
+                      checked={budgetType === 'personal'}
+                      onChange={() => setBudgetType('personal')}
                     />
                     개인경비
                   </label>
@@ -254,7 +255,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                     editIndex !== null ? handleEditBudget : handleAddBudget
                   }
                 >
-                  {editIndex !== null ? "수정" : "예산 추가하기"}
+                  {editIndex !== null ? '수정' : '예산 추가하기'}
                 </Button>
                 {editIndex !== null && (
                   <button
@@ -274,7 +275,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                       className={styles.budgetDetail}
                       onClick={() => handleBudgetClick(index)}
                     >
-                      <span>{budget.isShared ? "공동경비" : "개인경비"}</span>
+                      <span>{budget.isShared ? '공동경비' : '개인경비'}</span>
                       <span>
                         {budget.curUnit} {parseFloat(budget.amount).toFixed(2)}
                       </span>
