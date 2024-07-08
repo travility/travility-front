@@ -1,8 +1,8 @@
-import axios from "axios";
-import axiosInstance from "../util/axiosInterceptor";
+import axios from 'axios';
+import axiosInstance from '../util/axiosInterceptor';
 
 export const addBudgets = async (accountBookId, budgets) => {
-  const response = await axiosInstance.post(
+  const response = await axiosInstance.put(
     `/accountbook/${accountBookId}/budget`,
     budgets
   );
@@ -18,7 +18,7 @@ export const fetchCurrencyCodes = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching currency codes:", error);
+    console.error('Error fetching currency codes:', error);
     throw error;
   }
 };
@@ -30,7 +30,7 @@ export const fetchExchangeRate = async (currency) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching exchange rate:", error);
+    console.error('Error fetching exchange rate:', error);
     throw error;
   }
 };

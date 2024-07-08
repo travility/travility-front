@@ -3,6 +3,7 @@ import ExpenseItem from './ExpenseItem';
 import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 import { Button } from '../../../styles/StyledComponents';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const ExpenseList = ({ expenses = [], settlement }) => {
   const [filter, setFilter] = useState('all');
@@ -56,9 +57,17 @@ const ExpenseList = ({ expenses = [], settlement }) => {
   );
 
   const goSettlement = () => {
-    const accountBookId =
-      expenses.length > 0 ? expenses[0].accountBookId : null;
-    navigate(`/settlement/${accountBookId}`);
+    if (!expenses || expenses.length === 0) {
+      Swal.fire({
+        title: '정산 실패',
+        text: '정산할 지출이 없습니다',
+        icon: 'error',
+        confirmButtonColor: '#2a52be',
+      });
+    } else {
+      const accountBookId = expenses[0].accountBookId;
+      navigate(`/settlement/${accountBookId}`);
+    }
   };
 
   return (
