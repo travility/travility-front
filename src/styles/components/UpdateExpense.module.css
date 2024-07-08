@@ -5,7 +5,8 @@
   gap: 1rem;
 }
 
-.imageContainer {
+/* 이미지 업로드 */
+.image_container {
   display: flex;
   text-align: center;
   margin-bottom: 16px;
@@ -13,13 +14,14 @@
   position: relative;
 }
 
-.hiddenInput {
+
+.hidden_input {
   display: none;
 }
 
-.imageWrapper {
+/* 업로드 이미지 preview */
+.upload_image_wrapper {
   margin: 1rem 0;
-  /* padding: 0.5rem; */
   border: 1px solid var(--line-color);
   background-color: var(--line-color);
   border-radius: 5px;
@@ -32,7 +34,7 @@
   width: 100%;
 }
 
-.image {
+.upload_image {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -42,7 +44,8 @@
   border-radius: 5px;
 }
 
-.addPhotoContainer {
+/* 사진을 추가하세요 */
+.addPhoto_container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -54,7 +57,7 @@
   pointer-events: none;
 }
 
-.addPhoto_imageContainer {
+.addPhoto_image_container {
   margin-bottom: 8px;
 }
 
@@ -63,35 +66,11 @@
 }
 
 .addPhoto_text {
-  color: white;
+  color: var(--text-color);
   text-align: center;
 }
-.expenseDetail {
-  display: flex;
-}
 
-.expenseDetail span{
-  margin-right: 1rem;
-}
-
-.expenseAmount {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.expenseTitle {
-  display: grid;
-  grid-template-columns: 1fr auto;
-}
-
-.expenseDate {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 70%;
-}
-
+/* 지출 메모 */
 .expenseMemo {
   padding: 0.5rem;
   border: 1px solid var(--line-color);
@@ -107,6 +86,36 @@
   outline: none;
 }
 
+/* 지출 디테일 - 경비,결제방식,금액 */
+.expenseDetail {
+  display: flex;
+}
+
+.expenseDetail span {
+  margin-right: 1rem;
+}
+
+.expenseAmount {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.expenseTitle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.expenseDate {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 70%;
+}
+
+/* 카테고리 */
 .categoryContainer {
   display: flex;
   justify-content: space-between;
@@ -131,5 +140,28 @@
 }
 
 .selected {
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid var(--text-color);
+}
+
+.readOnlyInput {
+  border: none !important;
+  background-color: transparent !important;
+  pointer-events: none !important;
+}
+
+.categoryImage {
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+}
+
+.paymentMethodImage {
+  cursor: pointer;
+}
+
+.readOnlyInput {
+  border: none;
+  background: none;
+  box-shadow: none;
+  pointer-events: none;
 }

@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   getAccountBooks,
   calculateTotalAmountInKRW,
   formatDate,
   deleteAccountBook,
+} from '../../api/accountbookApi';
+import styles from '../../styles/accountbook/AccountBookListPage.module.css';
+import { Button } from '../../styles/StyledComponents';
 } from "../../api/accountbookApi";
 import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 import { Button } from "../../styles/StyledComponents";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faExclamationTriangle,
-} from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const AccountBookListPage = () => {
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
-          setError(new Error("Unexpected response format"));
+          setError(new Error('Unexpected response format'));
         }
       } catch (error) {
         setError(error);
@@ -59,7 +60,7 @@ const AccountBookListPage = () => {
       setIsDeleteMode(false);
       setSelectedBooks([]);
     } catch (error) {
-      console.error("Failed to delete account books:", error);
+      console.error('Failed to delete account books:', error);
     }
   };
 
@@ -89,15 +90,19 @@ const AccountBookListPage = () => {
       {accountBooks.length > 0 && (
         <div className={styles.action_buttons}>
           <Button className={styles.delete_button} onClick={toggleDeleteMode}>
+          <Button className={styles.delete_button} onClick={toggleDeleteMode}>
             {isDeleteMode ? '취소' : '삭제'}
           </Button>
+          </Button>
           {isDeleteMode && (
+            <Button
             <Button
               className={styles.confirm_delete_button}
               onClick={handleDeleteBooks}
               disabled={selectedBooks.length === 0}
             >
               선택 삭제
+            </Button>
             </Button>
           )}
         </div>
@@ -109,9 +114,9 @@ const AccountBookListPage = () => {
             className={styles.no_accountBooks_icon}
           />
           <div>
-              작성하신 가계부가 없어요
-              <br />
-              가계부를 작성하시면 전체 가계부를 볼 수 있어요🐷
+            작성하신 가계부가 없어요
+            <br />
+            가계부를 작성하시면 전체 가계부를 볼 수 있어요🐷
           </div>
         </div>
       ) : (

@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     --pointor-color: #FEC144;
     --line-color: #E0E3E5;
     --gray-color: #A39E93;
+    --opposite-color: #ffffff;
     --background-color: #ffffff;
     --text-color: #000000;
     --font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
@@ -27,6 +28,9 @@ const GlobalStyle = createGlobalStyle`
     --background-color: #121212;
     --text-color: #ffffff;
     --line-color: #657df9;
+    --opposite-color: #000000;
+    --bold-color: #eff3ff;
+    --light-color: #392385;
   }
 
   html {

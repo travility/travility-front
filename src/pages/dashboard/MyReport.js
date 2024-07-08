@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Doughnut, Bar } from 'react-chartjs-2';
+import React, { useState, useEffect } from "react";
+import { Doughnut, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -8,12 +8,12 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../styles/dashboard/MyReport.module.css';
-import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../styles/dashboard/MyReport.module.css";
+import { getExpenseStatistics, getUserInfo } from "../../api/expenseApi";
 
 // 차트 구성요소 등록
 ChartJS.register(
@@ -32,14 +32,14 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top',
+      position: "top",
     },
     tooltip: {
       enabled: true,
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: '#fff',
+      color: "#fff",
       display: true, // 차트에 항목 표시
     },
   },
@@ -52,7 +52,7 @@ const options = {
 
 // 가로 막대 차트 옵션
 const horizontalBarOptions = {
-  indexAxis: 'y',
+  indexAxis: "y",
   maintainAspectRatio: false,
   responsive: true,
   plugins: {
@@ -64,9 +64,9 @@ const horizontalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: '#000',
-      anchor: 'end', // 항목 위치
-      align: 'end',
+      color: "#000",
+      anchor: "end", // 항목 위치
+      align: "end",
       display: true, // 차트에 항목 표시
     },
   },
@@ -93,9 +93,9 @@ const verticalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: '#000',
-      anchor: 'end',
-      align: 'end',
+      color: "#000",
+      anchor: "end",
+      align: "end",
       offset: -10, // ********** 항목 값 위치 조정
       display: true,
     },
@@ -110,18 +110,18 @@ const verticalBarOptions = {
 // 카테고리 이름 변환 (영어 -> 한국어)
 const getCategoryName = (category) => {
   switch (category) {
-    case 'ACCOMMODATION':
-      return '숙박';
-    case 'TRANSPORTATION':
-      return '교통';
-    case 'SHOPPING':
-      return '쇼핑';
-    case 'FOOD':
-      return '식비';
-    case 'TOURISM':
-      return '관광';
-    case 'OTHERS':
-      return '기타';
+    case "ACCOMMODATION":
+      return "숙박";
+    case "TRANSPORTATION":
+      return "교통";
+    case "SHOPPING":
+      return "쇼핑";
+    case "FOOD":
+      return "식비";
+    case "TOURISM":
+      return "관광";
+    case "OTHERS":
+      return "기타";
     default:
       return category; // 기본적으로 원래 카테고리 이름 반환
   }
@@ -143,9 +143,9 @@ const MyReport = () => {
   }); // 세로 막대 차트 데이터
   const [loading, setLoading] = useState(true); // 로딩 중 여부
   const [error, setError] = useState(null); // 오류 상태
-  const [userName, setUserName] = useState(''); // 사용자 이름
-  const [highestCategory, setHighestCategory] = useState(''); // 가장 높은 지출 카테고리
-  const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제 방법
+  const [userName, setUserName] = useState(""); // 사용자 이름
+  const [highestCategory, setHighestCategory] = useState(""); // 가장 높은 지출 카테고리
+  const [highestPaymentMethod, setHighestPaymentMethod] = useState(""); // 가장 많이 사용한 결제 방법
   const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부
   const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 애니메이션
 
@@ -170,12 +170,12 @@ const MyReport = () => {
 
         // 카테고리 목록
         const allCategories = [
-          'ACCOMMODATION',
-          'TRANSPORTATION',
-          'SHOPPING',
-          'FOOD',
-          'TOURISM',
-          'OTHERS',
+          "ACCOMMODATION",
+          "TRANSPORTATION",
+          "SHOPPING",
+          "FOOD",
+          "TOURISM",
+          "OTHERS",
         ];
 
         // 각 카테고리 지출 금액 계산
@@ -195,15 +195,15 @@ const MyReport = () => {
           labels: allCategories.map(getCategoryName),
           datasets: [
             {
-              label: 'KRW',
+              label: "KRW",
               data: categoryAmounts,
               backgroundColor: [
-                '#4bc0c0',
-                '#36a2eb',
-                '#ffcd56',
-                '#ff9f40',
-                '#9966ff',
-                '#c9cbcf',
+                "#23C288",
+                "#7697F9",
+                "#9B80E9",
+                "#FEC144",
+                "#B5CE2A",
+                "#828C98",
               ],
             },
           ],
@@ -212,28 +212,28 @@ const MyReport = () => {
         // 결제 방법별 지출 금액 계산
         const paymentMethodAmounts = {
           CASH:
-            paymentMethods.find((pm) => pm.paymentMethod === 'CASH')?.amount ||
+            paymentMethods.find((pm) => pm.paymentMethod === "CASH")?.amount ||
             0,
           CARD:
-            paymentMethods.find((pm) => pm.paymentMethod === 'CARD')?.amount ||
+            paymentMethods.find((pm) => pm.paymentMethod === "CARD")?.amount ||
             0,
         };
 
         // 가장 많이 사용한 결제 방법 찾기
         setHighestPaymentMethod(
           paymentMethodAmounts.CARD > paymentMethodAmounts.CASH
-            ? '카드'
-            : '현금'
+            ? "카드"
+            : "현금"
         );
 
         // 가로 막대 차트 설정
         setPaymentData({
-          labels: ['현금', '카드'],
+          labels: ["현금", "카드"],
           datasets: [
             {
-              label: 'KRW',
+              label: "KRW",
               data: [paymentMethodAmounts.CASH, paymentMethodAmounts.CARD],
-              backgroundColor: ['#e0e0e0', '#2c73d2'],
+              backgroundColor: ["#FFBBE5", "#2c73d2"],
             },
           ],
         });
@@ -268,15 +268,15 @@ const MyReport = () => {
           labels: allCategories.map(getCategoryName),
           datasets: [
             {
-              label: 'KRW',
+              label: "KRW",
               data: categoryAmounts,
               backgroundColor: [
-                '#4bc0c0',
-                '#36a2eb',
-                '#ffcd56',
-                '#ff9f40',
-                '#9966ff',
-                '#c9cbcf',
+                "#23C288",
+                "#7697F9",
+                "#9B80E9",
+                "#FEC144",
+                "#B5CE2A",
+                "#828C98",
               ],
             },
           ],
@@ -302,8 +302,8 @@ const MyReport = () => {
   }
 
   return (
-    <div className={styles.dashboard_container}>
-      <div className={styles.content}>
+    <div className="wrapper">
+      <div className={styles.myreport_content}>
         {!hasAccountBook ? (
           <div className={styles.no_account_book}>
             <FontAwesomeIcon
@@ -319,42 +319,48 @@ const MyReport = () => {
         ) : (
           <>
             <div className={styles.header}>
-              <h1>지출 통계</h1>
+              <h2>지출 통계</h2>
             </div>
             <div className={styles.chart_section}>
-              <div className={styles.chart_container}>
-                <div className={styles.summary}>
-                  <p>
-                    {userName}님은{' '}
-                    <span className={styles.highlight_category}>
-                      {getCategoryName(highestCategory)}
-                    </span>
-                    에 가장 많은 소비를 하고, <br />
-                    <span className={styles.highlight_paymentMethod}>
-                      {highestPaymentMethod}
-                    </span>
-                    {highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이
-                    결제하셨어요.
-                  </p>
-                </div>
+              <div className={styles.summary}>
+                <p>
+                  {userName}님은{" "}
+                  <span className={styles.highlight_category}>
+                    {getCategoryName(highestCategory)}
+                  </span>
+                  에 가장 많은 소비를 하고, <br />
+                  <span className={styles.highlight_paymentMethod}>
+                    {highestPaymentMethod}
+                  </span>
+                  {highestPaymentMethod === "현금" ? "으로" : "로"} 가장 많이
+                  결제하셨어요.
+                </p>
+              </div>
+              <div className={styles.doughnutChart}>
                 <Doughnut data={categoryData} options={options} />
               </div>
-              <div className={styles.payment_summary_container}>
-                <div className={styles.payment_summary}>
-                  <Bar data={paymentData} options={horizontalBarOptions} />
-                </div>
-                <div className={styles.total_expenses}>
-                  <span>총 지출</span>{' '}
-                  <span className={styles.total_amount}>
-                    ₩ {displayAmount.toLocaleString()}
-                  </span>
-                </div>
+              <div className={styles.barChart_paymentMethod}>
+                <span>결제방법</span>
+                <Bar
+                  className={styles.barChart}
+                  data={paymentData}
+                  options={horizontalBarOptions}
+                />
+              </div>
+              <div className={styles.total_expenses}>
+                <span>총 지출 : </span>
+                <span className={styles.total_amount}>
+                  ₩ {displayAmount.toLocaleString()}
+                </span>
+              </div>
+              <div className={styles.barChart_expense}>
+                <Bar data={categoryBarData} options={verticalBarOptions} />
+              </div>
+              <div className={styles.currency_label}>화폐단위 : KRW</div>
+              <div className={styles.decoImg}>
+                <img src="/images/smartPig.png" alt="pig" />
               </div>
             </div>
-            <div className={styles.bar_container}>
-              <Bar data={categoryBarData} options={verticalBarOptions} />
-            </div>
-            <div className={styles.currency_label}>화폐단위 : KRW</div>
           </>
         )}
       </div>
