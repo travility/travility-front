@@ -100,6 +100,12 @@
   margin-bottom: 10px;
 }
 
+.settlementDetails_item:nth-child(3) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .perPersonExpense {
   font-size: 20px;
   font-weight: bold;

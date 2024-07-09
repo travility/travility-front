@@ -6,10 +6,11 @@ import { Button } from '../../../styles/StyledComponents';
 import {
   getAccountBook,
   getPerPersonAmount,
-  getTotalSharedExpenses,
+  getTotalSharedExpensesAndExchangeRates,
 } from '../../../api/settlementApi';
-import Share from '../../../components/Share';
+import Share from '../../../components/settlement/Share';
 import { formatNumberWithCommas } from '../../../util/calcUtils';
+import SettlementExchangeRate from '../../../components/settlement/SettlementExchangeRate';
 
 //헤더의 로그아웃 안 보이게
 //네비바 안 보이게
@@ -17,9 +18,13 @@ import { formatNumberWithCommas } from '../../../util/calcUtils';
 const SettlementPage = () => {
   const { id } = useParams();
   const [accountBook, setAccountBook] = useState(null);
-  const [totalSharedExpense, setTotalSharedExpense] = useState(0);
+  const [currencyToAvgExchangeRate, setCurrencyToAvgExchangeRate] = useState(
+    []
+  );
+  const [totalSharedExpenses, setTotalSharedExpenses] = useState(0);
   const [perPersonExpense, setPerPersonExpense] = useState(0);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,8 +33,14 @@ const SettlementPage = () => {
         const accountBook = await getAccountBook(id);
         setAccountBook(accountBook);
 
-        const totalSharedExpense = await getTotalSharedExpenses(id);
-        setTotalSharedExpense(totalSharedExpense);
+        const totalSharedExpenseAndExchangeRates =
+          await getTotalSharedExpensesAndExchangeRates(id);
+        setCurrencyToAvgExchangeRate(
+          totalSharedExpenseAndExchangeRates.currencyToAvgExchangeRate
+        );
+        setTotalSharedExpenses(
+          totalSharedExpenseAndExchangeRates.totalSharedExpenses
+        );
 
         const perPersonExpense = await getPerPersonAmount(id);
         setPerPersonExpense(perPersonExpense);
@@ -102,7 +113,14 @@ const SettlementPage = () => {
                 여행 일정 : {accountBook.startDate} ~ {accountBook.endDate}
               </div>
               <div className={styles.settlementDetails_item}>
-                정산 금액 : {formatNumberWithCommas(totalSharedExpense)} 원
+                <span className={styles.amount}>
+                  정산 금액 : {formatNumberWithCommas(totalSharedExpenses)} 원
+                </span>
+                <span className={styles.settlementExchangeRate_container}>
+                  <Button onClick={() => setIsExchangeRateModalOpen(true)}>
+                    정산 환율
+                  </Button>
+                </span>
               </div>
             </div>
             <div className={styles.perPersonExpense}>
@@ -125,6 +143,13 @@ const SettlementPage = () => {
           onClose={() => setIsShareModalOpen(false)}
           imgName={accountBook.imgName}
           countryName={accountBook.countryName}
+        />
+      )}
+      {isExchangeRateModalOpen && (
+        <SettlementExchangeRate
+          isOpen={isExchangeRateModalOpen}
+          onClose={() => setIsExchangeRateModalOpen(false)}
+          currencyToAvgExchangeRate={currencyToAvgExchangeRate}
         />
       )}
     </>

@@ -1,7 +1,11 @@
 import React from 'react';
-import { ModalOverlay, Modal, ModalHeader } from '../styles/StyledComponents';
+import {
+  ModalOverlay,
+  Modal,
+  ModalHeader,
+} from '../../styles/StyledComponents';
 import { CloseButton } from 'react-bootstrap';
-import styles from '../styles/components/Share.module.css';
+import styles from '../../styles/components/Share.module.css';
 import { useLocation } from 'react-router-dom';
 
 const Share = ({ isOpen, onClose, imgName, countryName }) => {
