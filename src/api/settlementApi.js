@@ -11,8 +11,8 @@ export const getAccountBook = async (id) => {
 };
 
 //공동 경비 합계
-export const getTotalSharedExpenses = async (id) => {
-  const reponse = await axios.get(`${API_SERVER_HOST}/settlement/${id}/total`);
+export const getTotalSharedExpensesAndExchangeRates = async (id) => {
+  const reponse = await axios.get(`${API_SERVER_HOST}/settlement/${id}/totals`);
   return reponse.data;
 };
 

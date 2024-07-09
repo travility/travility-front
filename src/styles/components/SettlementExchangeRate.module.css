@@ -1,0 +1,30 @@
+/* SettlementExchangeRate.module.css */
+
+.settlementExchangeRate_title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.exchangeRates_container {
+  margin-top: 1rem;
+}
+
+.exchangeRate {
+  margin-bottom: 0.5rem;
+}
+
+.exchangeRate_currency {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.exchangeRate_rate {
+  color: #333; /* 환율 값 색상 */
+}
+
+.description {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #666; /* 설명 텍스트 색상 */
+}
