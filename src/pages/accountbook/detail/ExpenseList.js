@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import ExpenseItem from './ExpenseItem';
-import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
-import { Button } from '../../../styles/StyledComponents';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from "react";
+import ExpenseItem from "./ExpenseItem";
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import { Button } from "../../../styles/StyledComponents";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ExpenseList = ({ expenses = [], settlement }) => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log(expenses);
-  });
+  }, [expenses]);
 
-  // 지출 그룹화
   const groupedExpenses = expenses.reduce((acc, expense) => {
     const date = new Date(expense.expenseDate).toLocaleDateString();
     if (!acc[date]) {
@@ -23,12 +22,11 @@ const ExpenseList = ({ expenses = [], settlement }) => {
     return acc;
   }, {});
 
-  // 지출 필터링
   const filteredExpenses = Object.keys(groupedExpenses).reduce((acc, date) => {
     const filtered = groupedExpenses[date].filter((expense) => {
-      if (filter === 'all') return true;
-      if (filter === 'shared' && expense.isShared) return true;
-      if (filter === 'personal' && !expense.isShared) return true;
+      if (filter === "all") return true;
+      if (filter === "shared" && expense.isShared) return true;
+      if (filter === "personal" && !expense.isShared) return true;
       return false;
     });
 
@@ -59,10 +57,10 @@ const ExpenseList = ({ expenses = [], settlement }) => {
   const goSettlement = () => {
     if (!expenses || expenses.length === 0) {
       Swal.fire({
-        title: '정산 실패',
-        text: '정산할 지출이 없습니다',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
+        title: "정산 실패",
+        text: "정산할 지출이 없습니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
       });
     } else {
       const accountBookId = expenses[0].accountBookId;
@@ -76,20 +74,20 @@ const ExpenseList = ({ expenses = [], settlement }) => {
         {!settlement && (
           <div className={styles.filterButtons}>
             <Button
-              className={filter === 'all' ? styles.selectedButton : ''}
-              onClick={() => setFilter('all')}
+              className={filter === "all" ? styles.selectedButton : ""}
+              onClick={() => setFilter("all")}
             >
               모두보기
             </Button>
             <Button
-              className={filter === 'shared' ? styles.selectedButton : ''}
-              onClick={() => setFilter('shared')}
+              className={filter === "shared" ? styles.selectedButton : ""}
+              onClick={() => setFilter("shared")}
             >
               공동경비
             </Button>
             <Button
-              className={filter === 'personal' ? styles.selectedButton : ''}
-              onClick={() => setFilter('personal')}
+              className={filter === "personal" ? styles.selectedButton : ""}
+              onClick={() => setFilter("personal")}
             >
               개인경비
             </Button>

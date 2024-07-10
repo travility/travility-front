@@ -1,13 +1,25 @@
-.inputGroup {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 1rem;
-  align-items: center;
+.modal_content {
+  font-size: 0.8em;
+  font-weight: 700;
 }
 
-.inputGroup label {
-  font-size: 0.8em;
-  font-weight: 600;
+.tripInfo_form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.tripInfo_formGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.tripInfo_formGroup label {
+  flex: 1;
+  margin-right: 1rem;
+  white-space: nowrap;
 }
 
 .selectedCountry {
@@ -58,84 +70,52 @@
   text-align: center;
 }
 
-.error {
-  color: var(--pointor-color);
-  font-size: 0.8rem;
-  text-align: right;
-}
-
-.buttonContainer {
+.button_container {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1rem;
 }
 
-.button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modifyButton,
-.addButton {
-  background-color: var(--main-color);
-  color: #fff;
-}
-
-.modifyButton:hover,
-.addButton:hover {
-  background-color: var(--second-color);
-}
-
-.deleteButton {
-  background-color: var(--pointor-color);
-  color: #fff;
-}
-
-.deleteButton:hover {
-  opacity: 0.8;
-}
-
-.imageContainer {
+/* 이미지 업로드 */
+.image_container {
   display: flex;
   text-align: center;
-  margin-bottom: 16px;
-  max-height: 250px;
+  margin: 0.6rem 0;
+  max-height: 10rem;
+  width: 100%;
   position: relative;
 }
 
-.hiddenInput {
+.hidden_input {
   display: none;
 }
 
-.imageWrapper {
-  margin: 1rem 0;
-  /* padding: 0.5rem; */
+/* 업로드 이미지 preview */
+.upload_image_wrapper {
   border: 1px solid var(--line-color);
-  background-color: var(--line-color);
-  border-radius: 5px;
+  background-color: var(--gray-color);
+  border-radius: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 10rem;
   text-align: center;
   position: relative;
   width: 100%;
+  height: 10rem;
 }
 
-.image {
+.upload_image {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 100%;
   max-height: 100%;
-  border-radius: 5px;
 }
 
-.addPhotoContainer {
+/* 사진을 추가하세요 */
+.addPhoto_container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -147,50 +127,11 @@
   pointer-events: none;
 }
 
-.addPhoto_imageContainer {
-  margin-bottom: 8px;
-}
-
 .addPhoto_image {
-  width: 20%;
-}
-
-.addPhoto_text {
-  color: white;
-  text-align: center;
-}
-
-.budgetSummary {
-  margin-top: 1rem;
-  border-top: 1px solid var(--line-color);
-  padding-top: 0.3rem;
-  font-size: 0.8rem;
-}
-
-.budgetDetailContainer {
-  background: var(--line-color);
-  height: 10rem;
-  border-radius: 5px;
-  overflow-y: auto;
-  padding: 1rem;
-}
-
-.budgetDetail {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.2rem;
-  border-radius: 5px;
-  margin-bottom: 0.5rem;
+  width: 1.5rem;
   cursor: pointer;
 }
 
-.budgetDetail:hover {
-  color: var(--pointor-color);
-}
-
-.totalBudget {
-  margin-top: 1rem;
-  font-weight: 700;
-  text-align: right;
-  color: var(--pointor-color);
+button {
+  margin-top: 0.5rem;
 }

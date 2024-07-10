@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
-import UpdateExpense from '../../../components/UpdateExpense';
+import React, { useState } from "react";
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import UpdateExpense from "../../../components/UpdateExpense";
 
 const categoryImages = {
-  TRANSPORTATION: 'transportation.png',
-  ACCOMMODATION: 'accommodation.png',
-  FOOD: 'food.png',
-  TOURISM: 'tourism.png',
-  SHOPPING: 'shopping.png',
-  OTHERS: 'others.png',
+  TRANSPORTATION: "transportation.png",
+  ACCOMMODATION: "accommodation.png",
+  FOOD: "food.png",
+  TOURISM: "tourism.png",
+  SHOPPING: "shopping.png",
+  OTHERS: "others.png",
 };
 
-const ExpenseItem = ({ expense }) => {
+const ExpenseItem = ({ expense, accountBook }) => {
   const [imgError, setImgError] = useState(false);
-  const categoryImage = categoryImages[expense.category] || 'others.png';
+  const categoryImage = categoryImages[expense.category] || "others.png";
   const [isUpdateExpenseModalOpen, setIsUpdateExpenseModalOpen] =
     useState(false);
-
-  useEffect(() => {
-    console.log(expense);
-  });
 
   return (
     <>
@@ -28,7 +24,7 @@ const ExpenseItem = ({ expense }) => {
         onClick={() => setIsUpdateExpenseModalOpen(true)}
       >
         <span className={styles.type}>
-          {expense.isShared ? '공동경비' : '개인경비'}
+          {expense.isShared ? "공동경비" : "개인경비"}
         </span>
         <img
           className={styles.categoryImg}
@@ -54,6 +50,7 @@ const ExpenseItem = ({ expense }) => {
           isOpen={isUpdateExpenseModalOpen}
           onClose={() => setIsUpdateExpenseModalOpen(false)}
           expense={expense}
+          accountBook={accountBook}
         />
       )}
     </>
