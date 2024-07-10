@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../styles/components/UpdateExpense.module.css';
-import Swal from 'sweetalert2';
-import { deleteExpense, updateExpense } from '../api/expenseApi';
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import styles from "../styles/components/UpdateExpense.module.css";
+import Swal from "sweetalert2";
+import { deleteExpense, updateExpense } from "../api/expenseApi";
 import {
   handleSuccessSubject,
   handlefailureSubject,
-} from '../util/logoutUtils';
+} from "../util/logoutUtils";
 import {
   ModalOverlay,
   Modal,
@@ -13,48 +14,51 @@ import {
   CloseButton,
   Button,
   Input,
-} from '../styles/StyledComponents';
-import Select from 'react-select';
+} from "../styles/StyledComponents";
+import { useTheme } from "../styles/Theme";
 
+// 지출 카테고리
 const categories = [
   {
-    name: 'TRANSPORTATION',
-    label: '교통',
-    img: '/images/account/category/transportation_bk.png',
+    name: "TRANSPORTATION",
+    label: "교통",
+    img: "/images/account/category/transportation.png",
   },
-  { name: 'FOOD', label: '식비', img: '/images/account/category/food_bk.png' },
+  { name: "FOOD", label: "식비", img: "/images/account/category/food.png" },
   {
-    name: 'TOURISM',
-    label: '관광',
-    img: '/images/account/category/tourism_bk.png',
-  },
-  {
-    name: 'ACCOMMODATION',
-    label: '숙박',
-    img: '/images/account/category/accommodation_bk.png',
+    name: "TOURISM",
+    label: "관광",
+    img: "/images/account/category/tourism.png",
   },
   {
-    name: 'SHOPPING',
-    label: '쇼핑',
-    img: '/images/account/category/shopping_bk.png',
+    name: "ACCOMMODATION",
+    label: "숙박",
+    img: "/images/account/category/accommodation.png",
   },
   {
-    name: 'OTHERS',
-    label: '기타',
-    img: '/images/account/category/others_bk.png',
+    name: "SHOPPING",
+    label: "쇼핑",
+    img: "/images/account/category/shopping.png",
+  },
+  {
+    name: "OTHERS",
+    label: "기타",
+    img: "/images/account/category/others.png",
   },
 ];
 
+// 결제 방식
 const paymentMethod = [
-  { name: 'CASH', label: '현금' },
-  { name: 'CARD', label: '카드' },
+  { name: "CASH", label: "현금" },
+  { name: "CARD", label: "카드" },
 ];
 
-const UpdateExpense = ({ isOpen, onClose, expense }) => {
+// 지출 항목 업데이트
+const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
   const [newExpense, setNewExpense] = useState({
     expense: {
-      expenseDate: expense.expenseDate.split('T')[0],
-      expenseTime: expense.expenseDate.split('T')[1],
+      expenseDate: expense.expenseDate.split("T")[0],
+      expenseTime: expense.expenseDate.split("T")[1],
       title: expense.title,
       category: expense.category,
       memo: expense.memo,
@@ -67,7 +71,9 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
     previewImg: null,
     isDefaultImage: true,
   });
+
   const [isEditable, setIsEditable] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     console.log(isEditable);
@@ -76,20 +82,20 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
   }, [isEditable, expense, newExpense.expense]);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setNewExpense({
-      ...newExpense,
+    const { name, value, type } = e.target;
+    setNewExpense((prevState) => ({
+      ...prevState,
       expense: {
-        ...newExpense.expense,
-        [name]: type === 'checkbox' ? checked : value,
+        ...prevState.expense,
+        [name]: type === "radio" ? value === "true" : value,
       },
-    });
+    }));
   };
 
   //이미지 클릭 시, input 파일 작동
   const handleImageClick = () => {
     if (isEditable) {
-      document.getElementById('fileInput').click();
+      document.getElementById("fileInput").click();
     }
   };
 
@@ -100,12 +106,12 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
 
     const file = e.target.files[0];
 
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       Swal.fire({
-        title: '이미지 파일 아님',
-        text: '이미지 파일만 업로드 가능합니다',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
+        title: "이미지 파일 아님",
+        text: "이미지 파일만 업로드 가능합니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
       });
       return;
     }
@@ -118,7 +124,7 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
     });
   };
 
-  //지출 수정
+  // 지출 수정
   const handleUpdateExpense = (e) => {
     e.preventDefault();
     const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`;
@@ -128,34 +134,34 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
       expenseDate: combinedDateTime,
     };
     const formData = new FormData();
-    formData.append('expenseInfo', JSON.stringify(expenseData));
+    formData.append("expenseInfo", JSON.stringify(expenseData));
     if (newExpense.newImg) {
-      formData.append('img', newExpense.newImg);
+      formData.append("img", newExpense.newImg);
     }
 
-    console.log(formData.get('expenseInfo'));
-    console.log(formData.get('img'));
+    console.log(formData.get("expenseInfo"));
+    console.log(formData.get("img"));
 
     updateExpense(expense.id, formData)
       .then(() => {
-        handleSuccessSubject('지출', '수정');
+        handleSuccessSubject("지출", "수정");
       })
       .catch((error) => {
         console.log(error);
-        handlefailureSubject('지출', '수정');
+        handlefailureSubject("지출", "수정");
       });
   };
 
-  //지출 삭제
+  // 지출 삭제
   const handleDeleteExpense = (e) => {
     e.preventDefault();
     deleteExpense(expense.id)
       .then(() => {
-        handleSuccessSubject('지출', '삭제');
+        handleSuccessSubject("지출", "삭제");
       })
       .catch((error) => {
         console.log(error);
-        handlefailureSubject('지출', '삭제');
+        handlefailureSubject("지출", "삭제");
       });
   };
 
@@ -169,16 +175,17 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
     });
   };
 
+  // 다크모드, 선택여부에 따른 이미지 변경
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
-    return `/images/account/${method.toLowerCase()}${
-      isSelected ? '_bk' : ''
-    }.png`;
+    const suffix =
+      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
+    return `/images/account/${method.toLowerCase()}${suffix}.png`;
   };
 
   //공동경비 or 개인경비
   const handleSharedChange = (e) => {
-    const isShared = e.target.name === 'isShared';
+    const isShared = e.target.name === "isShared";
     setNewExpense({
       ...newExpense,
       expense: {
@@ -204,26 +211,42 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
     setIsEditable(false);
   };
 
+  // React Select 커스텀
   const customStyles = {
+    // 전체 컨테이너
     control: (base) => ({
       ...base,
-      display: 'flex',
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      color: "var(--text-color)",
     }),
+    // 옵션 리스트
     option: (base, { data }) => ({
       ...base,
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
+      background: "var(--background-color)",
+      color: "var(--text-color)",
+      fontSize: "0.5em",
+      ":hover": {
+        background: "var(--main-color)",
+        color: "#fff",
+      },
     }),
+    // 선택된 옵션
     singleValue: (base, { data }) => ({
       ...base,
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
+      color: "var(--text-color)",
+      fontSize: "0.6em",
     }),
   };
 
   const formatOptionLabel = ({ label, img }) => (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <img src={img} alt="" style={{ width: '20px', marginRight: '10px' }} />
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <img src={img} alt="" style={{ width: "1rem", marginRight: "1rem" }} />
       {label}
     </div>
   );
@@ -273,49 +296,42 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
                     readOnly={!isEditable}
                     onChange={handleInputChange}
                     className={`${styles.titleInput} ${
-                      !isEditable ? styles.readOnlyInput : ''
+                      !isEditable ? styles.readOnlyInput : ""
                     }`}
                   ></Input>
                 </div>
                 <CloseButton onClick={onClose}>&times;</CloseButton>
               </ModalHeader>
               <div className={styles.modalContent}>
-                <div>
-                  <div className={styles.expenseDate}>
-                    <Input
-                      type="date"
-                      name="expenseDate"
-                      value={newExpense.expense.expenseDate}
-                      readOnly={!isEditable}
-                      onChange={handleInputChange}
-                      className={`${!isEditable ? styles.readOnlyInput : ''}`}
-                    ></Input>
-                    <Input
-                      type="time"
-                      name="expenseTime"
-                      value={newExpense.expense.expenseTime}
-                      readOnly={!isEditable}
-                      onChange={handleInputChange}
-                      className={`${!isEditable ? styles.readOnlyInput : ''}`}
-                    ></Input>
-                  </div>
+                <div className={styles.expenseDate}>
+                  <Input
+                    type="date"
+                    name="expenseDate"
+                    value={newExpense.expense.expenseDate}
+                    readOnly={!isEditable}
+                    onChange={handleInputChange}
+                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                  ></Input>
+                  <Input
+                    type="time"
+                    name="expenseTime"
+                    value={newExpense.expense.expenseTime}
+                    readOnly={!isEditable}
+                    onChange={handleInputChange}
+                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                  ></Input>
                 </div>
                 <div className={styles.image_container}>
-                  {newExpense.isDefaultImage && (
+                  {isEditable && newExpense.isDefaultImage && (
                     <div className={styles.addPhoto_container}>
-                      <div className={styles.addPhoto_image_container}>
-                        <img
-                          className={styles.addPhoto_image}
-                          src="/images/account/add_photo.png"
-                          alt="사진 추가"
-                        />
-                      </div>
-                      <div className={styles.addPhoto_text}>
-                        사진을 추가하세요
-                      </div>
+                      <img
+                        className={styles.addPhoto_image}
+                        src="/images/account/add_photo.png"
+                        alt="사진 추가"
+                      />
                     </div>
                   )}
-                  <Input
+                  <input
                     id="fileInput"
                     className={styles.hidden_input}
                     type="file"
@@ -336,48 +352,55 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
                     />
                   </div>
                 </div>
-                <div className={styles.expenseMemo}>
-                  <input
-                    type="text"
+                <div className={styles.textArea}>
+                  <textarea
                     name="memo"
                     value={newExpense.expense.memo}
                     readOnly={!isEditable}
                     onChange={handleInputChange}
-                    className={`${!isEditable ? styles.readOnlyInput : ''}`}
-                  ></input>
+                    rows="4"
+                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    style={{
+                      resize: "none",
+                      overflowY: "auto",
+                      border: "none",
+                    }}
+                  />
                 </div>
                 <div className={styles.expenseDetail}>
-                  <span>
+                  <div className={styles.expenseType}>
                     {isEditable ? (
                       <>
-                        <Input
-                          type="checkbox"
-                          name="isShared"
-                          value={true}
-                          checked={newExpense.expense.isShared}
-                          disabled={!isEditable}
-                          onChange={handleInputChange}
-                        />
-                        <label>공동 경비</label>
-                        <Input
-                          type="checkbox"
-                          name="isNotShared"
-                          value={false}
-                          checked={!newExpense.expense.isShared}
-                          disabled={!isEditable}
-                          onChange={handleInputChange}
-                        />
-                        <label>개인 경비</label>
+                        <div className={styles.isShared}>
+                          <Input
+                            type="radio"
+                            name="isShared"
+                            value={true}
+                            checked={newExpense.expense.isShared === true}
+                            onChange={handleInputChange}
+                          />
+                          공동 경비
+                        </div>
+                        <div className={styles.isShared}>
+                          <Input
+                            type="radio"
+                            name="isShared"
+                            value={false}
+                            checked={newExpense.expense.isShared === false}
+                            onChange={handleInputChange}
+                          />
+                          개인 경비
+                        </div>
                       </>
                     ) : (
-                      <label>
+                      <div className={styles.selectedExpenseType}>
                         {newExpense.expense.isShared
-                          ? '공동 경비'
-                          : '개인 경비'}
-                      </label>
+                          ? "공동 경비"
+                          : "개인 경비"}
+                      </div>
                     )}
-                  </span>
-                  <span className={styles.paymentMethods}>
+                  </div>
+                  <div className={styles.paymentMethods}>
                     {paymentMethod
                       .filter(
                         (method) =>
@@ -397,24 +420,48 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
                           className={styles.paymentMethodImage}
                         />
                       ))}
-                  </span>
+                  </div>
                   <div className={styles.expenseAmount}>
-                    <Input
-                      type="text"
-                      name="curUnit"
-                      value={newExpense.expense.curUnit}
-                      readOnly={!isEditable}
-                      onChange={handleInputChange}
-                      className={`${!isEditable ? styles.readOnlyInput : ''}`}
-                    ></Input>
+                    {isEditable ? (
+                      <Select
+                        value={{
+                          label: newExpense.expense.curUnit,
+                          value: newExpense.expense.curUnit,
+                        }}
+                        onChange={(selectedOption) =>
+                          setNewExpense((prev) => ({
+                            ...prev,
+                            expense: {
+                              ...prev.expense,
+                              curUnit: selectedOption.value,
+                            },
+                          }))
+                        }
+                        options={accountBook.budgets.map((budget) => ({
+                          label: budget.curUnit,
+                          value: budget.curUnit,
+                        }))}
+                        styles={customStyles}
+                        noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
+                      />
+                    ) : (
+                      <Input
+                        type="text"
+                        name="curUnit"
+                        value={newExpense.expense.curUnit}
+                        readOnly={!isEditable}
+                        onChange={handleInputChange}
+                        className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                      />
+                    )}
                     <Input
                       type="text"
                       name="amount"
                       value={newExpense.expense.amount}
                       readOnly={!isEditable}
                       onChange={handleInputChange}
-                      className={`${!isEditable ? styles.readOnlyInput : ''}`}
-                    ></Input>
+                      className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    />
                   </div>
                 </div>
                 <div className={styles.buttonGroup}>
@@ -422,23 +469,25 @@ const UpdateExpense = ({ isOpen, onClose, expense }) => {
                     className={styles.updateButton}
                     onClick={toggleEditable}
                   >
-                    {isEditable ? '편집완료' : '편집하기'}
+                    {isEditable ? "편집완료" : "편집하기"}
                   </Button>
-                  {isEditable && (
+                  <div className={styles.cancelAndDelete}>
+                    {isEditable && (
+                      <Button
+                        className={styles.cancel_button}
+                        onClick={handleCancelEdit}
+                      >
+                        취소
+                      </Button>
+                    )}
                     <Button
-                      className={styles.cancelButton}
-                      onClick={handleCancelEdit}
+                      name="delete"
+                      className={styles.delete_button}
+                      onClick={handleDeleteExpense}
                     >
-                      취소
+                      삭제
                     </Button>
-                  )}
-                  <Button
-                    name="delete"
-                    className={styles.deleteButton}
-                    onClick={handleDeleteExpense}
-                  >
-                    삭제
-                  </Button>
+                  </div>
                 </div>
               </div>
             </form>

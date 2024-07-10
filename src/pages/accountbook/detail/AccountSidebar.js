@@ -18,7 +18,6 @@ const AccountSidebar = ({
   onDateChange,
   onShowAll,
   onShowPreparation,
-  expenses = [],
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
@@ -36,7 +35,7 @@ const AccountSidebar = ({
   }, [accountBook]);
 
   const handleDateChange = (date) => {
-    setSelectedOption(date);
+    setSelectedOption(date.toLocaleDateString());
     onDateChange(date.toLocaleDateString());
   };
 
@@ -159,7 +158,7 @@ const AccountSidebar = ({
             key={index}
             onClick={() => handleDateChange(date)}
             className={
-              selectedOption?.getTime?.() === date.getTime()
+              selectedOption === date.toLocaleDateString()
                 ? styles.selected
                 : ""
             }
@@ -169,7 +168,7 @@ const AccountSidebar = ({
               {formatDate(date.toISOString())}
             </span>
             <span className={styles.selectedIcon}>
-              {selectedOption?.getTime?.() === date.getTime() ? "<" : ">"}
+              {selectedOption === date.toLocaleDateString() ? "<" : ">"}
             </span>
           </Button>
         ))}
@@ -185,13 +184,21 @@ const AccountSidebar = ({
           <Button onClick={() => setIsBudgetModalOpen(true)}>
             <img src="/images/account/local_atm.png" alt="budget" />
           </Button>
-          <p>화폐/예산 추가</p>
+          <p>
+            화폐/예산
+            <br />
+            추가
+          </p>
         </span>
         <span>
           <Button onClick={() => setIsExpenseModalOpen(true)}>
             <img src="/images/account/write.png" alt="addExpense" />
           </Button>
-          <p>지출내역 추가</p>
+          <p>
+            지출내역
+            <br />
+            추가
+          </p>
         </span>
       </div>
       {isBudgetModalOpen && (
@@ -209,6 +216,7 @@ const AccountSidebar = ({
           onClose={() => setIsExpenseModalOpen(false)}
           onSubmit={handleExpenseSubmit}
           accountBookId={accountBook.id}
+          accountBook={accountBook}
         />
       )}
       {isTripInfoModalOpen && (

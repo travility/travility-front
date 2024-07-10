@@ -1,6 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../util/axiosInterceptor';
 
+/* 예산 등록 */
 export const addBudgets = async (accountBookId, budgets) => {
   const response = await axiosInstance.put(
     `/accountbook/${accountBookId}/budget`,
@@ -9,6 +10,7 @@ export const addBudgets = async (accountBookId, budgets) => {
   return response.data;
 };
 
+/* 통화코드,환율 api */
 const apiKey = process.env.REACT_APP_EXCHANGERATE_API_KEY;
 
 export const fetchCurrencyCodes = async () => {

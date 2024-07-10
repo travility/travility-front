@@ -97,7 +97,7 @@
   margin-top: 0.5rem;
   padding: 0.8rem 1.5rem;
   background-color: var(--light-color);
-  color: #000;
+  color: var(--text-color);
   font-weight: 700;
   font-size: 0.9em;
   text-align: left;
@@ -113,27 +113,27 @@
   font-size: 0.8em;
 }
 
-.dateButtons button.selected .tripDate,
-.dateButtons button.selected .selectedIcon {
-  color: #fff;
+.dateButtons button.selected .tripDate {
+  color: var(--light-color);
 }
 
-.selectedIcon {
-  color: #000;
-  margin-left: auto;
+.dateButtons button.selected .selectedIcon {
+  color: var(--background-color);
 }
 
 .dateButtons button.selected {
   background-color: var(--main-color);
-  color: #fff;
+  color: var(--background-color);
 }
 
 .accountbook_icons {
   display: flex;
   justify-content: space-between;
   text-align: center;
-  font-size: 0.5em;
-  font-weight: bolder;
+  font-size: 0.6em;
+  font-weight: 800;
+  color: var(--text-color);
+  padding: 1.5rem 0.3rem;
 }
 
 .accountbook_icons button {
@@ -142,6 +142,7 @@
   border-radius: 50%;
   cursor: pointer;
   background-color: var(--main-color);
+  margin-bottom: 0.2rem;
 }
 
 .accountbook_icons button:hover {
@@ -150,8 +151,8 @@
 
 .accountbook_icons img {
   display: block;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 /* ExpenseList */
@@ -174,15 +175,15 @@
 
 .filterButtons button {
   background-color: var(--light-color);
-  color: #000;
-  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  color: var(--text-color);
+  box-shadow: 1px 1px 1px 1px var(--shadow-color);
+  border-radius: 0.5rem;
   width: 5rem;
 }
 
 .filterButtons button.selectedButton {
   background: var(--main-color);
-  color: #fff;
+  color: var(--background-color);
 }
 
 .settlementButton {
@@ -202,20 +203,21 @@
 }
 
 .expenseDate {
-  font-weight: bold;
+  font-size: 0.8rem;
+  font-weight: 700;
   margin: 1rem 0 0.5rem;
   padding: 0.5rem 1rem;
   background-color: var(--light-color);
-  font-size: 0.8rem;
+  color: var(--text-color);
 }
 
 .expenseItem {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 2fr 5fr 1fr;
-  gap: 10px;
+  gap: 1rem;
   align-items: center;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+  font-size: 0.9em;
   font-weight: 500;
   text-align: center;
 }
@@ -223,7 +225,7 @@
 .currency,
 .amount,
 .description {
-  margin-left: 1rem;
+  margin: 0.5rem;
 }
 
 .type {
@@ -231,8 +233,8 @@
 }
 
 .categoryImg {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .amount {
@@ -244,5 +246,5 @@
   height: 2rem;
   border-radius: 50%;
   object-fit: cover;
-  background-color: var(--line-color);
+  background-color: var(--gray-color);
 }
