@@ -1,8 +1,6 @@
-/* SettlementExchangeRate.module.css */
-
 .settlementExchangeRate_title {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 800;
   margin-bottom: 1rem;
 }
 
@@ -15,16 +13,17 @@
 }
 
 .exchangeRate_currency {
-  font-weight: bold;
+  font-weight: 700;
   margin-right: 0.5rem;
 }
 
 .exchangeRate_rate {
-  color: #333; /* 환율 값 색상 */
+  font-weight: 700;
+  color: var(--pointor-color);
 }
 
 .description {
   margin-top: 1rem;
   font-size: 0.8rem;
-  color: #666; /* 설명 텍스트 색상 */
+  color: var(--gray-color);
 }

@@ -37,7 +37,13 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 430px) {
+    html {
+      font-size: 75%;
+    }
+  }
+
+  @media (min-width: 431px) and (max-width: 600px) {
     html {
       font-size: 87.5%;
     }
@@ -106,6 +112,7 @@ const Button = styled.button`
   background-color: var(--main-color);
   color: #ffffff;
   width: 100%;
+  font-size: 0.7rem;
   font-weight: 700;
   padding: 0.5rem;
   border: none;

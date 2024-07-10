@@ -19,7 +19,7 @@ const AccountSidebar = ({
   onShowAll,
   onShowPreparation,
 }) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("all");
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
@@ -98,10 +98,6 @@ const AccountSidebar = ({
     }
   };
 
-  useEffect(() => {
-    console.log("accountBook:", accountBook);
-  }, [accountBook]);
-
   return (
     <aside className={styles.sidebar}>
       <div
@@ -134,24 +130,20 @@ const AccountSidebar = ({
           </span>
         </div>
       </div>
-      <div className={styles.dateButtons}>
+      <div className={styles.date_buttons}>
         <Button
           onClick={handleShowAll}
           className={selectedOption === "all" ? styles.selected : ""}
         >
           모두 보기
-          <span className={styles.selectedIcon}>
-            {selectedOption === "all" ? "<" : ">"}
-          </span>
+          <span>{selectedOption === "all" ? "<" : ">"}</span>
         </Button>
         <Button
           onClick={handleShowPreparation}
           className={selectedOption === "preparation" ? styles.selected : ""}
         >
           준비
-          <span className={styles.selectedIcon}>
-            {selectedOption === "preparation" ? "<" : ">"}
-          </span>
+          <span>{selectedOption === "preparation" ? "<" : ">"}</span>
         </Button>
         {dates.map((date, index) => (
           <Button
@@ -167,7 +159,7 @@ const AccountSidebar = ({
             <span className={styles.tripDate}>
               {formatDate(date.toISOString())}
             </span>
-            <span className={styles.selectedIcon}>
+            <span>
               {selectedOption === date.toLocaleDateString() ? "<" : ">"}
             </span>
           </Button>
