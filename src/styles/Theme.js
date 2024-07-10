@@ -1,27 +1,46 @@
+import React, { createContext, useContext, useState, useEffect } from "react";
+
 const lightTheme = {
-  background: "#ffffff",
-  text: "#000000",
   focusBackground: "var(--light-color)",
-  placeHolder: "var(--gray-color)",
+  modalBackground: "var(--background-color)",
 };
 
 const darkTheme = {
-  background: "#121212",
-  text: "#ffffff",
   focusBackground: "var(--dark-color)",
-  placeHolder: "var(--line-color)",
+  modalBackground: "var(--dark-color)",
 };
 
-function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute("data-theme");
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
+const ThemeContext = createContext();
+
+function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  const loadTheme = () => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme, loadTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
-function loadTheme() {
-  const savedTheme = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-}
+const useTheme = () => useContext(ThemeContext);
 
-export { lightTheme, darkTheme, toggleTheme, loadTheme };
+export { ThemeProvider, useTheme, lightTheme, darkTheme };
