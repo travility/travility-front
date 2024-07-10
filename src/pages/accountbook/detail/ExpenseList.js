@@ -5,7 +5,7 @@ import { Button } from "../../../styles/StyledComponents";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const ExpenseList = ({ expenses = [], settlement }) => {
+const ExpenseList = ({ expenses, accountBook }) => {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 
@@ -37,25 +37,8 @@ const ExpenseList = ({ expenses = [], settlement }) => {
     return acc;
   }, {});
 
-  // 정산 모드일 때 필터링된 지출 중 공동경비인 것만 보여줌
-  const settlementFilteredExpenses = Object.keys(filteredExpenses).reduce(
-    (acc, date) => {
-      const filtered = filteredExpenses[date].filter((expense) => {
-        if (settlement && expense.isShared) return true; // 정산 모드일때 공동경비인 경우만 필터링
-        return !settlement; // 정산 모드가 아닌 경우에는 모두 필터링하지 않음
-      });
-
-      if (filtered.length > 0) {
-        acc[date] = filtered;
-      }
-
-      return acc;
-    },
-    {}
-  );
-
   const goSettlement = () => {
-    if (!expenses || expenses.length === 0) {
+    if (!accountBook.expenses || accountBook.expenses.length === 0) {
       Swal.fire({
         title: "정산 실패",
         text: "정산할 지출이 없습니다",
@@ -63,51 +46,50 @@ const ExpenseList = ({ expenses = [], settlement }) => {
         confirmButtonColor: "#2a52be",
       });
     } else {
-      const accountBookId = expenses[0].accountBookId;
-      navigate(`/settlement/${accountBookId}`);
+      navigate(`/settlement/${accountBook.id}`);
     }
   };
 
   return (
-    <div className={styles.expenseListContainer}>
-      <div className={styles.expenseListHeader}>
-        {!settlement && (
-          <div className={styles.filterButtons}>
-            <Button
-              className={filter === "all" ? styles.selectedButton : ""}
-              onClick={() => setFilter("all")}
-            >
-              모두보기
-            </Button>
-            <Button
-              className={filter === "shared" ? styles.selectedButton : ""}
-              onClick={() => setFilter("shared")}
-            >
-              공동경비
-            </Button>
-            <Button
-              className={filter === "personal" ? styles.selectedButton : ""}
-              onClick={() => setFilter("personal")}
-            >
-              개인경비
-            </Button>
-          </div>
-        )}
-        {!settlement && (
-          <div className={styles.settlementButton}>
-            <Button onClick={goSettlement}>정산하기</Button>
-          </div>
-        )}
+    <div className={styles.expenseList_container}>
+      <div className={styles.expenseList_header}>
+        <div className={styles.filter_buttons}>
+          <Button
+            className={filter === "all" ? styles.selected_button : ""}
+            onClick={() => setFilter("all")}
+          >
+            모두보기
+          </Button>
+          <Button
+            className={filter === "shared" ? styles.selected_button : ""}
+            onClick={() => setFilter("shared")}
+          >
+            공동경비
+          </Button>
+          <Button
+            className={filter === "personal" ? styles.selected_button : ""}
+            onClick={() => setFilter("personal")}
+          >
+            개인경비
+          </Button>
+        </div>
+        <div className={styles.settlement_button}>
+          <Button onClick={goSettlement}>정산하기</Button>
+        </div>
       </div>
       <div className={styles.expenseList}>
-        {Object.keys(settlementFilteredExpenses).length === 0 ? (
+        {Object.keys(filteredExpenses).length === 0 ? (
           <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
         ) : (
-          Object.keys(settlementFilteredExpenses).map((date, index) => (
+          Object.keys(filteredExpenses).map((date, index) => (
             <div key={index}>
               <div className={styles.expenseDate}>{date}</div>
-              {settlementFilteredExpenses[date].map((expense, idx) => (
-                <ExpenseItem key={idx} expense={expense} />
+              {filteredExpenses[date].map((expense, idx) => (
+                <ExpenseItem
+                  key={idx}
+                  expense={expense}
+                  accountBook={accountBook}
+                />
               ))}
             </div>
           ))

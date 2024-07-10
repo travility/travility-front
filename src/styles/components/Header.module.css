@@ -79,8 +79,8 @@
 }
 
 .header_welcome_message img {
-  height: 0.8rem;
-  padding-right: 0.5rem;
+  width: 1rem;
+  margin-right: 0.2rem;
 }
 
 .header_navigation_container {
@@ -95,25 +95,11 @@
   cursor: pointer;
   font-size: 0.7rem;
   font-weight: 500;
+  color: var(--gray-color);
   width: auto;
   margin-top: 0;
 }
 
 .nav_second_button::before {
   content: '|   ';
-}
-
-@media (max-width: 1024px) {
-  .header_logo {
-    font-size: 1.4rem;
-  }
-
-  .header_welcome_message,
-  .header_navigation_container {
-    font-size: 0.7rem;
-  }
-
-  .header_navigation_container button {
-    font-size: inherit;
-  }
 }

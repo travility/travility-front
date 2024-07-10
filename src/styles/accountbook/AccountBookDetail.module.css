@@ -87,13 +87,13 @@
   margin-right: 0.3rem;
 }
 
-.dateButtons {
+.date_buttons {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
 }
 
-.dateButtons button {
+.date_buttons button {
   margin-top: 0.5rem;
   padding: 0.8rem 1.5rem;
   background-color: var(--light-color);
@@ -113,15 +113,11 @@
   font-size: 0.8em;
 }
 
-.dateButtons button.selected .tripDate {
+.date_buttons button.selected .tripDate {
   color: var(--light-color);
 }
 
-.dateButtons button.selected .selectedIcon {
-  color: var(--background-color);
-}
-
-.dateButtons button.selected {
+.date_buttons button.selected {
   background-color: var(--main-color);
   color: var(--background-color);
 }
@@ -137,9 +133,14 @@
 }
 
 .accountbook_icons button {
-  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
   border: none;
   border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
   cursor: pointer;
   background-color: var(--main-color);
   margin-bottom: 0.2rem;
@@ -151,51 +152,53 @@
 
 .accountbook_icons img {
   display: block;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 80%;
 }
 
 /* ExpenseList */
-.expenseListContainer {
+.expenseList_container {
   width: 100%;
   height: 100%;
   padding: 1.5rem;
 }
 
-.expenseListHeader {
+.expenseList_header {
   display: flex;
+  justify-content: space-between;
 }
 
-.filterButtons {
+/* 경비구분 */
+.filter_buttons {
   flex: 2;
   display: flex;
   gap: 10px;
   margin-bottom: 1rem;
 }
 
-.filterButtons button {
+.filter_buttons button {
   background-color: var(--light-color);
   color: var(--text-color);
   box-shadow: 1px 1px 1px 1px var(--shadow-color);
   border-radius: 0.5rem;
-  width: 5rem;
+  width: 4rem;
+  font-size: 0.7em;
 }
 
-.filterButtons button.selectedButton {
+.filter_buttons button.selected_button {
   background: var(--main-color);
   color: var(--background-color);
 }
 
-.settlementButton {
-  flex: 1;
-  margin-bottom: 1rem;
+/* 정산하기 */
+.settlement_button {
+  margin-left: auto;
 }
 
-.settlementButton button {
-  float: right;
-  width: 5rem;
-  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
+.settlement_button button {
+  box-shadow: 1px 1px 1px 1px var(--shadow-color);
+  border-radius: 2rem;
+  width: 4rem;
+  font-size: 0.7em;
 }
 
 .expenseList {
@@ -234,7 +237,6 @@
 
 .categoryImg {
   width: 1.5rem;
-  height: 1.5rem;
 }
 
 .amount {
