@@ -64,10 +64,14 @@ const horizontalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: "#000",
+      color: "#fff",
       anchor: "end", // 항목 위치
       align: "end",
+      offset: -60,
       display: true, // 차트에 항목 표시
+      font: {
+        weight: "700", // 폰트 굵기 설정
+      },
     },
   },
   scales: {
@@ -93,11 +97,14 @@ const verticalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: "#000",
+      color: "#fff",
       anchor: "end",
       align: "end",
-      offset: -10, // ********** 항목 값 위치 조정
+      offset: -20, // ********** 항목 값 위치 조정
       display: true,
+      font: {
+        weight: "500", // 폰트 굵기 설정
+      },
     },
   },
   scales: {
@@ -320,11 +327,13 @@ const MyReport = () => {
           <>
             <div className={styles.header}>
               <h2>지출 통계</h2>
+              <span className={styles.currency_label}>화폐단위 : KRW</span>
             </div>
             <div className={styles.chart_section}>
               <div className={styles.summary}>
                 <p>
-                  {userName}님은{" "}
+                  <span className={styles.highlight_userName}>{userName}</span>
+                  님은{" "}
                   <span className={styles.highlight_category}>
                     {getCategoryName(highestCategory)}
                   </span>
@@ -340,7 +349,11 @@ const MyReport = () => {
                 <Doughnut data={categoryData} options={options} />
               </div>
               <div className={styles.barChart_paymentMethod}>
-                <span>결제방법</span>
+                <span>
+                  결제
+                  <br />
+                  방법
+                </span>
                 <Bar
                   className={styles.barChart}
                   data={paymentData}
@@ -348,17 +361,13 @@ const MyReport = () => {
                 />
               </div>
               <div className={styles.total_expenses}>
-                <span>총 지출 : </span>
+                <span>총 지출</span>
                 <span className={styles.total_amount}>
                   ₩ {displayAmount.toLocaleString()}
                 </span>
               </div>
               <div className={styles.barChart_expense}>
                 <Bar data={categoryBarData} options={verticalBarOptions} />
-              </div>
-              <div className={styles.currency_label}>화폐단위 : KRW</div>
-              <div className={styles.decoImg}>
-                <img src="/images/smartPig.png" alt="pig" />
               </div>
             </div>
           </>
