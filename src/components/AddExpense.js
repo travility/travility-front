@@ -41,7 +41,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
       category: "OTHERS",
       isShared: false,
       paymentMethod: "CASH",
-      curUnit: "",
+      curUnit: uniqueCurrencies[0]?.value || "",
       amount: "",
       expenseDate: "",
       expenseTime: "",
@@ -69,7 +69,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
       width: "6rem",
       color: "var(--text-color)",
     }),
-    option: (base, { data }) => ({
+    option: (base) => ({
       ...base,
       display: "flex",
       alignItems: "center",
@@ -81,7 +81,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
         color: "#fff",
       },
     }),
-    singleValue: (base, { data }) => ({
+    singleValue: (base) => ({
       ...base,
       display: "flex",
       alignItems: "center",
@@ -98,10 +98,16 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     }));
   };
 
-  const handleImageChange = (e) => {
+  const handleImageClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleNewImg = (e) => {
     if (e.target.files.length === 0) {
+      // 파일 선택 안 했을 때
       return;
     }
+
     const file = e.target.files[0];
     if (!file.type.startsWith("image/")) {
       Swal.fire({
@@ -320,6 +326,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                       }
                       options={uniqueCurrencies}
                       styles={customStyles}
+                      isSearchable={false}
                       noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
                     />
                   </div>
@@ -343,25 +350,34 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   </div>
                 </div>
               </div>
-              <div className={styles.imageUpload}>
-                <label htmlFor="imgUpload" className={styles.imgUpload_label}>
-                  <img src="/images/account/add_box.png" alt="Add" />
-                  <p>사진을 추가하세요</p>
-                </label>
-                <input
-                  type="file"
-                  id="imgUpload"
-                  name="imgName"
-                  onChange={handleImageChange}
-                  className={styles.hidden_input}
-                />
-                {newExpense.previewImg && (
+              <div className={styles.image_container}>
+                <div
+                  className={styles.addPhoto_container}
+                  onClick={handleImageClick}
+                >
                   <img
-                    src={newExpense.previewImg}
-                    alt="Preview"
-                    className={styles.image_preview}
+                    className={styles.addPhoto_image}
+                    src="/images/account/add_photo.png"
+                    alt="사진 추가"
                   />
-                )}
+                  업로드
+                </div>
+                <input
+                  id="fileInput"
+                  className={styles.hidden_input}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleNewImg}
+                />
+                <div className={styles.upload_image_wrapper}>
+                  {newExpense.previewImg && (
+                    <img
+                      src={newExpense.previewImg}
+                      alt="Preview"
+                      className={styles.upload_image}
+                    />
+                  )}
+                </div>
               </div>
               <textarea
                 name="memo"

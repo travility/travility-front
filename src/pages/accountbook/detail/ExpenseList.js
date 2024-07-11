@@ -5,10 +5,9 @@ import { Button } from "../../../styles/StyledComponents";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const ExpenseList = ({ accountBook }) => {
+const ExpenseList = ({ expenses, accountBook }) => {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
-  const { expenses } = accountBook;
 
   const groupedExpenses = expenses.reduce((acc, expense) => {
     const date = new Date(expense.expenseDate).toLocaleDateString();
