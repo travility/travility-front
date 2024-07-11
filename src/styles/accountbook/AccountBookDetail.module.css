@@ -16,11 +16,11 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  
+
   border: 1px solid var(--line-color);
   overflow: hidden;
   border-radius: 8px;
-  
+
   cursor: pointer;
   background-size: cover;
   background-position: center;
@@ -31,7 +31,7 @@
 }
 
 .tripInfo::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -54,7 +54,7 @@
 
 .tripInfo .accountBook_list_title_and_flag {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .tripInfo .accountBook_list_flag img {
@@ -87,17 +87,17 @@
   margin-right: 0.3rem;
 }
 
-.dateButtons {
+.date_buttons {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
 }
 
-.dateButtons button {
+.date_buttons button {
   margin-top: 0.5rem;
   padding: 0.8rem 1.5rem;
   background-color: var(--light-color);
-  color: #000;
+  color: var(--text-color);
   font-weight: 700;
   font-size: 0.9em;
   text-align: left;
@@ -113,35 +113,37 @@
   font-size: 0.8em;
 }
 
-.dateButtons button.selected .tripDate,
-.dateButtons button.selected .selectedIcon {
-  color: #fff;
+.date_buttons button.selected .tripDate {
+  color: var(--light-color);
 }
 
-.selectedIcon {
-  color: #000;
-  margin-left: auto;
-}
-
-.dateButtons button.selected {
+.date_buttons button.selected {
   background-color: var(--main-color);
-  color: #fff;
+  color: var(--background-color);
 }
 
 .accountbook_icons {
   display: flex;
   justify-content: space-between;
   text-align: center;
-  font-size: 0.5em;
-  font-weight: bolder;
+  font-size: 0.6em;
+  font-weight: 800;
+  color: var(--text-color);
+  padding: 1.5rem 0.3rem;
 }
 
 .accountbook_icons button {
-  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: auto;
   border: none;
   border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
   cursor: pointer;
   background-color: var(--main-color);
+  margin-bottom: 0.2rem;
 }
 
 .accountbook_icons button:hover {
@@ -150,34 +152,53 @@
 
 .accountbook_icons img {
   display: block;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 80%;
 }
 
 /* ExpenseList */
-.expenseListContainer {
+.expenseList_container {
   width: 100%;
   height: 100%;
   padding: 1.5rem;
 }
 
-.filterButtons {
+.expenseList_header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 경비구분 */
+.filter_buttons {
+  flex: 2;
   display: flex;
   gap: 10px;
   margin-bottom: 1rem;
 }
 
-.filterButtons button {
+.filter_buttons button {
   background-color: var(--light-color);
-  color: #000;
-  box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  width: 5rem;
+  color: var(--text-color);
+  box-shadow: 1px 1px 1px 1px var(--shadow-color);
+  border-radius: 0.5rem;
+  width: 4rem;
+  font-size: 0.7em;
 }
 
-.filterButtons button.selectedButton {
+.filter_buttons button.selected_button {
   background: var(--main-color);
-  color: #fff;
+  color: var(--background-color);
+}
+
+/* 정산하기 */
+.settlement_button {
+  margin-left: auto;
+}
+
+.settlement_button button {
+  box-shadow: 1px 1px 1px 1px var(--shadow-color);
+  border-radius: 2rem;
+  width: 4rem;
+  font-size: 0.7em;
 }
 
 .expenseList {
@@ -185,20 +206,21 @@
 }
 
 .expenseDate {
-  font-weight: bold;
+  font-size: 0.8rem;
+  font-weight: 700;
   margin: 1rem 0 0.5rem;
   padding: 0.5rem 1rem;
   background-color: var(--light-color);
-  font-size: 0.8rem;
+  color: var(--text-color);
 }
 
 .expenseItem {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 2fr 5fr 1fr;
-  gap: 10px;
+  gap: 1rem;
   align-items: center;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+  font-size: 0.9em;
   font-weight: 500;
   text-align: center;
 }
@@ -206,7 +228,7 @@
 .currency,
 .amount,
 .description {
-  margin-left: 1rem;
+  margin: 0.5rem;
 }
 
 .type {
@@ -214,8 +236,7 @@
 }
 
 .categoryImg {
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
 }
 
 .amount {
@@ -227,5 +248,5 @@
   height: 2rem;
   border-radius: 50%;
   object-fit: cover;
-  background-color: var(--line-color);
+  background-color: var(--gray-color);
 }

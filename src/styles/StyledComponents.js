@@ -4,16 +4,16 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --main-color: #657df9;
     --second-color: #4c66f8;
-    --bold-color: #392385;
+    --bold-color: #343683;
     --dark-color: #11183B;
     --light-color: #eff3ff;
     --pointpk-color: #ff8bd2;
     --pointor-color: #FEC144;
-    --line-color: #E0E3E5;
-    --gray-color: #A39E93;
-    --opposite-color: #ffffff;
+    --line-color: #ECECEC;
+    --gray-color: #9D9D9D;
     --background-color: #ffffff;
-    --text-color: #000000;
+    --text-color: #121212;
+    --shadow-color: rgba(0, 0, 0, 0.1);
     --font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
     }
 
@@ -28,16 +28,22 @@ const GlobalStyle = createGlobalStyle`
     --background-color: #121212;
     --text-color: #ffffff;
     --line-color: #657df9;
-    --opposite-color: #000000;
+    --light-color: #343683;
     --bold-color: #eff3ff;
-    --light-color: #392385;
+    --shadow-color: rgba(255, 255, 255, 0.2);
   }
 
   html {
     font-size: 100%;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 430px) {
+    html {
+      font-size: 75%;
+    }
+  }
+
+  @media (min-width: 431px) and (max-width: 600px) {
     html {
       font-size: 87.5%;
     }
@@ -106,6 +112,7 @@ const Button = styled.button`
   background-color: var(--main-color);
   color: #ffffff;
   width: 100%;
+  font-size: 0.7rem;
   font-weight: 700;
   padding: 0.5rem;
   border: none;
@@ -127,12 +134,13 @@ const Input = styled.input`
   padding: 0.5rem;
   margin-top: 0.2rem;
   width: 100%;
+  min-height: 2rem;
   border: 1px solid var(--line-color);
   border-radius: 0.3rem;
   color: var(--text-color);
   background-color: var(--background-color);
   transition: border-color 0.3s;
-  font-size: 0.7em;
+  font-size: 0.7rem;
 
   &:focus {
     background-color: ${({ theme }) => theme.focusBackground};
@@ -141,7 +149,7 @@ const Input = styled.input`
   }
 
   &::placeholder {
-    color: ${({ theme }) => theme.placeHolder};
+    color: var(--gray-color);
   }
 
   &[type="date"] {
@@ -184,11 +192,11 @@ const Modal = styled.div`
   background: var(--background-color);
   color: var(--text-color);
   padding: 2rem;
+  border: 1px solid var(--line-color);
   border-radius: 0.5rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 25rem;
   max-height: 80vh;
-  overflow: scroll;
+  overflow-y: scroll;
   margin: 2rem auto;
   transition: all 0.3s ease-in-out;
 `;
@@ -199,7 +207,6 @@ const ModalHeader = styled.div`
   align-items: center;
   font-size: 1.5em;
   font-weight: 700;
-  margin-bottom: 1rem;
 `;
 
 const CloseButton = styled.div`

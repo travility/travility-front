@@ -7,6 +7,8 @@ import {
   ModalHeader,
   CloseButton,
   Button,
+  ErrorMessage,
+  Input,
 } from "../styles/StyledComponents";
 
 const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
@@ -104,6 +106,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   };
 
   const handleRegister = () => {
+    console.log(budgets);
     onSubmit(budgets);
     onClose();
   };
@@ -168,36 +171,37 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
               <h4>예산 등록</h4>
               <CloseButton onClick={onClose}>&times;</CloseButton>
             </ModalHeader>
-            <div className={styles.modalContent}>
-              <div className={styles.radioGroup}>
-                <div className={styles.budgetType}>
-                  <label>
-                    <input
-                      type="radio"
-                      id="budgetTypeShared"
-                      name="budgetType"
-                      value="shared"
-                      checked={budgetType === "shared"}
-                      onChange={() => setBudgetType("shared")}
-                    />
-                    공동경비
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      id="budgetTypePersonal"
-                      name="budgetType"
-                      value="personal"
-                      checked={budgetType === "personal"}
-                      onChange={() => setBudgetType("personal")}
-                    />
-                    개인경비
-                  </label>
+            <div className={styles.modal_content}>
+              <div className={styles.addBudget_form}>
+                <div className={styles.radioGroup}>
+                  <div className={styles.budgetType}>
+                    <label>
+                      <input
+                        type="radio"
+                        id="budgetTypeShared"
+                        name="budgetType"
+                        value="shared"
+                        checked={budgetType === "shared"}
+                        onChange={() => setBudgetType("shared")}
+                      />
+                      공동경비
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        id="budgetTypePersonal"
+                        name="budgetType"
+                        value="personal"
+                        checked={budgetType === "personal"}
+                        onChange={() => setBudgetType("personal")}
+                      />
+                      개인경비
+                    </label>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.addFormContainer}>
-                <div className={styles.formGroup}>
-                  <div className={styles.formGroupRow}>
+
+                <div className={styles.addBudget_formGroup}>
+                  <div className={styles.currency}>
                     <label htmlFor="currency">화폐</label>
                     <select
                       id="currency"
@@ -213,43 +217,45 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                     </select>
                   </div>
                 </div>
-                <div className={styles.formGroup}>
-                  <div className={styles.formGroupRow}>
-                    <label htmlFor="amount">금액</label>
-                    <input
-                      id="amount"
-                      name="amount"
-                      type="text"
-                      value={amount}
-                      onChange={handleAmountChange}
-                      placeholder="금액 입력"
-                    />
-                  </div>
-                  {amountError && (
-                    <span className={styles.error}>{amountError}</span>
-                  )}
+                <div className={styles.addBudget_formGroup}>
+                  <label htmlFor="amount">금액</label>
+                  <Input
+                    id="amount"
+                    name="amount"
+                    type="text"
+                    value={amount}
+                    onChange={handleAmountChange}
+                    placeholder="금액 입력"
+                  />
                 </div>
-              </div>
-              <div className={styles.exchangeRateContainer}>
-                <div className={styles.formGroup}>
-                  <div className={styles.formGroupRow}>
-                    <label htmlFor="exchangeRate">{currency} 1.00 = KRW</label>
-                    <input
-                      id="exchangeRate"
-                      name="exchangeRate"
-                      type="text"
-                      value={exchangeRate}
-                      onChange={handleExchangeRateChange}
-                    />
-                  </div>
+                <div className="error_container">
+                  {amountError && <ErrorMessage>{amountError}</ErrorMessage>}
+                </div>
+
+                <div className={styles.addBudget_formGroup}>
+                  <label htmlFor="exchangeRate">
+                    환율
+                    <span className={styles.exchangeRate_label}>
+                      {currency} 1.00 = KRW
+                    </span>
+                  </label>
+                  <Input
+                    id="exchangeRate"
+                    name="exchangeRate"
+                    type="text"
+                    value={exchangeRate}
+                    onChange={handleExchangeRateChange}
+                  />
+                </div>
+                <div className="error_container">
                   {exchangeRateError && (
-                    <span className={styles.error}>{exchangeRateError}</span>
+                    <ErrorMessage>{exchangeRateError}</ErrorMessage>
                   )}
                 </div>
               </div>
-              <div className={styles.buttonContainer}>
+              <div className={styles.button_container}>
                 <Button
-                  className={styles.addButton}
+                  className={styles.add_button}
                   onClick={
                     editIndex !== null ? handleEditBudget : handleAddBudget
                   }
@@ -257,21 +263,21 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                   {editIndex !== null ? "수정" : "예산 추가하기"}
                 </Button>
                 {editIndex !== null && (
-                  <button
-                    className={styles.deleteButton}
+                  <Button
+                    className={styles.delete_button}
                     onClick={handleDeleteBudget}
                   >
                     삭제
-                  </button>
+                  </Button>
                 )}
               </div>
-              <div className={styles.budgetSummary}>
+              <div className={styles.budget_summary}>
                 <h3>예산 금액</h3>
-                <div className={styles.budgetDetailContainer}>
+                <div className={styles.budget_detail_container}>
                   {budgets.map((budget, index) => (
                     <div
                       key={index}
-                      className={styles.budgetDetail}
+                      className={styles.budget_detail}
                       onClick={() => handleBudgetClick(index)}
                     >
                       <span>{budget.isShared ? "공동경비" : "개인경비"}</span>

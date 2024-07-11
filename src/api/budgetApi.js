@@ -1,14 +1,16 @@
-import axios from "axios";
-import axiosInstance from "../util/axiosInterceptor";
+import axios from 'axios';
+import axiosInstance from '../util/axiosInterceptor';
 
+/* 예산 등록 */
 export const addBudgets = async (accountBookId, budgets) => {
-  const response = await axiosInstance.post(
+  const response = await axiosInstance.put(
     `/accountbook/${accountBookId}/budget`,
     budgets
   );
   return response.data;
 };
 
+/* 통화코드,환율 api */
 const apiKey = process.env.REACT_APP_EXCHANGERATE_API_KEY;
 
 export const fetchCurrencyCodes = async () => {
@@ -18,7 +20,7 @@ export const fetchCurrencyCodes = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching currency codes:", error);
+    console.error('Error fetching currency codes:', error);
     throw error;
   }
 };
@@ -30,7 +32,7 @@ export const fetchExchangeRate = async (currency) => {
     );
     return response.data;
   } catch (error) {
-    console.error("Error fetching exchange rate:", error);
+    console.error('Error fetching exchange rate:', error);
     throw error;
   }
 };
