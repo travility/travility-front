@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/TripInfo.module.css";
-import { formatDate } from "../../../api/accountbookApi";
+import styles from "../../../styles/accountbook/UpdateTripInfo.module.css";
+import { formatDate } from "../../../util/calcUtils";
 import Swal from "sweetalert2";
 import SearchCountry from "../../../components/SearchCountry";
 import {

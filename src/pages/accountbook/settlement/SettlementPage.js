@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import styles from '../../../styles/accountbook/SettlementPage.module.css';
-import { formatDate } from '../../../api/accountbookApi';
-import { Button } from '../../../styles/StyledComponents';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import styles from "../../../styles/accountbook/SettlementPage.module.css";
+import { formatNumberWithCommas, formatDate } from "../../../util/calcUtils";
+import { Button } from "../../../styles/StyledComponents";
 import {
   getAccountBook,
   getPerPersonAmount,
   getTotalSharedExpensesAndExchangeRates,
-} from '../../../api/settlementApi';
-import Share from '../../../components/settlement/Share';
-import { formatNumberWithCommas } from '../../../util/calcUtils';
-import SettlementExchangeRate from '../../../components/settlement/SettlementExchangeRate';
+} from "../../../api/settlementApi";
+import Share from "../../../components/settlement/Share";
+import SettlementExchangeRate from "../../../components/settlement/SettlementExchangeRate";
 
 //헤더의 로그아웃 안 보이게
 //네비바 안 보이게
@@ -28,7 +27,7 @@ const SettlementPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fechData = async () => {
+    const fetchData = async () => {
       try {
         const accountBook = await getAccountBook(id);
         setAccountBook(accountBook);
@@ -48,9 +47,8 @@ const SettlementPage = () => {
         console.error(error);
       }
     };
-    fechData();
-    console.log(accountBook);
-  }, [id, navigate]);
+    fetchData();
+  }, [id]);
 
   const goSettlementExpenseList = () => {
     navigate(`/settlement/${id}/expenses`, { state: { accountBook } });
@@ -74,7 +72,7 @@ const SettlementPage = () => {
                 className={styles.shareButton_icon}
                 src="/images/account/share.png"
                 alt="공유하기"
-              ></img>
+              />
             </Button>
           </div>
         </div>
