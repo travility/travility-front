@@ -47,7 +47,7 @@ const SettlementExpenseListPage = () => {
 
   return (
     <div className={styles.expenseList_container}>
-      <h2 className={styles.title}>{accountBook.accountBook_title}</h2>
+      <h2 className={styles.accountBook_title}>{accountBook.title}</h2>
       <div className={styles.expenseList}>
         {Object.keys(groupedExpenses).length === 0 ? (
           <p className={styles.noExpenses}>지출 내역이 없습니다.</p>

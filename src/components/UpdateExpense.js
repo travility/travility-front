@@ -322,13 +322,17 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                   ></Input>
                 </div>
                 <div className={styles.image_container}>
-                  {isEditable && newExpense.isDefaultImage && (
-                    <div className={styles.addPhoto_container}>
+                  {isEditable && (
+                    <div
+                      className={styles.addPhoto_container}
+                      onClick={handleImageClick}
+                    >
                       <img
                         className={styles.addPhoto_image}
                         src="/images/account/add_photo.png"
                         alt="사진 추가"
                       />
+                      업로드
                     </div>
                   )}
                   <input
@@ -338,10 +342,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                     accept="image/*"
                     onChange={handleNewImg}
                   />
-                  <div
-                    className={styles.upload_image_wrapper}
-                    onClick={handleImageClick}
-                  >
+                  <div className={styles.upload_image_wrapper}>
                     <img
                       className={styles.upload_image}
                       src={

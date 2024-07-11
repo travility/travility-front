@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  getAccountBooks,
-  calculateTotalAmountInKRW,
-  formatDate,
-  deleteAccountBook,
-} from "../../api/accountbookApi";
+import { getAccountBooks, deleteAccountBook } from "../../api/accountbookApi";
 import styles from "../../styles/accountbook/AccountBookListPage.module.css";
 import { Button } from "../../styles/StyledComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import TripInfo from "../../components/TripInfo";
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -115,59 +111,19 @@ const AccountBookListPage = () => {
       ) : (
         <div className={styles.accountBook_list_grid_container}>
           {accountBooks.map((accountBook) => (
-            <div
+            <TripInfo
               key={accountBook.id}
-              className={`${styles.accountBook_list_grid_item} ${
-                selectedBooks.includes(accountBook.id) ? styles.selected : ""
-              }`}
-              style={{
-                backgroundImage: `url(http://localhost:8080/images/${accountBook.imgName})`,
-              }}
-              onClick={() => handleAccountBookClick(accountBook)}
-            >
-              {isDeleteMode && (
-                <div
-                  className={styles.select_overlay}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleSelectBook(accountBook);
-                  }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={selectedBooks.includes(accountBook.id)}
-                    onChange={(event) => {
-                      event.stopPropagation();
-                      handleSelectBook(accountBook);
-                    }}
-                  />
-                </div>
-              )}
-              <div className={styles.accountBook_list_item_detail}>
-                <div className={styles.accountBook_list_title_and_flag}>
-                  <span className={styles.accountBook_list_flag}>
-                    <img src={accountBook.countryFlag} alt="국기" />
-                  </span>
-                  <span className={styles.accountBook_list_title}>
-                    {accountBook.title}
-                  </span>
-                </div>
-                <span className={styles.accountBook_list_dates}>
-                  {`${formatDate(accountBook.startDate)} ~ ${formatDate(
-                    accountBook.endDate
-                  )}`}
-                </span>
-                <span className={styles.accountBook_list_amount}>
-                  {calculateTotalAmountInKRW(accountBook)}
-                </span>
-              </div>
-            </div>
+              accountBook={accountBook}
+              onClick={handleAccountBookClick}
+              isSelected={selectedBooks.includes(accountBook.id)}
+              onSelect={handleSelectBook}
+              isDeleteMode={isDeleteMode}
+            />
           ))}
         </div>
       )}
     </div>
   );
 };
-
 
 export default AccountBookListPage;

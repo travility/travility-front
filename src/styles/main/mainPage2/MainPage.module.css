@@ -71,7 +71,6 @@
 .recent_accountBooks_list {
   display: flex;
   flex-direction: column;
-  width: 15rem;
   margin: 0 auto;
   position: relative;
   overflow-x: auto;
@@ -79,79 +78,8 @@
   gap: 1rem;
 }
 
-.recent_accountBooks_item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  border: 1px solid var(--line-color);
-  overflow: hidden;
-  border-radius: 1rem;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  aspect-ratio: 2 / 1;
-}
-
-.recent_accountBooks_item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-  border-radius: 0.5rem;
-}
-
-.recent_accountBooks_item_contents {
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  color: #ffffff;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.recent_accountBooks_item_header {
-  display: flex;
-  align-items: center;
-}
-
-.recent_accountBook_item_flag {
-  margin-right: 0.5rem;
-}
-
-.recent_accountBook_item_flag img {
-  height: 1rem;
-}
-
-.recent_accountBooks_item_title {
-  text-align: left;
-  font-weight: 700;
-  font-size: 1em;
-  padding-bottom: 0.1rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.recent_accountBooks_item_dates {
-  font-size: 0.7em;
-}
-
-.recent_accountBooks_item_amount {
-  position: absolute;
-  font-size: 0.8em;
-  bottom: 12px;
-  right: 15px;
-  z-index: 2;
-}
-
 /******************************************************************************************/
-/* 실시간 인기 여행지 top5 : TopDestinations*/
+/* 실시간 인기 여행지 top5 : TopDestinations
 .topDestinationsTitle{
   display: block;
   margin-bottom: 0.5rem;
@@ -205,3 +133,4 @@
   padding: 5px 10px;
   font-weight: bold;
 }
+*/

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/TripInfo.module.css";
-import { formatDate } from "../../../api/accountbookApi";
+import styles from "../../../styles/accountbook/UpdateTripInfo.module.css";
+import { formatDate } from "../../../util/calcUtils";
 import Swal from "sweetalert2";
 import SearchCountry from "../../../components/SearchCountry";
 import {
@@ -164,28 +164,25 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   </div>
                 </div>
                 <div className={styles.image_container}>
-                  {newTripInfo.isDefaultImage && (
-                    <div className={styles.addPhoto_container}>
-                      <div className={styles.addPhoto_image_container}>
-                        <img
-                          className={styles.addPhoto_image}
-                          src="/images/account/add_photo.png"
-                          alt="사진 추가"
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <Input
+                  <div
+                    className={styles.addPhoto_container}
+                    onClick={handleImageClick}
+                  >
+                    <img
+                      className={styles.addPhoto_image}
+                      src="/images/account/add_photo.png"
+                      alt="사진 추가"
+                    />
+                    업로드
+                  </div>
+                  <input
                     id="fileInput"
                     className={styles.hidden_input}
                     type="file"
                     accept="image/*"
                     onChange={handleNewImg}
                   />
-                  <div
-                    className={styles.upload_image_wrapper}
-                    onClick={handleImageClick}
-                  >
+                  <div className={styles.upload_image_wrapper}>
                     <img
                       className={styles.upload_image}
                       src={
