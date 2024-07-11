@@ -1,14 +1,15 @@
-.settlementExchangeRate_title {
+.settlementDetail_title {
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
 }
 
-.exchangeRates_container {
+.settlementDetail_container {
   margin-top: 1rem;
+  padding-bottom: 0.5rem;
 }
 
-.exchangeRate {
+.settlemDetail_content {
   margin-bottom: 0.5rem;
 }
 
@@ -20,6 +21,17 @@
 .exchangeRate_rate {
   font-weight: 700;
   color: var(--pointor-color);
+}
+
+.totalSharedExpenseByCurrency {
+  margin-top: 0.5rem;
+}
+
+.totalSharedExpense {
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  font-weight: 800;
+  border-top: 1px solid var(--gray-color);
 }
 
 .description {
