@@ -1,8 +1,15 @@
+/* 간격조정 */
+.calendar_container {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 10px;
+  height: 100%;
+}
 
 .calendar {
   border: 1px solid #e0e0e0;
   border-radius: 30px;
-  padding: 10px;
+  padding: 30px; /* 전체 패딩 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 800px;
@@ -16,7 +23,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .header_years_month{
@@ -39,12 +46,15 @@
   padding: 10px 0;
 }
 
+/* 세부조정 */
+
 .day {
   flex: 1;
   text-align: center;
-  font-weight: bold;
-  color: #c6c6c6;
-  font-size:1.2rem;
+  font-weight: 530;
+  color: rgb(182, 192, 217);
+  font-size:1rem;
+  margin: 0 5px;
 }
 
 .day:first-child {
@@ -65,14 +75,23 @@
   width: 100%;
 }
 
+.number {
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 1;
+}
+
 .cell {
   flex: 1;
-  text-align: center;
+  text-align: left;
   padding: 10px 0;
   cursor: pointer;
   box-sizing: border-box; 
   height: 100px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
 }
 
 .cellWithEvent::after {
@@ -80,17 +99,24 @@
   display: block;
   width: 100%;
   height: 15px;
-  background-color: rgba(246, 255, 144, 0.752);
+  background-color: rgba(248, 255, 173, 0.882);
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.event {
+  margin-top: auto;
+  font-size: 0.7rem;
 }
 
 .disabled {
   color: #ccccccbb;
 }
 
-/* today */
+
+
+/* today 를 동그라미로 점을 찍음 */
 .selected::before{
   content: '';
   display: block;
@@ -104,13 +130,74 @@
   transform: translate(-50%, -50%);
 }
 
-.number {
-  font-size: 1rem;
-  font-weight: bold;
+
+/* 반응형 스타일 */
+/* 작은 화면을 위한 스타일 */
+@media (max-width: 768px) {
+  .calendar_container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .calendar {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .header {
+    flex-direction: column;
+  }
+
+  .days {
+    flex-wrap: wrap;
+  }
+
+  .day {
+    flex: 1 0 14%; /* 7일을 한 줄에 표시 */
+    margin: 5px 0;
+  }
+
+  .cell {
+    height: auto;
+  }
 }
 
-.totalAmount{
-  font-size: 0.8rem;
-  margin-top: 35%;
+/* 중간 화면을 위한 스타일 */
+@media (max-width: 1024px) {
+  .calendar_container {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .calendar {
+    padding: 25px;
+    max-width: 100%;
+  }
+
+  .header_years_month {
+    font-size: 1.25rem;
+  }
+
+  .navButton {
+    font-size: 16px;
+  }
 }
 
+/* 큰 화면을 위한 스타일 */
+@media (min-width: 1025px) {
+  .calendar_container {
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .calendar {
+    padding: 30px;
+    max-width: 800px;
+  }
+
+  .header_years_month {
+    font-size: 1.5rem;
+  }
+
+  .navButton {
+    font-size: 18px;
+  }
+}

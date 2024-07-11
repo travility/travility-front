@@ -1,6 +1,8 @@
 import axiosInstance from '../util/axiosInterceptor';
 
 
+
+//사용자가 등록한 일정(n박n일)
 export const fetchEvents = async () => {
   try {
     const response = await axiosInstance.get('/accountBook/schedule');
@@ -12,10 +14,11 @@ export const fetchEvents = async () => {
   }
 };
 
+//날짜별 총 지출 
 export const fetchDailyExpenses = async (accountbookId) => {
   try {
     const response = await axiosInstance.get(`/accountBook/schedule/${accountbookId}`);
-    console.log(`accountbookid가 갖고 있는 expense ${accountbookId}:`, response.data);
+    console.log(`accountbookid= ${accountbookId} 의 날짜별 총 지출 정보`, response.data);
 
     if (Array.isArray(response.data)) {
       return response.data;
@@ -34,3 +37,18 @@ export const fetchDailyExpenses = async (accountbookId) => {
   }
 };
 
+export const fetchAllExpensesByAccountbookId = async (accountbookId) => {
+  try {
+    const response = await axiosInstance.get(`/accountBook/expenses/${accountbookId}`);
+    console.log(`accountBookId= ${accountbookId} 의 모든 지출 항목:`, response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching all expenses for accountBookId ${accountbookId}:`, error);
+    throw error;
+  }
+};
+
+// 날짜 포맷
+export const formatDate = (dateString) => {
+  return dateString.split("T")[0];
+};
