@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import styles from "../styles/components/AddExpense.module.css";
 import Swal from "sweetalert2";
@@ -28,13 +28,20 @@ const paymentMethod = [
 ];
 
 const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
+  const uniqueCurrencies = Array.from(
+    new Set(accountBook.budgets.map((budget) => budget.curUnit))
+  ).map((curUnit) => ({
+    label: curUnit,
+    value: curUnit,
+  }));
+
   const [newExpense, setNewExpense] = useState({
     expense: {
       title: "",
       category: "OTHERS",
       isShared: false,
       paymentMethod: "CASH",
-      curUnit: "KRW",
+      curUnit: "",
       amount: "",
       expenseDate: "",
       expenseTime: "",
@@ -311,10 +318,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                           },
                         }))
                       }
-                      options={accountBook.budgets.map((budget) => ({
-                        label: budget.curUnit,
-                        value: budget.curUnit,
-                      }))}
+                      options={uniqueCurrencies}
                       styles={customStyles}
                       noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
                     />
