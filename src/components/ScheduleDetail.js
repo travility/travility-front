@@ -124,8 +124,10 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
                     />
                     <div className={styles.expense_list_container}>
                       <div className={styles.expense_info}>
-                        <div>
+                        <div className={styles.expense_title_container}>
                           <span className={styles.expense_title}>{expense.title}</span>
+                        </div> 
+                        <div className={styles.expense_ca_container}> 
                           <span className={styles.expense_curunit}>{expense.curUnit}</span>
                           <span className={styles.expense_amount}>{expense.amount}</span>
                         </div>

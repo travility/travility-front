@@ -87,18 +87,27 @@
 
 .expense_list_container {
   display: flex;
-  justify-content: space-between;
   width: 100%;
   margin-left: 10px;
 }
 
 .expense_info {
   display: flex;
+  flex-grow: 1;
+  margin-left: 5px;
   flex-direction: column;
 }
 
+.expense_title_container{
+  max-width: 100px; 
+}
+
 .expense_title{
+  display: inline-block;
   font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .expense_info > div {
@@ -106,9 +115,16 @@
   justify-content: space-between;
 }
 
+.expense_ca_container{
+  
+}
+
+.expense_curunit{
+  font-size: 0.7rem;
+}
+
 .expense_amount{
-  font-size: 0.8rem;
-  margin-left: 10px;
+  font-size: 0.7rem;
 }
 
 .noExpenses{
