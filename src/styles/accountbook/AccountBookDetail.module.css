@@ -125,26 +125,76 @@
   font-size: 0.7em;
 }
 
+/* 가계부 요약 */
+.expenseList_summary_container {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.expenseList_summary {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  background-color: var(--light-color);
+  padding: 1rem;
+  font-size: 0.8em;
+  font-weight: 700;
+  border-radius: 1rem;
+}
+
+.budgetInfo_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  background-color: var(--background-color);
+  padding: 0.5rem;
+  margin-left: 1rem;
+  border-radius: 0.5rem;
+}
+
+.budgetInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* 지출 합계 */
+.totalAmount {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+.totalAmount label {
+  color: var(--gray-color);
+  font-weight: 500;
+}
+
+/* 지출 내역 */
 .expenseList {
   overflow-y: auto;
 }
 
 .expenseDate {
-  font-size: 0.8rem;
+  font-size: 0.6em;
   font-weight: 700;
   margin: 1rem 0 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: var(--light-color);
-  color: var(--text-color);
+  background-color: var(--main-color);
+  color: #ffffff;
+  border-radius: 0.5rem;
 }
 
 .expenseItem {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 2fr 5fr 1fr;
+  grid-template-columns: 1.5fr 1fr 1.5fr 2fr 5fr 1fr;
   gap: 1rem;
   align-items: center;
   padding: 0.5rem 1rem;
-  font-size: 0.9em;
+  font-size: 0.8em;
   font-weight: 500;
   text-align: center;
 }
@@ -153,6 +203,9 @@
 .amount,
 .description {
   margin: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .type {

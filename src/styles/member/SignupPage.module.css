@@ -1,115 +1,67 @@
-.signup {
+.signup_wrapper {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 80vh;
 }
 
-.signup_content {
-  width: auto;
-  padding: 20px;
+.signup_container {
+  width: 400px;
+  margin: 0 auto;
 }
 
-.signup_container_header {
-  justify-content: center;
-  height: auto;
-  margin-bottom: 8px;
+.signup_header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.signup_header h2 {
+  color: var(--main-color);
+  margin-bottom: 0.5rem;
   text-align: center;
 }
 
-.signup_container_header p:first-of-type {
-  font-weight: bold;
-  font-size: 2em;
-  padding: 0%;
-  letter-spacing: -3px;
-  margin-bottom: 4px;
-}
-
-.signup_container_header p:last-of-type {
-  color: #909090;
-  font-size: 0.9em;
-  padding: 1rem;
-  letter-spacing: -1px;
+.signup_header p {
+  color: var(--gray-color);
+  font-size: 0.8em;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .signup_form {
-  flex-direction: column;
-  gap: 10px;
-}
-
-.signup_id_container {
   display: flex;
+  flex-direction: column;
+}
+
+.signup_formGroup {
+  position: relative;
+}
+
+.signup_id {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   width: 100%;
-  width: 530px;
+  gap: 0.5rem;
 }
 
-.signup_id_container input {
-  width: 72%;
-  margin-right: 3%;
-  margin-top: 1%;
-
-  color: rgb(145, 145, 145);
-  border: 1px solid #657df9;
-  border-radius: 5px;
-  padding: 2%;
+.signup_id button {
+  margin-top: 0.2rem;
 }
 
-.signup_id_container button {
-  width: 20%;
-  height: auto;
-  margin-top: 1%;
-  padding: 0.6rem;
-  position: relative;
+.signup_formGroup label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.8em;
+  margin-bottom: 0.1rem;
 }
 
-/*중복검사 버튼*/
-.signup_idcheck_button {
-  background-color: #657df9;
-  color: whitesmoke;
-  border: 1px solid #657df9;
-  border-radius: 5px;
-  padding: 1%;
-  position: absolute;
-  letter-spacing: -1px;
-
-  &:hover {
-    cursor: pointer;
-    font-weight: bold;
-    background-color: #002266;
-    border: 1px solid #002266;
-  }
+.error_container {
+  height: 1.5rem;
 }
 
-.signup_title {
-  font-size: 0.85em; /*13.5px*/
-  font-weight: bold;
-  letter-spacing: -1px;
-  color: #333;
-  margin-top: 2%;
-  margin-bottom: 1%;
-}
-
-.signup_error {
-  font-size: 0.75em; /* 11px */
-  color: rgb(145, 145, 145);
-  margin-top: 1%;
-  margin-bottom: 3%;
-  letter-spacing: -1px;
-}
-
-/*비밀번호 컨테이너*/
 .signup_input_seepw_container {
-  position: relative;
-}
-
-.signup_input_pw {
-  color: rgb(145, 145, 145);
-  border: 1px solid #657df9;
-  width: 500px;
-  border-radius: 5px;
-  padding: 2%;
-  margin-top: 1%;
+  position: relative; 
+  width: 100%; 
 }
 
 .toggle_pw_button {
@@ -145,137 +97,4 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
-}
-
-.signup_input_email,
-.signup_input_nickname {
-  color: rgb(145, 145, 145);
-  border: 1px solid #657df9;
-  width: 500px;
-  border-radius: 5px;
-  padding: 2%;
-  margin-top: 1%;
-}
-
-.signup_actions {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.signup_button {
-  background-color: #657df9;
-  color: whitesmoke;
-  border: 1px solid #657df9;
-  border-radius: 5px;
-  padding: 1.5%;
-  width: 175px;
-  margin-top: 2em;
-  letter-spacing: -1px;
-  &:hover {
-    cursor: pointer;
-    font-weight: bold;
-    background-color: #002266;
-    border: 1px solid #002266;
-  }
-}
-
-/* 미디어 쿼리 */
-@media (max-width: 1024px) {
-  .signup_id_container {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .signup_id_container input,
-  .signup_id_container button {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .signup_input_pw,
-  .signup_input_checkpw,
-  .signup_input_email,
-  .signup_input_nickname {
-    width: 100%;
-    padding: 2%;
-  }
-
-  .toggle_pw_button,
-  .toggle_checkpw_button {
-    right: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  .signup_container_header p:first-of-type {
-    font-size: 1.75rem;
-  }
-
-  .signup_container_header p:last-of-type {
-    font-size: 0.875rem;
-  }
-
-  .signup_title {
-    font-size: 0.8rem;
-  }
-
-  .signup_error {
-    font-size: 0.625rem;
-  }
-
-  .signup_input_id,
-  .signup_idcheck_button,
-  .signup_input_pw,
-  .signup_input_checkpw,
-  .signup_input_email .signup_input_nickname {
-    font-size: 0.6rem;
-  }
-
-  .signup_button {
-    width: 150px;
-    padding: 1.25%;
-    font-size: 0.6rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .signup {
-    height: auto;
-    padding: 10px;
-  }
-
-  .signup_container_header p:first-of-type {
-    font-size: 1.5rem;
-  }
-
-  .signup_container_header p:last-of-type {
-    font-size: 0.75rem;
-  }
-
-  .signup_title {
-    font-size: 0.75rem;
-  }
-
-  .signup_error {
-    font-size: 0.5625rem;
-  }
-
-  .signup_actions.signup_button {
-    width: 100%;
-    padding: 1rem;
-  }
-
-  .signup_input_pw,
-  .signup_input_checkpw,
-  .signup_input_email,
-  .signup_input_nickname {
-    width: 100%;
-    padding: 1.5%;
-  }
-
-  .toggle_pw_button,
-  .toggle_checkpw_button {
-    right: 10px;
-  }
 }

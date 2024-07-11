@@ -105,7 +105,7 @@ const Inner = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 3rem;
+  padding: 2.5rem;
 `;
 
 const Button = styled.button`
