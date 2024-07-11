@@ -13,7 +13,7 @@ import {
 
 const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   const [budgetType, setBudgetType] = useState("shared");
-  const [currency, setCurrency] = useState("KRW");
+  const [currency, setCurrency] = useState("");
   const [amount, setAmount] = useState("");
   const [exchangeRate, setExchangeRate] = useState("1.00");
   const [budgets, setBudgets] = useState(initialBudgets || []);
@@ -28,6 +28,9 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
         const data = await fetchCurrencyCodes();
         if (data && data.supported_codes) {
           setCurrencies(data.supported_codes);
+          if (!currency) {
+            setCurrency(data.supported_codes[0][0]); // 초기 기본값 설정
+          }
         }
       } catch (error) {
         alert("화폐 코드를 불러오는 중 오류가 발생했습니다.");
@@ -35,7 +38,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     };
 
     loadCurrencyCodes();
-  }, []);
+  }, [currency]);
 
   useEffect(() => {
     const loadExchangeRate = async () => {
@@ -100,8 +103,15 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   };
 
   const handleDeleteBudget = () => {
-    const updatedBudgets = budgets.filter((_, index) => index !== editIndex);
-    setBudgets(updatedBudgets);
+    const remainingBudgets = budgets.filter((_, index) => index !== editIndex);
+    const expenseCurrencies = new Set(
+      remainingBudgets.map((budget) => budget.curUnit)
+    );
+    if (expenseCurrencies.size < 1) {
+      alert("지출에 사용된 화폐 코드는 최소한 하나는 존재해야 합니다.");
+      return;
+    }
+    setBudgets(remainingBudgets);
     resetForm();
   };
 
@@ -154,7 +164,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
 
   const resetForm = () => {
     setBudgetType("shared");
-    setCurrency("KRW");
+    setCurrency(currencies[0] ? currencies[0][0] : "KRW");
     setAmount("");
     setExchangeRate("1.00");
     setEditIndex(null);
@@ -208,6 +218,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                       name="currency"
                       value={currency}
                       onChange={(e) => setCurrency(e.target.value)}
+                      disabled={editIndex !== null}
                     >
                       {currencies.map(([code, name]) => (
                         <option key={code} value={code}>

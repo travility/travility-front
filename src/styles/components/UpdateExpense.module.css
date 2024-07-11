@@ -74,22 +74,28 @@
   max-height: 100%;
 }
 
-/* 사진을 추가하세요 */
+/* 사진 업로드 버튼 */
 .addPhoto_container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: column;
   align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
   z-index: 1;
-  pointer-events: none;
+  font-size: 0.6rem;
+  font-weight: 600;
+  margin: 1rem;
+  padding: 0.5rem;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  background-color: var(--main-color);
+  cursor: pointer;
 }
 
 .addPhoto_image {
-  width: 1.5rem;
+  width: 0.7rem;
   cursor: pointer;
+  margin-right: 0.2rem;
 }
 
 /* 지출 메모 */

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../../styles/accountbook/SettlementPage.module.css';
-import { formatDate } from '../../../api/accountbookApi';
+import { formatNumberWithCommas, formatDate } from '../../../util/calcUtils';
 import { Button } from '../../../styles/StyledComponents';
 import {
   getAccountBook,
@@ -9,7 +9,6 @@ import {
   getTotalSharedExpensesAndExchangeRates,
 } from '../../../api/settlementApi';
 import Share from '../../../components/settlement/Share';
-import { formatNumberWithCommas } from '../../../util/calcUtils';
 import SettlementExchangeRate from '../../../components/settlement/SettlementExchangeRate';
 
 const SettlementPage = () => {
@@ -97,7 +96,7 @@ const SettlementPage = () => {
                 className={styles.shareButton_icon}
                 src="/images/account/share.png"
                 alt="공유하기"
-              ></img>
+              />
             </Button>
           </div>
         </div>

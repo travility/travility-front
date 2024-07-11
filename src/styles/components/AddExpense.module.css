@@ -77,10 +77,22 @@
   width: 100%;
 }
 
-.imageUpload {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  height: 10rem;
+/* 이미지 업로드 */
+.image_container {
+  display: flex;
+  text-align: center;
+  margin: 0.6rem 0;
+  max-height: 10rem;
+  width: 100%;
+  position: relative;
+}
+
+.hidden_input {
+  display: none;
+}
+
+/* 업로드 이미지 preview */
+.upload_image_wrapper {
   border: 1px solid var(--line-color);
   background-color: var(--gray-color);
   border-radius: 0.5rem;
@@ -89,23 +101,40 @@
   align-items: center;
   text-align: center;
   position: relative;
+  width: 100%;
+  height: 10rem;
 }
-
-.imgUpload_label {
-  cursor: pointer;
-}
-
-.hidden_input {
-  display: none;
-}
-
-.image_preview {
+.upload_image {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 100%;
   max-height: 100%;
+}
+
+/* 사진 업로드 버튼 */
+.addPhoto_container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  font-size: 0.6rem;
+  font-weight: 600;
+  margin: 1rem;
+  padding: 0.5rem;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  background-color: var(--main-color);
+  cursor: pointer;
+}
+
+.addPhoto_image {
+  width: 0.7rem;
+  cursor: pointer;
+  margin-right: 0.2rem;
 }
 
 .textArea {
