@@ -26,14 +26,6 @@ const AccountSidebar = ({
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
 
-  useEffect(() => {
-    const initialTotalBudget = accountBook.budgets.reduce(
-      (sum, budget) =>
-        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
-      0
-    );
-  }, [accountBook]);
-
   const handleDateChange = (date) => {
     setSelectedOption(date.toLocaleDateString());
     onDateChange(date.toLocaleDateString());
