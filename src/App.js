@@ -2,6 +2,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
+import { global }from "./styles/dashboard/global.css";
 import { GlobalStyle, Button } from "./styles/StyledComponents";
 import { lightTheme, darkTheme, toggleTheme, loadTheme } from "./styles/Theme";
 import Layout from "./components/header/Layout";
