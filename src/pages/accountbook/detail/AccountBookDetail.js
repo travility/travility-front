@@ -8,7 +8,7 @@ import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 const AccountBookDetail = () => {
   const { id } = useParams();
   const [accountBook, setAccountBook] = useState(null);
-  const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,9 +16,7 @@ const AccountBookDetail = () => {
     const fetchAccountBook = async () => {
       try {
         const data = await getAccountBookById(id);
-        console.log(data);
         setAccountBook(data);
-        setFilteredExpenses(data.expenses || []); // 기본값으로 빈 배열 설정
       } catch (err) {
         setError(err);
       } finally {
@@ -56,25 +54,15 @@ const AccountBookDetail = () => {
   const dateList = getDateRange(accountBook.startDate, accountBook.endDate);
 
   const handleDateChange = (selectedDate) => {
-    const expenses = accountBook.expenses || [];
-    const filtered = expenses.filter(
-      (expense) =>
-        new Date(expense.expenseDate).toLocaleDateString() === selectedDate
-    );
-    setFilteredExpenses(filtered);
+    setSelectedDate(selectedDate);
   };
 
   const handleShowAll = () => {
-    setFilteredExpenses(accountBook.expenses || []);
+    setSelectedDate("all");
   };
 
   const handleShowPreparation = () => {
-    const expenses = accountBook.expenses || [];
-    const filtered = expenses.filter(
-      (expense) =>
-        new Date(expense.expenseDate) < new Date(accountBook.startDate)
-    );
-    setFilteredExpenses(filtered);
+    setSelectedDate("preparation");
   };
 
   return (
@@ -86,7 +74,7 @@ const AccountBookDetail = () => {
         onShowAll={handleShowAll}
         onShowPreparation={handleShowPreparation}
       />
-      <ExpenseList expenses={filteredExpenses} accountBook={accountBook} />
+      <ExpenseList accountBook={accountBook} selectedDate={selectedDate} />
     </div>
   );
 };
