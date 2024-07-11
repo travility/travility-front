@@ -4,13 +4,15 @@ import AddBudget from "../../../components/AddBudget";
 import AddExpense from "../../../components/AddExpense";
 import { addBudgets } from "../../../api/budgetApi";
 import { addExpense } from "../../../api/expenseApi";
-import { updateAccountBook, formatDate } from "../../../api/accountbookApi";
-import TripInfo from "./TripInfo";
+import { updateAccountBook } from "../../../api/accountbookApi";
+import { formatDate } from "../../../util/calcUtils";
+import UpdateTripInfo from "./UpdateTripInfo";
 import {
   handleSuccessSubject,
   handlefailureSubject,
 } from "../../../util/logoutUtils";
 import { Button } from "../../../styles/StyledComponents";
+import TripInfo from "../../../components/TripInfo";
 
 const AccountSidebar = ({
   accountBook,
@@ -23,16 +25,6 @@ const AccountSidebar = ({
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
-  const [totalBudget, setTotalBudget] = useState(0);
-
-  useEffect(() => {
-    const initialTotalBudget = accountBook.budgets.reduce(
-      (sum, budget) =>
-        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
-      0
-    );
-    setTotalBudget(initialTotalBudget.toFixed(2));
-  }, [accountBook]);
 
   const handleDateChange = (date) => {
     setSelectedOption(date.toLocaleDateString());
@@ -50,14 +42,13 @@ const AccountSidebar = ({
   };
 
   const handleBudgetSubmit = async (budgets) => {
-    const totalBudget = budgets.reduce(
-      (sum, budget) =>
-        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
-      0
-    );
-    setTotalBudget(totalBudget.toFixed(2));
-
     try {
+      const totalBudget = budgets.reduce(
+        (sum, budget) =>
+          sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
+        0
+      );
+
       const budgetsResponse = await addBudgets(accountBook.id, budgets);
       console.log("Budgets updated successfully:", budgetsResponse);
       handleSuccessSubject("예산", "수정");
@@ -100,36 +91,10 @@ const AccountSidebar = ({
 
   return (
     <aside className={styles.sidebar}>
-      <div
-        key={accountBook.id}
-        className={styles.tripInfo}
-        style={{
-          backgroundImage: `url(
-        http://localhost:8080/images/${accountBook.imgName}
-      )`,
-        }}
+      <TripInfo
+        accountBook={accountBook}
         onClick={() => setIsTripInfoModalOpen(true)}
-      >
-        <div className={styles.accountBook_list_item_detail}>
-          <div className={styles.accountBook_list_title_and_flag}>
-            <span className={styles.accountBook_list_flag}>
-              <img src={accountBook.countryFlag} alt="국기" />
-            </span>
-            <span className={styles.accountBook_list_title}>
-              {accountBook.title}
-            </span>
-          </div>
-          <span className={styles.accountBook_list_dates}>
-            {`${formatDate(accountBook.startDate)} ~ ${formatDate(
-              accountBook.endDate
-            )}`}
-          </span>
-          <span className={styles.accountBook_list_edit}>
-            <img src="/images/account/add_box.png" alt="+" />
-            {accountBook.imgName ? "수정하기" : "사진을 추가하세요."}
-          </span>
-        </div>
-      </div>
+      />
       <div className={styles.date_buttons}>
         <Button
           onClick={handleShowAll}
@@ -212,7 +177,7 @@ const AccountSidebar = ({
         />
       )}
       {isTripInfoModalOpen && (
-        <TripInfo
+        <UpdateTripInfo
           isOpen={isTripInfoModalOpen}
           onClose={() => setIsTripInfoModalOpen(false)}
           onSubmit={handleAccountBookSubmit}
