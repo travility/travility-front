@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../../styles/accountbook/SettlementPage.module.css';
-import { formatDate } from '../../../api/accountbookApi';
+import { formatNumberWithCommas, formatDate } from '../../../util/calcUtils';
 import { Button } from '../../../styles/StyledComponents';
 import {
   getAccountBook,
@@ -9,12 +9,8 @@ import {
   getTotalSharedExpensesAndExchangeRates,
 } from '../../../api/settlementApi';
 import Share from '../../../components/settlement/Share';
-import { formatNumberWithCommas } from '../../../util/calcUtils';
 import SettlementExchangeRate from '../../../components/settlement/SettlementExchangeRate';
 
-//헤더의 로그아웃 안 보이게
-//네비바 안 보이게
-//정산할 지출 없을때 어떻게 보여줄지
 const SettlementPage = () => {
   const { id } = useParams();
   const [accountBook, setAccountBook] = useState(null);
@@ -23,12 +19,13 @@ const SettlementPage = () => {
   );
   const [totalSharedExpenses, setTotalSharedExpenses] = useState(0);
   const [perPersonExpense, setPerPersonExpense] = useState(0);
+  const [displayedPerPersonExpense, setDisplayedPerPersonExpense] = useState(0);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fechData = async () => {
+    const fetchData = async () => {
       try {
         const accountBook = await getAccountBook(id);
         setAccountBook(accountBook);
@@ -44,13 +41,38 @@ const SettlementPage = () => {
 
         const perPersonExpense = await getPerPersonAmount(id);
         setPerPersonExpense(perPersonExpense);
+
+        setDisplayedPerPersonExpense(0); // 애니메이션 시작 전 초기화
       } catch (error) {
         console.error(error);
       }
     };
-    fechData();
-    console.log(accountBook);
+    fetchData();
   }, [id, navigate]);
+
+  //화면이 렌더링 될 때마다 perPersonExpense 애니메이션
+  useEffect(() => {
+    const duration = 1000; //밀리초 단위 -> 1초 (애니메이션 지속 시간)
+    const startTime = performance.now(); //시작 시간
+
+    const animate = (currentTime) => {
+      //currentTime -> requestAnimationFrame이 제공하는 타임 스탬프
+      const elapsed = currentTime - startTime; //애니메이션 시작 후 경과 시간
+      const progress = Math.min(elapsed / duration, 1); //애니메이션 진행 상황 계산 (0에서 1 사이의 값)
+      const currentValue = Math.floor(progress * perPersonExpense); //진행 상황에 알맞은 값
+      setDisplayedPerPersonExpense(currentValue); //값 업데이트
+
+      //애니메이션이 끝나지 않았으면 다음 프레임에 다시 호출
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    // perPersonExpense가 0보다 클 때 애니메이션 시작
+    if (perPersonExpense > 0) {
+      requestAnimationFrame(animate);
+    }
+  }, [perPersonExpense]); //1인당 정산 금액이 바뀔 때마다 실행
 
   const goSettlementExpenseList = () => {
     navigate(`/settlement/${id}/expenses`, { state: { accountBook } });
@@ -74,7 +96,7 @@ const SettlementPage = () => {
                 className={styles.shareButton_icon}
                 src="/images/account/share.png"
                 alt="공유하기"
-              ></img>
+              />
             </Button>
           </div>
         </div>
@@ -83,7 +105,7 @@ const SettlementPage = () => {
             <div className={styles.title}>{accountBook.title}</div>
             {accountBook && (
               <div
-                className={styles.tripInfo} //여행 정보
+                className={styles.tripInfo}
                 style={{
                   backgroundImage: `url(http://localhost:8080/images/${accountBook.imgName})`,
                 }}
@@ -124,7 +146,7 @@ const SettlementPage = () => {
               </div>
             </div>
             <div className={styles.perPersonExpense}>
-              {formatNumberWithCommas(perPersonExpense)} 원
+              {formatNumberWithCommas(displayedPerPersonExpense)} 원
             </div>
             <div className={styles.settlementExpenseListButtonContainer}>
               <Button

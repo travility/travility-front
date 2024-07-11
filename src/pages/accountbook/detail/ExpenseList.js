@@ -9,10 +9,6 @@ const ExpenseList = ({ expenses, accountBook }) => {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(expenses);
-  }, [expenses]);
-
   const groupedExpenses = expenses.reduce((acc, expense) => {
     const date = new Date(expense.expenseDate).toLocaleDateString();
     if (!acc[date]) {
@@ -38,10 +34,11 @@ const ExpenseList = ({ expenses, accountBook }) => {
   }, {});
 
   const goSettlement = () => {
-    if (!accountBook.expenses || accountBook.expenses.length === 0) {
+    const sharedExpenses = expenses.filter((expense) => expense.isShared);
+    if (sharedExpenses.length === 0) {
       Swal.fire({
         title: "정산 실패",
-        text: "정산할 지출이 없습니다",
+        text: "정산할 공동경비 지출이 없습니다",
         icon: "error",
         confirmButtonColor: "#2a52be",
       });
