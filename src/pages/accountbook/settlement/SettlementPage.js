@@ -5,23 +5,23 @@ import { formatNumberWithCommas, formatDate } from '../../../util/calcUtils';
 import { Button } from '../../../styles/StyledComponents';
 import {
   getAccountBook,
-  getPerPersonAmount,
   getTotalSharedExpensesAndExchangeRates,
 } from '../../../api/settlementApi';
 import Share from '../../../components/settlement/Share';
-import SettlementExchangeRate from '../../../components/settlement/SettlementExchangeRate';
+import SettlementDetail from '../../../components/settlement/SettlementDetail';
 
 const SettlementPage = () => {
   const { id } = useParams();
   const [accountBook, setAccountBook] = useState(null);
-  const [currencyToAvgExchangeRate, setCurrencyToAvgExchangeRate] = useState(
-    []
-  );
-  const [totalSharedExpenses, setTotalSharedExpenses] = useState(0);
-  const [perPersonExpense, setPerPersonExpense] = useState(0);
-  const [displayedPerPersonExpense, setDisplayedPerPersonExpense] = useState(0);
+  const [exchangeRatesByCurrency, setExchangeRatesByCurrency] = useState({}); //통화 코드별 환율
+  const [totalSharedExpensesByCurrency, setTotalSharedExpensesByCurrency] =
+    useState({}); //통화 코드별 공동 경비 합계
+  const [totalSharedExpenses, setTotalSharedExpenses] = useState(0); //총 공동 경비 합계
+  const [perPersonExpense, setPerPersonExpense] = useState(0); //1인당 정산 금액
+  const [displayedPerPersonExpense, setDisplayedPerPersonExpense] = useState(0); //애니메이션 적용 1인당 정산 금액
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isExchangeRateModalOpen, setIsExchangeRateModalOpen] = useState(false);
+  const [isSettlementDetailModalOpen, setIsSettlementDetailModalOpen] =
+    useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,17 +32,28 @@ const SettlementPage = () => {
 
         const totalSharedExpenseAndExchangeRates =
           await getTotalSharedExpensesAndExchangeRates(id);
-        setCurrencyToAvgExchangeRate(
+        setExchangeRatesByCurrency(
           totalSharedExpenseAndExchangeRates.currencyToAvgExchangeRate
         );
-        setTotalSharedExpenses(
-          totalSharedExpenseAndExchangeRates.totalSharedExpenses
+        setTotalSharedExpensesByCurrency(
+          totalSharedExpenseAndExchangeRates.totalSharedExpensesByCurrency
         );
 
-        const perPersonExpense = await getPerPersonAmount(id);
-        setPerPersonExpense(perPersonExpense);
+        //공동 경비 총 합계
+        const totalExpenses = Object.values(
+          totalSharedExpenseAndExchangeRates.totalSharedExpensesByCurrency
+        ).reduce((sum, currentValue) => sum + currentValue, 0);
+        const formattedTotalExpenses = totalExpenses.toFixed(0);
+        setTotalSharedExpenses(formattedTotalExpenses);
 
-        setDisplayedPerPersonExpense(0); // 애니메이션 시작 전 초기화
+        //1인당 정산 금액
+        if (accountBook.numberOfPeople > 0) {
+          setPerPersonExpense(
+            formattedTotalExpenses / accountBook.numberOfPeople
+          );
+        }
+
+        setDisplayedPerPersonExpense(0); //애니메이션 실행 전 초기화
       } catch (error) {
         console.error(error);
       }
@@ -74,6 +85,10 @@ const SettlementPage = () => {
     }
   }, [perPersonExpense]); //1인당 정산 금액이 바뀔 때마다 실행
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   const goSettlementExpenseList = () => {
     navigate(`/settlement/${id}/expenses`, { state: { accountBook } });
   };
@@ -85,8 +100,13 @@ const SettlementPage = () => {
   return (
     <>
       <div className={styles.SettlementPage}>
-        <div className={styles.shareButtonContainer}>
-          <div className={styles.shareButtonContent}>
+        <div className={styles.SettlementPage_header}>
+          <div className={styles.goBackButton_container}>
+            <Button className={styles.goBackButton} onClick={goBack}>
+              <p className={styles.goBackButton_text}>뒤로가기</p>
+            </Button>
+          </div>
+          <div className={styles.shareButton_container}>
             <Button
               className={styles.shareButton}
               onClick={() => setIsShareModalOpen(true)}
@@ -138,11 +158,14 @@ const SettlementPage = () => {
                 <span className={styles.amount}>
                   정산 금액 : {formatNumberWithCommas(totalSharedExpenses)} 원
                 </span>
-                <span className={styles.settlementExchangeRate_container}>
-                  <Button onClick={() => setIsExchangeRateModalOpen(true)}>
-                    정산 환율
+                <span className={styles.settlementDetail_container}>
+                  <Button onClick={() => setIsSettlementDetailModalOpen(true)}>
+                    자세히 보기
                   </Button>
                 </span>
+              </div>
+              <div className={styles.description}>
+                해당 금액은 반올림된 값입니다.
               </div>
             </div>
             <div className={styles.perPersonExpense}>
@@ -167,11 +190,12 @@ const SettlementPage = () => {
           countryName={accountBook.countryName}
         />
       )}
-      {isExchangeRateModalOpen && (
-        <SettlementExchangeRate
-          isOpen={isExchangeRateModalOpen}
-          onClose={() => setIsExchangeRateModalOpen(false)}
-          currencyToAvgExchangeRate={currencyToAvgExchangeRate}
+      {isSettlementDetailModalOpen && (
+        <SettlementDetail
+          isOpen={isSettlementDetailModalOpen}
+          onClose={() => setIsSettlementDetailModalOpen(false)}
+          exchangeRatesByCurrency={exchangeRatesByCurrency}
+          totalSharedExpensesByCurrency={totalSharedExpensesByCurrency}
         />
       )}
     </>
