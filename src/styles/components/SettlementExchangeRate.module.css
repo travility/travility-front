@@ -1,0 +1,29 @@
+.settlementExchangeRate_title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.exchangeRates_container {
+  margin-top: 1rem;
+}
+
+.exchangeRate {
+  margin-bottom: 0.5rem;
+}
+
+.exchangeRate_currency {
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.exchangeRate_rate {
+  font-weight: 700;
+  color: var(--pointor-color);
+}
+
+.description {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--gray-color);
+}
