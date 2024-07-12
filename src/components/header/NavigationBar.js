@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../../styles/components/NavigationBar.module.css";
+import styles from "../../styles/components/header/NavigationBar.module.css";
 import { TokenStateContext } from "../../App";
 
 const NavigationBar = () => {
