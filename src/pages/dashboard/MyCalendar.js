@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ScheduleCalendar from '../../components/ScheduleCalendar';
-import { fetchEvents } from '../../api/scheduleApi'; 
+import { fetchEvents, fetchTotalExpenses } from '../../api/scheduleApi'; 
 import { parseISO, addDays, format } from 'date-fns';
 import styles from '../../styles/dashboard/MyCalendar.module.css';
 
@@ -8,6 +8,9 @@ const MyCalendar = () => {
   const [events, setEvents] = useState([]);
   const [hasEvent, setHasEvent] = useState({});
   const [accountBooks, setAccountBooks] = useState([]); 
+  const [dailyExpenses, setDailyExpenses] = useState({});
+  const [totalExpenses, setTotalExpenses] = useState({});
+  const [exchangeRates, setExchangeRates] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,13 +43,47 @@ const MyCalendar = () => {
           id: event.accountbookId,
           imgName: event.imgName
         })));
+
+        // Fetch total expenses for each account book and calculate daily expenses with weighted average exchange rate
+        const expensesData = {};
+        const totalExpensesData = {};
+        const allExchangeRates = {};
+
+        const expensesPromises = eventsData.map(event =>
+          fetchTotalExpenses(event.accountbookId).then(totalExpenses => {
+            const { expenses, exchangeRates } = totalExpenses;
+            
+            // Merge exchange rates
+            Object.assign(allExchangeRates, exchangeRates);
+
+            expenses.forEach(expense => {
+              const date = format(parseISO(expense.expenseDate), 'yyyy-MM-dd');
+              const amountInKRW = expense.amount * (exchangeRates[expense.curUnit] || 1);
+              if (!expensesData[date]) {
+                expensesData[date] = 0;
+              }
+              expensesData[date] += amountInKRW;
+            });
+
+            totalExpensesData[event.accountbookId] = expenses.reduce((sum, expense) => {
+              return sum + (expense.amount * (exchangeRates[expense.curUnit] || 1));
+            }, 0);
+          })
+        );
+
+        await Promise.all(expensesPromises);
+
+        setDailyExpenses(expensesData);
+        setTotalExpenses(totalExpensesData);
+        setExchangeRates(allExchangeRates);
+
       } catch (error) {
         console.error('가계부 데이터를 가져오는 중 오류가 발생했습니다:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); // 빈 배열을 의존성 배열로 전달하여 처음 마운트될 때만 실행되도록 함
 
   return (
     <div className={styles.my_calendar_container}>
@@ -56,6 +93,9 @@ const MyCalendar = () => {
             events={events} 
             hasEvent={hasEvent}
             accountBooks={accountBooks} 
+            dailyExpenses={dailyExpenses}
+            totalExpenses={totalExpenses}
+            exchangeRates={exchangeRates}  
           />
         </div>
       </div>

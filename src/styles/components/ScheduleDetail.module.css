@@ -75,8 +75,8 @@
 
 /* 지출 내역 */
 .categoryImg {
-  width: 25px;
-  height: 25px;
+  width: 1.30rem;
+  height: 1.30rem;
   margin-right: 10px; 
 }
 
@@ -85,25 +85,18 @@
   margin-bottom: 10px;
 }
 
-.expense_list_container {
-  display: flex;
-  width: 100%;
-  margin-left: 10px;
-}
-
 .expense_info {
-  display: flex;
+  display: grid;
+  grid-template-areas:
+    "title curUnit amount expenseImg"
+    "type type type type"             ;
+  grid-template-columns: 95px auto auto 20px;
+  grid-template-rows: auto auto;
   flex-grow: 1;
-  margin-left: 5px;
-  flex-direction: column;
-}
-
-.expense_title_container{
-  max-width: 100px; 
 }
 
 .expense_title{
-  display: inline-block;
+  grid-area: title;
   font-size: 0.8rem;
   white-space: nowrap;
   overflow: hidden;
@@ -115,16 +108,16 @@
   justify-content: space-between;
 }
 
-.expense_ca_container{
-  
-}
 
 .expense_curunit{
+  grid-area: curUnit;
   font-size: 0.7rem;
 }
 
 .expense_amount{
+  grid-area: amount;
   font-size: 0.7rem;
+  margin-left: -2px;
 }
 
 .noExpenses{
@@ -132,20 +125,22 @@
 }
 
 .expenseImg {
-  width: 30px; 
-  height: 30px; 
-  border-radius: 50%; 
-  object-fit: cover; 
-  margin-left: 10px;
+  grid-area: expenseImg;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: -3px;
+  background-color: var(--gray-color);
 }
 
 /* 개인경비 || 공용경비 */
 .type {
-  font-size: 0.7rem;
-  margin-top: 4px;
-  color: gray;
-  
-  flex-direction: column;
+  grid-area: type;
+  font-size: 0.60rem;
+  margin-top: 2px;
+  color: rgba(128, 128, 128, 0.745);
+  text-align: left;
 }
 
 

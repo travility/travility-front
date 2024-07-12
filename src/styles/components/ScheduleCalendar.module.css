@@ -1,9 +1,16 @@
 /* 간격조정 */
 .calendar_container {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr;
   gap: 10px;
   height: 100%;
+  transition: grid-template-columns 0.3s ease-in-out;
+}
+
+ /* 팝업이 나타날 때 두 개의 컬럼 */
+.calendar_container.show_popup {
+  grid-template-columns: 3fr 1fr; 
+ 
 }
 
 .calendar {
@@ -12,11 +19,18 @@
   padding: 30px; /* 전체 패딩 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 800px;
   max-height: auto;
   margin: 0 auto;
   background: white;
+  transition: width 0.3s ease-in-out;
 }
+
+/* 팝업이 나타날 때 캘린더의 너비를 줄임 */
+.calendar_container.show_popup .calendar{
+  width: auto;
+}
+
+/* 년월 부분 */
 
 .header {
   display: flex;
@@ -24,6 +38,44 @@
   align-items: center;
   padding: 10px;
   margin-bottom: 15px;
+}
+
+.yearSelect {
+  font-size: 0.95rem;
+  padding: 5px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+.yearSelect:focus {
+  border-color: var(--main-color);
+  outline: none;
+}
+
+.option {
+  font-size: 0.95rem;
+  padding: 5px;
+}
+
+
+.todayButton {
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  margin-left: -20px;
+  margin-right: 10px;
+}
+
+.todayButton:hover {
+  background-color: var(--second-color);
 }
 
 .header_years_month{
@@ -36,7 +88,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -68,6 +120,7 @@
 .body {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .row {
@@ -82,16 +135,47 @@
 }
 
 .cell {
-  flex: 1;
-  text-align: left;
-  padding: 10px 0;
-  cursor: pointer;
-  box-sizing: border-box; 
-  height: 100px;
-  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  align-items: flex-start;
+  justify-content: space-between;
+  /*셀 안의 내용을 상하 분배*/
+  text-align: left;
+  cursor: pointer;
+  height: 110px;
+  flex:1;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  min-width: 14.28%; /* 7개의 셀을 균등하게 나누기 위해 설정 */
+}
+
+.cell_total_amount {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #000000;
+  margin-top: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  font-size: 0.7rem;
+  font-weight: 550;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin: 0;
+}
+
+.cellWithEvent{
+  position: relative;
 }
 
 .cellWithEvent::after {
@@ -103,101 +187,58 @@
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.event {
-  margin-top: auto;
-  font-size: 0.7rem;
+  z-index: 1;
 }
 
 .disabled {
   color: #ccccccbb;
 }
 
+/* 오늘 날짜 표시 */
+.selected {
+  position: relative; 
+}
 
+.number {
+  position: relative;
+  z-index: 2;
+}
 
-/* today 를 동그라미로 점을 찍음 */
+/* today 꾸미기 투꾸 */
 .selected::before{
-  content: '';
+  content: '🐷';
   display: block;
   width: 10px;
   height: 10px;
-  background-color: var(--second-color);
-  border-radius: 50%;
+  background-color: transparent; 
+  border-radius: 0;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 30%;
+  left: 9%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 
 
-/* 반응형 스타일 */
-/* 작은 화면을 위한 스타일 */
+/* 작은 화면에서 팝업이 나왔을 때 */
 @media (max-width: 768px) {
-  .calendar_container {
+  .calendar_container.show_popup {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
-
+  
+  .schedule_detail_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  
   .calendar {
-    padding: 20px;
-    max-width: 100%;
-  }
-
-  .header {
-    flex-direction: column;
-  }
-
-  .days {
-    flex-wrap: wrap;
-  }
-
-  .day {
-    flex: 1 0 14%; /* 7일을 한 줄에 표시 */
-    margin: 5px 0;
-  }
-
-  .cell {
-    height: auto;
-  }
-}
-
-/* 중간 화면을 위한 스타일 */
-@media (max-width: 1024px) {
-  .calendar_container {
-    grid-template-columns: 2fr 1fr;
-  }
-
-  .calendar {
-    padding: 25px;
-    max-width: 100%;
-  }
-
-  .header_years_month {
-    font-size: 1.25rem;
-  }
-
-  .navButton {
-    font-size: 16px;
-  }
-}
-
-/* 큰 화면을 위한 스타일 */
-@media (min-width: 1025px) {
-  .calendar_container {
-    grid-template-columns: 3fr 1fr;
-  }
-
-  .calendar {
-    padding: 30px;
-    max-width: 800px;
-  }
-
-  .header_years_month {
-    font-size: 1.5rem;
-  }
-
-  .navButton {
-    font-size: 18px;
+    width: 100%;
+    margin: 0;
   }
 }

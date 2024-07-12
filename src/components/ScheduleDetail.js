@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { formatNumberWithCommas } from '../util/calcUtils';
 import styles from "../styles/components/ScheduleDetail.module.css";
-
+import { faExchange } from "@fortawesome/free-solid-svg-icons";
 
 const categoryLabels = {
   TRANSPORTATION: '교통',
@@ -22,18 +23,56 @@ const categoryImages = {
   OTHERS: 'others.png',
 };
 
-const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onClose, accountbookId, curUnit}) => {
+const ScheduleDetail = (
+  { 
+    accountbookId, 
+    countryName, 
+    imgName, 
+    expenses, 
+    date,
+    curUnit,
+    totalExpense, 
+    exchangeRates,
+    onClose
+  }) => {
   const [filter, setFilter] = useState("all");
+  const [filteredTotalExpense, setFilteredTotalExpense] = useState(totalExpense);
   const navigate = useNavigate();
 
   console.log('ScheduleDetail Props:', 
-    { countryName, 
+    { 
+      accountbookId,
+      countryName, 
       imgName, 
       expenses, 
       date,
       curUnit,
-      totalAmount, 
-      accountbookId });
+      totalExpense,
+      exchangeRates  
+       });
+
+  // const categorizedExpenses = expenses.reduce((acc, expense) => {
+  //   const category = expense.category || 'OTHERS';
+  //   if (!acc[category]) acc[category] = [];
+  //   acc[category].push(expense);
+  //   return acc;
+
+  useEffect(()=>{
+    updateFilteredTotalExpense();
+ 
+  }, [filter, expenses]);
+
+
+  const updateFilteredTotalExpense = () => {
+    const newFilteredTotalExpense = expenses.reduce((sum, expense) => {
+      const amountInKRW = expense.amount * (exchangeRates?.[expense.curUnit] || 1);
+      if (filter === "all") return sum + amountInKRW;
+      if (filter === "shared" && expense.isShared) return sum + amountInKRW;
+      if (filter === "personal" && !expense.isShared) return sum + amountInKRW;
+      return sum;
+    }, 0);
+    setFilteredTotalExpense(newFilteredTotalExpense);
+  };
 
   const categorizedExpenses = expenses.reduce((acc, expense) => {
     const category = expense.category || 'OTHERS';
@@ -56,6 +95,7 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
 
     return acc;
   }, {});
+
 
   const handleGoToAccountBookDetail = () => {
     navigate(`/accountbook/detail/${accountbookId}`);
@@ -82,7 +122,11 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
         <div className={styles.schedule_detail_filter_buttons_container}>
           <button
             className={filter === "all" ? styles.selectedButton : ""}
-            onClick={() => setFilter("all")}
+            onClick={() =>{
+               setFilter("all")
+               setFilteredTotalExpense(totalExpense);
+            }
+          }
           >
             모두보기
           </button>
@@ -115,26 +159,23 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
           ) : (
             Object.keys(filteredExpenses).map((category) => (
               <div key={category}>
-                {filteredExpenses[category].map((expense, index) => (
-                  <div key={index} className={styles.expenseItem}>
-                    <img
-                      className={styles.categoryImg}
-                      src={`/images/account/category/${categoryImages[category]}`}
-                      alt={expense.category}
-                    />
-                    <div className={styles.expense_list_container}>
+                {filteredExpenses[category].map((expense, index) => {
+                
+                  return (
+                    <div key={index} className={styles.expenseItem}>
+                      <img
+                        className={styles.categoryImg}
+                        src={`/images/account/category/${categoryImages[category]}`}
+                        alt={expense.category}
+                      />
                       <div className={styles.expense_info}>
                         <div className={styles.expense_title_container}>
                           <span className={styles.expense_title}>{expense.title}</span>
                         </div> 
                         <div className={styles.expense_ca_container}> 
                           <span className={styles.expense_curunit}>{expense.curUnit}</span>
-                          <span className={styles.expense_amount}>{expense.amount}</span>
+                          <span className={styles.expense_amount}>{expense.amount.toLocaleString()}</span>
                         </div>
-                        <span className={styles.type}>
-                          {expense.isShared ? '공동경비' : '개인경비'}
-                        </span>
-                      </div>
                         {expense.imgName ? (
                           <img
                             className={styles.expenseImg}
@@ -148,9 +189,13 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
                             alt="기본 이미지"
                           />
                         )}
+                        <span className={styles.type}>
+                          {expense.isShared ? '공동경비' : '개인경비'}
+                        </span>
+                      </div> {/* info끝 */}
                     </div> 
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ))
           )}
@@ -159,7 +204,7 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
         <div className={styles.schedule_detail_modalFooter}>
           <div className={styles.total_cost_container}>
             <p className={styles.total_cost_text}>총 사용 비용</p>
-            <p className={styles.total_cost_amount}>₩{totalAmount.toLocaleString()}</p>
+            <p className={styles.total_cost_amount}>₩{formatNumberWithCommas(filteredTotalExpense.toFixed(0))}</p>
           </div>
           <div className={styles.schedule_detail_Buttons_container}>
             <button className={styles.closeButton} onClick={onClose}>닫기</button>
@@ -168,8 +213,6 @@ const ScheduleDetail = ({ countryName, imgName, expenses, date, totalAmount, onC
       </div>
     </div>
   );
-
-
 };
 
 export default ScheduleDetail;
