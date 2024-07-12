@@ -22,7 +22,7 @@ import { validateToken } from "./util/tokenUtils";
 import { handleTokenExpirationLogout } from "./util/logoutUtils";
 import SettlementPage from "./pages/accountbook/settlement/SettlementPage";
 import SettlementExpenseListPage from "./pages/accountbook/settlement/SettlementExpenseListPage";
-import { global } from "./styles/dashboard/global.css";
+
 
 export const TokenStateContext = createContext();
 

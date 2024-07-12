@@ -10,13 +10,47 @@ import {
   addDays,
   isSameMonth,
   isSameDay,
+  setYear,
 } from 'date-fns';
 import ScheduleDetail from '../components/ScheduleDetail';
 import {fetchDailyExpenses, fetchAllExpensesByAccountbookId, formatDate  } from '../api/scheduleApi'; 
+import { formatNumberWithCommas } from '../util/calcUtils';
 import styles from '../styles/components/ScheduleCalendar.module.css';
 
-const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
+const ScheduleCalendar = (
+  { onDateClick, 
+    events, 
+    hasEvent, 
+    accountBooks, 
+    dailyExpenses, 
+    totalExpenses,
+    exchangeRates
+  }) => {
+
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const currentYear = currentMonth.getFullYear(); 
+  const [startYear, setStartYear] = useState(currentYear - 20); //현재 년도 -20 부터
+  const [endYear, setEndYear] = useState(currentYear + 1); //현재 년도 +20 까지만 로딩함
+  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i); //배열에 담아서 사용
+
+
+  //연도 변경
+  const handleYearChange = (event) => {
+    const newYear = parseInt(event.target.value, 10);
+    if (newYear <= startYear) {
+      setStartYear(startYear - 20);
+    } else if (newYear >= endYear) {
+      setEndYear(endYear + 1);
+    }
+    setCurrentMonth(setYear(currentMonth, newYear));
+  };
+
+  //오늘로 가기 기능
+  const goToToday = () => {
+    setCurrentMonth(startOfMonth(new Date()));
+  };
+
+  //모달로 넘길 정보
   const [popupInfo, setPopupInfo] = useState({ 
     show: false, 
     date: null, 
@@ -25,9 +59,10 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
     curUnit: '',
     countryName: '',
     imgName: '',
-    totalAmount: 0
+    totalExpense: 0
   });
 
+  //날짜 클릭 시 동작
   const handleDateClick = async (date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
     console.log('Date Clicked:', formattedDate);
@@ -62,7 +97,7 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
       );
 
       const curUnit = expensesForDate.length > 0 ? expensesForDate[0].curUnit : '';
-      const totalAmount = expensesForDate.reduce((sum, expense) => sum + expense.amount, 0);
+      const totalExpense = totalExpenses[accountbookId] || 0;
 
       setPopupInfo({
         show: true,
@@ -72,7 +107,8 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
         countryName: countryName,
         imgName: imgName,
         curUnit: curUnit,
-        totalAmount: totalAmount
+        totalExpense: totalExpense,
+        exchangeRates: exchangeRates
       });
     } catch (error) {
       console.error('지출 항목을 가져오는 중 오류가 발생했습니다:', error);
@@ -88,24 +124,46 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
       countryName: '',
       imgName: '',
       curUnit: '',
-      totalAmount: 0
+      totalExpense: 0
     });
   };
 
+
+
+  //년 월
   const renderHeader = () => {
     return (
       <div className={styles.header}>
         <button className={styles.navButton} onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
           {'<'}
         </button>
-        <div>{format(currentMonth, 'MMM yyyy')}</div>
-        <button className={styles.navButton} onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
-          {'>'}
-        </button>
+        <div className={styles.centerSection}>
+          {format(currentMonth, 'MMM')}{' '}
+          <select 
+            className={styles.yearSelect} 
+            value={currentYear} 
+            onChange={handleYearChange}
+          >
+            {years.map((year) => (
+              <option key={year} value={year} className={styles.option}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <button className={styles.todayButton} onClick={goToToday}>
+            today
+          </button>
+          <button className={styles.navButton} onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+            {'>'}
+          </button>
+        </div>
       </div>
     );
   };
 
+  //요일
   const renderDays = () => {
     const days = [];
     const date = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -120,6 +178,7 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
     return <div className={styles.days}>{days}</div>;
   };
 
+  //셀
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);
@@ -137,16 +196,21 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
         const cloneDay = day;
         const eventsForDay = events.filter((event) => isSameDay(event.start, cloneDay));
         const cellDate = format(day, 'yyyy-MM-dd');
+        // 해당 날짜의 총 지출 금액 가져오기
+        const totalExpense = dailyExpenses[cellDate] || 0;
+
         days.push(
           <div
             className={`${styles.cell} ${
               !isSameMonth(day, monthStart)
-                ? styles.disabled
-                : isSameDay(day, new Date())
-                ? styles.selected
-                : hasEvent[cellDate]
-                ? styles.cellWithEvent
-                : ''
+              ? styles.disabled
+              : isSameDay(day, new Date()) && hasEvent[cellDate]
+              ? `${styles.selected} ${styles.cellWithEvent}`
+              : isSameDay(day, new Date())
+              ? styles.selected
+              : hasEvent[cellDate]
+              ? styles.cellWithEvent
+              : ''
             }`}
             key={day}
             onClick={() => handleDateClick(cloneDay, eventsForDay[0]?.accountbookId, eventsForDay[0]?.countryName, eventsForDay[0]?.imgName)}
@@ -157,6 +221,11 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
                 {event.title}
               </div>
             ))}
+            {totalExpense !== 0 && (
+            <div className={styles.cell_total_amount}>
+              ₩{formatNumberWithCommas(totalExpense.toFixed(0))}
+            </div>
+          )}
           </div>
         );
         day = addDays(day, 1);
@@ -172,7 +241,7 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
   };
 
   return (
-    <div className={styles.calendar_container}>
+    <div className={`${styles.calendar_container} ${popupInfo.show ? styles.show_popup : ''}`}>
       <div className={styles.calendar}>
         {renderHeader()}
         {renderDays()}
@@ -186,10 +255,11 @@ const ScheduleCalendar = ({ onDateClick, events, hasEvent, accountBooks }) => {
             imgName={popupInfo.imgName}
             expenses={popupInfo.expenses}
             curUnit={popupInfo.curUnit}
-            totalAmount={popupInfo.totalAmount}
+            totalExpense={popupInfo.totalExpense}
             onClose={handleClosePopup}
             accountBooks={accountBooks}
             accountbookId={popupInfo.accountbookId}
+            exchangeRates={popupInfo.exchangeRates}
           />
         </div>
       )}
