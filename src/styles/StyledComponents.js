@@ -86,6 +86,13 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  .header-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin: 1.5rem 0;
+  }
+
   .wrapper {
     width: 100%
   }

@@ -1,8 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
-import { global }from "./styles/dashboard/global.css";
-import { GlobalStyle, Button } from "./styles/StyledComponents";
+import { global } from "./styles/dashboard/global.css";
+import { GlobalStyle } from "./styles/StyledComponents";
 import { ThemeProvider, useTheme, lightTheme, darkTheme } from "./styles/Theme";
 import Layout from "./components/header/Layout";
 import AboutUsPage from "./pages/main/AboutusPage";
@@ -22,7 +22,6 @@ import { validateToken } from "./util/tokenUtils";
 import { handleTokenExpirationLogout } from "./util/logoutUtils";
 import SettlementPage from "./pages/accountbook/settlement/SettlementPage";
 import SettlementExpenseListPage from "./pages/accountbook/settlement/SettlementExpenseListPage";
-
 
 export const TokenStateContext = createContext();
 
@@ -63,7 +62,6 @@ function App() {
       <StyledThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
         <GlobalStyle />
         <div>
-          <Button onClick={toggleTheme}>Toggle Theme</Button>
           <Routes>
             <Route path="/" element={<AboutUsPage />} />
             <Route path="/" element={<Layout />}>
