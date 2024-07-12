@@ -1,16 +1,21 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import NavigationBar from "../../components/header/NavigationBar";
 import { Inner, Container } from "../../styles/StyledComponents";
-import { Outlet } from "react-router-dom";
+import ThemeToggleButton from "../ThemeToggleButton";
+import { useTheme } from "../../styles/Theme";
 
 const Layout = () => {
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
+
   return (
     <div>
       <Inner>
-        <Header />
+        <div className="header-wrapper">
+          <Header />
+        </div>
         {!location.pathname.startsWith("/settlement") && <NavigationBar />}
         <Container>
           <Outlet />

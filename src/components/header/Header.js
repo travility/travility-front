@@ -1,20 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../../styles/components/Header.module.css';
-import { logout } from '../../api/memberApi';
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../../styles/components/Header.module.css";
+import { logout } from "../../api/memberApi";
 import {
   handleAlreadyLoggedOut,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from '../../util/logoutUtils';
-import { TokenStateContext } from '../../App';
+} from "../../util/logoutUtils";
+import { TokenStateContext } from "../../App";
+import ThemeToggleButton from "../ThemeToggleButton";
+import { useTheme } from "../../styles/Theme";
 
 const Header = () => {
   const { tokenStatus, memberInfo } = useContext(TokenStateContext);
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (memberInfo) {
@@ -25,13 +29,13 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      if (tokenStatus === 'Token valid') {
+      if (tokenStatus === "Token valid") {
         await logout();
         handleSuccessLogout(navigate);
-      } else if (tokenStatus === 'Token expired') {
+      } else if (tokenStatus === "Token expired") {
         await logout();
         handleTokenExpirationLogout(navigate);
-      } else if (tokenStatus === 'Token null') {
+      } else if (tokenStatus === "Token null") {
         handleAlreadyLoggedOut(navigate);
       }
     } catch (error) {
@@ -40,19 +44,19 @@ const Header = () => {
   };
 
   const handleLogoClick = () => {
-    if (tokenStatus === 'Token valid') {
-      navigate('/main');
+    if (tokenStatus === "Token valid") {
+      navigate("/main");
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
-  const logoStyle = {
-    color: location.pathname === '/' ? '#fff' : 'var(--main-color)',
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const buttonStyle = {
-    color: location.pathname === '/' ? '#fff' : 'var(--text-color)',
+  const logoStyle = {
+    color: location.pathname === "/" ? "#fff" : "var(--main-color)",
   };
 
   return (
@@ -62,7 +66,7 @@ const Header = () => {
         onClick={handleLogoClick}
         style={logoStyle}
       >
-        <div className={styles.logoContainer}>
+        <div className={styles.logo_container}>
           <img src="/images/main/logo.png" alt="logo" className={styles.logo} />
           <img
             src="/images/main/logo2.png"
@@ -72,50 +76,41 @@ const Header = () => {
         </div>
         TRAVILITY
       </div>
-      {(tokenStatus === 'Token valid' || location.pathname !== '/') /*&&
-        location.pathname !== '/settlement'*/ && (
-        <div className={styles.header_user_container}>
-          {tokenStatus === 'Token valid' && (
-            <>
-              <span className={styles.header_welcome_message}>
-                {role === 'ROLE_ADMIN' ? (
-                  <>현재 관리자 모드입니다</>
-                ) : (
-                  <>
-                    <img src="/images/person_circle.png" alt="user" />
-                    {name} 님 반갑습니다!
-                  </>
-                )}
-              </span>
-              <nav className={styles.header_navigation_container}>
-                <button
-                  className={styles.logout_button}
-                  onClick={handleLogout}
-                  style={buttonStyle}
-                >
-                  Logout
-                </button>
-                {role === 'ROLE_ADMIN' ? (
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={() => navigate('/admin/users')}
-                    style={buttonStyle}
-                  >
-                    관리
-                  </button>
-                ) : location.pathname === '/' ? (
-                  <></>
-                ) : (
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={() => navigate('/')}
-                    style={buttonStyle}
-                  >
-                    About Us
-                  </button>
-                )}
-              </nav>
-            </>
+      {tokenStatus === "Token valid" && location.pathname !== "/" && (
+        <div className={styles.header_right}>
+          <span
+            className={`${styles.header_welcome_message} ${
+              isSidebarOpen ? styles.open : ""
+            }`}
+          >
+            {role === "ROLE_ADMIN" ? (
+              <>현재 관리자 모드입니다</>
+            ) : (
+              <>
+                <img src="/images/person_circle.png" alt="user" />
+                {name} 님 반갑습니다!
+              </>
+            )}
+            <button className={styles.toggle_button} onClick={toggleSidebar}>
+              {isSidebarOpen ? ">" : "<"}
+            </button>
+          </span>
+          {isSidebarOpen && (
+            <div className={styles.sidebar}>
+              <button className={styles.logout_button} onClick={handleLogout}>
+                Logout
+              </button>
+              <button
+                className={styles.nav_second_button}
+                onClick={() => navigate("/")}
+              >
+                About Us
+              </button>
+              <ThemeToggleButton
+                toggleTheme={toggleTheme}
+                currentTheme={theme}
+              />
+            </div>
           )}
         </div>
       )}

@@ -1,15 +1,13 @@
 .header_container {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  width: 100%;
-  padding: 1rem;
   justify-content: space-between;
+  width: 100%;
 }
 
 .header_logo {
   cursor: pointer;
-  padding: 1rem;
+  padding: 0 1rem;
   font-weight: bold;
   color: var(--main-color);
   font-size: 1.5rem;
@@ -19,7 +17,7 @@
   font-family: 'GoryeongStrawberry';
 }
 
-.logoContainer {
+.logo_container {
   position: relative;
   display: inline-block;
   width: 2.5rem;
@@ -27,7 +25,7 @@
   margin-right: 0.2rem;
 }
 
-.logoContainer img {
+.logo_container img {
   position: absolute;
   top: 0;
   left: 0;
@@ -36,12 +34,12 @@
   padding-bottom: 0.5rem;
 }
 
-.logoContainer .logoMove {
+.logo_container .logoMove {
   opacity: 0;
 }
 
-.logoContainer:hover .logo,
-.logoContainer:hover .logoMove {
+.logo_container:hover .logo,
+.logo_container:hover .logoMove {
   animation: logoAnimation 0.5s infinite;
 }
 
@@ -56,26 +54,28 @@
   }
 }
 
-.logoContainer:hover .logo {
+.logo_container:hover .logo {
   animation-delay: 0s;
 }
 
-.logoContainer:hover .logoMove {
+.logo_container:hover .logoMove {
   animation-delay: 0.25s;
 }
 
-.header_user_container {
+.header_right {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+  margin: 0 1rem;
 }
 
 .header_welcome_message {
-  font-size: 0.8rem;
+  font-size: 0.8em;
   color: var(--pointor-color);
   display: flex;
   align-items: center;
-  margin-right: 1rem;
+  white-space: nowrap
 }
 
 .header_welcome_message img {
@@ -83,23 +83,49 @@
   margin-right: 0.2rem;
 }
 
-.header_navigation_container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.2rem;
+.header_welcome_message.open {
+  margin-right: 12rem;
 }
 
-.header_navigation_container button {
+.toggle_button {
+  background: var(--main-color);
+  border: 2px solid var(--light-color);
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  color: #ffffff;
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-left: 1rem;
+}
+
+.sidebar {
+  display: flex;
+  align-items: center;
+  background: var(--light-color);
+  padding: 0.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12rem;
+  height: 1.5rem;
+}
+
+.logout_button,
+.nav_second_button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--gray-color);
-  width: auto;
-  margin-top: 0;
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--text-color);
+  white-space: nowrap
 }
 
 .nav_second_button::before {
-  content: '|   ';
+  content: '|';
+  margin-right: 0.5rem;
 }
