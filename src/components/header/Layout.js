@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import NavigationBar from "../../components/header/NavigationBar";
 import { Inner, Container } from "../../styles/StyledComponents";
+import ScrollToTopButton from "../ScrollToTopButton";
 
 const Layout = () => {
   const location = useLocation();
@@ -16,6 +17,7 @@ const Layout = () => {
         {!location.pathname.startsWith("/settlement") && <NavigationBar />}
         <Container>
           <Outlet />
+          <ScrollToTopButton />
         </Container>
       </Inner>
     </div>
