@@ -3,11 +3,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import NavigationBar from "../../components/header/NavigationBar";
 import { Inner, Container } from "../../styles/StyledComponents";
-import ThemeToggleButton from "../ThemeToggleButton";
-import { useTheme } from "../../styles/Theme";
 
 const Layout = () => {
-  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   return (
