@@ -174,3 +174,9 @@
   object-fit: cover;
   background-color: var(--gray-color);
 }
+
+.description{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
