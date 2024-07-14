@@ -10,7 +10,7 @@ import {
 import { TokenStateContext } from '../../App';
 
 const Header = () => {
-  const { tokenStatus, memberInfo } = useContext(TokenStateContext);
+  const { memberInfo } = useContext(TokenStateContext);
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const navigate = useNavigate();
@@ -21,26 +21,28 @@ const Header = () => {
       setName(memberInfo.name);
       setRole(memberInfo.role);
     }
-  }, [tokenStatus, memberInfo]);
+  }, [memberInfo, location.pathname, navigate]);
 
   const handleLogout = async () => {
     try {
-      if (tokenStatus === 'Token valid') {
-        await logout();
-        handleSuccessLogout(navigate);
-      } else if (tokenStatus === 'Token expired') {
-        await logout();
-        handleTokenExpirationLogout(navigate);
-      } else if (tokenStatus === 'Token null') {
-        handleAlreadyLoggedOut(navigate);
-      }
+      // if (tokenStatus === 'Token valid') {
+      //   await logout();
+      //   handleSuccessLogout(navigate);
+      // } else if (tokenStatus === 'Token expired') {
+      //   await logout();
+      //   handleTokenExpirationLogout(navigate);
+      // } else if (tokenStatus === 'Token null') {
+      //   handleAlreadyLoggedOut(navigate);
+      // }
+      await logout();
+      handleSuccessLogout(navigate);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleLogoClick = () => {
-    if (tokenStatus === 'Token valid') {
+    if (memberInfo) {
       navigate('/main');
     } else {
       navigate('/');
@@ -72,10 +74,9 @@ const Header = () => {
         </div>
         TRAVILITY
       </div>
-      {(tokenStatus === 'Token valid' || location.pathname !== '/') /*&&
-        location.pathname !== '/settlement'*/ && (
+      {(memberInfo || location.pathname !== '/') && (
         <div className={styles.header_user_container}>
-          {tokenStatus === 'Token valid' && (
+          {memberInfo && (
             <>
               <span className={styles.header_welcome_message}>
                 {role === 'ROLE_ADMIN' ? (

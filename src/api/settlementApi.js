@@ -15,11 +15,3 @@ export const getTotalSharedExpensesAndExchangeRates = async (id) => {
   const reponse = await axios.get(`${API_SERVER_HOST}/settlement/${id}/totals`);
   return reponse.data;
 };
-
-//1인당 정산 금액
-export const getPerPersonAmount = async (id) => {
-  const response = await axios.get(
-    `${API_SERVER_HOST}/settlement/${id}/per-person`
-  );
-  return response.data;
-};

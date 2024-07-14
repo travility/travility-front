@@ -14,12 +14,6 @@ const SettlementDetail = ({
   exchangeRatesByCurrency,
   totalSharedExpensesByCurrency,
 }) => {
-  const [totalSharedExpenses, setTotalSharedExpenses] = useState([]);
-
-  useEffect(() => {
-    setTotalSharedExpenses(Object.values(totalSharedExpensesByCurrency));
-  }, [totalSharedExpensesByCurrency]);
-
   return (
     <>
       {isOpen && (
