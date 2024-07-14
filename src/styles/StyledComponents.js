@@ -224,6 +224,8 @@ const CloseButton = styled.div`
   }
 `;
 
+
+
 export {
   GlobalStyle,
   Inner,
