@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "../../styles/main/AboutusPage.module.css";
-import Layout from "../../components/header/Layout.js";
-import { TokenStateContext } from "../../App.js";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from '../../styles/main/AboutusPage.module.css';
+import Layout from '../../components/header/Layout.js';
+import { TokenStateContext } from '../../App.js';
 
 const AboutUsPage = () => {
-  const { tokenStatus } = useContext(TokenStateContext);
+  const { tokenStatus, memberInfo } = useContext(TokenStateContext);
   //const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
@@ -16,10 +16,15 @@ const AboutUsPage = () => {
   // }, [tokenStatus]);
 
   const handleButtonClick = () => {
-    if (tokenStatus === "Token valid") {
-      navigate("/main");
+    // if (tokenStatus === "Token valid") {
+    //   navigate("/main");
+    // } else {
+    //   navigate("/login");
+    // }
+    if (memberInfo) {
+      navigate('/main');
     } else {
-      navigate("/login");
+      navigate('/login');
     }
   };
 
@@ -44,7 +49,8 @@ const AboutUsPage = () => {
               </p>
             </div>
             <button className={styles.login_button} onClick={handleButtonClick}>
-              <p>{tokenStatus === "Token valid" ? "Main" : "Login"}</p>
+              {/* <p>{tokenStatus === "Token valid" ? "Main" : "Login"}</p> */}
+              <p>{memberInfo ? 'Main' : 'Login'}</p>
             </button>
           </div>
         </section>

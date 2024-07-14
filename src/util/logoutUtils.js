@@ -1,18 +1,18 @@
 import Swal from 'sweetalert2';
 import { removeToken } from './tokenUtils';
 
-export const handleSuccessLogout = (navigate) => {
+export const handleSuccessLogout = () => {
   removeToken();
   Swal.fire({
     title: '로그아웃 성공',
     icon: 'success',
     confirmButtonColor: '#2a52be',
   }).then(() => {
-    navigate('/login');
+    window.location.href = '/login';
   });
 };
 
-export const handleTokenExpirationLogout = (navigate) => {
+export const handleTokenExpirationLogout = () => {
   removeToken();
   Swal.fire({
     title: '로그인 유효기간 만료',
@@ -20,18 +20,19 @@ export const handleTokenExpirationLogout = (navigate) => {
     icon: 'error',
     confirmButtonColor: '#2a52be',
   }).then(() => {
-    navigate('/login');
+    window.location.href = '/login';
   });
 };
 
-export const handleAlreadyLoggedOut = (navigate) => {
+export const handleAlreadyLoggedOut = () => {
+  removeToken();
   Swal.fire({
     title: '로그아웃 상태',
     text: '현재 로그아웃된 상태입니다.',
     icon: 'error',
     confirmButtonColor: '#2a52be',
   }).then(() => {
-    navigate('/login');
+    window.location.href = '/login';
   });
 };
 

@@ -24,7 +24,9 @@ export const signup = async (member) => {
 
 //로그인
 export const login = async (data) => {
-  const response = await axios.post(`${API_SERVER_HOST}/login`, data);
+  const response = await axios.post(`${API_SERVER_HOST}/login`, data, {
+    withCredentials: true,
+  });
   return response;
 };
 
@@ -36,11 +38,22 @@ export const getTokenfromCookie = async () => {
   return response;
 };
 
-//로그아웃
-export const logout = async () => {
-  const response = await axios.post(`${API_SERVER_HOST}/logout`);
+//액세스 토큰 재발급
+export const getNewAccessToken = async () => {
+  const response = await axios.post(
+    `${API_SERVER_HOST}/auth/reissue`,
+    {},
+    { withCredentials: true }
+  );
   return response;
 };
+
+//로그아웃
+export const logout = async () => {
+  const response = await axiosInstance.post(`${API_SERVER_HOST}/logout`);
+  return response;
+};
+
 //JWT 존재 여부
 export const checkToken = async () => {
   const response = await axiosInstance.get('/auth/check-token');
