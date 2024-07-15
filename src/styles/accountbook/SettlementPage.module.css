@@ -1,0 +1,118 @@
+.settlmentPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.shareButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.shareButtonContent {
+  display: flex;
+  width: 6.5rem;
+}
+
+.shareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareButton_text {
+  margin-right: 8px;
+  font-size: 0.8rem;
+}
+
+.shareButton_icon {
+  width: 0.9rem;
+}
+
+.shareButtonContainer {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.settlementContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settlementContent {
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.tripInfo {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.accountBook_list_item_detail {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #ffffff;
+}
+
+.accountBook_list_flag {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.accountBook_list_flag img {
+  width: 30px;
+  vertical-align: middle;
+}
+
+.accountBook_list_title {
+  font-size: 18px;
+}
+
+.accountBook_list_dates {
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.settlementDetails {
+  margin-top: 20px;
+}
+
+.settlementDetails_item {
+  margin-bottom: 10px;
+}
+
+.settlementDetails_item:nth-child(3) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.perPersonExpense {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.settlementExpenseListButtonContainer {
+  text-align: center;
+  margin-top: 20px;
+}

@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import ExpenseItem from "./ExpenseItem";
 import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 import { Button } from "../../../styles/StyledComponents";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-const ExpenseList = ({ expenses = [] }) => {
+const ExpenseList = ({ expenses, accountBook }) => {
   const [filter, setFilter] = useState("all");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(expenses);
-  });
-
-  // 지출 그룹화
   const groupedExpenses = expenses.reduce((acc, expense) => {
     const date = new Date(expense.expenseDate).toLocaleDateString();
     if (!acc[date]) {
@@ -20,7 +18,6 @@ const ExpenseList = ({ expenses = [] }) => {
     return acc;
   }, {});
 
-  // 지출 필터링
   const filteredExpenses = Object.keys(groupedExpenses).reduce((acc, date) => {
     const filtered = groupedExpenses[date].filter((expense) => {
       if (filter === "all") return true;
@@ -36,27 +33,46 @@ const ExpenseList = ({ expenses = [] }) => {
     return acc;
   }, {});
 
+  const goSettlement = () => {
+    const sharedExpenses = expenses.filter((expense) => expense.isShared);
+    if (sharedExpenses.length === 0) {
+      Swal.fire({
+        title: "정산 실패",
+        text: "정산할 공동경비 지출이 없습니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
+      });
+    } else {
+      navigate(`/settlement/${accountBook.id}`);
+    }
+  };
+
   return (
-    <div className={styles.expenseListContainer}>
-      <div className={styles.filterButtons}>
-        <Button
-          className={filter === "all" ? styles.selectedButton : ""}
-          onClick={() => setFilter("all")}
-        >
-          모두보기
-        </Button>
-        <Button
-          className={filter === "shared" ? styles.selectedButton : ""}
-          onClick={() => setFilter("shared")}
-        >
-          공동경비
-        </Button>
-        <Button
-          className={filter === "personal" ? styles.selectedButton : ""}
-          onClick={() => setFilter("personal")}
-        >
-          개인경비
-        </Button>
+    <div className={styles.expenseList_container}>
+      <div className={styles.expenseList_header}>
+        <div className={styles.filter_buttons}>
+          <Button
+            className={filter === "all" ? styles.selected_button : ""}
+            onClick={() => setFilter("all")}
+          >
+            모두보기
+          </Button>
+          <Button
+            className={filter === "shared" ? styles.selected_button : ""}
+            onClick={() => setFilter("shared")}
+          >
+            공동경비
+          </Button>
+          <Button
+            className={filter === "personal" ? styles.selected_button : ""}
+            onClick={() => setFilter("personal")}
+          >
+            개인경비
+          </Button>
+        </div>
+        <div className={styles.settlement_button}>
+          <Button onClick={goSettlement}>정산하기</Button>
+        </div>
       </div>
       <div className={styles.expenseList}>
         {Object.keys(filteredExpenses).length === 0 ? (
@@ -66,7 +82,11 @@ const ExpenseList = ({ expenses = [] }) => {
             <div key={index}>
               <div className={styles.expenseDate}>{date}</div>
               {filteredExpenses[date].map((expense, idx) => (
-                <ExpenseItem key={idx} expense={expense} />
+                <ExpenseItem
+                  key={idx}
+                  expense={expense}
+                  accountBook={accountBook}
+                />
               ))}
             </div>
           ))
