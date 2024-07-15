@@ -1,54 +1,69 @@
 .accountBook_list_page {
-    padding: 0.5rem;
+  width: 100%;
 }
 
-  /* item 들을 grid 로 구분*/
+/* item 들을 grid 로 구분*/
+.accountBook_list_grid_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+/*삭제*/
+.action_buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  width: 10rem;
+}
+
+.confirm_delete_button {
+  margin-top: 0;
+  margin-left: 0.5rem;
+}
+
+.select_overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+}
+
+.no_account_book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: var(--light-color);
+}
+  
+.no_account_book_icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--second-color);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 870px) {
   .accountBook_list_grid_container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
   }
+}
 
-  /*삭제*/
-  .action_buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-    width: 10rem;
+@media (max-width: 700px) {
+  .accountBook_list_grid_container {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .delete_button {
-    margin-top: 0;
-  }
+}
 
-  .confirm_delete_button {
-    margin-top: 0;
-    margin-left: 0.5rem;
+@media (max-width: 450px) {
+  .accountBook_list_grid_container {
+    grid-template-columns: repeat(1, 1fr);
   }
-
-  .select_overlay {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 3;
-  }
-
-  .no_account_book {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-    color: var(--text-color);
-    font-size: 1.2rem;
-    padding: 2rem;
-    border-radius: 1rem;
-    background-color: var(--light-color);
-  }
-  
-  .no_account_book_icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: var(--second-color);
-  }
+}

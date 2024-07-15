@@ -36,6 +36,11 @@
   margin-bottom: 0.5rem;
 }
 
+.date input,
+.time input {
+  padding: 0.4rem;
+}
+
 .radio_group {
   display: flex;
   justify-content: space-between;

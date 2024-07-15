@@ -59,6 +59,20 @@ const Header = () => {
     color: location.pathname === "/" ? "#fff" : "var(--main-color)",
   };
 
+  const handleMouseOver = (e) => {
+    const img = e.currentTarget.querySelector("img");
+    if (img) {
+      img.src = "/images/person_circle_pk.png";
+    }
+  };
+
+  const handleMouseOut = (e) => {
+    const img = e.currentTarget.querySelector("img");
+    if (img) {
+      img.src = "/images/person_circle.png";
+    }
+  };
+
   return (
     <header className={styles.header_container}>
       <div
@@ -87,8 +101,16 @@ const Header = () => {
               <>현재 관리자 모드입니다</>
             ) : (
               <>
-                <img src="/images/person_circle.png" alt="user" />
-                {name} 님 반갑습니다!
+                <button
+                  onClick={() => navigate("/dashboard/myinfo")}
+                  className={styles.user_button}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                >
+                  <img src="/images/person_circle.png" alt="user" />
+                  {name}
+                </button>
+                님 반갑습니다!
               </>
             )}
             <button className={styles.toggle_button} onClick={toggleSidebar}>

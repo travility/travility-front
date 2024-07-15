@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     --bold-color: #343683;
     --dark-color: #11183B;
     --light-color: #eff3ff;
-    --pointpk-color: #ff8bd2;
+    --point-color: #ff8bd2;
     --pointor-color: #FEC144;
     --line-color: #ECECEC;
     --gray-color: #9D9D9D;
@@ -43,13 +43,13 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  @media (min-width: 431px) and (max-width: 600px) {
+  @media (min-width: 431px) and (max-width: 690px) {
     html {
       font-size: 87.5%;
     }
   }
 
-  @media (min-width: 601px) and (max-width: 1024px) {
+  @media (min-width: 691px) and (max-width: 1024px) {
     html {
       font-size: 100%;
     }
@@ -112,7 +112,7 @@ const Inner = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 2.5rem;
+  padding: 2.5rem 4rem;
 `;
 
 const Button = styled.button`
@@ -141,7 +141,6 @@ const Input = styled.input`
   padding: 0.5rem;
   margin-top: 0.2rem;
   width: 100%;
-  min-height: 2rem;
   border: 1px solid var(--line-color);
   border-radius: 0.3rem;
   color: var(--text-color);
@@ -230,8 +229,6 @@ const CloseButton = styled.div`
     color: var(--second-color);
   }
 `;
-
-
 
 export {
   GlobalStyle,

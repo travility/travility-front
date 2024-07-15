@@ -111,7 +111,7 @@
 }
 
 .budget_detail:hover {
-  color: var(--pointor-color);
+  color: var(--point-color);
 }
 
 .totalBudget {
@@ -121,6 +121,6 @@
 }
 
 .totalBudget span {
-  color: var(--pointor-color);
+  color: var(--point-color);
   margin-left: 1rem;
 }

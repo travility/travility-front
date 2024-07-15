@@ -63,16 +63,14 @@
   position: relative; 
   width: 100%; 
 }
-
 .toggle_pw_button {
   position: absolute;
-  right: 40px;
-  top: 45%;
+  right: 10px;
+  top: 60%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
 }
 
 /*비밀번호 확인 컨테이너*/
