@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getTotalCategoryStatistics } from "../../api/expenseApi";
+import { getTotalCategoryStatistics } from '../../api/expenseApi';
+import styles from '../../styles/statistic/TotalAmountCategory.module.css';
 
-const colors = [
-  '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4'
-];
-
+// 총 지출내역 밑에 카테고리별 총지출 써져있는거
 const categories = [
   { en: 'TRANSPORTATION', ko: '교통' },
   { en: 'ACCOMMODATION', ko: '숙박' },
@@ -14,6 +12,10 @@ const categories = [
   { en: 'OTHERS', ko: '기타' }
 ];
 
+const categoryColors = [
+  '#5DA7FF', 
+];
+
 const TotalAmountCategory = ({ accountBookId }) => {
   const [statistics, setStatistics] = useState([]);
 
@@ -21,9 +23,13 @@ const TotalAmountCategory = ({ accountBookId }) => {
     const fetchData = async () => {
       try {
         const data = await getTotalCategoryStatistics(accountBookId);
-        setStatistics(data);
+        if (Array.isArray(data)) {
+          setStatistics(data);
+        } else {
+          console.error('데이터 포매팅 잘 안됨 :', data);
+        }
       } catch (error) {
-        console.error("Failed to fetch statistics:", error);
+        console.error('통계를 불러오지 못함 :', error);
       }
     };
 
@@ -31,25 +37,18 @@ const TotalAmountCategory = ({ accountBookId }) => {
   }, [accountBookId]);
 
   return (
-    <div style={{ border: '1px solid black', padding: '10px', display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+    <div className={styles.categoryContainer}>
       {categories.map((category, index) => {
         const stat = statistics.find(stat => stat.category === category.en);
+        const amount = stat ? stat.amount : 0;
         return (
-          <div key={category.en} style={{ textAlign: 'center' }}>
-            <div style={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '50%',
-              backgroundColor: colors[index % colors.length],
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              margin: '0 auto'
-            }}>
-              {category.ko}
-            </div>
-            <div>{stat ? Math.floor(stat.amount) : 0}원</div>
+          <div
+            key={category.en}
+            className={styles.categoryBox}
+            style={{ borderColor: categoryColors[0] }}
+          >
+            <span className={styles.categoryName}>{category.ko}</span>
+            <span className={styles.categoryAmount}>{amount.toLocaleString()}원</span>
           </div>
         );
       })}
