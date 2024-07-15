@@ -52,7 +52,6 @@ export const fetchAllExpensesByAccountbookId = async (accountbookId) => {
 };
 
 
-
 // 지출 총합 계산(가중 평균)
 export const fetchTotalExpenses = async (accountbookId) => {
   try {
@@ -62,11 +61,17 @@ export const fetchTotalExpenses = async (accountbookId) => {
     // 백엔드에서 반환된 데이터 구조
     const { totalAmount, expenses, exchangeRates } = response.data;
 
+    // 데이터를 콘솔에 출력하여 확인
+    console.log('Total Amount:', totalAmount);
+    console.log('Expenses:', expenses);
+    console.log('Exchange Rates:', exchangeRates);
+
     // 환율을 고려한 금액 계산
     const calculatedTotalAmount = expenses.reduce((total, expense) => {
       const exchangeRate = exchangeRates[expense.curUnit] || 1;
       return total + expense.amount * exchangeRate;
     }, 0);
+
 
     console.log(`Calculated total amount for accountbook ${accountbookId}:`, calculatedTotalAmount);
     return { totalAmount: calculatedTotalAmount, expenses, exchangeRates };

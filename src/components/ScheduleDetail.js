@@ -49,19 +49,11 @@ const ScheduleDetail = (
       curUnit,
       totalExpense,
       exchangeRates  
-       });
-
-  // const categorizedExpenses = expenses.reduce((acc, expense) => {
-  //   const category = expense.category || 'OTHERS';
-  //   if (!acc[category]) acc[category] = [];
-  //   acc[category].push(expense);
-  //   return acc;
+  });
 
   useEffect(()=>{
     updateFilteredTotalExpense();
- 
-  }, [filter, expenses]);
-
+  }, [filter, expenses, exchangeRates]);
 
   const updateFilteredTotalExpense = () => {
     const newFilteredTotalExpense = expenses.reduce((sum, expense) => {
@@ -96,7 +88,6 @@ const ScheduleDetail = (
     return acc;
   }, {});
 
-
   const handleGoToAccountBookDetail = () => {
     navigate(`/accountbook/detail/${accountbookId}`);
   };
@@ -108,7 +99,7 @@ const ScheduleDetail = (
           <h5>
             <img src="/images/gpiIcon.png" className={styles.icon} />
             {countryName}
-            </h5>
+          </h5>
           <p>{date}</p>
         </div>
         <div 
@@ -123,10 +114,9 @@ const ScheduleDetail = (
           <button
             className={filter === "all" ? styles.selectedButton : ""}
             onClick={() =>{
-               setFilter("all")
-               setFilteredTotalExpense(totalExpense);
-            }
-          }
+              setFilter("all")
+              setFilteredTotalExpense(totalExpense);
+            }}
           >
             모두보기
           </button>
@@ -150,56 +140,55 @@ const ScheduleDetail = (
           </button>
         </div>
         <Scrollbar
-            style={{ height: '200px' }}
-            className={styles.customScrollbar}
-          >
-        <div className={styles.expenseList}>
-          {Object.keys(filteredExpenses).length === 0 ? (
-            <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
-          ) : (
-            Object.keys(filteredExpenses).map((category) => (
-              <div key={category}>
-                {filteredExpenses[category].map((expense, index) => {
-                
-                  return (
-                    <div key={index} className={styles.expenseItem}>
-                      <img
-                        className={styles.categoryImg}
-                        src={`/images/account/category/${categoryImages[category]}`}
-                        alt={expense.category}
-                      />
-                      <div className={styles.expense_info}>
-                        <div className={styles.expense_title_container}>
-                          <span className={styles.expense_title}>{expense.title}</span>
-                        </div> 
-                        <div className={styles.expense_ca_container}> 
-                          <span className={styles.expense_curunit}>{expense.curUnit}</span>
-                          <span className={styles.expense_amount}>{expense.amount.toLocaleString()}</span>
-                        </div>
-                        {expense.imgName ? (
-                          <img
-                            className={styles.expenseImg}
-                            src={`http://localhost:8080/images/${expense.imgName}`}
-                            alt="지출 이미지"
-                          />
-                        ) : (
-                          <img
-                            className={styles.expenseImg}
-                            src="http://localhost:8080/images/default_image.png"
-                            alt="기본 이미지"
-                          />
-                        )}
-                        <span className={styles.type}>
-                          {expense.isShared ? '공동경비' : '개인경비'}
-                        </span>
-                      </div> {/* info끝 */}
-                    </div> 
-                  );
-                })}
-              </div>
-            ))
-          )}
-        </div>
+          style={{ height: '200px' }}
+          className={styles.customScrollbar}
+        >
+          <div className={styles.expenseList}>
+            {Object.keys(filteredExpenses).length === 0 ? (
+              <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
+            ) : (
+              Object.keys(filteredExpenses).map((category) => (
+                <div key={category}>
+                  {filteredExpenses[category].map((expense, index) => {
+                    return (
+                      <div key={index} className={styles.expenseItem}>
+                        <img
+                          className={styles.categoryImg}
+                          src={`/images/account/category/${categoryImages[category]}`}
+                          alt={expense.category}
+                        />
+                        <div className={styles.expense_info}>
+                          <div className={styles.expense_title_container}>
+                            <span className={styles.expense_title}>{expense.title}</span>
+                          </div> 
+                          <div className={styles.expense_ca_container}> 
+                            <span className={styles.expense_curunit}>{expense.curUnit}</span>
+                            <span className={styles.expense_amount}>{expense.amount.toLocaleString()}</span>
+                          </div>
+                          {expense.imgName ? (
+                            <img
+                              className={styles.expenseImg}
+                              src={`http://localhost:8080/images/${expense.imgName}`}
+                              alt="지출 이미지"
+                            />
+                          ) : (
+                            <img
+                              className={styles.expenseImg}
+                              src="http://localhost:8080/images/default_image.png"
+                              alt="기본 이미지"
+                            />
+                          )}
+                          <span className={styles.type}>
+                            {expense.isShared ? '공동경비' : '개인경비'}
+                          </span>
+                        </div> {/* info끝 */}
+                      </div> 
+                    );
+                  })}
+                </div>
+              ))
+            )}
+          </div>
         </Scrollbar>
         <div className={styles.schedule_detail_modalFooter}>
           <div className={styles.total_cost_container}>
