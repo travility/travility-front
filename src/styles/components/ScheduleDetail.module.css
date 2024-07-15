@@ -1,12 +1,13 @@
 .schedule_detail_container {
-  background: white;
   border-radius: 10px;
   padding: 20px;
-  /* width: 100%; */
   max-width: 300px;
   min-width: 300px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  /* 다크모드 */
+  background-color: var(--backgroung-color);
 }
 
 .schedule_detail_header_container {
@@ -44,20 +45,22 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px; 
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid var(--text-color);
 }
 
 .schedule_detail_filter_buttons_container button {
   border: none;
-  background-color: white;
   cursor: pointer;
   margin-bottom: 5px; 
   letter-spacing: -1px;
+  /* 다크모드 */
+  background:none;
+  color: var(--text-color);
 }
 
 .go_accountbook_detail_btn {
   background-color: #657DF9 !important;
-  color: white;
+  color: white !important;
   border-radius: 8px;
   padding: 3px 5px;
   font-size: 0.6rem;
@@ -147,7 +150,7 @@
 /* Footer */
 
 .schedule_detail_modalFooter {
-  border-top: 1px solid #000;
+  border-top: 1px solid var(--text-color);
   padding-top: 10px;
 }
 
@@ -177,6 +180,10 @@
   border: none;
   cursor: pointer;
   font-size: 0.8rem;
-  text-decoration: underline;
+  color: var(--text-color);
+  &:hover{
+    color: var(--main-color);
+    text-decoration: underline;
+  }
 }
 

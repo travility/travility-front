@@ -1,5 +1,6 @@
 /* 간격조정 */
 .calendar_container {
+  background-color: var(--backgroung-color);
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
@@ -21,7 +22,7 @@
   width: 100%;
   max-height: auto;
   margin: 0 auto;
-  background: white;
+  background: var(--backgroung-color);
   transition: width 0.3s ease-in-out;
 }
 
@@ -90,6 +91,7 @@
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
+  color:var(--text-color);
 }
 
 .days {
