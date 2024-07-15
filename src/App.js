@@ -3,7 +3,6 @@ import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { GlobalStyle, Button } from './styles/StyledComponents';
 import { ThemeProvider, useTheme, lightTheme, darkTheme } from './styles/Theme';
-import { global } from './styles/dashboard/global.css';
 import Layout from './components/header/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import MainPage from './pages/main/mainPage2/MainPage';
@@ -23,6 +22,7 @@ import { handleTokenExpirationLogout } from './util/logoutUtils';
 import SettlementPage from './pages/accountbook/settlement/SettlementPage';
 import SettlementExpenseListPage from './pages/accountbook/settlement/SettlementExpenseListPage';
 import { global } from './styles/dashboard/global.css';
+import UpdatePasswordPage from './pages/dashboard/UpdatePasswordPage';
 
 export const TokenStateContext = createContext();
 
@@ -101,6 +101,14 @@ function App() {
                 element={
                   <AuthenticatedRoute>
                     <MyInfo />
+                  </AuthenticatedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/myinfo/update-password"
+                element={
+                  <AuthenticatedRoute>
+                    <UpdatePasswordPage />
                   </AuthenticatedRoute>
                 }
               />

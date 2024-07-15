@@ -58,7 +58,7 @@ export const handleSuccessSubject = (subject, action) => {
   });
 };
 
-export const handlefailureSubject = (subject, action) => {
+export const handleFailureSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 실패`,
     text: `${subject} ${action} 실패했습니다`,
