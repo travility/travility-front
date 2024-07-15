@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "../../../styles/accountbook/TripInfo.module.css";
-import { formatDate } from "../../../api/accountbookApi";
+import styles from "../../../styles/accountbook/UpdateTripInfo.module.css";
+import { formatDate } from "../../../util/calcUtils";
 import Swal from "sweetalert2";
 import SearchCountry from "../../../components/SearchCountry";
 import {
@@ -100,89 +100,91 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
               <CloseButton onClick={onClose}>&times;</CloseButton>
             </ModalHeader>
             <form onSubmit={handleUpdateTripInfo}>
-              <div className={styles.modalContent}>
-                <div className={styles.inputGroup}>
-                  <label>여행지</label>
-                  <div
-                    onClick={() =>
-                      setNewTripInfo({ ...newTripInfo, isModalOpen: true })
-                    }
-                    className={styles.selectedCountry}
-                  >
-                    <img
-                      src={newTripInfo.tripInfo.countryFlag}
-                      alt={newTripInfo.tripInfo.countryName}
-                      className={styles.flag}
-                    />
-                    <span>{newTripInfo.tripInfo.countryName}</span>
+              <div className={styles.modal_content}>
+                <div className={styles.tripInfo_form}>
+                  <div className={styles.tripInfo_formGroup}>
+                    <label>여행지</label>
+                    <div
+                      onClick={() =>
+                        setNewTripInfo({ ...newTripInfo, isModalOpen: true })
+                      }
+                      className={styles.selectedCountry}
+                    >
+                      <img
+                        src={newTripInfo.tripInfo.countryFlag}
+                        alt={newTripInfo.tripInfo.countryName}
+                        className={styles.flag}
+                      />
+                      <span>{newTripInfo.tripInfo.countryName}</span>
+                    </div>
                   </div>
-                  <label>여행 제목</label>
-                  <Input
-                    type="text"
-                    className={styles.title}
-                    name="title"
-                    value={newTripInfo.tripInfo.title}
-                    onChange={handleTripInfoChange}
-                    required
-                  />
-                  <label>인원 수</label>
-                  <Input
-                    type="text"
-                    className={styles.numberOfPeople}
-                    name="numberOfPeople"
-                    value={newTripInfo.tripInfo.numberOfPeople}
-                    onChange={handleTripInfoChange}
-                    required
-                  />
-                  <label>여행 일정</label>
-                  <div className={styles.datesRow}>
+                  <div className={styles.tripInfo_formGroup}>
+                    <label>여행 제목</label>
                     <Input
-                      type="date"
-                      className={styles.startDate}
-                      name="startDate"
-                      value={formatDate(newTripInfo.tripInfo.startDate)}
+                      type="text"
+                      className={styles.tripInfo_title}
+                      name="title"
+                      value={newTripInfo.tripInfo.title}
                       onChange={handleTripInfoChange}
                       required
                     />
-                    <span className={styles.separator}>~</span>
+                  </div>
+                  <div className={styles.tripInfo_formGroup}>
+                    <label>인원 수</label>
                     <Input
-                      type="date"
-                      className={styles.endDate}
-                      name="endDate"
-                      value={formatDate(newTripInfo.tripInfo.endDate)}
+                      type="text"
+                      className={styles.numberOfPeople}
+                      name="numberOfPeople"
+                      value={newTripInfo.tripInfo.numberOfPeople}
                       onChange={handleTripInfoChange}
                       required
                     />
+                  </div>
+                  <div className={styles.tripInfo_formGroup}>
+                    <label>여행 일정</label>
+                    <div className={styles.datesRow}>
+                      <Input
+                        type="date"
+                        className={styles.startDate}
+                        name="startDate"
+                        value={formatDate(newTripInfo.tripInfo.startDate)}
+                        onChange={handleTripInfoChange}
+                        required
+                      />
+                      <span className={styles.separator}>~</span>
+                      <Input
+                        type="date"
+                        className={styles.endDate}
+                        name="endDate"
+                        value={formatDate(newTripInfo.tripInfo.endDate)}
+                        onChange={handleTripInfoChange}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className={styles.imageContainer}>
-                  {newTripInfo.isDefaultImage && (
-                    <div className={styles.addPhotoContainer}>
-                      <div className={styles.addPhoto_imageContainer}>
-                        <img
-                          className={styles.addPhoto_image}
-                          src="/images/account/add_photo.png"
-                          alt="사진 추가"
-                        />
-                      </div>
-                      <div className={styles.addPhoto_text}>
-                        사진을 추가하세요
-                      </div>
-                    </div>
-                  )}
-                  <Input
+                <div className={styles.image_container}>
+                  <div
+                    className={styles.addPhoto_container}
+                    onClick={handleImageClick}
+                  >
+                    <img
+                      className={styles.addPhoto_image}
+                      src="/images/account/add_photo.png"
+                      alt="사진 추가"
+                    />
+                    업로드
+                  </div>
+                  <input
                     id="fileInput"
-                    className={styles.hiddenInput}
+                    className={styles.hidden_input}
                     type="file"
                     accept="image/*"
                     onChange={handleNewImg}
                   />
-                  <div
-                    className={styles.imageWrapper}
-                    onClick={handleImageClick}
-                  >
+                  <div className={styles.upload_image_wrapper}>
                     <img
-                      className={styles.image}
+                      className={styles.upload_image}
                       src={
                         newTripInfo.previewImg ||
                         `http://localhost:8080/images/${accountBook.imgName}`
@@ -191,9 +193,7 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                     />
                   </div>
                 </div>
-                <Button type="submit" className={styles.modifyButton}>
-                  수정
-                </Button>
+                <Button type="submit">수정</Button>
               </div>
             </form>
           </Modal>

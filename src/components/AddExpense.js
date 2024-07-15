@@ -1,47 +1,94 @@
-import React, { useState } from 'react';
-import styles from '../styles/components/AddExpense.module.css';
-import Swal from 'sweetalert2';
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
+import styles from "../styles/components/AddExpense.module.css";
+import Swal from "sweetalert2";
 import {
   ModalOverlay,
   Modal,
   ModalHeader,
   CloseButton,
   Button,
-} from '../styles/StyledComponents';
+  Input,
+  ErrorMessage,
+} from "../styles/StyledComponents";
+import { useTheme } from "../styles/Theme";
 
 const categories = [
-  { name: 'TRANSPORTATION', label: '교통' },
-  { name: 'FOOD', label: '식비' },
-  { name: 'TOURISM', label: '관광' },
-  { name: 'ACCOMMODATION', label: '숙박' },
-  { name: 'SHOPPING', label: '쇼핑' },
-  { name: 'OTHERS', label: '기타' },
+  { name: "TRANSPORTATION", label: "교통" },
+  { name: "FOOD", label: "식비" },
+  { name: "TOURISM", label: "관광" },
+  { name: "ACCOMMODATION", label: "숙박" },
+  { name: "SHOPPING", label: "쇼핑" },
+  { name: "OTHERS", label: "기타" },
 ];
 
 const paymentMethod = [
-  { name: 'CASH', label: '현금' },
-  { name: 'CARD', label: '카드' },
+  { name: "CASH", label: "현금" },
+  { name: "CARD", label: "카드" },
 ];
 
-const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
+const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
+  const uniqueCurrencies = Array.from(
+    new Set(accountBook.budgets.map((budget) => budget.curUnit))
+  ).map((curUnit) => ({
+    label: curUnit,
+    value: curUnit,
+  }));
+
   const [newExpense, setNewExpense] = useState({
     expense: {
-      title: '',
-      category: 'OTHERS',
+      title: "",
+      category: "OTHERS",
       isShared: false,
-      paymentMethod: 'CASH',
-      curUnit: '',
-      amount: '',
-      expenseDate: '',
-      expenseTime: '',
-      memo: '',
+      paymentMethod: "CASH",
+      curUnit: uniqueCurrencies[0]?.value || "",
+      amount: "",
+      expenseDate: "",
+      expenseTime: "",
+      memo: "",
     },
     newImg: null,
     previewImg: null,
     isDefaultImage: true,
   });
 
-  //const [imagePreview, setImagePreview] = useState(null);
+  const [errors, setErrors] = useState({
+    title: "",
+    expenseDate: "",
+    expenseTime: "",
+    amount: "",
+  });
+
+  // React Select 커스텀
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      width: "6rem",
+      color: "var(--text-color)",
+    }),
+    option: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      background: "var(--background-color)",
+      color: "var(--text-color)",
+      fontSize: "0.6em",
+      ":hover": {
+        background: "var(--main-color)",
+        color: "#fff",
+      },
+    }),
+    singleValue: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      color: "var(--text-color)",
+      fontSize: "0.7em",
+    }),
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,18 +98,23 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
     }));
   };
 
-  const handleImageChange = (e) => {
+  const handleImageClick = () => {
+    document.getElementById("fileInput").click();
+  };
+
+  const handleNewImg = (e) => {
     if (e.target.files.length === 0) {
       // 파일 선택 안 했을 때
       return;
     }
+
     const file = e.target.files[0];
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       Swal.fire({
-        title: '이미지 파일 아님',
-        text: '이미지 파일만 업로드 가능합니다',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
+        title: "이미지 파일 아님",
+        text: "이미지 파일만 업로드 가능합니다",
+        icon: "error",
+        confirmButtonColor: "#2a52be",
       });
       return;
     }
@@ -89,36 +141,55 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
     }));
   };
 
+  const { theme } = useTheme();
+
   const getCategoryImage = (category) => {
     const isSelected = newExpense.expense.category === category;
-    return `/images/account/category/${category.toLowerCase()}${
-      isSelected ? '_bk' : ''
-    }.png`;
+    const suffix =
+      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
+    return `/images/account/category/${category.toLowerCase()}${suffix}.png`;
   };
 
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
-    return `/images/account/${method.toLowerCase()}${
-      isSelected ? '_bk' : ''
-    }.png`;
+    const suffix =
+      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
+    return `/images/account/${method.toLowerCase()}${suffix}.png`;
+  };
+
+  const validateForm = () => {
+    const { title, expenseDate, expenseTime, amount } = newExpense.expense;
+    const newErrors = {};
+
+    if (!title) newErrors.title = "항목명을 입력해 주세요.";
+    if (!expenseDate) newErrors.expenseDate = "날짜를 선택해 주세요.";
+    if (!expenseTime) newErrors.expenseTime = "시간을 선택해 주세요.";
+    if (!amount) newErrors.amount = "금액을 입력해 주세요.";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
-    const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`; //날짜 + 시간
+    if (!validateForm()) {
+      return;
+    }
+
+    const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`;
     const { expenseTime, amount, ...expenseDataWithoutTime } =
-      newExpense.expense; //expenseTime만 추출하고 나머지는 expenseDataWithoutTime에 담기
+      newExpense.expense;
     const expenseData = {
       ...expenseDataWithoutTime,
       amount: parseFloat(amount),
       expenseDate: combinedDateTime,
-      accountBookId,
+      accountBookId: accountBook.id,
     };
     const formData = new FormData();
-    formData.append('expenseInfo', JSON.stringify(expenseData));
+    formData.append("expenseInfo", JSON.stringify(expenseData));
     if (newExpense.newImg) {
-      formData.append('img', newExpense.newImg);
+      formData.append("img", newExpense.newImg);
     }
-    console.log(formData.get('expenseInfo'));
     onSubmit(formData);
     onClose();
   };
@@ -132,16 +203,19 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
               <h4>지출 등록</h4>
               <CloseButton onClick={onClose}>&times;</CloseButton>
             </ModalHeader>
-            <div className={styles.modalContent}>
-              <input
+            <div className={styles.modal_content}>
+              <Input
                 type="text"
                 name="title"
                 value={newExpense.expense.title}
                 onChange={handleChange}
                 placeholder="항목명을 입력해 주세요."
-                className={styles.titleInput}
+                className={styles.title_input}
               />
-              <div className={styles.categoryContainer}>
+              <div className="error_container">
+                {errors.title && <ErrorMessage>{errors.title}</ErrorMessage>}
+              </div>
+              <div className={styles.category_container}>
                 {categories.map((category) => (
                   <div
                     key={category.name}
@@ -156,23 +230,37 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                   </div>
                 ))}
               </div>
-              <div className={styles.dateTimeGroup}>
-                <input
-                  type="date"
-                  name="expenseDate"
-                  value={newExpense.expense.expenseDate}
-                  onChange={handleChange}
-                  className={styles.dateInput}
-                />
-                <input
-                  type="time"
-                  name="expenseTime"
-                  value={newExpense.expense.expenseTime}
-                  onChange={handleChange}
-                  className={styles.timeInput}
-                />
+              <div className={styles.date_group}>
+                <div className={styles.date}>
+                  <Input
+                    type="date"
+                    name="expenseDate"
+                    value={newExpense.expense.expenseDate}
+                    onChange={handleChange}
+                    className={styles.dateInput}
+                  />
+                  <div className="error_container">
+                    {errors.expenseDate && (
+                      <ErrorMessage>{errors.expenseDate}</ErrorMessage>
+                    )}
+                  </div>
+                </div>
+                <div className={styles.time}>
+                  <Input
+                    type="time"
+                    name="expenseTime"
+                    value={newExpense.expense.expenseTime}
+                    onChange={handleChange}
+                    className={styles.timeInput}
+                  />
+                  <div className="error_container">
+                    {errors.expenseTime && (
+                      <ErrorMessage>{errors.expenseTime}</ErrorMessage>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className={styles.radioGroup}>
+              <div className={styles.radio_group}>
                 <div className={styles.budgetType}>
                   <label>
                     <input
@@ -216,49 +304,80 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                   ))}
                 </div>
               </div>
-              <div className={styles.addFormContainer}>
-                <div className={styles.formGroupRow}>
-                  <label htmlFor="curUnit">화폐</label>
-                  <input
-                    type="text"
-                    name="curUnit"
-                    id="curUnit"
-                    value={newExpense.expense.curUnit}
-                    onChange={handleChange}
-                    placeholder="화폐 선택"
-                  />
+              <div className={styles.addExpense_form}>
+                <div className={styles.addExpense_formGroup}>
+                  <div className={styles.curUnit_input}>
+                    <label htmlFor="curUnit">화폐</label>
+                    <Select
+                      id="curUnit"
+                      name="curUnit"
+                      value={{
+                        label: newExpense.expense.curUnit,
+                        value: newExpense.expense.curUnit,
+                      }}
+                      onChange={(selectedOption) =>
+                        setNewExpense((prev) => ({
+                          ...prev,
+                          expense: {
+                            ...prev.expense,
+                            curUnit: selectedOption.value,
+                          },
+                        }))
+                      }
+                      options={uniqueCurrencies}
+                      styles={customStyles}
+                      isSearchable={false}
+                      noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
+                    />
+                  </div>
                 </div>
-                <div className={styles.formGroupRow}>
-                  <label htmlFor="amount">금액</label>
-                  <input
-                    type="number"
-                    name="amount"
-                    id="amount"
-                    value={newExpense.expense.amount}
-                    onChange={handleChange}
-                    placeholder="금액 입력"
-                  />
+                <div className={styles.addExpense_formGroup}>
+                  <div className={styles.amount_input}>
+                    <label htmlFor="amount">금액</label>
+                    <Input
+                      type="number"
+                      name="amount"
+                      id="amount"
+                      value={newExpense.expense.amount}
+                      onChange={handleChange}
+                      placeholder="금액 입력"
+                    />
+                  </div>
+                  <div className="error_container">
+                    {errors.amount && (
+                      <ErrorMessage>{errors.amount}</ErrorMessage>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className={styles.imageUpload}>
-                <label htmlFor="imgUpload" className={styles.imgUploadLabel}>
-                  <img src="/images/account/add_box.png" alt="Add" />
-                  <p>사진을 추가하세요</p>
-                </label>
-                <input
-                  type="file"
-                  id="imgUpload"
-                  name="imgName"
-                  onChange={handleImageChange}
-                  className={styles.hiddenInput}
-                />
-                {newExpense.previewImg && (
+              <div className={styles.image_container}>
+                <div
+                  className={styles.addPhoto_container}
+                  onClick={handleImageClick}
+                >
                   <img
-                    src={newExpense.previewImg}
-                    alt="Preview"
-                    className={styles.imagePreview}
+                    className={styles.addPhoto_image}
+                    src="/images/account/add_photo.png"
+                    alt="사진 추가"
                   />
-                )}
+                  업로드
+                </div>
+                <input
+                  id="fileInput"
+                  className={styles.hidden_input}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleNewImg}
+                />
+                <div className={styles.upload_image_wrapper}>
+                  {newExpense.previewImg && (
+                    <img
+                      src={newExpense.previewImg}
+                      alt="Preview"
+                      className={styles.upload_image}
+                    />
+                  )}
+                </div>
               </div>
               <textarea
                 name="memo"
@@ -268,7 +387,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBookId }) => {
                 rows="4"
                 className={styles.textArea}
               />
-              <div className={styles.submitButton}>
+              <div className={styles.submit_button}>
                 <Button onClick={handleSubmit}>등록</Button>
               </div>
             </div>

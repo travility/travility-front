@@ -5,21 +5,3 @@
   align-items: center;
 }
 
-.calendar_schedule_container {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  width: 100%;
-}
-
-.calendar_container {
-  grid-column: 1 / 2;
-  width: 100%;
-  height: auto;
-}
-
-.schedule_detail_container {
-  grid-column: 2 / 3;
-  width: 100%;
-  height: auto;
-  margin-top: 1rem;
-}

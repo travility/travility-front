@@ -4,13 +4,15 @@ import AddBudget from "../../../components/AddBudget";
 import AddExpense from "../../../components/AddExpense";
 import { addBudgets } from "../../../api/budgetApi";
 import { addExpense } from "../../../api/expenseApi";
-import { updateAccountBook, formatDate } from "../../../api/accountbookApi";
-import TripInfo from "./TripInfo";
+import { updateAccountBook } from "../../../api/accountbookApi";
+import { formatDate } from "../../../util/calcUtils";
+import UpdateTripInfo from "./UpdateTripInfo";
 import {
   handleSuccessSubject,
   handlefailureSubject,
 } from "../../../util/logoutUtils";
 import { Button } from "../../../styles/StyledComponents";
+import TripInfo from "../../../components/TripInfo";
 
 const AccountSidebar = ({
   accountBook,
@@ -21,23 +23,13 @@ const AccountSidebar = ({
   expenses = [],
   onShowStatistics // 추가된 부분
 }) => {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("all");
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
-  const [totalBudget, setTotalBudget] = useState(0);
-
-  useEffect(() => {
-    const initialTotalBudget = accountBook.budgets.reduce(
-      (sum, budget) =>
-        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
-      0
-    );
-    setTotalBudget(initialTotalBudget.toFixed(2));
-  }, [accountBook]);
 
   const handleDateChange = (date) => {
-    setSelectedOption(date);
+    setSelectedOption(date.toLocaleDateString());
     onDateChange(date.toLocaleDateString());
   };
 
@@ -52,14 +44,13 @@ const AccountSidebar = ({
   };
 
   const handleBudgetSubmit = async (budgets) => {
-    const totalBudget = budgets.reduce(
-      (sum, budget) =>
-        sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
-      0
-    );
-    setTotalBudget(totalBudget.toFixed(2));
-
     try {
+      const totalBudget = budgets.reduce(
+        (sum, budget) =>
+          sum + parseFloat(budget.amount) * parseFloat(budget.exchangeRate),
+        0
+      );
+
       const budgetsResponse = await addBudgets(accountBook.id, budgets);
       console.log("Budgets updated successfully:", budgetsResponse);
       handleSuccessSubject("예산", "수정");
@@ -100,67 +91,33 @@ const AccountSidebar = ({
     }
   };
 
-  useEffect(() => {
-    console.log("accountBook:", accountBook);
-  }, [accountBook]);
-
   return (
     <aside className={styles.sidebar}>
-      <div
-        key={accountBook.id}
-        className={styles.tripInfo}
-        style={{
-          backgroundImage: `url(
-        http://localhost:8080/images/${accountBook.imgName}
-      )`,
-        }}
+      <TripInfo
+        accountBook={accountBook}
         onClick={() => setIsTripInfoModalOpen(true)}
-      >
-        <div className={styles.accountBook_list_item_detail}>
-          <div className={styles.accountBook_list_title_and_flag}>
-            <span className={styles.accountBook_list_flag}>
-              <img src={accountBook.countryFlag} alt="국기" />
-            </span>
-            <span className={styles.accountBook_list_title}>
-              {accountBook.title}
-            </span>
-          </div>
-          <span className={styles.accountBook_list_dates}>
-            {`${formatDate(accountBook.startDate)} ~ ${formatDate(
-              accountBook.endDate
-            )}`}
-          </span>
-          <span className={styles.accountBook_list_edit}>
-            <img src="/images/account/add_box.png" alt="+" />
-            {accountBook.imgName ? "수정하기" : "사진을 추가하세요."}
-          </span>
-        </div>
-      </div>
-      <div className={styles.dateButtons}>
+      />
+      <div className={styles.date_buttons}>
         <Button
           onClick={handleShowAll}
           className={selectedOption === "all" ? styles.selected : ""}
         >
           모두 보기
-          <span className={styles.selectedIcon}>
-            {selectedOption === "all" ? "<" : ">"}
-          </span>
+          <span>{selectedOption === "all" ? "<" : ">"}</span>
         </Button>
         <Button
           onClick={handleShowPreparation}
           className={selectedOption === "preparation" ? styles.selected : ""}
         >
           준비
-          <span className={styles.selectedIcon}>
-            {selectedOption === "preparation" ? "<" : ">"}
-          </span>
+          <span>{selectedOption === "preparation" ? "<" : ">"}</span>
         </Button>
         {dates.map((date, index) => (
           <Button
             key={index}
             onClick={() => handleDateChange(date)}
             className={
-              selectedOption?.getTime?.() === date.getTime()
+              selectedOption === date.toLocaleDateString()
                 ? styles.selected
                 : ""
             }
@@ -169,8 +126,8 @@ const AccountSidebar = ({
             <span className={styles.tripDate}>
               {formatDate(date.toISOString())}
             </span>
-            <span className={styles.selectedIcon}>
-              {selectedOption?.getTime?.() === date.getTime() ? "<" : ">"}
+            <span>
+              {selectedOption === date.toLocaleDateString() ? "<" : ">"}
             </span>
           </Button>
         ))}
@@ -187,13 +144,21 @@ const AccountSidebar = ({
           <Button onClick={() => setIsBudgetModalOpen(true)}>
             <img src="/images/account/local_atm.png" alt="budget" />
           </Button>
-          <p>화폐/예산 추가</p>
+          <p>
+            화폐/예산
+            <br />
+            추가
+          </p>
         </span>
         <span>
           <button onClick={() => setIsExpenseModalOpen(true)}>
             <img src="/images/account/write.png" alt="addExpense" />
-          </button>
-          <p>지출내역 추가</p>
+          </Button>
+          <p>
+            지출내역
+            <br />
+            추가
+          </p>
         </span>
       </div>
       {isBudgetModalOpen && (
@@ -211,10 +176,11 @@ const AccountSidebar = ({
           onClose={() => setIsExpenseModalOpen(false)}
           onSubmit={handleExpenseSubmit}
           accountBookId={accountBook.id}
+          accountBook={accountBook}
         />
       )}
       {isTripInfoModalOpen && (
-        <TripInfo
+        <UpdateTripInfo
           isOpen={isTripInfoModalOpen}
           onClose={() => setIsTripInfoModalOpen(false)}
           onSubmit={handleAccountBookSubmit}

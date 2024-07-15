@@ -115,7 +115,7 @@
 .toggle_pw_button {
   position: absolute;
   right: 40px;
-  top: 60%;
+  top: 45%;
   transform: translateY(-50%);
   background: none;
   border: none;
@@ -140,7 +140,7 @@
 .toggle_checkpw_button {
   position: absolute;
   right: 40px;
-  top: 60%;
+  top: 45%;
   transform: translateY(-50%);
   background: none;
   border: none;

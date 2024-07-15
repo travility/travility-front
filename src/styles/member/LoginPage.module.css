@@ -58,7 +58,7 @@
 .toggle_pw_button {
   position: absolute;
   right: 10px;
-  top: 50%;
+  top: 30%;
   transform: translateY(-30%);
   background: none;
   border: none;
