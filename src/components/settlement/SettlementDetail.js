@@ -45,9 +45,11 @@ const SettlementDetail = ({
               )}
               <div className={styles.totalSharedExpense}>
                 ={' '}
-                {Object.values(totalSharedExpensesByCurrency).reduce(
-                  (sum, currentValue) => sum + currentValue,
-                  0
+                {formatNumberWithCommas(
+                  Object.values(totalSharedExpensesByCurrency).reduce(
+                    (sum, currentValue) => sum + currentValue,
+                    0
+                  )
                 )}{' '}
                 ₩
               </div>

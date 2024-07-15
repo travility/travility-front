@@ -1,13 +1,17 @@
-import React, { useContext } from "react";
-import { useState, useEffect } from "react";
+import React, { useContext } from 'react';
+import { useState, useEffect } from 'react';
 // import { getMemberFromSession, deleteMember } from '../../api/memberApi'; // 백엔드 API 호출 부분은 주석처리
-import { useNavigate } from "react-router-dom";
-import styles from "../../styles/dashboard/MyInfo.module.css";
-import Swal from "sweetalert2";
-import { TokenStateContext } from "../../App";
-import { deleteMember, getMemberInfo } from "../../api/memberApi";
-import { handleSuccessLogout } from "../../util/logoutUtils";
-import { Input } from "../../styles/StyledComponents";
+import { useNavigate } from 'react-router-dom';
+import styles from '../../styles/dashboard/MyInfo.module.css';
+import Swal from 'sweetalert2';
+import { TokenStateContext } from '../../App';
+import {
+  confirmPassword,
+  deleteMember,
+  getMemberInfo,
+} from '../../api/memberApi';
+import { handleSuccessLogout } from '../../util/logoutUtils';
+import { Input } from '../../styles/StyledComponents';
 
 const MyInfo = () => {
   const { memberInfo } = useContext(TokenStateContext);
@@ -22,31 +26,31 @@ const MyInfo = () => {
 
   const handleDeleteMember = async () => {
     const { value: text } = await Swal.fire({
-      icon: "warning",
-      text: "회원탈퇴 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 탈퇴하시겠습니까?",
+      icon: 'warning',
+      text: '회원탈퇴 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 탈퇴하시겠습니까?',
       inputLabel: '회원 탈퇴를 위해 "탈퇴합니다"를 입력해주세요',
-      input: "text",
-      inputPlaceholder: "탈퇴합니다",
+      input: 'text',
+      inputPlaceholder: '탈퇴합니다',
       showCancelButton: true,
-      confirmButtonText: "탈퇴하기",
-      confirmButtonColor: "#2a52be",
-      cancelButtonText: "취소",
+      confirmButtonText: '탈퇴하기',
+      confirmButtonColor: '#2a52be',
+      cancelButtonText: '취소',
       preConfirm: (inputValue) => {
-        if (inputValue !== "탈퇴합니다") {
+        if (inputValue !== '탈퇴합니다') {
           Swal.showValidationMessage('정확히 "탈퇴합니다"를 입력해주세요.');
         }
       },
     });
 
-    if (text === "탈퇴합니다") {
+    if (text === '탈퇴합니다') {
       deleteMember()
         .then(() => {
           Swal.fire({
-            icon: "success",
-            title: "탈퇴 성공",
-            text: "회원 탈퇴가 성공적으로 되었습니다",
-            confirmButtonText: "확인",
-            confirmButtonColor: "#2a52be",
+            icon: 'success',
+            title: '탈퇴 성공',
+            text: '회원 탈퇴가 성공적으로 되었습니다',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#2a52be',
           }).then((res) => {
             if (res.isConfirmed) {
               handleSuccessLogout(navigate);
@@ -56,12 +60,51 @@ const MyInfo = () => {
         .catch((error) => {
           console.log(error);
           Swal.fire({
-            icon: "error",
-            title: "탈퇴 실패",
-            text: "회원 탈퇴 중 문제가 발생했습니다. 다시 시도해주세요.",
-            confirmButtonText: "확인",
+            icon: 'error',
+            title: '탈퇴 실패',
+            text: '회원 탈퇴 중 문제가 발생했습니다. 다시 시도해주세요.',
+            confirmButtonText: '확인',
           });
         });
+    }
+  };
+
+  //기존 비밀번호 확인
+  const handleConfirmPassword = async () => {
+    const { value: password } = await Swal.fire({
+      icon: 'warning',
+      title: '비밀번호 확인',
+      text: '현재 비밀번호 입력하세요',
+      input: 'password',
+      showCancelButton: true,
+      confirmButtonText: '확인',
+      confirmButtonColor: '#2a52be',
+      cancelButtonText: '취소',
+      preConfirm: (inputValue) => {
+        if (!inputValue) {
+          Swal.showValidationMessage('비밀번호를 입력하세요');
+        }
+      },
+    });
+
+    if (password) {
+      try {
+        const response = await confirmPassword(password);
+        if (response === true) {
+          navigate('/dashboard/myinfo/update-password');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: '비밀번호가 맞지 않습니다.',
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          text: '비밀번호 확인 중 문제가 생겼습니다.',
+        });
+      }
     }
   };
 
@@ -101,6 +144,12 @@ const MyInfo = () => {
             />
           </div>
         </div>
+        <button
+          className={styles.changePassword}
+          onClick={handleConfirmPassword}
+        >
+          비밀번호 변경
+        </button>
         <button className={styles.deleteMember} onClick={handleDeleteMember}>
           회원탈퇴
         </button>

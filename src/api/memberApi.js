@@ -66,6 +66,22 @@ export const getMemberInfo = async () => {
   return response.data;
 };
 
+//비밀번호 확인
+export const confirmPassword = async (password) => {
+  const response = await axiosInstance.post('/users/confirm-password', {
+    password,
+  });
+  return response.data;
+};
+
+//비밀번호 변경
+export const updatePassword = async (password) => {
+  const response = await axiosInstance.post('/users/update-password', {
+    password,
+  });
+  return response;
+};
+
 //회원 탈퇴
 export const deleteMember = async () => {
   const response = await axiosInstance.delete('/users');
