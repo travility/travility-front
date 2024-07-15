@@ -35,6 +35,10 @@ const AccountBookDetail = () => {
     setShowStatistics(true);
   };
 
+  const handleBackToSidebar = () => {
+    setShowStatistics(false);
+  };
+
   if (loading) {
     return <div>Loading...🐷</div>;
   }
@@ -85,17 +89,19 @@ const AccountBookDetail = () => {
 
   return (
     <div className={styles.dashboard}>
-      <Sidebar
-        accountBook={accountBook}
-        dates={dateList}
-        onDateChange={handleDateChange}
-        onShowAll={handleShowAll}
-        onShowPreparation={handleShowPreparation}
-        expenses={accountBook.expenses || []}
-        onShowStatistics={handleShowStatistics}
-      />
-      {showStatistics ? ( // 기본적으로 ExpenseList를 표시, 지출통계 누르면 ExpenseStatistic 랜더링
-        <ExpenseStatistic accountBookId={id} />
+      {!showStatistics && (
+        <Sidebar
+          accountBook={accountBook}
+          dates={dateList}
+          onDateChange={handleDateChange}
+          onShowAll={handleShowAll}
+          onShowPreparation={handleShowPreparation}
+          expenses={accountBook.expenses || []}
+          onShowStatistics={handleShowStatistics}
+        />
+      )}
+      {showStatistics ? (
+        <ExpenseStatistic accountBookId={id} onBack={handleBackToSidebar} />
       ) : (
         <ExpenseList expenses={filteredExpenses} />
       )}

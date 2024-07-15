@@ -43,8 +43,48 @@ export const getPaymentMethodStatisticsByDate = async (accountBookId, date) => {
 };
 
 // 한 일정에 대한 카테고리별 총 지출
-export const getTotalCategoryStatistics = async () => {
-  const response = await axiosInstance.get("/accountbook/statistics/totalcategory");
+export const getTotalCategoryStatistics = async (accountBookId) => {
+  const response = await axiosInstance.get("/accountbook/statistics/totalcategory", { 
+    params: { accountBookId }
+  });
+  return response.data;
+};
+
+//==예산 - 지출==//
+// 일정에 대한 총 예산 가져오기
+export const getTotalBudgetByAccountBookId = async (accountBookId) => {
+  const response = await axiosInstance.get('/accountbook/statistics/totalbudget', {
+    params: { accountBookId }
+  });
+  return response.data;
+};
+
+// 일정에 대한 총 지출 가져오기
+export const getTotalExpenseByAccountBookId = async (accountBookId) => {
+  const response = await axiosInstance.get('/accountbook/statistics/totalexpense', {
+    params: { accountBookId }
+  });
+  return response.data;
+};
+
+// 일정에 대한 남은 예산 가져오기
+export const getRemainingBudget = async (accountBookId) => {
+  const response = await axiosInstance.get('/accountbook/statistics/remaining-budget', {
+    params: { accountBookId }
+  });
+  return response.data;
+};
+//==예산 - 지출==//
+
+//==라인차트 불러오기==//
+// 특정 카테고리 + 날짜별 지출통계
+export const getStatisticsByCategoryAndDates = async (accountBookId, category) => {
+  const response = await axiosInstance.get('/accountbook/statistics/category-by-dates', {
+    params: {
+      accountBookId,
+      category
+    }
+  });
   return response.data;
 };
 

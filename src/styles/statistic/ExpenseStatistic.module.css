@@ -1,22 +1,83 @@
-/* ExpenseStatistic.module.css */
 .statisticsContainer {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .selectContainer {
-  margin-bottom: 20px;
   width: 100%;
+  margin-bottom: 20px;
 }
 
-.chartsContainer {
+.chartsWrapper {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 20px;
+  width: 100%;
+  justify-content: space-between; /* 차트를 좌우로 배치 */
 }
 
-/* 차트크기조절 */
-.chart {
-  height: 300px;
-  width: 350px;
+.chartContainer {
+  width: 48%; /* 차트 너비 조정 */
+  height: 300px; /* 원하는 높이로 조정 */
 }
+
+.chartTitle {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.backButton {
+  align-self: flex-start;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.backButton:hover {
+  background-color: #0056b3;
+}
+
+.totalAmountHeader {
+  font-weight: bold;
+  color: black;
+  align-self: flex-start;
+  margin-bottom: 20px;
+}
+
+.headerContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.radioGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+/* 라인차트 랜더링되는거 */
+.lineChartContainer {
+  width: 100%; /* 이거 조정하면됨 */
+  height: 500px; /* 이거 조정하면됨 */
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  margin-bottom: 20px;
+}
+
+.lineChartWrapper {
+  width: 100%; /* 차트 너비 */
+}
+
