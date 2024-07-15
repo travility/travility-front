@@ -6,20 +6,6 @@ export const formatNumberWithCommas = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-// 모든 통화 평균 환율 계산
-export const calculateAverageExchangeRates = (budgets) => {
-  const averageExchangeRates = {};
-  budgets.forEach((budget) => {
-    if (!averageExchangeRates[budget.curUnit]) {
-      averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
-        budgets,
-        budget.curUnit
-      );
-    }
-  });
-  return averageExchangeRates;
-};
-
 // 특정 통화 평균 환율 계산
 export const calculateAverageExchangeRate = (budgets, currency) => {
   const relevantBudgets = budgets.filter((b) => b.curUnit === currency);
@@ -35,7 +21,6 @@ export const calculateAverageExchangeRate = (budgets, currency) => {
   return weightedSum / totalAmount;
 };
 
-// 원화 총지출액 계산
 export const calculateTotalAmountInKRW = (accountBook) => {
   // 가계부나 지출 또는 예산이 없을 경우
   if (
@@ -65,7 +50,7 @@ export const calculateTotalAmountInKRW = (accountBook) => {
     return total + expense.amount * exchangeRate;
   }, 0);
 
-  return totalAmount;
+  return totalAmount.toFixed(0);
 };
 
 // 특정 통화 예산 합계 계산

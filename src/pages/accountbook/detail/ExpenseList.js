@@ -11,47 +11,73 @@ import {
   calculateTotalBudget,
   calculateTotalExpenses,
   calculateAverageExchangeRate,
-  calculateAverageExchangeRates,
 } from "../../../util/calcUtils";
 
 const ExpenseList = ({ accountBook, selectedDate }) => {
   const [filter, setFilter] = useState("all");
-  const [currency, setCurrency] = useState("all");
+  const [currency, setCurrency] = useState({ label: "전체", value: "all" });
   const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [filteredBudgets, setFilteredBudgets] = useState([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    let filtered = accountBook.expenses;
+    let filteredExp = accountBook.expenses;
+    let filteredBudg = accountBook.budgets;
+
+    const formatDate = (date) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    };
+
+    const startDate = formatDate(accountBook.startDate);
 
     if (selectedDate !== "all" && selectedDate !== "preparation") {
-      filtered = filtered.filter(
+      const selected = formatDate(selectedDate);
+      filteredExp = filteredExp.filter(
         (expense) =>
-          new Date(expense.expenseDate).toISOString().split("T")[0] ===
-          selectedDate
+          formatDate(expense.expenseDate).getTime() === selected.getTime()
       );
     } else if (selectedDate === "preparation") {
-      filtered = filtered.filter(
-        (expense) =>
-          new Date(expense.expenseDate) < new Date(accountBook.startDate)
+      filteredExp = filteredExp.filter(
+        (expense) => formatDate(expense.expenseDate) < startDate
       );
     }
 
     if (filter === "shared") {
-      filtered = filtered.filter((expense) => expense.isShared);
+      filteredExp = filteredExp.filter((expense) => expense.isShared);
+      filteredBudg = filteredBudg.filter((budget) => budget.isShared);
     } else if (filter === "personal") {
-      filtered = filtered.filter((expense) => !expense.isShared);
+      filteredExp = filteredExp.filter((expense) => !expense.isShared);
+      filteredBudg = filteredBudg.filter((budget) => !budget.isShared);
     }
 
-    setFilteredExpenses(filtered);
-  }, [selectedDate, filter, accountBook.expenses]);
+    if (currency.value !== "all") {
+      filteredExp = filteredExp.filter(
+        (expense) => expense.curUnit === currency.value
+      );
+      filteredBudg = filteredBudg.filter(
+        (budget) => budget.curUnit === currency.value
+      );
+    }
+
+    setFilteredExpenses(filteredExp);
+    setFilteredBudgets(filteredBudg);
+  }, [
+    selectedDate,
+    filter,
+    currency,
+    accountBook.expenses,
+    accountBook.budgets,
+  ]);
 
   const handleFilterChange = (newFilter) => {
     setFilter(newFilter);
   };
 
   const handleCurrencyChange = (selectedOption) => {
-    setCurrency(selectedOption ? selectedOption.value : "all");
+    setCurrency(selectedOption || { label: "전체", value: "all" });
   };
 
   const goSettlement = () => {
@@ -108,64 +134,91 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   };
 
   const totalBudget =
-    currency === "all"
-      ? formatNumberWithCommas(calculateTotalBudgetInKRW(accountBook.budgets))
+    currency.value === "all"
+      ? formatNumberWithCommas(calculateTotalBudgetInKRW(filteredBudgets))
       : formatNumberWithCommas(
-          calculateTotalBudget(accountBook.budgets, currency)
+          calculateTotalBudget(filteredBudgets, currency.value).toFixed(2)
         );
 
-  const totalExpenses =
-    currency === "all"
-      ? formatNumberWithCommas(
-          calculateTotalAmountInKRW(
-            accountBook.expenses,
-            calculateAverageExchangeRates(accountBook.budgets)
-          )
-        )
-      : formatNumberWithCommas(
-          calculateTotalExpenses(accountBook.expenses, currency)
-        );
+  const totalExpensesInKRW = calculateTotalAmountInKRW({
+    expenses: filteredExpenses,
+    budgets: filteredBudgets,
+  });
 
-  const remainingBudget = formatNumberWithCommas(
-    currency === "all"
-      ? calculateTotalBudgetInKRW(accountBook.budgets) -
-          calculateTotalAmountInKRW(
-            accountBook.expenses,
-            calculateAverageExchangeRates(accountBook.budgets)
-          )
-      : calculateTotalBudget(accountBook.budgets, currency) -
-          calculateTotalExpenses(accountBook.expenses, currency)
+  const totalExpensesInSelectedCurrency = calculateTotalExpenses(
+    filteredExpenses,
+    currency.value
   );
 
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      backgroundColor: "var(--background-color)",
-      border: "1px solid var(--line-color)",
-      borderRadius: "0.3rem",
-      width: "8rem",
-      color: "var(--text-color)",
-    }),
-    option: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      background: "var(--background-color)",
-      color: "var(--text-color)",
-      fontSize: "0.7em",
-      ":hover": {
-        background: "var(--main-color)",
-        color: "#fff",
-      },
-    }),
-    singleValue: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      color: "var(--text-color)",
-      fontSize: "0.8em",
-    }),
+  const totalExpenses =
+    currency.value === "all"
+      ? formatNumberWithCommas(totalExpensesInKRW)
+      : formatNumberWithCommas(totalExpensesInSelectedCurrency.toFixed(2));
+
+  const calculateCumulativeTotalExpenses = (selectedDate, currency) => {
+    const formatDate = (date) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    };
+
+    const selected = formatDate(selectedDate);
+    const startDate = formatDate(accountBook.startDate);
+
+    let cumulativeExpenses = accountBook.expenses.filter((expense) => {
+      const expenseDate = formatDate(expense.expenseDate);
+      return expenseDate <= selected;
+    });
+
+    if (filter === "shared") {
+      cumulativeExpenses = cumulativeExpenses.filter(
+        (expense) => expense.isShared
+      );
+    } else if (filter === "personal") {
+      cumulativeExpenses = cumulativeExpenses.filter(
+        (expense) => !expense.isShared
+      );
+    }
+
+    if (currency !== "all") {
+      cumulativeExpenses = cumulativeExpenses.filter(
+        (expense) => expense.curUnit === currency
+      );
+      return calculateTotalExpenses(cumulativeExpenses, currency).toFixed(2);
+    }
+
+    return calculateTotalAmountInKRW({
+      expenses: cumulativeExpenses,
+      budgets: accountBook.budgets,
+    });
   };
+
+  const cumulativeTotalExpenses =
+    selectedDate !== "all" && selectedDate !== "preparation"
+      ? calculateCumulativeTotalExpenses(selectedDate, currency.value)
+      : currency.value === "all"
+      ? totalExpensesInKRW
+      : calculateTotalExpenses(filteredExpenses, currency.value).toFixed(2);
+
+  const formattedCumulativeTotalExpenses =
+    currency.value === "all"
+      ? formatNumberWithCommas(parseFloat(cumulativeTotalExpenses).toFixed(0))
+      : formatNumberWithCommas(parseFloat(cumulativeTotalExpenses).toFixed(2));
+
+  const remainingBudget =
+    currency.value === "all"
+      ? formatNumberWithCommas(
+          (
+            calculateTotalBudgetInKRW(filteredBudgets) -
+            parseFloat(cumulativeTotalExpenses)
+          ).toFixed(0)
+        )
+      : formatNumberWithCommas(
+          (
+            calculateTotalBudget(filteredBudgets, currency.value) -
+            parseFloat(cumulativeTotalExpenses)
+          ).toFixed(2)
+        );
 
   const calculateTotalAmountInKRWForFilteredExpenses = (expenses) => {
     const averageExchangeRates = {};
@@ -183,11 +236,54 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       return total + expense.amount * exchangeRate;
     }, 0);
 
-    return `${totalAmount.toLocaleString()}`;
+    return Math.round(totalAmount);
   };
 
   const totalAmountInKRWForFilteredExpenses =
-    calculateTotalAmountInKRWForFilteredExpenses(filteredExpenses);
+    selectedDate !== "all" && selectedDate !== "preparation"
+      ? calculateTotalAmountInKRWForFilteredExpenses(filteredExpenses)
+      : totalExpensesInKRW;
+
+  const customStyles = {
+    control: (base) => ({
+      ...base,
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      width: "4rem",
+      minHeight: "1rem",
+      color: "var(--text-color)",
+      marginTop: "0.4rem",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.2rem 0.5rem",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      width: "1rem",
+      padding: "0.2rem",
+    }),
+    option: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      background: "var(--background-color)",
+      color: "var(--text-color)",
+      fontSize: "0.7em",
+      ":hover": {
+        background: "var(--main-color)",
+        color: "#ffffff",
+      },
+    }),
+    singleValue: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      color: "var(--text-color)",
+      fontSize: "0.8em",
+    }),
+  };
 
   return (
     <div className={styles.expenseList_container}>
@@ -219,9 +315,10 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       <div className={styles.expenseList_summary_container}>
         <div className={styles.expenseList_summary}>
           <div className={styles.currency_select}>
-            <label htmlFor="currency">화폐 통화 선택</label>
+            <label htmlFor="currency">화폐 선택</label>
             <Select
               id="currency"
+              value={currency}
               onChange={handleCurrencyChange}
               options={[{ label: "전체", value: "all" }, ...uniqueCurrencies]}
               styles={customStyles}
@@ -231,19 +328,36 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
           </div>
           <div className={styles.budgetInfo_container}>
             <span className={styles.budgetInfo}>
-              <label>예산</label> {totalBudget}
+              <label>총 예산</label> {totalBudget}
             </span>
             <span className={styles.budgetInfo}>
-              <label>지출</label> {totalExpenses}
+              <label>누적 지출</label> {formattedCumulativeTotalExpenses}
             </span>
             <span className={styles.budgetInfo}>
               <label>잔액</label> {remainingBudget}
             </span>
           </div>
         </div>
-        <div className={styles.totalAmount}>
-          <label>** 원화 환산 금액</label>
-          지출 합계: {totalAmountInKRWForFilteredExpenses} 원
+        <div className={styles.totalAmount_container}>
+          <div className={styles.totalAmount}>
+            <label>[ 지출 합계 ]</label>
+            {currency.value === "all" || currency.value === "KRW" ? (
+              ""
+            ) : (
+              <>
+                <div className={styles.amountCurrency}>
+                  {currency.value}{" "}
+                  {formatNumberWithCommas(
+                    totalExpensesInSelectedCurrency.toFixed(2)
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+          <div className={styles.amountKRW}>
+            {formatNumberWithCommas(totalAmountInKRWForFilteredExpenses)} 원
+            <label>** 원화 환산 금액</label>
+          </div>
         </div>
       </div>
       <div className={styles.expenseList}>

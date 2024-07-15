@@ -71,16 +71,33 @@
 }
 
 .header_welcome_message {
-  font-size: 0.8em;
-  color: var(--pointor-color);
+  font-size: 0.7em;
+  font-weight: 500;
   display: flex;
-  align-items: center;
+  align-items: end;
   white-space: nowrap
 }
 
+.header_welcome_message .user_button {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--main-color);
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.header_welcome_message .user_button:hover {
+  color: var(--point-color);
+}
+
 .header_welcome_message img {
-  width: 1rem;
-  margin-right: 0.2rem;
+  width: 0.9rem;
+  margin-right: 0.3rem;
 }
 
 .header_welcome_message.open {
@@ -125,7 +142,13 @@
   white-space: nowrap
 }
 
+.logout_button:hover,
+.nav_second_button:hover {
+  color: var(--point-color);
+}
+
 .nav_second_button::before {
   content: '|';
   margin-right: 0.5rem;
+  color: var(--text-color);
 }

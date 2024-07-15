@@ -17,9 +17,7 @@
   margin-top: 2.5rem;
 }
 
-/******************************************************************************************/
-/*최근 내 가계부 : RecentAccountBooks*/
-
+/* 최근 내 가계부 : RecentAccountBooks */
 .recent_accountBooks_container {
   flex: 1;
   padding: 1.5rem;
@@ -43,7 +41,7 @@
 
 .recent_accountBooks_contents {
   flex: 1;
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,9 +76,8 @@
   gap: 1rem;
 }
 
-/******************************************************************************************/
-/* 실시간 인기 여행지 top5 : TopDestinations
-.topDestinationsTitle{
+/* 실시간 인기 여행지 top5 : TopDestinations */
+.topDestinationsTitle {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
@@ -133,4 +130,27 @@
   padding: 5px 10px;
   font-weight: bold;
 }
-*/
+
+/* 반응형 디자인 */
+@media (max-width: 690px) {
+  .mainpage_container {
+    grid-template-columns: 1fr;
+  }
+
+  .addAccountBook {
+    grid-column: 1 / 2;
+  }
+
+  .recentAccountBooks {
+    grid-column: 1 / 2;
+    margin-top: 2rem;
+  }
+
+  .recent_accountBooks_contents {
+    flex-direction: row;
+  }
+
+  .recent_accountBooks_list {
+    flex-direction: row;
+  }
+}
