@@ -4,16 +4,14 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { updatePassword } from '../../../api/memberApi';
 import { handleSuccessLogout } from '../../../util/logoutUtils';
 import Swal from 'sweetalert2';
+import { Button, ErrorMessage, Input } from '../../../styles/StyledComponents';
 
 const UpdatePasswordPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [seePassword, setSeePassword] = useState(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
-
-  //에러관리
-  const [errorPassword, setErrorPassword] = useState('');
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
+  const [formErrors, setFormErrors] = useState({});
 
   //비밀번호 공개 여부 표시
   const seePasswordHandler = () => {
@@ -35,27 +33,37 @@ const UpdatePasswordPage = () => {
   const handlePassword = (e) => {
     setPassword(e.target.value);
     const isValid = vaildatePassword(e.target.value);
-    if (!isValid) {
-      //만족하지 않으면
-      setErrorPassword('영소문자, 숫자, 특수문자 8자 이상 입력하세요');
-    } else {
-      setErrorPassword('');
-    }
+    setFormErrors((prevErros) => ({
+      ...prevErros,
+      password: isValid ? '' : '영소문자, 숫자, 특수문자 8자 이상 입력하세요',
+    }));
   };
 
   //비밀번호 확인 에러 표시 여부
   const handleConfirmPassword = (e) => {
     setConfirmPassword(e.target.value);
-    if (e.target.value !== password) {
-      setErrorConfirmPassword('비밀번호가 맞지 않습니다.');
-    } else {
-      setErrorConfirmPassword('');
-    }
+    setFormErrors((prevErros) => ({
+      ...prevErros,
+      confirmPassword:
+        e.target.value === password ? '' : '비밀번호가 맞지 않습니다',
+    }));
   };
 
   //비밀번호 변경
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
+
+    const errors = {};
+    if (!password) errors.password = '비밀번호를 입력하세요.';
+    if (!confirmPassword)
+      errors.confirmPassword = '비밀번호를 다시 확인하세요.';
+
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     if (vaildatePassword(password)) {
       //비밀번호 유효성 검사가 올바르면
       try {
@@ -99,63 +107,69 @@ const UpdatePasswordPage = () => {
   };
 
   return (
-    <div className={styles.updatePassword}>
-      <div className={styles.updatePassword_content}>
-        <div className={styles.updatePassword_container_header}>
-          <p>비밀번호 변경</p>
+    <div className={styles.updatePassword_wrapper}>
+      <div className={styles.updatePassword_container}>
+        <div className={styles.updatePassword_header}>
+          <h2>비밀번호 변경</h2>
           <p>변경할 비밀번호를 입력해주세요!</p>
         </div>
         <div className={styles.updatePassword_form}>
           <form onSubmit={handleUpdatePassword}>
-            <div className={styles.updatePassword_title}>변경 비밀번호</div>
-            <div className={styles.updatePassword_input_seepw_container}>
-              <input
-                type={seePassword ? 'text' : 'password'}
-                placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
-                value={password}
-                onChange={handlePassword}
-                className={styles.updatePassword_input_pw}
-                required
-              ></input>
-              <button
-                type="button"
-                onClick={seePasswordHandler}
-                className={styles.toggle_pw_button}
-              >
-                {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-              </button>
+            <div className={styles.updatePassword_formGroup}>
+              <div className={styles.updatePassword_input_seepw_container}>
+                <label htmlFor="password">변경 비밀번호</label>
+                <Input
+                  type={seePassword ? 'text' : 'password'}
+                  id="password"
+                  placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
+                  value={password}
+                  onChange={handlePassword}
+                  required
+                ></Input>
+                <button
+                  type="button"
+                  onClick={seePasswordHandler}
+                  className={styles.toggle_pw_button}
+                >
+                  {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                </button>
+              </div>
+              <div className={styles.error_container}>
+                {formErrors.password && (
+                  <ErrorMessage>{formErrors.password}</ErrorMessage>
+                )}
+              </div>
             </div>
-            <div className={styles.updatePassword_error}>{errorPassword}</div>
 
-            <div className={styles.updatePassword_title}>
-              변경 비밀번호 확인
-            </div>
-            <div className={styles.updatePassword_input_seecheckpw_container}>
-              <input
-                type={seeConfirmPassword ? 'text' : 'password'}
-                placeholder="비밀번호를 재입력해주세요"
-                value={confirmPassword}
-                onChange={handleConfirmPassword}
-                required
-                className={styles.updatePassword_input_checkpw}
-              ></input>
-              <button
-                type="button"
-                onClick={seeConfirmPasswordHandler}
-                className={styles.toggle_checkpw_button}
+            <div className={styles.updatePassword_formGroup}>
+              <div
+                className={styles.updatePassowrd_input_seeConfirmpw_container}
               >
-                {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-              </button>
+                <label htmlFor="confirmPassword">변경 비밀번호 확인</label>
+                <Input
+                  type={seeConfirmPassword ? 'text' : 'password'}
+                  id="confirmPassword"
+                  placeholder="비밀번호를 재입력해주세요"
+                  value={confirmPassword}
+                  onChange={handleConfirmPassword}
+                  required
+                ></Input>
+                <button
+                  type="button"
+                  onClick={seeConfirmPasswordHandler}
+                  className={styles.toggle_pw_button}
+                >
+                  {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                </button>
+              </div>
+              <div className={styles.error_container}>
+                {formErrors.confirmPassword && (
+                  <ErrorMessage>{formErrors.confirmPassword}</ErrorMessage>
+                )}
+              </div>
             </div>
-            <div className={styles.updatePassword_error}>
-              {errorConfirmPassword}
-            </div>
-            <div className={styles.updatePassword_actions}>
-              <input
-                type="submit"
-                value="비밀번호 변경"
-                className={styles.updatePassword_button}
-              ></input>
+            <div className={styles.updatePassword_button}>
+              <Button type="submit">비밀번호 변경</Button>
             </div>
           </form>
         </div>

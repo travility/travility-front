@@ -49,7 +49,7 @@ const ForgotPasswordPage = () => {
             '임시 비밀번호',
             '발급',
             navigate,
-            '/login'
+            '/forgotPassword'
           );
         }
       })
@@ -66,7 +66,7 @@ const ForgotPasswordPage = () => {
           }).then(() => {
             navigate('/signup');
           });
-        } else if (errorMessage === 'Social login user') {
+        } else if (errorMessage === 'Social forgotPassword user') {
           //소셜 로그인 회원
           Swal.fire({
             title: '소셜 로그인 회원',
@@ -74,7 +74,7 @@ const ForgotPasswordPage = () => {
             icon: 'error',
             confirmButtonColor: 'var(--main-color)',
           }).then(() => {
-            navigate('/login');
+            navigate('/forgotPassword');
           });
         } else if (errorMessage === 'Invalid email') {
           //유효하지 않은 이메일
@@ -89,15 +89,15 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className={styles.login_wrapper}>
-      <div className={styles.login_container}>
-        <div className={styles.login_header}>
+    <div className={styles.forgotPassword_wrapper}>
+      <div className={styles.forgotPassword_container}>
+        <div className={styles.forgotPassword_header}>
           <h2>비밀번호 찾기</h2>
           <p>아이디와 이메일을 입력해주세요</p>
         </div>
-        <div className={styles.login_form}>
+        <div className={styles.forgotPassword_form}>
           <form onSubmit={handleIssueTemporaryPassword}>
-            <div className={styles.login_formGroup}>
+            <div className={styles.forgotPassword_formGroup}>
               <label htmlFor="username">아이디</label>
               <Input
                 type="text"
@@ -113,7 +113,7 @@ const ForgotPasswordPage = () => {
                 )}
               </div>
             </div>
-            <div className={styles.login_formGroup}>
+            <div className={styles.forgotPassword_formGroup}>
               <label htmlFor="email">이메일</label>
               <Input
                 type="email"
@@ -129,7 +129,7 @@ const ForgotPasswordPage = () => {
                 )}
               </div>
             </div>
-            <div className={styles.login_button}>
+            <div className={styles.forgotPassword_button}>
               <Button type="submit">임시 비밀번호 발급</Button>
             </div>
           </form>
