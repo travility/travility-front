@@ -58,7 +58,7 @@ const ScheduleDetail = ({
 
   useEffect(() => {
     updateFilteredTotalExpense();
-  }, [filter, expenses, exchangeRates]);
+  }, [filter, expenses]);
 
   const updateFilteredTotalExpense = () => {
     const newFilteredTotalExpense = expenses.reduce((sum, expense) => {

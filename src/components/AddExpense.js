@@ -27,6 +27,7 @@ const paymentMethod = [
   { name: "CARD", label: "카드" },
 ];
 
+// 중복 통화 제거
 const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const uniqueCurrencies = Array.from(
     new Set(accountBook.budgets.map((budget) => budget.curUnit))
@@ -66,8 +67,18 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
       backgroundColor: "var(--background-color)",
       border: "1px solid var(--line-color)",
       borderRadius: "0.3rem",
-      width: "6rem",
+      width: "5rem",
+      minHeight: "1rem",
       color: "var(--text-color)",
+      marginTop: "0.2rem",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.33rem 0.5rem",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: "0.33rem",
     }),
     option: (base) => ({
       ...base,
@@ -75,10 +86,10 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
       alignItems: "center",
       background: "var(--background-color)",
       color: "var(--text-color)",
-      fontSize: "0.6em",
+      fontSize: "0.7em",
       ":hover": {
         background: "var(--main-color)",
-        color: "#fff",
+        color: "#ffffff",
       },
     }),
     singleValue: (base) => ({

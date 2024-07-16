@@ -10,8 +10,7 @@
     background-position: center;
     width: 100%;
     min-width: 12rem;
-    min-height: 8rem;
-    aspect-ratio: 3 / 2;
+    min-height: 6.6rem;
     position: relative;
     padding: 0.5rem;
   }
@@ -61,11 +60,14 @@
   }
   
   .tripInfo .accountBook_list_amount {
-    position: absolute;
     font-size: 0.8em;
-    bottom: 12px;
-    right: 15px;
+    align-self: flex-end;
     z-index: 2;
+    margin-top: 2rem;
+  }
+
+  .accountBook_list_amount label {
+    margin-right: 0.5rem;
   }
   
   .tripInfo .accountBook_list_edit {

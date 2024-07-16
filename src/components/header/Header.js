@@ -1,20 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../../styles/components/Header.module.css';
-import { logout } from '../../api/memberApi';
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../../styles/components/header/Header.module.css";
+import { logout } from "../../api/memberApi";
 import {
   handleAlreadyLoggedOut,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from '../../util/logoutUtils';
-import { TokenStateContext } from '../../App';
+} from "../../util/logoutUtils";
+import { TokenStateContext } from "../../App";
+import ThemeToggleButton from "./ThemeToggleButton";
+import { useTheme } from "../../styles/Theme";
 
 const Header = () => {
   const { memberInfo } = useContext(TokenStateContext);
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (memberInfo) {
@@ -45,16 +49,30 @@ const Header = () => {
     if (memberInfo) {
       navigate('/main');
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
-  const logoStyle = {
-    color: location.pathname === '/' ? '#fff' : 'var(--main-color)',
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const buttonStyle = {
-    color: location.pathname === '/' ? '#fff' : 'var(--text-color)',
+  const logoStyle = {
+    color: location.pathname === "/" ? "#fff" : "var(--main-color)",
+  };
+
+  const handleMouseOver = (e) => {
+    const img = e.currentTarget.querySelector("img");
+    if (img) {
+      img.src = "/images/person_circle_pk.png";
+    }
+  };
+
+  const handleMouseOut = (e) => {
+    const img = e.currentTarget.querySelector("img");
+    if (img) {
+      img.src = "/images/person_circle.png";
+    }
   };
 
   return (
@@ -64,7 +82,7 @@ const Header = () => {
         onClick={handleLogoClick}
         style={logoStyle}
       >
-        <div className={styles.logoContainer}>
+        <div className={styles.logo_container}>
           <img src="/images/main/logo.png" alt="logo" className={styles.logo} />
           <img
             src="/images/main/logo2.png"
@@ -78,7 +96,9 @@ const Header = () => {
         <div className={styles.header_user_container}>
           {memberInfo && (
             <>
-              <span className={styles.header_welcome_message}>
+              <span className={`${styles.header_welcome_message} ${
+              isSidebarOpen ? styles.open : ""
+            }`}>
                 {role === 'ROLE_ADMIN' ? (
                   <>현재 관리자 모드입니다</>
                 ) : (
@@ -90,33 +110,37 @@ const Header = () => {
               </span>
               <nav className={styles.header_navigation_container}>
                 <button
-                  className={styles.logout_button}
-                  onClick={handleLogout}
-                  style={buttonStyle}
+                  onClick={() => navigate("/dashboard/myinfo")}
+                  className={styles.user_button}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
                 >
-                  Logout
+                  <img src="/images/person_circle.png" alt="user" />
+                  {name}
                 </button>
-                {role === 'ROLE_ADMIN' ? (
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={() => navigate('/admin/users')}
-                    style={buttonStyle}
-                  >
-                    관리
-                  </button>
-                ) : location.pathname === '/' ? (
-                  <></>
-                ) : (
-                  <button
-                    className={styles.nav_second_button}
-                    onClick={() => navigate('/')}
-                    style={buttonStyle}
-                  >
-                    About Us
-                  </button>
-                )}
-              </nav>
-            </>
+                님 반갑습니다!
+              </>
+            )}
+            <button className={styles.toggle_button} onClick={toggleSidebar}>
+              {isSidebarOpen ? ">" : "<"}
+            </button>
+          </span>
+          {isSidebarOpen && (
+            <div className={styles.sidebar}>
+              <button className={styles.logout_button} onClick={handleLogout}>
+                Logout
+              </button>
+              <button
+                className={styles.nav_second_button}
+                onClick={() => navigate("/")}
+              >
+                About Us
+              </button>
+              <ThemeToggleButton
+                toggleTheme={toggleTheme}
+                currentTheme={theme}
+              />
+            </div>
           )}
         </div>
       )}

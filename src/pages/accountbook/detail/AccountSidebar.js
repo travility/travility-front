@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 import AddBudget from '../../../components/AddBudget';
 import AddExpense from '../../../components/AddExpense';
@@ -26,9 +26,12 @@ const AccountSidebar = ({
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
 
+  const memoizedDates = useMemo(() => dates, [dates]);
+
   const handleDateChange = (date) => {
-    setSelectedOption(date.toLocaleDateString());
-    onDateChange(date.toLocaleDateString());
+    const formattedDate = date.toLocaleDateString();
+    setSelectedOption(formattedDate);
+    onDateChange(formattedDate);
   };
 
   const handleShowAll = () => {
@@ -110,7 +113,7 @@ const AccountSidebar = ({
           준비
           <span>{selectedOption === 'preparation' ? '<' : '>'}</span>
         </Button>
-        {dates.map((date, index) => (
+        {memoizedDates.map((date, index) => (
           <Button
             key={index}
             onClick={() => handleDateChange(date)}
