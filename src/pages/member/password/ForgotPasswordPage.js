@@ -5,10 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../styles/StyledComponents';
 import { forgotPassword } from '../../../api/memberApi';
 import Swal from 'sweetalert2';
-import {
-  handleSuccessSubject,
-  handleSuccessSubjectNotReload,
-} from '../../../util/logoutUtils';
+import { handleSuccessSubjectNotReload } from '../../../util/logoutUtils';
 
 const ForgotPasswordPage = () => {
   const [username, setUsername] = useState('');
