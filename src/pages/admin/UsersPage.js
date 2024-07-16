@@ -136,7 +136,7 @@ const UsersPage = () => {
             icon={faExclamationTriangle}
             className={styles.no_memberList_icon}
           />
-          <div>회원이 없습니다.</div>
+          <div>Travility에 가입한 회원이 없어요🐷</div>
         </div>
       ) : (
         <>
