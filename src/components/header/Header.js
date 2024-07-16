@@ -2,17 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/components/header/Header.module.css';
 import { logout } from '../../api/memberApi';
-import {
-  handleAlreadyLoggedOut,
-  handleSuccessLogout,
-  handleTokenExpirationLogout,
-} from '../../util/logoutUtils';
-import { TokenStateContext } from '../../App';
+import { handleSuccessLogout } from '../../util/logoutUtils';
+import { MemberInfoContext } from '../../App';
 import ThemeToggleButton from './ThemeToggleButton';
 import { useTheme } from '../../styles/Theme';
 
 const Header = () => {
-  const { memberInfo } = useContext(TokenStateContext);
+  const { memberInfo } = useContext(MemberInfoContext);
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
