@@ -1,20 +1,15 @@
 import React, { useContext } from 'react';
 import { useState, useEffect } from 'react';
-// import { getMemberFromSession, deleteMember } from '../../api/memberApi'; // 백엔드 API 호출 부분은 주석처리
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/dashboard/MyInfo.module.css';
 import Swal from 'sweetalert2';
-import { TokenStateContext } from '../../App';
-import {
-  confirmPassword,
-  deleteMember,
-  getMemberInfo,
-} from '../../api/memberApi';
+import { MemberInfoContext } from '../../App';
+import { confirmPassword, deleteMember } from '../../api/memberApi';
 import { handleSuccessLogout } from '../../util/logoutUtils';
 import { Input } from '../../styles/StyledComponents';
 
 const MyInfo = () => {
-  const { memberInfo } = useContext(TokenStateContext);
+  const { memberInfo } = useContext(MemberInfoContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
