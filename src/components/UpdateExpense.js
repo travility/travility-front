@@ -213,34 +213,43 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
 
   // React Select 커스텀
   const customStyles = {
-    // 전체 컨테이너
     control: (base) => ({
       ...base,
       backgroundColor: 'var(--background-color)',
       border: '1px solid var(--line-color)',
       borderRadius: '0.3rem',
+      width: '5rem',
+      minHeight: '1rem',
       color: 'var(--text-color)',
+      marginTop: '0.2rem',
     }),
-    // 옵션 리스트
-    option: (base, { data }) => ({
+    valueContainer: (base) => ({
+      ...base,
+      padding: '0.33rem 0.5rem',
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: '0.33rem',
+    }),
+    option: (base) => ({
       ...base,
       display: 'flex',
       alignItems: 'center',
       background: 'var(--background-color)',
       color: 'var(--text-color)',
-      fontSize: '0.5em',
+      fontSize: '0.6em',
       ':hover': {
         background: 'var(--main-color)',
-        color: '#fff',
+        color: '#ffffff',
       },
     }),
-    // 선택된 옵션
-    singleValue: (base, { data }) => ({
+    singleValue: (base) => ({
       ...base,
       display: 'flex',
       alignItems: 'center',
       color: 'var(--text-color)',
-      fontSize: '0.6em',
+      fontSize: '0.7em',
+      fontWeight: '700',
     }),
   };
 
@@ -250,6 +259,14 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
       {label}
     </div>
   );
+
+  // 중복 통화 제거
+  const uniqueCurrencies = Array.from(
+    new Set(accountBook.budgets.map((budget) => budget.curUnit))
+  ).map((curUnit) => ({
+    label: curUnit,
+    value: curUnit,
+  }));
 
   return (
     <>
@@ -275,6 +292,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                       }
                       options={categories}
                       isDisabled={!isEditable}
+                      isSearchable={false}
                       styles={customStyles}
                       formatOptionLabel={formatOptionLabel}
                     />
@@ -302,8 +320,12 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                 </div>
                 <CloseButton onClick={onClose}>&times;</CloseButton>
               </ModalHeader>
-              <div className={styles.modalContent}>
-                <div className={styles.expenseDate}>
+              <div className={`${styles.modalContent}`}>
+                <div
+                  className={`${styles.expenseDate} ${
+                    !isEditable ? 'readOnly' : ''
+                  }`}
+                >
                   <Input
                     type="date"
                     name="expenseDate"
@@ -438,11 +460,9 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                             },
                           }))
                         }
-                        options={accountBook.budgets.map((budget) => ({
-                          label: budget.curUnit,
-                          value: budget.curUnit,
-                        }))}
+                        options={uniqueCurrencies}
                         styles={customStyles}
+                        isSearchable={false}
                         noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
                       />
                     ) : (

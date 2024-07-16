@@ -17,6 +17,7 @@ import {
   fetchDailyExpenses,
   fetchAllExpensesByAccountbookId,
   formatDate,
+  fetchTotalExpenses,
 } from '../api/scheduleApi';
 import { formatNumberWithCommas } from '../util/calcUtils';
 import styles from '../styles/components/ScheduleCalendar.module.css';
@@ -65,6 +66,7 @@ const ScheduleCalendar = ({
     countryName: '',
     imgName: '',
     totalExpense: 0,
+    exchangeRates: {},
   });
 
   //날짜 클릭 시 동작
@@ -90,6 +92,8 @@ const ScheduleCalendar = ({
     }
 
     const { accountbookId, countryName, imgName } = eventsForDate[0];
+    const totalExpensesData = await fetchTotalExpenses(accountbookId);
+    const { totalAmount, exchangeRates } = totalExpensesData;
 
     console.log('Account Book ID:', accountbookId);
     console.log('Country Name:', countryName);
@@ -115,7 +119,7 @@ const ScheduleCalendar = ({
         countryName: countryName,
         imgName: imgName,
         curUnit: curUnit,
-        totalExpense: totalExpense,
+        totalExpense: totalAmount,
         exchangeRates: exchangeRates,
       });
     } catch (error) {
