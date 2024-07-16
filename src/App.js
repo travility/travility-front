@@ -4,6 +4,7 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { global } from './styles/dashboard/global.css';
 import { GlobalStyle } from './styles/StyledComponents';
 import { ThemeProvider, useTheme, lightTheme, darkTheme } from './styles/Theme';
+import { getMemberInfo } from './api/memberApi';
 import Layout from './components/header/Layout';
 import AboutUsPage from './pages/main/AboutusPage';
 import MainPage from './pages/main/mainPage2/MainPage';
@@ -17,11 +18,10 @@ import MyReport from './pages/dashboard/MyReport';
 import UsersPage from './pages/admin/UsersPage';
 import LoadingPage from './util/LoadingPage';
 import AuthenticatedRoute from './util/AuthenticatedRoute';
-import { getMemberInfo, logout } from './api/memberApi';
-import { validateToken } from './util/tokenUtils';
-import { handleTokenExpirationLogout } from './util/logoutUtils';
 import SettlementPage from './pages/accountbook/settlement/SettlementPage';
 import SettlementExpenseListPage from './pages/accountbook/settlement/SettlementExpenseListPage';
+import ForgotPasswordPage from './pages/member/password/ForgotPasswordPage';
+import UpdatePasswordPage from './pages/member/password/UpdatePasswordPage';
 
 export const TokenStateContext = createContext();
 
@@ -37,16 +37,6 @@ function App() {
 
     const checkTokenStatus = async () => {
       try {
-        // const result = await validateToken();
-        // setTokenStatus(result);
-        // if (result === 'Token valid') {
-        //   const info = await getMemberInfo();
-        //   setMemberInfo(info);
-        // }
-        // else if (result === "Token expired") {
-        //   await logout();
-        //   handleTokenExpirationLogout(navigate);
-        // }
         const info = await getMemberInfo();
         if (info.username) {
           setMemberInfo(info);
