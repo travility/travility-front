@@ -13,7 +13,7 @@ import {
 
 const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   const [budgetType, setBudgetType] = useState("shared");
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("KRW");
   const [amount, setAmount] = useState("");
   const [exchangeRate, setExchangeRate] = useState("1.00");
   const [budgets, setBudgets] = useState(initialBudgets || []);
