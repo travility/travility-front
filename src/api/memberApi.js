@@ -66,6 +66,15 @@ export const getMemberInfo = async () => {
   return response.data;
 };
 
+//비밀번호 찾기
+export const forgotPassword = async (data) => {
+  const response = await axios.post(
+    `${API_SERVER_HOST}/users/forgot-password`,
+    data
+  );
+  return response;
+};
+
 //비밀번호 확인
 export const confirmPassword = async (password) => {
   const response = await axiosInstance.post('/users/confirm-password', {

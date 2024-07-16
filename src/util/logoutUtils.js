@@ -58,6 +58,22 @@ export const handleSuccessSubject = (subject, action) => {
   });
 };
 
+export const handleSuccessSubjectNotReload = (
+  subject,
+  action,
+  navigate,
+  path
+) => {
+  Swal.fire({
+    title: `${action} 성공`,
+    text: `${subject} ${action} 성공했습니다`,
+    icon: 'success',
+    confirmButtonColor: '#2a52be',
+  }).then(() => {
+    navigate(`${path}`);
+  });
+};
+
 export const handleFailureSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 실패`,
