@@ -1,4 +1,4 @@
-// 슷지 천단위 ',' 삽입
+// 숫자 천단위 ',' 삽입
 export const formatNumberWithCommas = (number) => {
   if (number == null || isNaN(number)) {
     return "0";
@@ -6,7 +6,7 @@ export const formatNumberWithCommas = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-// 예산 평균 환율 계산
+// 특정 통화 평균 환율 계산
 export const calculateAverageExchangeRate = (budgets, currency) => {
   const relevantBudgets = budgets.filter((b) => b.curUnit === currency);
   const totalAmount = relevantBudgets.reduce(
@@ -21,7 +21,6 @@ export const calculateAverageExchangeRate = (budgets, currency) => {
   return weightedSum / totalAmount;
 };
 
-// 원화 총지출액 계산
 export const calculateTotalAmountInKRW = (accountBook) => {
   // 가계부나 지출 또는 예산이 없을 경우
   if (
@@ -31,7 +30,7 @@ export const calculateTotalAmountInKRW = (accountBook) => {
     !accountBook.expenses.length ||
     !accountBook.budgets.length
   ) {
-    return "KRW 0";
+    return 0;
   }
 
   // 각 통화 단위의 평균 환율 계산 및 저장
@@ -51,7 +50,21 @@ export const calculateTotalAmountInKRW = (accountBook) => {
     return total + expense.amount * exchangeRate;
   }, 0);
 
-  return `KRW ${totalAmount.toLocaleString()}`;
+  return totalAmount.toFixed(0);
+};
+
+// 특정 통화 예산 합계 계산
+export const calculateTotalBudget = (budgets, currency) => {
+  return budgets
+    .filter((budget) => budget.curUnit === currency)
+    .reduce((sum, budget) => sum + budget.amount, 0);
+};
+
+// 특정 통화 지출 합계 계산
+export const calculateTotalExpenses = (expenses, currency) => {
+  return expenses
+    .filter((expense) => expense.curUnit === currency)
+    .reduce((sum, expense) => sum + expense.amount, 0);
 };
 
 // 날짜 포맷
