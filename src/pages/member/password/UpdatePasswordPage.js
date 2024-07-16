@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import styles from '../../styles/dashboard/UpdatePasswordPage.module.css';
+import styles from '../../../styles/member/password/UpdatePasswordPage.module.css';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { updatePassword } from '../../api/memberApi';
-import {
-  handleFailureSubject,
-  handleSuccessLogout,
-  handleSuccessSubject,
-} from '../../util/logoutUtils';
+import { updatePassword } from '../../../api/memberApi';
+import { handleSuccessLogout } from '../../../util/logoutUtils';
 import Swal from 'sweetalert2';
 
 const UpdatePasswordPage = () => {

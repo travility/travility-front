@@ -22,7 +22,8 @@ import { handleTokenExpirationLogout } from './util/logoutUtils';
 import SettlementPage from './pages/accountbook/settlement/SettlementPage';
 import SettlementExpenseListPage from './pages/accountbook/settlement/SettlementExpenseListPage';
 import { global } from './styles/dashboard/global.css';
-import UpdatePasswordPage from './pages/dashboard/UpdatePasswordPage';
+import UpdatePasswordPage from './pages/member/password/UpdatePasswordPage';
+import ForgotPasswordPage from './pages/member/password/ForgotPasswordPage';
 
 export const TokenStateContext = createContext();
 
@@ -75,6 +76,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/loading" element={<LoadingPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/settlement/:id" element={<SettlementPage />} />
               <Route
                 path="/settlement/:id/expenses"
