@@ -25,7 +25,7 @@ const ExpenseItem = ({ expense, accountBook }) => {
         onClick={() => setIsUpdateExpenseModalOpen(true)}
       >
         <span className={styles.type}>
-          {expense.isShared ? "공동경비" : "개인경비"}
+          {expense.isShared ? "공동" : "개인"}
         </span>
         <img
           className={styles.categoryImg}
