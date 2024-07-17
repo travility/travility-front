@@ -8,18 +8,33 @@
   position: relative;
   padding-right: 1.5rem;
   border-right: 1px solid var(--line-color);
-  min-width: 13.5rem;
 }
 
-.date_buttons {
+.date_buttons_container {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
 }
 
+.date_navigation_buttons button {
+  background: none;
+  color: var(--main-color);
+  text-align: center;
+  border: 2px solid var(--light-color);
+  font-size: 0.5em;
+  width: 100%;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.date_navigation_buttons button:disabled {
+  color: var(--gray-color) !important;
+  cursor: not-allowed;
+}
+
 .date_buttons button {
-  margin-top: 0.5rem;
-  padding: 0.8rem 1.5rem;
+  margin-top: 0.2rem;
+  padding: 0.8rem 1rem;
   background-color: var(--light-color);
   color: var(--text-color);
   font-weight: 700;
@@ -28,6 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 0;
 }
 
 .tripDate {
@@ -86,7 +102,36 @@
 
 .expenseList_header {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.filter_buttons_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
+.currency_select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.8em;
+  font-weight: 700;
+}
+
+.currency_select label {
+  padding-top: 0.3rem;
+  margin-right: 0.5rem;
+}
+
+.noExpenses {
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: var(--gray-color);
 }
 
 /* 경비구분 */
@@ -94,7 +139,6 @@
   flex: 2;
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1rem;
 }
 
 .filter_buttons button {
@@ -103,6 +147,7 @@
   box-shadow: 1px 1px 1px 1px var(--shadow-color);
   border-radius: 0.5rem;
   width: 4rem;
+  height: 1.8rem;
   font-size: 0.7em;
 }
 
@@ -124,9 +169,9 @@
 }
 
 /* 가계부 요약 */
-.expenseList_summary_container {
+/* .expenseList_summary_container {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3.5fr 1fr;
 }
 
 .expenseList_summary {
@@ -134,7 +179,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--light-color);
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   font-size: 0.7em;
   font-weight: 700;
   border-radius: 1rem;
@@ -155,43 +200,98 @@
 .budgetInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  padding: 0 0.5rem;
+  border-left: 3px solid var(--main-color);
+} */
+
+.expenseList_summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  gap: 1rem;
+}
+
+.budgetInfo_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0.5rem;
+  align-items: center;
+  justify-items: center;
+  font-size: 0.7em;
+  font-weight: 700;
+  border: 2px solid var(--light-color);
+  height: 3.2rem;
+  border-radius: 0.5rem;
+}
+
+.budgetInfo {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--main-color);
+  width: 6rem;
+  margin-left: 0.5rem;
+}
+
+.budgetInfo label {
+  color: var(--bold-color);
+  font-size: 0.9em;
 }
 
 /* 지출 합계 */
 .totalAmount_container {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  flex-direction: row;
   font-size: 0.7em;
   font-weight: 700;
   text-align: right;
+  align-items: center;
   white-space: nowrap;
-  align-self: end;
-  margin-right: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .totalAmount {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   gap: 0.2rem;
+  padding: 0 0.8rem;
+  height: 3rem;
+  width: 6.5rem;
+  border: 1px solid var(--light-color);
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  justify-content: center;
 }
 
-.totalAmount label {
+.totalAmount_label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
   font-size: 0.8em;
-  color: var(--text-color);
+  background-color: var(--main-color);
+  width: 2rem;
+  height: 3rem;
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.amountCurrency {
+  font-size: 0.7em;
 }
 
 .amountKRW {
   display: flex;
   flex-direction: column;
   color: var(--point-color);
-  font-size: 1.2em;
 }
 
 .amountKRW label {
   color: var(--gray-color);
-  font-size: 0.7em;
+  font-size: 0.6em;
   font-weight: 500;
   align-self: end;
 }
@@ -206,9 +306,8 @@
   font-weight: 700;
   margin: 1rem 0 0.5rem;
   padding: 0.5rem 1rem;
-  background-color: var(--main-color);
-  color: #ffffff;
-  border-radius: 0.5rem;
+  background-color: var(--light-color);
+  color: var(--text-color);
 }
 
 .expenseItem {
@@ -260,7 +359,7 @@
 }
 
 /* 반응형 디자인 */
-@media (max-width: 870px) {
+@media (max-width: 830px) {
   .dashboard {
     grid-template-columns: 1fr;
   }
@@ -268,31 +367,87 @@
   .sidebar {
     border-right: none;
     border-bottom: 1px solid var(--line-color);
+    padding-right: 0;
     padding-bottom: 1.5rem;
     margin-bottom: 1.5rem;
   }
+
+  .date_buttons_container {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .date_navigation_buttons button {
+    height: 3rem;
+    border: 1px solid var(--light-color);
+  }
+
+  .date_buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .date_buttons button {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    background: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--line-color);
+  }
+
+  .date_buttons button:first-child {
+    border: none;
+  }
+
+  .date_buttons button:hover {
+    background: none;
+    color: var(--main-color);
+  }
+
+  .tripDate {
+    color: var(--gray-color);
+    font-size: 0;
+  }
+
+  .tripDate::after {
+    content: attr(data-day);
+    font-size: 0.7rem;
+  }
+  
+  .date_buttons button.selected .tripDate {
+    color: var(--bold-color);
+  }
+  
+  .date_buttons button.selected {
+    background: none;
+    color: var(--point-color);
+  }
+
+  /* .tripDate_icon {
+    display: none;
+  } */
 
   .expenseList_container {
     padding-left: 0;
   }
 }
 
-@media (max-width: 540px) {
-  .expenseList_summary_container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+@media (max-width: 530px) {
 
   .expenseList_summary {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-items: left;
   }
 
   .totalAmount {
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
-    align-items: center;
   }
 }

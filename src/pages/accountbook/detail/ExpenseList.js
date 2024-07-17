@@ -288,34 +288,29 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   return (
     <div className={styles.expenseList_container}>
       <div className={styles.expenseList_header}>
-        <div className={styles.filter_buttons}>
-          <Button
-            className={filter === "all" ? styles.selected_button : ""}
-            onClick={() => handleFilterChange("all")}
-          >
-            모두보기
-          </Button>
-          <Button
-            className={filter === "shared" ? styles.selected_button : ""}
-            onClick={() => handleFilterChange("shared")}
-          >
-            공동경비
-          </Button>
-          <Button
-            className={filter === "personal" ? styles.selected_button : ""}
-            onClick={() => handleFilterChange("personal")}
-          >
-            개인경비
-          </Button>
-        </div>
-        <div className={styles.settlement_button}>
-          <Button onClick={goSettlement}>정산하기</Button>
-        </div>
-      </div>
-      <div className={styles.expenseList_summary_container}>
-        <div className={styles.expenseList_summary}>
+        <div className={styles.filter_buttons_container}>
+          <div className={styles.filter_buttons}>
+            <Button
+              className={filter === "all" ? styles.selected_button : ""}
+              onClick={() => handleFilterChange("all")}
+            >
+              모두보기
+            </Button>
+            <Button
+              className={filter === "shared" ? styles.selected_button : ""}
+              onClick={() => handleFilterChange("shared")}
+            >
+              공동경비
+            </Button>
+            <Button
+              className={filter === "personal" ? styles.selected_button : ""}
+              onClick={() => handleFilterChange("personal")}
+            >
+              개인경비
+            </Button>
+          </div>
           <div className={styles.currency_select}>
-            <label htmlFor="currency">화폐 선택</label>
+            <label htmlFor="currency">화폐 :</label>
             <Select
               id="currency"
               value={currency}
@@ -326,43 +321,64 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
               noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
             />
           </div>
-          <div className={styles.budgetInfo_container}>
-            <span className={styles.budgetInfo}>
-              <label>총 예산</label> {totalBudget}
-            </span>
-            <span className={styles.budgetInfo}>
-              <label>누적 지출</label> {formattedCumulativeTotalExpenses}
-            </span>
-            <span className={styles.budgetInfo}>
-              <label>잔액</label> {remainingBudget}
-            </span>
-          </div>
         </div>
+        <div className={styles.settlement_button}>
+          <Button onClick={goSettlement}>정산하기</Button>
+        </div>
+      </div>
+      {/* <div className={styles.expenseList_summary_container}> */}
+      <div className={styles.expenseList_summary}>
+        {/* <div className={styles.currency_select}>
+        <label htmlFor="currency">화폐 선택</label>
+        <Select
+          id="currency"
+          value={currency}
+          onChange={handleCurrencyChange}
+          options={[{ label: "전체", value: "all" }, ...uniqueCurrencies]}
+          styles={customStyles}
+          isSearchable={false}
+          noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
+        />
+      </div> */}
+        <div className={styles.budgetInfo_container}>
+          <span className={styles.budgetInfo}>
+            <label>총 예산</label> {totalBudget}
+          </span>
+          <span className={styles.budgetInfo}>
+            <label>누적 지출</label> {formattedCumulativeTotalExpenses}
+          </span>
+          <span className={styles.budgetInfo}>
+            <label>잔액</label> {remainingBudget}
+          </span>
+        </div>
+        {/* </div> */}
         <div className={styles.totalAmount_container}>
+          <div className={styles.totalAmount_label}>지출 합계</div>
           <div className={styles.totalAmount}>
-            <label>[ 지출 합계 ]</label>
             {currency.value === "all" || currency.value === "KRW" ? (
               ""
             ) : (
               <>
                 <div className={styles.amountCurrency}>
-                  {currency.value}{" "}
+                  ({currency.value}{" "}
                   {formatNumberWithCommas(
                     totalExpensesInSelectedCurrency.toFixed(2)
                   )}
+                  )
                 </div>
               </>
             )}
-          </div>
-          <div className={styles.amountKRW}>
-            {formatNumberWithCommas(totalAmountInKRWForFilteredExpenses)} 원
-            <label>** 원화 환산 금액</label>
+
+            <div className={styles.amountKRW}>
+              {formatNumberWithCommas(totalAmountInKRWForFilteredExpenses)} 원
+              <label>** 원화 환산 금액</label>
+            </div>
           </div>
         </div>
       </div>
       <div className={styles.expenseList}>
         {Object.keys(groupedExpenses).length === 0 ? (
-          <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
+          <p className={styles.noExpenses}>아직 등록된 지출내역이 없어요 😅</p>
         ) : (
           Object.keys(groupedExpenses).map((date, index) => (
             <div key={index}>
