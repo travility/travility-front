@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/components/header/Header.module.css';
 import { logout } from '../../api/memberApi';
-import { handleSuccessLogout } from '../../util/logoutUtils';
+import { handleSuccessLogout } from '../../util/swalUtils';
 import { MemberInfoContext } from '../../App';
 import ThemeToggleButton from './ThemeToggleButton';
 import { useTheme } from '../../styles/Theme';

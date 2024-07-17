@@ -1,6 +1,8 @@
 import Swal from 'sweetalert2';
 import { removeToken } from './tokenUtils';
 
+/*로그아웃*/
+
 export const handleSuccessLogout = () => {
   removeToken();
   Swal.fire({
@@ -47,6 +49,8 @@ export const handleAccessDenied = (navigate) => {
   });
 };
 
+/* 공통 성공 & 실패 */
+
 export const handleSuccessSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 성공`,
@@ -59,6 +63,7 @@ export const handleSuccessSubject = (subject, action) => {
 };
 
 export const handleSuccessSubjectNotReload = (
+  //새로고침 없음
   subject,
   action,
   navigate,
@@ -78,6 +83,26 @@ export const handleFailureSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 실패`,
     text: `${subject} ${action} 실패했습니다`,
+    icon: 'error',
+    confirmButtonColor: '#2a52be',
+  });
+};
+
+export const handleProblemSubject = (subject) => {
+  Swal.fire({
+    title: `${subject} 실패`,
+    text: `${subject} 중 문제가 발생했습니다.`,
+    icon: 'error',
+    confirmButtonColor: '#4568DC',
+  });
+};
+
+/*이미지 업로드*/
+
+export const handleNoImage = () => {
+  Swal.fire({
+    title: '이미지 파일 아님',
+    text: '이미지 파일만 업로드 가능합니다',
     icon: 'error',
     confirmButtonColor: '#2a52be',
   });

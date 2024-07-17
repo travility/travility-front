@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import styles from '../styles/components/UpdateExpense.module.css';
-import Swal from 'sweetalert2';
 import { deleteExpense, updateExpense } from '../api/expenseApi';
 import {
   handleSuccessSubject,
   handleFailureSubject,
-} from '../util/logoutUtils';
+  handleNoImage,
+} from '../util/swalUtils';
 import {
   ModalOverlay,
   Modal,
@@ -107,12 +107,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
     const file = e.target.files[0];
 
     if (!file.type.startsWith('image/')) {
-      Swal.fire({
-        title: '이미지 파일 아님',
-        text: '이미지 파일만 업로드 가능합니다',
-        icon: 'error',
-        confirmButtonColor: '#2a52be',
-      });
+      handleNoImage();
       return;
     }
 
