@@ -153,7 +153,7 @@ const AccountSidebar = ({
         <span>
           <button onClick={() => setIsExpenseModalOpen(true)}>
             <img src="/images/account/write.png" alt="addExpense" />
-          </Button>
+          </button>
           <p>
             지출내역
             <br />
