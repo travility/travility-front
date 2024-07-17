@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import {
-  formatDate,
-  calculateTotalAmountInKRW,
+  commaFormatDate,
+  calculateTotalExpenseInKRW,
   formatNumberWithCommas,
 } from "../util/calcUtils";
 import styles from "../styles/components/TripInfo.module.css";
@@ -53,7 +53,7 @@ const TripInfo = ({
           </span>
         </div>
         <span className={styles.accountBook_list_dates}>
-          {`${formatDate(accountBook.startDate)} ~ ${formatDate(
+          {`${commaFormatDate(accountBook.startDate)} ~ ${commaFormatDate(
             accountBook.endDate
           )}`}
         </span>
@@ -65,7 +65,12 @@ const TripInfo = ({
         ) : (
           <span className={styles.accountBook_list_amount}>
             <label>KRW</label>
-            {formatNumberWithCommas(calculateTotalAmountInKRW(accountBook))}
+            {formatNumberWithCommas(
+              calculateTotalExpenseInKRW(
+                accountBook.expenses,
+                accountBook.budgets
+              )
+            )}
           </span>
         )}
       </div>

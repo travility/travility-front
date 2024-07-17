@@ -4,10 +4,10 @@ export const formatNumberWithCommas = (number) => {
     return "0";
   }
 
-  //정수 부분과 소수 부분 분리
+  // 정수 부분과 소수 부분 분리
   const [integerPart, decimalPart] = number.toString().split(".");
 
-  //정수 부분 포맷팅
+  // 정수 부분 포맷팅
   const formattedIntegerPart = integerPart.replace(
     /\B(?=(\d{3})+(?!\d))/g,
     ","
@@ -33,36 +33,47 @@ export const calculateAverageExchangeRate = (budgets, currency) => {
   return weightedSum / totalAmount;
 };
 
-export const calculateTotalAmountInKRW = (accountBook) => {
-  // 가계부나 지출 또는 예산이 없을 경우
-  if (
-    !accountBook ||
-    !accountBook.expenses ||
-    !accountBook.budgets ||
-    !accountBook.expenses.length ||
-    !accountBook.budgets.length
-  ) {
-    return 0;
-  }
-
-  // 각 통화 단위의 평균 환율 계산 및 저장
+// 각 통화 단위의 평균 환율 계산 및 저장
+export const calculateAverageExchangeRates = (budgets) => {
   const averageExchangeRates = {};
-  accountBook.budgets.forEach((budget) => {
+  budgets.forEach((budget) => {
     if (!averageExchangeRates[budget.curUnit]) {
       averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
-        accountBook.budgets,
+        budgets,
         budget.curUnit
       );
     }
   });
+  return averageExchangeRates;
+};
 
-  // 원화 변환 총합 계산
-  const totalAmount = accountBook.expenses.reduce((total, expense) => {
+// 원화 환산 총 지출 계산
+export const calculateTotalExpenseInKRW = (expenses, budgets) => {
+  // 지출 또는 예산이 없을 경우
+  if (!expenses || !budgets || !expenses.length || !budgets.length) {
+    return 0;
+  }
+
+  const averageExchangeRates = calculateAverageExchangeRates(budgets);
+
+  const totalExpenseInKRW = expenses.reduce((total, expense) => {
     const exchangeRate = averageExchangeRates[expense.curUnit] || 1;
     return total + expense.amount * exchangeRate;
   }, 0);
 
-  return totalAmount.toFixed(0);
+  return totalExpenseInKRW.toFixed(0);
+};
+
+// 원화 환산 총 예산 계산
+export const calculateTotalBudgetInKRW = (budgets) => {
+  const averageExchangeRates = calculateAverageExchangeRates(budgets);
+
+  const totalBudgetInKRW = budgets.reduce((total, budget) => {
+    const exchangeRate = averageExchangeRates[budget.curUnit] || 1;
+    return total + budget.amount * exchangeRate;
+  }, 0);
+
+  return totalBudgetInKRW.toFixed(0);
 };
 
 // 특정 통화 예산 합계 계산
@@ -80,11 +91,11 @@ export const calculateTotalExpenses = (expenses, currency) => {
 };
 
 // 날짜 포맷
-// export const formatDate = (dateString) => {
-//   return dateString.split("T")[0];
-// };
-
 export const formatDate = (dateString) => {
+  return dateString.split("T")[0];
+};
+
+export const commaFormatDate = (dateString) => {
   const date = new Date(dateString);
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");

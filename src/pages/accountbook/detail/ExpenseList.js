@@ -7,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   formatNumberWithCommas,
-  calculateTotalAmountInKRW,
+  calculateTotalExpenseInKRW,
+  calculateTotalBudgetInKRW,
   calculateTotalBudget,
   calculateTotalExpenses,
-  calculateAverageExchangeRate,
+  calculateAverageExchangeRates,
 } from "../../../util/calcUtils";
+import { selectStyles } from "../../../util/CustomStyles";
 
 const ExpenseList = ({ accountBook, selectedDate }) => {
   const [filter, setFilter] = useState("all");
@@ -65,6 +67,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     setFilteredExpenses(filteredExp);
     setFilteredBudgets(filteredBudg);
   }, [
+    accountBook.startDate,
     selectedDate,
     filter,
     currency,
@@ -114,46 +117,25 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     }));
   }, [accountBook.budgets]);
 
-  const calculateTotalBudgetInKRW = (budgets) => {
-    const averageExchangeRates = {};
-    budgets.forEach((budget) => {
-      if (!averageExchangeRates[budget.curUnit]) {
-        averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
-          budgets,
-          budget.curUnit
-        );
-      }
-    });
-
-    const totalBudgetInKRW = budgets.reduce((total, budget) => {
-      const exchangeRate = averageExchangeRates[budget.curUnit] || 1;
-      return total + budget.amount * exchangeRate;
-    }, 0);
-
-    return totalBudgetInKRW;
-  };
-
   const totalBudget =
     currency.value === "all"
-      ? formatNumberWithCommas(calculateTotalBudgetInKRW(filteredBudgets))
-      : formatNumberWithCommas(
-          calculateTotalBudget(filteredBudgets, currency.value).toFixed(2)
-        );
+      ? calculateTotalBudgetInKRW(filteredBudgets)
+      : calculateTotalBudget(filteredBudgets, currency.value);
 
-  const totalExpensesInKRW = calculateTotalAmountInKRW({
-    expenses: filteredExpenses,
-    budgets: filteredBudgets,
-  });
+  const fomattedTotalBudget =
+    currency.value === "all"
+      ? formatNumberWithCommas(totalBudget)
+      : formatNumberWithCommas(totalBudget.toFixed(2));
+
+  const totalExpensesInKRW = calculateTotalExpenseInKRW(
+    filteredExpenses,
+    accountBook.budgets
+  );
 
   const totalExpensesInSelectedCurrency = calculateTotalExpenses(
     filteredExpenses,
     currency.value
   );
-
-  const totalExpenses =
-    currency.value === "all"
-      ? formatNumberWithCommas(totalExpensesInKRW)
-      : formatNumberWithCommas(totalExpensesInSelectedCurrency.toFixed(2));
 
   const calculateCumulativeTotalExpenses = (selectedDate, currency) => {
     const formatDate = (date) => {
@@ -163,7 +145,6 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     };
 
     const selected = formatDate(selectedDate);
-    const startDate = formatDate(accountBook.startDate);
 
     let cumulativeExpenses = accountBook.expenses.filter((expense) => {
       const expenseDate = formatDate(expense.expenseDate);
@@ -184,13 +165,10 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       cumulativeExpenses = cumulativeExpenses.filter(
         (expense) => expense.curUnit === currency
       );
-      return calculateTotalExpenses(cumulativeExpenses, currency).toFixed(2);
+      return calculateTotalExpenses(cumulativeExpenses, currency);
     }
 
-    return calculateTotalAmountInKRW({
-      expenses: cumulativeExpenses,
-      budgets: accountBook.budgets,
-    });
+    return calculateTotalExpenseInKRW(cumulativeExpenses, accountBook.budgets);
   };
 
   const cumulativeTotalExpenses =
@@ -198,7 +176,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       ? calculateCumulativeTotalExpenses(selectedDate, currency.value)
       : currency.value === "all"
       ? totalExpensesInKRW
-      : calculateTotalExpenses(filteredExpenses, currency.value).toFixed(2);
+      : calculateTotalExpenses(filteredExpenses, currency.value);
 
   const formattedCumulativeTotalExpenses =
     currency.value === "all"
@@ -208,10 +186,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   const remainingBudget =
     currency.value === "all"
       ? formatNumberWithCommas(
-          (
-            calculateTotalBudgetInKRW(filteredBudgets) -
-            parseFloat(cumulativeTotalExpenses)
-          ).toFixed(0)
+          (totalBudget - parseFloat(cumulativeTotalExpenses)).toFixed(0)
         )
       : formatNumberWithCommas(
           (
@@ -221,15 +196,9 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
         );
 
   const calculateTotalAmountInKRWForFilteredExpenses = (expenses) => {
-    const averageExchangeRates = {};
-    accountBook.budgets.forEach((budget) => {
-      if (!averageExchangeRates[budget.curUnit]) {
-        averageExchangeRates[budget.curUnit] = calculateAverageExchangeRate(
-          accountBook.budgets,
-          budget.curUnit
-        );
-      }
-    });
+    const averageExchangeRates = calculateAverageExchangeRates(
+      accountBook.budgets
+    );
 
     const totalAmount = expenses.reduce((total, expense) => {
       const exchangeRate = averageExchangeRates[expense.curUnit] || 1;
@@ -244,51 +213,10 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       ? calculateTotalAmountInKRWForFilteredExpenses(filteredExpenses)
       : totalExpensesInKRW;
 
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      backgroundColor: "var(--background-color)",
-      border: "1px solid var(--line-color)",
-      borderRadius: "0.3rem",
-      width: "4rem",
-      minHeight: "1rem",
-      color: "var(--text-color)",
-      marginTop: "0.4rem",
-    }),
-    valueContainer: (base) => ({
-      ...base,
-      padding: "0.2rem 0.5rem",
-    }),
-    dropdownIndicator: (base) => ({
-      ...base,
-      width: "1rem",
-      padding: "0.2rem",
-    }),
-    option: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      background: "var(--background-color)",
-      color: "var(--text-color)",
-      fontSize: "0.7em",
-      ":hover": {
-        background: "var(--main-color)",
-        color: "#ffffff",
-      },
-    }),
-    singleValue: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      color: "var(--text-color)",
-      fontSize: "0.8em",
-    }),
-  };
-
   return (
     <div className={styles.expenseList_container}>
       <div className={styles.expenseList_header}>
-        <div className={styles.filter_buttons_container}>
+        <div className={styles.expenseList_buttons}>
           <div className={styles.filter_buttons}>
             <Button
               className={filter === "all" ? styles.selected_button : ""}
@@ -309,70 +237,57 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
               개인경비
             </Button>
           </div>
-          <div className={styles.currency_select}>
-            <label htmlFor="currency">화폐 :</label>
-            <Select
-              id="currency"
-              value={currency}
-              onChange={handleCurrencyChange}
-              options={[{ label: "전체", value: "all" }, ...uniqueCurrencies]}
-              styles={customStyles}
-              isSearchable={false}
-              noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
-            />
+          <div className={styles.settlement_button}>
+            <Button onClick={goSettlement}>정산하기</Button>
           </div>
         </div>
-        <div className={styles.settlement_button}>
-          <Button onClick={goSettlement}>정산하기</Button>
-        </div>
-      </div>
-      {/* <div className={styles.expenseList_summary_container}> */}
-      <div className={styles.expenseList_summary}>
-        {/* <div className={styles.currency_select}>
-        <label htmlFor="currency">화폐 선택</label>
-        <Select
-          id="currency"
-          value={currency}
-          onChange={handleCurrencyChange}
-          options={[{ label: "전체", value: "all" }, ...uniqueCurrencies]}
-          styles={customStyles}
-          isSearchable={false}
-          noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
-        />
-      </div> */}
-        <div className={styles.budgetInfo_container}>
-          <span className={styles.budgetInfo}>
-            <label>총 예산</label> {totalBudget}
-          </span>
-          <span className={styles.budgetInfo}>
-            <label>누적 지출</label> {formattedCumulativeTotalExpenses}
-          </span>
-          <span className={styles.budgetInfo}>
-            <label>잔액</label> {remainingBudget}
-          </span>
-        </div>
-        {/* </div> */}
-        <div className={styles.totalAmount_container}>
-          <div className={styles.totalAmount_label}>지출 합계</div>
-          <div className={styles.totalAmount}>
-            {currency.value === "all" || currency.value === "KRW" ? (
-              ""
-            ) : (
-              <>
-                <div className={styles.amountCurrency}>
-                  ({currency.value}{" "}
-                  {formatNumberWithCommas(
-                    totalExpensesInSelectedCurrency.toFixed(2)
-                  )}
-                  )
-                </div>
-              </>
-            )}
-
-            <div className={styles.amountKRW}>
-              {formatNumberWithCommas(totalAmountInKRWForFilteredExpenses)} 원
-              <label>** 원화 환산 금액</label>
+        <div className={styles.expenseList_summary_container}>
+          <div className={styles.currencyAndTotalAmount}>
+            <div className={styles.currency_select}>
+              <label htmlFor="currency">화폐 :</label>
+              <Select
+                id="currency"
+                value={currency}
+                onChange={handleCurrencyChange}
+                options={[{ label: "전체", value: "all" }, ...uniqueCurrencies]}
+                styles={selectStyles}
+                isSearchable={false}
+                noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
+              />
             </div>
+            <div className={styles.totalAmount_container}>
+              <div className={styles.totalAmount_label}>지출 합계 :</div>
+              <div className={styles.totalAmount}>
+                {currency.value === "all" || currency.value === "KRW" ? (
+                  ""
+                ) : (
+                  <>
+                    <div className={styles.amountCurrency}>
+                      ({currency.value}{" "}
+                      {formatNumberWithCommas(
+                        totalExpensesInSelectedCurrency.toFixed(2)
+                      )}
+                      )
+                    </div>
+                  </>
+                )}
+                <div className={styles.amountKRW}>
+                  {formatNumberWithCommas(totalAmountInKRWForFilteredExpenses)}{" "}
+                  원<label>** 원화 환산 금액</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.expenseList_summary}>
+            <span className={styles.summaryInfo}>
+              <label>총 예산</label> {fomattedTotalBudget}
+            </span>
+            <span className={styles.summaryInfo}>
+              <label>누적 지출</label> {formattedCumulativeTotalExpenses}
+            </span>
+            <span className={styles.summaryInfo}>
+              <label>잔액</label> {remainingBudget}
+            </span>
           </div>
         </div>
       </div>
