@@ -1,18 +1,18 @@
 import Swal from 'sweetalert2';
 import { removeToken } from './tokenUtils';
 
-export const handleSuccessLogout = (navigate) => {
+export const handleSuccessLogout = () => {
   removeToken();
   Swal.fire({
     title: '로그아웃 성공',
     icon: 'success',
     confirmButtonColor: '#2a52be',
   }).then(() => {
-    navigate('/login');
+    window.location.href = '/login';
   });
 };
 
-export const handleTokenExpirationLogout = (navigate) => {
+export const handleTokenExpirationLogout = () => {
   removeToken();
   Swal.fire({
     title: '로그인 유효기간 만료',
@@ -20,18 +20,19 @@ export const handleTokenExpirationLogout = (navigate) => {
     icon: 'error',
     confirmButtonColor: '#2a52be',
   }).then(() => {
-    navigate('/login');
+    window.location.href = '/login';
   });
 };
 
-export const handleAlreadyLoggedOut = (navigate) => {
+export const handleAlreadyLoggedOut = () => {
+  removeToken();
   Swal.fire({
     title: '로그아웃 상태',
     text: '현재 로그아웃된 상태입니다.',
     icon: 'error',
     confirmButtonColor: '#2a52be',
   }).then(() => {
-    navigate('/login');
+    window.location.href = '/login';
   });
 };
 
@@ -57,7 +58,23 @@ export const handleSuccessSubject = (subject, action) => {
   });
 };
 
-export const handlefailureSubject = (subject, action) => {
+export const handleSuccessSubjectNotReload = (
+  subject,
+  action,
+  navigate,
+  path
+) => {
+  Swal.fire({
+    title: `${action} 성공`,
+    text: `${subject} ${action} 성공했습니다`,
+    icon: 'success',
+    confirmButtonColor: '#2a52be',
+  }).then(() => {
+    navigate(`${path}`);
+  });
+};
+
+export const handleFailureSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 실패`,
     text: `${subject} ${action} 실패했습니다`,

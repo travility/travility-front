@@ -1,23 +1,24 @@
-import { useState } from 'react';
-import { signup, checkUsername } from '../../api/memberApi';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/member/SignupPage.module.css';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { useState } from "react";
+import { signup, checkUsername } from "../../api/memberApi";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import styles from "../../styles/member/SignupPage.module.css";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { Button, Input, ErrorMessage } from "../../styles/StyledComponents";
 
 const SignupPage = () => {
-  const [username, setUsername] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   //에러관리
-  const [errorUsername, setErrorUsername] = useState('');
-  const [errorPassword, setErrorPassword] = useState('');
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
-  const [errorEmail, setErrorEmail] = useState('');
-  const [errorNickname, setErrorNickname] = useState('');
+  const [errorUsername, setErrorUsername] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
+  const [errorNickname, setErrorNickname] = useState("");
   const [isUsernameDuplicate, setIsUsernameDuplicate] = useState(null);
 
   const [seePassword, setSeePassword] = useState(false);
@@ -46,9 +47,9 @@ const SignupPage = () => {
     const isValid = vaildateUsername(e.target.value);
     if (!isValid) {
       //만족하지 않으면
-      setErrorUsername('영소문자, 숫자 8~20자로 입력하세요.');
+      setErrorUsername("영소문자, 숫자 8~20자로 입력하세요.");
     } else {
-      setErrorUsername('');
+      setErrorUsername("");
     }
     setIsUsernameDuplicate(null);
   };
@@ -60,11 +61,11 @@ const SignupPage = () => {
       .then((data) => {
         if (data) {
           //중복인 경우
-          setErrorUsername('중복 아이디입니다.');
+          setErrorUsername("중복 아이디입니다.");
           setIsUsernameDuplicate(true);
         } else {
           //중복이 아닌 경우
-          setErrorUsername('사용 가능합니다.');
+          setErrorUsername("사용 가능합니다.");
           setIsUsernameDuplicate(false);
         }
       })
@@ -84,9 +85,9 @@ const SignupPage = () => {
     const isValid = vaildatePassword(e.target.value);
     if (!isValid) {
       //만족하지 않으면
-      setErrorPassword('영소문자, 숫자, 특수문자 8자 이상 입력하세요');
+      setErrorPassword("영소문자, 숫자, 특수문자 8자 이상 입력하세요");
     } else {
-      setErrorPassword('');
+      setErrorPassword("");
     }
   };
 
@@ -94,9 +95,9 @@ const SignupPage = () => {
   const handleConfirmPassword = (e) => {
     setConfirmPassword(e.target.value);
     if (e.target.value !== password) {
-      setErrorConfirmPassword('비밀번호가 맞지 않습니다.');
+      setErrorConfirmPassword("비밀번호가 맞지 않습니다.");
     } else {
-      setErrorConfirmPassword('');
+      setErrorConfirmPassword("");
     }
   };
 
@@ -111,9 +112,9 @@ const SignupPage = () => {
     setEmail(e.target.value);
     const isValid = validateEmail(e.target.value);
     if (!isValid) {
-      setErrorEmail('이메일 형식이 올바르지 않습니다');
+      setErrorEmail("이메일 형식이 올바르지 않습니다");
     } else {
-      setErrorEmail('');
+      setErrorEmail("");
     }
   };
 
@@ -126,9 +127,9 @@ const SignupPage = () => {
     setNickname(e.target.value);
     const isValid = validateNickname(e.target.value);
     if (!isValid) {
-      setErrorNickname('닉네임 형식이 올바르지 않습니다');
+      setErrorNickname("닉네임 형식이 올바르지 않습니다");
     } else {
-      setErrorNickname('');
+      setErrorNickname("");
     }
   };
 
@@ -138,17 +139,17 @@ const SignupPage = () => {
 
     if (isUsernameDuplicate == null) {
       Swal.fire({
-        title: '회원가입 실패',
-        text: '아이디 중복 검사 하세요',
-        icon: 'error',
-        confirmButtonColor: '#4568DC',
+        title: "회원가입 실패",
+        text: "아이디 중복 검사 하세요",
+        icon: "error",
+        confirmButtonColor: "#4568DC",
       });
     } else if (isUsernameDuplicate) {
       Swal.fire({
-        title: '회원가입 실패',
-        text: '중복된 아이디입니다.',
-        icon: 'error',
-        confirmButtonColor: '#4568DC',
+        title: "회원가입 실패",
+        text: "중복된 아이디입니다.",
+        icon: "error",
+        confirmButtonColor: "#4568DC",
       });
     } else if (
       !isUsernameDuplicate &&
@@ -169,127 +170,130 @@ const SignupPage = () => {
           console.log(data);
           console.log(member);
           Swal.fire({
-            title: '회원가입 성공',
-            text: '로그인 페이지로 이동합니다.',
-            icon: 'success',
-            confirmButtonColor: '#4568DC',
+            title: "회원가입 성공",
+            text: "로그인 페이지로 이동합니다.",
+            icon: "success",
+            confirmButtonColor: "#4568DC",
           }).then(() => {
-            navigate('/login');
+            navigate("/login");
           });
         })
         .catch((error) => {
           console.log(error);
           Swal.fire({
-            title: '회원가입 실패',
-            text: '회원가입 중 문제가 발생했습니다.',
-            icon: 'error',
-            confirmButtonColor: '#4568DC',
+            title: "회원가입 실패",
+            text: "회원가입 중 문제가 발생했습니다.",
+            icon: "error",
+            confirmButtonColor: "#4568DC",
           });
         });
     } else {
       Swal.fire({
-        title: '회원가입 실패',
-        text: '양식이 올바르지 않습니다.',
-        icon: 'error',
-        confirmButtonColor: '#4568DC',
+        title: "회원가입 실패",
+        text: "양식이 올바르지 않습니다.",
+        icon: "error",
+        confirmButtonColor: "#4568DC",
       });
     }
   };
 
   return (
-    <div className={styles.signup}>
-      <div className={styles.signup_content}>
-        <div className={styles.signup_container_header}>
-          <p>회원가입</p>
+    <div className={styles.signup_wrapper}>
+      <div className={styles.signup_container}>
+        <div className={styles.signup_header}>
+          <h2>회원가입</h2>
           <p>반가워요! 가입을 위해 몇 가지만 확인할게요.</p>
         </div>
         <div className={styles.signup_form}>
           <form onSubmit={handleSignup}>
-            <div className={styles.signup_title}>아이디</div>
-            <div className={styles.signup_id_container}>
-              <input
+            <div className={styles.signup_formGroup}>
+              <label htmlFor="username">아이디</label>
+              <div className={styles.signup_id}>
+                <Input
+                  type="text"
+                  placeholder="영소문자, 숫자를 포함한 8~20자"
+                  value={username}
+                  onChange={handleUsername}
+                  required
+                />
+                <Button onClick={handleDuplicateUsername}>중복 확인</Button>
+              </div>
+              <div className="error_container">
+                <ErrorMessage>{errorUsername}</ErrorMessage>
+              </div>
+            </div>
+            <div className={styles.signup_formGroup}>
+              <label htmlFor="password">비밀번호</label>
+              <div className={styles.signup_input_seepw_container}>
+                <Input
+                  type={seePassword ? "text" : "password"}
+                  placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
+                  value={password}
+                  onChange={handlePassword}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={seePasswordHandler}
+                  className={styles.toggle_pw_button}
+                >
+                  {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                </button>
+              </div>
+              <div className="error_container">
+                <ErrorMessage>{errorPassword}</ErrorMessage>
+              </div>
+            </div>
+            <div className={styles.signup_formGroup}>
+              <label htmlFor="password">비밀번호 확인</label>
+              <div className={styles.signup_input_seepw_container}>
+                <Input
+                  type={seeConfirmPassword ? "text" : "password"}
+                  placeholder="비밀번호를 재입력해주세요"
+                  value={confirmPassword}
+                  onChange={handleConfirmPassword}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={seeConfirmPasswordHandler}
+                  className={styles.toggle_pw_button}
+                >
+                  {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                </button>
+              </div>
+              <div className="error_container">
+                <ErrorMessage>{errorConfirmPassword}</ErrorMessage>
+              </div>
+            </div>
+            <div className={styles.signup_formGroup}>
+              <label htmlFor="email">이메일</label>
+              <Input
+                type="email"
+                placeholder="이메일을 입력해주세요"
+                value={email}
+                onChange={handleEmail}
+                required
+              />
+              <div className="error_container">
+                <ErrorMessage>{errorEmail}</ErrorMessage>
+              </div>
+            </div>
+            <div className={styles.signup_formGroup}>
+              <label htmlFor="nickname">닉네임</label>
+              <Input
                 type="text"
-                placeholder="영소문자, 숫자를 포함한 8~20자"
-                value={username}
-                onChange={handleUsername}
+                placeholder="닉네임을 입력해주세요"
+                value={nickname}
+                onChange={handleNickname}
                 required
-                className={styles.signup_input_id}
-              ></input>
-              <button
-                onClick={handleDuplicateUsername}
-                className={styles.signup_idcheck_button}
-              >
-                중복 확인
-              </button>
+              />
+              <div className="error_container">
+                <ErrorMessage>{errorNickname}</ErrorMessage>
+              </div>
             </div>
-            <div className={styles.signup_error}>{errorUsername}</div>
-
-            <div className={styles.signup_title}>비밀번호</div>
-            <div className={styles.signup_input_seepw_container}>
-              <input
-                type={seePassword ? 'text' : 'password'}
-                placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
-                value={password}
-                onChange={handlePassword}
-                className={styles.signup_input_pw}
-                required
-              ></input>
-              <button
-                type="button"
-                onClick={seePasswordHandler}
-                className={styles.toggle_pw_button}
-              >
-                {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-              </button>
-            </div>
-            <div className={styles.signup_error}>{errorPassword}</div>
-
-            <div className={styles.signup_title}>비밀번호 확인</div>
-            <div className={styles.signup_input_seecheckpw_container}>
-              <input
-                type={seeConfirmPassword ? 'text' : 'password'}
-                placeholder="비밀번호를 재입력해주세요"
-                value={confirmPassword}
-                onChange={handleConfirmPassword}
-                required
-                className={styles.signup_input_checkpw}
-              ></input>
-              <button
-                type="button"
-                onClick={seeConfirmPasswordHandler}
-                className={styles.toggle_checkpw_button}
-              >
-                {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-              </button>
-            </div>
-            <div className={styles.signup_error}>{errorConfirmPassword}</div>
-
-            <div className={styles.signup_title}>이메일</div>
-            <input
-              type="email"
-              placeholder="이메일을 입력해주세요"
-              value={email}
-              onChange={handleEmail}
-              required
-              className={styles.signup_input_email}
-            ></input>
-            <div className={styles.signup_error}>{errorEmail}</div>
-            <div className={styles.signup_title}>닉네임</div>
-            <input
-              type="text"
-              placeholder="닉네임을 입력해주세요"
-              value={nickname}
-              onChange={handleNickname}
-              required
-              className={styles.signup_input_nickname}
-            ></input>
-            <div className={styles.signup_error}>{errorNickname}</div>
             <div className={styles.signup_actions}>
-              <input
-                type="submit"
-                value="회원가입"
-                className={styles.signup_button}
-              ></input>
+              <Button type="submit">회원가입</Button>
             </div>
           </form>
         </div>

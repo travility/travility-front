@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getMemberInfo, login } from "../../api/memberApi";
-import { saveToken } from "../../util/tokenUtils";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import Swal from "sweetalert2";
-import { Button, Input, ErrorMessage } from "../../styles/StyledComponents";
-import styles from "../../styles/member/LoginPage.module.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getMemberInfo, login } from '../../api/memberApi';
+import { saveToken } from '../../util/tokenUtils';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import Swal from 'sweetalert2';
+import { Button, Input, ErrorMessage } from '../../styles/StyledComponents';
+import styles from '../../styles/member/LoginPage.module.css';
 
 const onNaverLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+  window.location.href = 'http://localhost:8080/oauth2/authorization/naver';
 };
 
 const onGoogleLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  window.location.href = 'http://localhost:8080/oauth2/authorization/google';
 };
 
 const onKakaoLogin = () => {
-  window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+  window.location.href = 'http://localhost:8080/oauth2/authorization/kakao';
 };
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [seePassword, setSeePassword] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
@@ -43,8 +43,8 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const errors = {};
-    if (!username) errors.username = "아이디를 입력하세요.";
-    if (!password) errors.password = "비밀번호를 입력하세요.";
+    if (!username) errors.username = '아이디를 입력하세요.';
+    if (!password) errors.password = '비밀번호를 입력하세요.';
 
     setFormErrors(errors);
 
@@ -59,28 +59,28 @@ const LoginPage = () => {
 
     try {
       const response = await login(data);
-      const token = response.headers.get("Authorization");
+      const token = response.headers.get('Authorization');
       saveToken(token);
       const memberInfo = await getMemberInfo();
       console.log(memberInfo);
       Swal.fire({
-        title: "로그인 성공",
-        icon: "success",
-        confirmButtonColor: "var(--main-color)",
+        title: '로그인 성공',
+        icon: 'success',
+        confirmButtonColor: 'var(--main-color)',
       }).then(() => {
-        if (memberInfo.role === "ROLE_USER") {
-          navigate("/main");
+        if (memberInfo.role === 'ROLE_USER') {
+          navigate('/main');
         } else {
-          navigate("/admin/users");
+          navigate('/admin/users');
         }
       });
     } catch (error) {
       console.log(error);
       Swal.fire({
-        title: "로그인 실패",
-        text: "아이디와 비밀번호가 맞지 않습니다.",
-        icon: "error",
-        confirmButtonColor: "var(--main-color)",
+        title: '로그인 실패',
+        text: '아이디와 비밀번호가 맞지 않습니다.',
+        icon: 'error',
+        confirmButtonColor: 'var(--main-color)',
       });
     }
   };
@@ -114,7 +114,7 @@ const LoginPage = () => {
               <label htmlFor="password">비밀번호</label>
               <div className={styles.login_input_seepw_container}>
                 <Input
-                  type={seePassword ? "text" : "password"}
+                  type={seePassword ? 'text' : 'password'}
                   id="password"
                   placeholder="비밀번호를 입력하세요"
                   value={password}
@@ -155,14 +155,27 @@ const LoginPage = () => {
             <img src="/images/member/naver.png" alt="네이버 로그인" />
           </button>
         </div>
-        <div className={styles.login_signup_container}>
-          <span className={styles.login_signup_text}>계정이 없으신가요?</span>
-          <button
-            className={styles.login_signup_button}
-            onClick={() => navigate("/signup")}
-          >
-            회원가입
-          </button>
+        <div className={styles.login_actions_container}>
+          <div>
+            <span className={styles.login_action_text}>
+              비밀번호를 잊으셨나요?
+            </span>
+            <button
+              className={styles.login_action_button}
+              onClick={() => navigate('/forgot-password')}
+            >
+              비밀번호 찾기
+            </button>
+          </div>
+          <div>
+            <span className={styles.login_action_text}>계정이 없으신가요?</span>
+            <button
+              className={styles.login_action_button}
+              onClick={() => navigate('/signup')}
+            >
+              회원가입
+            </button>
+          </div>
         </div>
       </div>
     </div>

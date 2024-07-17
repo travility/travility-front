@@ -1,0 +1,46 @@
+.toggleTheme_button {
+  width: 3.5rem;
+  height: 1rem;
+  border-radius: 1rem;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 2px solid var(--second-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 0.5rem;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.themeText {
+  color: var(--text-color);
+  font-size: 0.4em;
+  font-weight: 800;
+  white-space: nowrap;
+  padding: 0 0.2rem;
+}
+
+.iconImage {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.dark .icon,
+.light .themeText {
+  order: 2;
+  margin-right: auto;
+}
+
+.light .icon,
+.dark .themeText {
+  order: 1;
+  margin-left: auto;
+}

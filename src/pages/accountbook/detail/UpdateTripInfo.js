@@ -12,7 +12,7 @@ import {
   Input,
 } from "../../../styles/StyledComponents";
 
-const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
+const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [newTripInfo, setNewTripInfo] = useState({
     tripInfo: {
       countryName: accountBook.countryName,
@@ -193,7 +193,9 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                     />
                   </div>
                 </div>
-                <Button type="submit">수정</Button>
+                <Button className={styles.modify_button} type="submit">
+                  수정
+                </Button>
               </div>
             </form>
           </Modal>
@@ -211,4 +213,4 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   );
 };
 
-export default TripInfo;
+export default UpdateTripInfo;

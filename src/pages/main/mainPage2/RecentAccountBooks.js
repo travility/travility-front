@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAccountBooks } from "../../../api/accountbookApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronUp,
+  faChevronDown,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import TripInfo from "../../../components/TripInfo";
 import styles from "../../../styles/main/mainPage2/MainPage.module.css";
 
@@ -14,6 +19,8 @@ const RecentAccountBooks = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(2); // 기본값은 두 개
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 690);
 
   useEffect(() => {
     const fetchAccountBooks = async () => {
@@ -34,6 +41,24 @@ const RecentAccountBooks = () => {
     fetchAccountBooks();
   }, [id]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 690);
+      if (window.innerWidth <= 560) {
+        setItemsPerPage(1);
+      } else {
+        setItemsPerPage(2);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // 초기 실행을 위해 호출
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -48,13 +73,15 @@ const RecentAccountBooks = () => {
 
   const handlePrevClick = () => {
     setVisibleStartIndex((prevIndex) =>
-      prevIndex - 2 >= 0 ? prevIndex - 2 : 0
+      prevIndex - itemsPerPage >= 0 ? prevIndex - itemsPerPage : 0
     );
   };
 
   const handleNextClick = () => {
     setVisibleStartIndex((prevIndex) =>
-      prevIndex + 2 < accountBooks.length ? prevIndex + 2 : prevIndex
+      prevIndex + itemsPerPage < accountBooks.length
+        ? prevIndex + itemsPerPage
+        : prevIndex
     );
   };
 
@@ -72,12 +99,12 @@ const RecentAccountBooks = () => {
               onClick={handlePrevClick}
               disabled={visibleStartIndex === 0}
             >
-              <FontAwesomeIcon icon={faChevronUp} />
+              <FontAwesomeIcon icon={isMobile ? faChevronLeft : faChevronUp} />
             </button>
           </div>
           <div className={styles.recent_accountBooks_list}>
             {accountBooks
-              .slice(visibleStartIndex, visibleStartIndex + 2)
+              .slice(visibleStartIndex, visibleStartIndex + itemsPerPage)
               .map((accountBook) => (
                 <TripInfo
                   key={accountBook.id}
@@ -89,9 +116,11 @@ const RecentAccountBooks = () => {
           <div className={styles.recent_accountBooks_navigation_buttons}>
             <button
               onClick={handleNextClick}
-              disabled={visibleStartIndex + 2 >= accountBooks.length}
+              disabled={visibleStartIndex + itemsPerPage >= accountBooks.length}
             >
-              <FontAwesomeIcon icon={faChevronDown} />
+              <FontAwesomeIcon
+                icon={isMobile ? faChevronRight : faChevronDown}
+              />
             </button>
           </div>
         </div>
