@@ -1,20 +1,16 @@
-import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import Header from "./Header";
-import NavigationBar from "../../components/header/NavigationBar";
-import { Inner, Container } from "../../styles/StyledComponents";
-import ScrollToTopButton from "../ScrollToTopButton";
+import React from 'react';
+import Header from './Header';
+import NavigationBar from '../../components/header/NavigationBar';
+import { Inner, Container } from '../../styles/StyledComponents';
+import { Outlet } from 'react-router-dom';
+import ScrollToTopButton from '../ScrollToTopButton';
 
 const Layout = () => {
-  const location = useLocation();
-
   return (
     <div>
       <Inner>
-        <div className="header-wrapper">
-          <Header />
-        </div>
-        {!location.pathname.startsWith("/settlement") && <NavigationBar />}
+        <Header />
+        <NavigationBar />
         <Container>
           <Outlet />
           <ScrollToTopButton />

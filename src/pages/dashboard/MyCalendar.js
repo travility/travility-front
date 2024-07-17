@@ -92,8 +92,7 @@ const MyCalendar = () => {
 
   return (
     <div className={styles.my_calendar_container}>
-      <div className={styles.calendar_schedule_container}>
-        <div className={styles.calendar_container}>
+        <div className={styles.calendar_containter}>
           <ScheduleCalendar 
             events={events} 
             hasEvent={hasEvent}
@@ -103,8 +102,7 @@ const MyCalendar = () => {
             exchangeRates={exchangeRates}  
           />
         </div>
-      </div>
-    </div>
+    </div> 
   );
 };
 

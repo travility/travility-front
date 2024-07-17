@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../../styles/components/header/NavigationBar.module.css";
-import { TokenStateContext } from "../../App";
+import React, { useState, useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styles from '../../styles/components/header/NavigationBar.module.css';
+import { TokenStateContext } from '../../App';
 
 const NavigationBar = () => {
   const { memberInfo } = useContext(TokenStateContext);
@@ -11,22 +11,22 @@ const NavigationBar = () => {
   const navigate = useNavigate();
 
   const usersMenus = [
-    { name: "가계부 홈", path: "/main" },
-    { name: "전체가계부", path: "/accountbook/list" },
-    { name: "캘린더", path: "/dashboard/mycalendar" },
-    { name: "마이리포트", path: "/dashboard/myreport" },
-    { name: "마이페이지", path: "/dashboard/myinfo" },
+    { name: '가계부 홈', path: '/main' },
+    { name: '전체가계부', path: '/accountbook/list' },
+    { name: '캘린더', path: '/dashboard/mycalendar' },
+    { name: '마이리포트', path: '/dashboard/myreport' },
+    { name: '마이페이지', path: '/dashboard/myinfo' },
   ];
 
-  const adminMenus = [{ name: "사용자 관리", path: "/admin/users" }];
+  const adminMenus = [{ name: '사용자 관리', path: '/admin/users' }];
 
   const menus =
-    memberInfo && memberInfo.role === "ROLE_USER" ? usersMenus : adminMenus;
+    memberInfo && memberInfo.role === 'ROLE_USER' ? usersMenus : adminMenus;
 
   useEffect(() => {
     const currentPath = location.pathname;
     const activeMenu = menus.find((menu) =>
-      currentPath.includes(menu.path.split("/:")[0])
+      currentPath.includes(menu.path.split('/:')[0])
     );
     if (activeMenu) {
       setActiveMenu(activeMenu.path);
@@ -34,9 +34,11 @@ const NavigationBar = () => {
   }, [location, menus]);
 
   if (
-    location.pathname === "/" ||
-    location.pathname === "/login" ||
-    location.pathname === "/signup"
+    location.pathname === '/' ||
+    location.pathname === '/login' ||
+    location.pathname === '/signup' ||
+    location.pathname === '/forgot-password' ||
+    location.pathname.startsWith('/settlement')
   ) {
     return null;
   }
@@ -52,8 +54,8 @@ const NavigationBar = () => {
         <div
           key={index}
           className={`${styles.menuItem} ${
-            activeMenu === menu.path ? styles.active : ""
-          } ${hoveredMenu === menu.path ? styles.hovered : ""}`}
+            activeMenu === menu.path ? styles.active : ''
+          } ${hoveredMenu === menu.path ? styles.hovered : ''}`}
           onClick={() => handleMenuClick(menu.path)}
           onMouseEnter={() => setHoveredMenu(menu.path)}
           onMouseLeave={() => setHoveredMenu(null)}

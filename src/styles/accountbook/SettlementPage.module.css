@@ -3,22 +3,27 @@
   flex-direction: column;
 }
 
-.shareButtonContainer {
+.SettlementPage_header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.shareButtonContent {
+.shareButton_container {
   display: flex;
   width: 6.5rem;
 }
 
+.goBackButton,
 .shareButton {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.goBackButton_text {
+  font-size: 0.8rem;
 }
 
 .shareButton_text {
@@ -28,11 +33,6 @@
 
 .shareButton_icon {
   width: 0.9rem;
-}
-
-.shareButtonContainer {
-  text-align: right;
-  margin-bottom: 20px;
 }
 
 .settlementContainer {
@@ -104,6 +104,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.description {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--gray-color);
 }
 
 .perPersonExpense {
