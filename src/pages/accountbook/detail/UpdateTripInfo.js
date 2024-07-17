@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styles from "../../../styles/accountbook/UpdateTripInfo.module.css";
-import { formatDate } from "../../../util/calcUtils";
-import Swal from "sweetalert2";
-import SearchCountry from "../../../components/SearchCountry";
+import React, { useState } from 'react';
+import styles from '../../../styles/accountbook/UpdateTripInfo.module.css';
+import { formatDate } from '../../../util/calcUtils';
+import Swal from 'sweetalert2';
+import SearchCountry from '../../../components/SearchCountry';
 import {
   ModalOverlay,
   Modal,
@@ -10,7 +10,8 @@ import {
   CloseButton,
   Button,
   Input,
-} from "../../../styles/StyledComponents";
+} from '../../../styles/StyledComponents';
+import { handleNoImage } from '../../../util/swalUtils';
 
 const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [newTripInfo, setNewTripInfo] = useState({
@@ -49,7 +50,7 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   };
 
   const handleImageClick = () => {
-    document.getElementById("fileInput").click();
+    document.getElementById('fileInput').click();
   };
 
   const handleNewImg = (e) => {
@@ -60,13 +61,8 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
 
     const file = e.target.files[0];
 
-    if (!file.type.startsWith("image/")) {
-      Swal.fire({
-        title: "이미지 파일 아님",
-        text: "이미지 파일만 업로드 가능합니다",
-        icon: "error",
-        confirmButtonColor: "#2a52be",
-      });
+    if (!file.type.startsWith('image/')) {
+      handleNoImage();
       return;
     }
 
@@ -82,9 +78,9 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     e.preventDefault();
 
     const formData = new FormData(); // 문자열 or Blob 객체만 추가 가능
-    formData.append("tripInfo", JSON.stringify(newTripInfo.tripInfo)); // json 문자열로 변환
+    formData.append('tripInfo', JSON.stringify(newTripInfo.tripInfo)); // json 문자열로 변환
     if (newTripInfo.newImg) {
-      formData.append("img", newTripInfo.newImg);
+      formData.append('img', newTripInfo.newImg);
     }
 
     onSubmit(formData);

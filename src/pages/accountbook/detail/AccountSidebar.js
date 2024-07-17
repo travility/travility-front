@@ -10,7 +10,7 @@ import UpdateTripInfo from './UpdateTripInfo';
 import {
   handleSuccessSubject,
   handleFailureSubject,
-} from '../../../util/logoutUtils';
+} from '../../../util/swalUtils';
 import { Button } from '../../../styles/StyledComponents';
 import TripInfo from '../../../components/TripInfo';
 

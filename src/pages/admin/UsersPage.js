@@ -7,8 +7,9 @@ import {
 } from '../../api/adminApi';
 import {
   handleAccessDenied,
+  handleProblemSubject,
   handleTokenExpirationLogout,
-} from '../../util/logoutUtils';
+} from '../../util/swalUtils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/admin/UserPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,8 +54,7 @@ const UsersPage = () => {
 
     if (text === '삭제합니다') {
       deleteMemberByAdmin(username)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           Swal.fire({
             icon: 'success',
             title: '삭제 성공',
@@ -68,14 +68,8 @@ const UsersPage = () => {
           });
         })
         .catch((error) => {
-          console.log(username);
           console.log(error);
-          Swal.fire({
-            icon: 'error',
-            title: '삭제 실패',
-            text: '해당 회원 계정 삭제 중 문제가 발생했습니다. 다시 시도해주세요.',
-            confirmButtonText: '확인',
-          });
+          handleProblemSubject('계정 삭제');
         });
     }
   };
