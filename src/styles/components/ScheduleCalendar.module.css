@@ -3,6 +3,7 @@
   background-color: var(--backgroung-color);
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: auto;
   gap: 10px;
   height: 100%;
   transition: grid-template-columns 0.3s ease-in-out;
@@ -101,7 +102,7 @@
 }
 
 /* 세부조정 */
-
+/* 일 ~ 월 */
 .day {
   flex: 1;
   text-align: center;
@@ -110,11 +111,11 @@
   font-size:1rem;
   margin: 0 5px;
 }
-
+/* 일 */
 .day:first-child {
   color: rgb(251, 15, 15);
 }
-
+/* 토 */
 .day:last-child {
   color: #4C66F8;
 }
@@ -130,10 +131,12 @@
   width: 100%;
 }
 
+/* 달력의 cell */
 .number {
+  position: relative;
   font-size: 0.8rem;
   font-weight: 600;
-  z-index: 1;
+  z-index: 2;
 }
 
 .cell {
@@ -151,21 +154,23 @@
   box-sizing: border-box;
   position: relative;
   min-width: 14.28%; /* 7개의 셀을 균등하게 나누기 위해 설정 */
+  border: 1px solid rgb(239, 243, 253);
 }
 
 .cell_total_amount {
   font-size: 0.7rem;
   font-weight: 500;
-  color: #000000;
+  color: var(--text-color);
   margin-top: auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: auto;
 }
 
 .event {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   margin-top: auto;
   font-size: 0.7rem;
   font-weight: 550;
@@ -183,15 +188,41 @@
 .cellWithEvent::after {
   content: '';
   display: block;
-  width: 100%;
+  width: 0; 
   height: 15px;
-  background-color: rgba(248, 255, 173, 0.882);
+  background-color: rgba(56, 200, 171, 0.882);
   position: absolute;
-  top: 0;
+  top: 1.7rem;
   left: 0;
   z-index: 1;
+  transition: width 0.1s ease-in-out; /* 애니메이션 설정 */
 }
 
+.cellWithEvent.animate::after {
+  width: 100%; /* 애니메이션 시 너비를 100%로 설정 */
+}
+
+/* 요소들의 순서를 정의 */
+.cell > .number {
+  order: 1;
+}
+
+.cell > .cellWithEvent {
+  order: 2;
+  position: relative;
+}
+
+.cell > .event {
+  order: 3;
+}
+
+.cell > .cell_total_amount {
+  order: 4;
+  margin-top: auto; 
+}
+
+
+/* 넘어가는 다음 달 표시 */
 .disabled {
   color: #ccccccbb;
 }
@@ -199,11 +230,6 @@
 /* 오늘 날짜 표시 */
 .selected {
   position: relative; 
-}
-
-.number {
-  position: relative;
-  z-index: 2;
 }
 
 /* today 꾸미기 투꾸 */
@@ -223,24 +249,30 @@
 
 
 /* 작은 화면에서 팝업이 나왔을 때 */
-@media (max-width: 768px) {
-  .calendar_container.show_popup {
+@media (min-width: 412px) and (max-width: 690px) {
+  .calendar_container {
+    display: grid;
+    grid-template-rows: 1fr 3fr; /* 달력과 팝업의 비율을 설정 */
     grid-template-columns: 1fr;
+    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
   }
   
   .schedule_detail_container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    grid-row: 2 / 3; /* 팝업이 두 번째 행을 차지 */
+    grid-column: 1 / 2;
     width: 100%;
-    height: 100%;
-    background: white;
+    height: 100%; /* 팝업이 나머지 공간을 차지하도록 설정 */
+    background: var(--background-color);
     z-index: 1000;
     overflow-y: auto;
   }
   
   .calendar {
+    grid-row: 1 / 2; /* 달력이 첫 번째 행을 차지 */
+    grid-column: 1 / 2;
     width: 100%;
+    height: 100%; /* 달력이 해당 행의 높이를 차지하도록 설정 */
     margin: 0;
+    overflow: hidden; /* 달력의 내용이 넘치지 않도록 설정 */
   }
 }

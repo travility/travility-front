@@ -1,9 +1,21 @@
 // 숫자 천단위 ',' 삽입
 export const formatNumberWithCommas = (number) => {
   if (number == null || isNaN(number)) {
-    return "0";
+    return '0';
   }
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  //정수 부분과 소수 부분 분리
+  const [integerPart, decimalPart] = number.toString().split('.');
+
+  //정수 부분 포맷팅
+  const formattedIntegerPart = integerPart.replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ','
+  );
+
+  return decimalPart
+    ? `${formattedIntegerPart}.${decimalPart}`
+    : formattedIntegerPart;
 };
 
 // 특정 통화 평균 환율 계산
@@ -69,5 +81,5 @@ export const calculateTotalExpenses = (expenses, currency) => {
 
 // 날짜 포맷
 export const formatDate = (dateString) => {
-  return dateString.split("T")[0];
+  return dateString.split('T')[0];
 };

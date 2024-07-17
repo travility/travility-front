@@ -1,18 +1,18 @@
-import React, { useState, useMemo } from "react";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
-import AddBudget from "../../../components/AddBudget";
-import AddExpense from "../../../components/AddExpense";
-import { addBudgets } from "../../../api/budgetApi";
-import { addExpense } from "../../../api/expenseApi";
-import { updateAccountBook } from "../../../api/accountbookApi";
-import { formatDate } from "../../../util/calcUtils";
-import UpdateTripInfo from "./UpdateTripInfo";
+import React, { useState, useMemo } from 'react';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
+import AddBudget from '../../../components/AddBudget';
+import AddExpense from '../../../components/AddExpense';
+import { addBudgets } from '../../../api/budgetApi';
+import { addExpense } from '../../../api/expenseApi';
+import { updateAccountBook } from '../../../api/accountbookApi';
+import { formatDate } from '../../../util/calcUtils';
+import UpdateTripInfo from './UpdateTripInfo';
 import {
   handleSuccessSubject,
-  handlefailureSubject,
-} from "../../../util/logoutUtils";
-import { Button } from "../../../styles/StyledComponents";
-import TripInfo from "../../../components/TripInfo";
+  handleFailureSubject,
+} from '../../../util/logoutUtils';
+import { Button } from '../../../styles/StyledComponents';
+import TripInfo from '../../../components/TripInfo';
 
 const AccountSidebar = ({
   accountBook,
@@ -21,7 +21,7 @@ const AccountSidebar = ({
   onShowAll,
   onShowPreparation,
 }) => {
-  const [selectedOption, setSelectedOption] = useState("all");
+  const [selectedOption, setSelectedOption] = useState('all');
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
@@ -35,12 +35,12 @@ const AccountSidebar = ({
   };
 
   const handleShowAll = () => {
-    setSelectedOption("all");
+    setSelectedOption('all');
     onShowAll();
   };
 
   const handleShowPreparation = () => {
-    setSelectedOption("preparation");
+    setSelectedOption('preparation');
     onShowPreparation();
   };
 
@@ -53,11 +53,11 @@ const AccountSidebar = ({
       );
 
       const budgetsResponse = await addBudgets(accountBook.id, budgets);
-      console.log("Budgets updated successfully:", budgetsResponse);
-      handleSuccessSubject("예산", "수정");
+      console.log('Budgets updated successfully:', budgetsResponse);
+      handleSuccessSubject('예산', '수정');
     } catch (error) {
-      console.error("Error updating budgets:", error);
-      handlefailureSubject("예산", "수정");
+      console.error('Error updating budgets:', error);
+      handleFailureSubject('예산', '수정');
     } finally {
       setIsBudgetModalOpen(false);
     }
@@ -66,11 +66,11 @@ const AccountSidebar = ({
   const handleExpenseSubmit = async (expense) => {
     try {
       const expenseResponse = await addExpense(expense);
-      console.log("Expense added successfully:", expenseResponse);
-      handleSuccessSubject("지출", "추가");
+      console.log('Expense added successfully:', expenseResponse);
+      handleSuccessSubject('지출', '추가');
     } catch (error) {
-      console.error("Error:", error);
-      handlefailureSubject("지출", "추가");
+      console.error('Error:', error);
+      handleFailureSubject('지출', '추가');
     } finally {
       setIsExpenseModalOpen(false);
     }
@@ -82,11 +82,11 @@ const AccountSidebar = ({
         accountBook.id,
         tripInfo
       );
-      console.log("AccountBook updated successfully: ", accountBookResponse);
-      handleSuccessSubject("가계부", "수정");
+      console.log('AccountBook updated successfully: ', accountBookResponse);
+      handleSuccessSubject('가계부', '수정');
     } catch (error) {
-      console.log("Error updating AccountBook: ", error);
-      handlefailureSubject("가계부", "수정");
+      console.log('Error updating AccountBook: ', error);
+      handleFailureSubject('가계부', '수정');
     } finally {
       setIsTripInfoModalOpen(false);
     }
@@ -101,17 +101,17 @@ const AccountSidebar = ({
       <div className={styles.date_buttons}>
         <Button
           onClick={handleShowAll}
-          className={selectedOption === "all" ? styles.selected : ""}
+          className={selectedOption === 'all' ? styles.selected : ''}
         >
           모두 보기
-          <span>{selectedOption === "all" ? "<" : ">"}</span>
+          <span>{selectedOption === 'all' ? '<' : '>'}</span>
         </Button>
         <Button
           onClick={handleShowPreparation}
-          className={selectedOption === "preparation" ? styles.selected : ""}
+          className={selectedOption === 'preparation' ? styles.selected : ''}
         >
           준비
-          <span>{selectedOption === "preparation" ? "<" : ">"}</span>
+          <span>{selectedOption === 'preparation' ? '<' : '>'}</span>
         </Button>
         {memoizedDates.map((date, index) => (
           <Button
@@ -120,7 +120,7 @@ const AccountSidebar = ({
             className={
               selectedOption === date.toLocaleDateString()
                 ? styles.selected
-                : ""
+                : ''
             }
           >
             Day {index + 1}
@@ -128,7 +128,7 @@ const AccountSidebar = ({
               {formatDate(date.toISOString())}
             </span>
             <span>
-              {selectedOption === date.toLocaleDateString() ? "<" : ">"}
+              {selectedOption === date.toLocaleDateString() ? '<' : '>'}
             </span>
           </Button>
         ))}

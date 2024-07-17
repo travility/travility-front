@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   format,
   addMonths,
@@ -11,16 +11,16 @@ import {
   isSameMonth,
   isSameDay,
   setYear,
-} from "date-fns";
-import ScheduleDetail from "../components/ScheduleDetail";
+} from 'date-fns';
+import ScheduleDetail from '../components/ScheduleDetail';
 import {
   fetchDailyExpenses,
   fetchAllExpensesByAccountbookId,
   formatDate,
   fetchTotalExpenses,
-} from "../api/scheduleApi";
-import { formatNumberWithCommas } from "../util/calcUtils";
-import styles from "../styles/components/ScheduleCalendar.module.css";
+} from '../api/scheduleApi';
+import { formatNumberWithCommas } from '../util/calcUtils';
+import styles from '../styles/components/ScheduleCalendar.module.css';
 
 const ScheduleCalendar = ({
   onDateClick,
@@ -62,21 +62,21 @@ const ScheduleCalendar = ({
     date: null,
     accountbookId: null,
     expenses: [],
-    curUnit: "",
-    countryName: "",
-    imgName: "",
+    curUnit: '',
+    countryName: '',
+    imgName: '',
     totalExpense: 0,
     exchangeRates: {},
   });
 
   //날짜 클릭 시 동작
   const handleDateClick = async (date) => {
-    const formattedDate = format(date, "yyyy-MM-dd");
-    console.log("Date Clicked:", formattedDate);
+    const formattedDate = format(date, 'yyyy-MM-dd');
+    console.log('Date Clicked:', formattedDate);
 
     // 이벤트가 없는 경우 팝업을 표시하지 않음
     if (!hasEvent[formattedDate]) {
-      console.log("이 날짜에 이벤트가 없습니다.");
+      console.log('이 날짜에 이벤트가 없습니다.');
       return;
     }
 
@@ -87,7 +87,7 @@ const ScheduleCalendar = ({
     );
 
     if (eventsForDate.length === 0) {
-      console.log("이 날짜에 이벤트가 없습니다.");
+      console.log('이 날짜에 이벤트가 없습니다.');
       return;
     }
 
@@ -95,9 +95,9 @@ const ScheduleCalendar = ({
     const totalExpensesData = await fetchTotalExpenses(accountbookId);
     const { totalAmount, exchangeRates } = totalExpensesData;
 
-    console.log("Account Book ID:", accountbookId);
-    console.log("Country Name:", countryName);
-    console.log("Image Name:", imgName);
+    console.log('Account Book ID:', accountbookId);
+    console.log('Country Name:', countryName);
+    console.log('Image Name:', imgName);
 
     try {
       const expenses = await fetchAllExpensesByAccountbookId(accountbookId);
@@ -108,7 +108,7 @@ const ScheduleCalendar = ({
       );
 
       const curUnit =
-        expensesForDate.length > 0 ? expensesForDate[0].curUnit : "";
+        expensesForDate.length > 0 ? expensesForDate[0].curUnit : '';
       const totalExpense = totalExpenses[accountbookId] || 0;
 
       setPopupInfo({
@@ -123,7 +123,7 @@ const ScheduleCalendar = ({
         exchangeRates: exchangeRates,
       });
     } catch (error) {
-      console.error("지출 항목을 가져오는 중 오류가 발생했습니다:", error);
+      console.error('지출 항목을 가져오는 중 오류가 발생했습니다:', error);
     }
   };
 
@@ -133,9 +133,9 @@ const ScheduleCalendar = ({
       date: null,
       accountbookId: null,
       expenses: [],
-      countryName: "",
-      imgName: "",
-      curUnit: "",
+      countryName: '',
+      imgName: '',
+      curUnit: '',
       totalExpense: 0,
     });
   };
@@ -148,10 +148,10 @@ const ScheduleCalendar = ({
           className={styles.navButton}
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         >
-          {"<"}
+          {'<'}
         </button>
         <div className={styles.centerSection}>
-          {format(currentMonth, "MMM")}{" "}
+          {format(currentMonth, 'MMM')}{' '}
           <select
             className={styles.yearSelect}
             value={currentYear}
@@ -164,7 +164,7 @@ const ScheduleCalendar = ({
             ))}
           </select>
         </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <button className={styles.todayButton} onClick={goToToday}>
             today
           </button>
@@ -172,7 +172,7 @@ const ScheduleCalendar = ({
             className={styles.navButton}
             onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
           >
-            {">"}
+            {'>'}
           </button>
         </div>
       </div>
@@ -182,7 +182,7 @@ const ScheduleCalendar = ({
   //요일
   const renderDays = () => {
     const days = [];
-    const date = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const date = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     for (let i = 0; i < 7; i++) {
       days.push(
@@ -200,11 +200,11 @@ const ScheduleCalendar = ({
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
-    const dateFormat = "d";
+    const dateFormat = 'd';
     const rows = [];
     let days = [];
     let day = startDate;
-    let formattedDate = "";
+    let formattedDate = '';
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
@@ -213,7 +213,7 @@ const ScheduleCalendar = ({
         const eventsForDay = events.filter((event) =>
           isSameDay(event.start, cloneDay)
         );
-        const cellDate = format(day, "yyyy-MM-dd");
+        const cellDate = format(day, 'yyyy-MM-dd');
         // 해당 날짜의 총 지출 금액 가져오기
         const totalExpense = dailyExpenses[cellDate] || 0;
 
@@ -228,7 +228,7 @@ const ScheduleCalendar = ({
                 ? styles.selected
                 : hasEvent[cellDate]
                 ? styles.cellWithEvent
-                : ""
+                : ''
             }`}
             key={day}
             onClick={() =>
@@ -268,7 +268,7 @@ const ScheduleCalendar = ({
   return (
     <div
       className={`${styles.calendar_container} ${
-        popupInfo.show ? styles.show_popup : ""
+        popupInfo.show ? styles.show_popup : ''
       }`}
     >
       <div className={styles.calendar}>
