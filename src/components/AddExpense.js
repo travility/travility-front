@@ -12,6 +12,7 @@ import {
   ErrorMessage,
 } from "../styles/StyledComponents";
 import { useTheme } from "../styles/Theme";
+import { selectStyles } from "../util/CustomStyles";
 
 const categories = [
   { name: "TRANSPORTATION", label: "교통" },
@@ -27,6 +28,7 @@ const paymentMethod = [
   { name: "CARD", label: "카드" },
 ];
 
+// 중복 통화 제거
 const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const uniqueCurrencies = Array.from(
     new Set(accountBook.budgets.map((budget) => budget.curUnit))
@@ -58,37 +60,6 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     expenseTime: "",
     amount: "",
   });
-
-  // React Select 커스텀
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      backgroundColor: "var(--background-color)",
-      border: "1px solid var(--line-color)",
-      borderRadius: "0.3rem",
-      width: "6rem",
-      color: "var(--text-color)",
-    }),
-    option: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      background: "var(--background-color)",
-      color: "var(--text-color)",
-      fontSize: "0.6em",
-      ":hover": {
-        background: "var(--main-color)",
-        color: "#fff",
-      },
-    }),
-    singleValue: (base) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      color: "var(--text-color)",
-      fontSize: "0.7em",
-    }),
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -325,7 +296,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                         }))
                       }
                       options={uniqueCurrencies}
-                      styles={customStyles}
+                      styles={selectStyles}
                       isSearchable={false}
                       noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
                     />

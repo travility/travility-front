@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     --bold-color: #343683;
     --dark-color: #11183B;
     --light-color: #eff3ff;
-    --pointpk-color: #ff8bd2;
+    --point-color: #ff8bd2;
     --pointor-color: #FEC144;
     --line-color: #ECECEC;
     --gray-color: #9D9D9D;
@@ -37,19 +37,19 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
   }
 
-  @media (max-width: 430px) {
+  @media (max-width: 530px) {
     html {
       font-size: 75%;
     }
   }
 
-  @media (min-width: 431px) and (max-width: 600px) {
+  @media (min-width: 531px) and (max-width: 860px) {
     html {
       font-size: 87.5%;
     }
   }
 
-  @media (min-width: 601px) and (max-width: 1024px) {
+  @media (min-width: 861px) and (max-width: 1024px) {
     html {
       font-size: 100%;
     }
@@ -86,6 +86,13 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  .header-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin: 1.5rem 0;
+  }
+
   .wrapper {
     width: 100%
   }
@@ -105,7 +112,11 @@ const Inner = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 3rem;
+  padding: 3rem 4rem;
+
+  @media (max-width: 530px) {
+    padding: 3rem 2.5rem;
+  }
 `;
 
 const Button = styled.button`
@@ -134,7 +145,6 @@ const Input = styled.input`
   padding: 0.5rem;
   margin-top: 0.2rem;
   width: 100%;
-  min-height: 2rem;
   border: 1px solid var(--line-color);
   border-radius: 0.3rem;
   color: var(--text-color);
@@ -223,8 +233,6 @@ const CloseButton = styled.div`
     color: var(--second-color);
   }
 `;
-
-
 
 export {
   GlobalStyle,

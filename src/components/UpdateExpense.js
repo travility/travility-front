@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { deleteExpense, updateExpense } from "../api/expenseApi";
 import {
   handleSuccessSubject,
-  handlefailureSubject,
+  handleFailureSubject,
 } from "../util/logoutUtils";
 import {
   ModalOverlay,
@@ -16,6 +16,7 @@ import {
   Input,
 } from "../styles/StyledComponents";
 import { useTheme } from "../styles/Theme";
+import { selectStyles } from "../util/CustomStyles";
 
 // 지출 카테고리
 const categories = [
@@ -148,7 +149,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
       })
       .catch((error) => {
         console.log(error);
-        handlefailureSubject("지출", "수정");
+        handleFailureSubject("지출", "수정");
       });
   };
 
@@ -161,7 +162,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
       })
       .catch((error) => {
         console.log(error);
-        handlefailureSubject("지출", "삭제");
+        handleFailureSubject("지출", "삭제");
       });
   };
 
@@ -211,39 +212,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
     setIsEditable(false);
   };
 
-  // React Select 커스텀
-  const customStyles = {
-    // 전체 컨테이너
-    control: (base) => ({
-      ...base,
-      backgroundColor: "var(--background-color)",
-      border: "1px solid var(--line-color)",
-      borderRadius: "0.3rem",
-      color: "var(--text-color)",
-    }),
-    // 옵션 리스트
-    option: (base, { data }) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      background: "var(--background-color)",
-      color: "var(--text-color)",
-      fontSize: "0.5em",
-      ":hover": {
-        background: "var(--main-color)",
-        color: "#fff",
-      },
-    }),
-    // 선택된 옵션
-    singleValue: (base, { data }) => ({
-      ...base,
-      display: "flex",
-      alignItems: "center",
-      color: "var(--text-color)",
-      fontSize: "0.6em",
-    }),
-  };
-
+  // 셀렉트 옵션 스타일
   const formatOptionLabel = ({ label, img }) => (
     <div style={{ display: "flex", alignItems: "center" }}>
       <img src={img} alt="" style={{ width: "1rem", marginRight: "1rem" }} />
@@ -251,8 +220,16 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
     </div>
   );
 
+  // 중복 통화 제거
+  const uniqueCurrencies = Array.from(
+    new Set(accountBook.budgets.map((budget) => budget.curUnit))
+  ).map((curUnit) => ({
+    label: curUnit,
+    value: curUnit,
+  }));
+
   return (
-    <>
+    <div className={styles.updateExpense_container}>
       {isOpen && (
         <ModalOverlay>
           <Modal>
@@ -275,7 +252,8 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                       }
                       options={categories}
                       isDisabled={!isEditable}
-                      styles={customStyles}
+                      isSearchable={false}
+                      styles={selectStyles}
                       formatOptionLabel={formatOptionLabel}
                     />
                   ) : (
@@ -302,8 +280,12 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                 </div>
                 <CloseButton onClick={onClose}>&times;</CloseButton>
               </ModalHeader>
-              <div className={styles.modalContent}>
-                <div className={styles.expenseDate}>
+              <div className={`${styles.modalContent}`}>
+                <div
+                  className={`${styles.expenseDate} ${
+                    !isEditable ? "readOnly" : ""
+                  }`}
+                >
                   <Input
                     type="date"
                     name="expenseDate"
@@ -438,11 +420,9 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                             },
                           }))
                         }
-                        options={accountBook.budgets.map((budget) => ({
-                          label: budget.curUnit,
-                          value: budget.curUnit,
-                        }))}
-                        styles={customStyles}
+                        options={uniqueCurrencies}
+                        styles={selectStyles}
+                        isSearchable={false}
                         noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
                       />
                     ) : (
@@ -495,7 +475,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
           </Modal>
         </ModalOverlay>
       )}
-    </>
+    </div>
   );
 };
 

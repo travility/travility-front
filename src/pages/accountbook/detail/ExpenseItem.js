@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 import UpdateExpense from "../../../components/UpdateExpense";
+import { formatNumberWithCommas } from "../../../util/calcUtils";
 
 const categoryImages = {
   TRANSPORTATION: "transportation.png",
@@ -24,7 +25,7 @@ const ExpenseItem = ({ expense, accountBook }) => {
         onClick={() => setIsUpdateExpenseModalOpen(true)}
       >
         <span className={styles.type}>
-          {expense.isShared ? "공동경비" : "개인경비"}
+          {expense.isShared ? "공동" : "개인"}
         </span>
         <img
           className={styles.categoryImg}
@@ -32,7 +33,9 @@ const ExpenseItem = ({ expense, accountBook }) => {
           alt={expense.category}
         />
         <span className={styles.currency}>{expense.curUnit}</span>
-        <span className={styles.amount}>{expense.amount}</span>
+        <span className={styles.amount}>
+          {formatNumberWithCommas(expense.amount)}
+        </span>
         <span className={styles.description}>{expense.title}</span>
         {imgError || !expense.imgName ? (
           <div className={`${styles.expenseImg} ${styles.defaultImg}`}></div>

@@ -6,32 +6,55 @@
 /* Sidebar */
 .sidebar {
   position: relative;
-  padding: 1.5rem;
+  padding-right: 1.5rem;
   border-right: 1px solid var(--line-color);
-  min-width: 15rem;
 }
 
-.date_buttons {
+.tripInfoAndMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.date_buttons_container {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
+  border: 2px solid var(--light-color);
+}
+
+.date_navigation_buttons button {
+  background: none;
+  color: var(--main-color);
+  text-align: center;
+  border: none;
+  font-size: 0.5em;
+  width: 100%;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.date_navigation_buttons button:disabled {
+  color: var(--gray-color) !important;
+  cursor: not-allowed;
 }
 
 .date_buttons button {
-  margin-top: 0.5rem;
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 1rem;
   background-color: var(--light-color);
   color: var(--text-color);
+  border: 2px solid var(--background-color);
   font-weight: 700;
-  font-size: 0.9em;
+  font-size: 0.8em;
   text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 0;
 }
 
 .tripDate {
-  padding-left: 1rem;
   font-weight: 600;
   color: var(--main-color);
   font-size: 0.8em;
@@ -46,28 +69,30 @@
   color: var(--background-color);
 }
 
+/* 가계부 메뉴 */
 .accountbook_icons {
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  font-size: 0.6em;
-  font-weight: 800;
-  color: var(--text-color);
-  padding: 1.5rem 0.3rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.1rem;
+  width: 98%;
 }
 
 .accountbook_icons button {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: auto;
+  padding: 0.5rem;
   border: none;
-  border-radius: 50%;
-  width: 3rem;
-  height: 3rem;
   cursor: pointer;
+  gap: 0.2rem;
   background-color: var(--main-color);
-  margin-bottom: 0.2rem;
+}
+
+.accountbook_icons button p{
+  font-size: 0.8em;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .accountbook_icons button:hover {
@@ -76,27 +101,39 @@
 
 .accountbook_icons img {
   display: block;
-  width: 80%;
+  width: 1rem;
+  height: 1rem;
 }
 
 /* ExpenseList */
 .expenseList_container {
   width: 100%;
-  height: 100%;
-  padding: 1.5rem;
+  padding-left: 1.5rem;
 }
 
 .expenseList_header {
   display: flex;
+  flex-direction: column;
+}
+
+.expenseList_buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+}
+
+.noExpenses {
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: var(--gray-color);
 }
 
 /* 경비구분 */
 .filter_buttons {
-  flex: 2;
   display: flex;
-  gap: 10px;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  font-size: 0.7em;
 }
 
 .filter_buttons button {
@@ -104,8 +141,7 @@
   color: var(--text-color);
   box-shadow: 1px 1px 1px 1px var(--shadow-color);
   border-radius: 0.5rem;
-  width: 4rem;
-  font-size: 0.7em;
+  padding: 0.5rem 1rem;
 }
 
 .filter_buttons button.selected_button {
@@ -114,23 +150,114 @@
 }
 
 /* 정산하기 */
-.settlement_button {
-  margin-left: auto;
-}
-
 .settlement_button button {
   box-shadow: 1px 1px 1px 1px var(--shadow-color);
   border-radius: 2rem;
-  width: 4rem;
+  padding: 0.5rem 1rem;
+}
+
+.expenseList_summary_container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 화폐 선택 */
+.currency_select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.7em;
+  font-weight: 700;
+}
+
+.currency_select label {
+  margin-top: 0.2rem;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+/* 가계부 요약 */
+.expenseList_summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  font-size: 0.8em;
+  font-weight: 700;
+  padding: 1rem 1.5rem;
+  border: 2px solid var(--light-color);
+  border-radius: 0.5rem;
+}
+
+.summaryInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--main-color);
+}
+
+.summaryInfo label {
+  color: var(--dark-color);
+  font-size: 0.8em;
+}
+
+.currencyAndTotalAmount {
+  display: flex;
+  flex-direction: row;
+}
+
+/* 지출 합계 */
+.totalAmount_container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  width: 100%;
+  font-size: 0.9em;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+  margin-top: 2rem;
+}
+
+.totalAmount {
+  display: flex;
+  flex-direction: column; 
+  align-self: end;
+  gap: 0.2rem;
+  padding: 0 0.8rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  justify-content: center;
+}
+
+.totalAmount_label {
+  font-size: 0.8em;
+}
+
+.amountCurrency {
   font-size: 0.7em;
 }
 
+.amountKRW {
+  display: flex;
+  flex-direction: column;
+  color: var(--point-color);
+}
+
+.amountKRW label {
+  color: var(--gray-color);
+  font-size: 0.6em;
+  font-weight: 500;
+  align-self: end;
+}
+
+/* 지출 내역 */
 .expenseList {
   overflow-y: auto;
 }
 
 .expenseDate {
-  font-size: 0.8rem;
+  font-size: 0.6em;
   font-weight: 700;
   margin: 1rem 0 0.5rem;
   padding: 0.5rem 1rem;
@@ -140,31 +267,36 @@
 
 .expenseItem {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 2fr 5fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 1.5fr 1fr 2fr 3fr 4.5fr 1fr;
+  gap: 0.5rem;
   align-items: center;
   padding: 0.5rem 1rem;
-  font-size: 0.9em;
+  font-size: 0.8em;
   font-weight: 500;
   text-align: center;
+}
+
+.amount,
+.currency {
+  text-align: right;
 }
 
 .currency,
 .amount,
 .description {
   margin: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .type {
   color: var(--main-color);
+  margin-right: 0.5rem;
 }
 
 .categoryImg {
   width: 1.5rem;
-}
-
-.amount {
-  text-align: right;
 }
 
 .expenseImg {
@@ -175,8 +307,116 @@
   background-color: var(--gray-color);
 }
 
-.description{
+.description {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 750px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+    padding-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .tripInfoAndMenu {
+    flex-direction: row;
+    align-items: end;
+    gap: 0.7rem;
+  }
+
+  .accountbook_icons {
+    gap: 0.3rem;
+  }
+
+  .accountbook_icons button {
+    flex-direction: row;
+    gap: 0.3rem;
+  }
+
+  .date_buttons_container {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding: 0.5rem;
+    border-right: none;
+    border-left: none;
+  }
+
+  .date_buttons {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  
+  .date_buttons button {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    background: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--line-color);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .date_buttons button:first-child {
+    border: none;
+  }
+
+  .date_buttons button:hover {
+    background: none;
+    color: var(--main-color);
+  }
+
+  .tripDate {
+    color: var(--gray-color);
+    font-size: 0;
+  }
+
+  .tripDate::after {
+    content: attr(data-day);
+    font-size: 0.7rem;
+  }
+  
+  .date_buttons button.selected .tripDate {
+    color: var(--bold-color);
+  }
+  
+  .date_buttons button.selected {
+    background: none;
+    color: var(--point-color);
+  }
+
+  .expenseList_container {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 430px) {
+  .expenseList_summary {
+    padding: 0.7rem;
+  }
+
+  .accountbook_icons button {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}
+
+@media (max-width: 390px) {
+  .dashboard {
+    font-size: 0.9rem;
+  }
+
+  .summaryInfo {
+    font-size: 0.9em;
+  }
 }

@@ -5,7 +5,6 @@
 
 .categoryImage {
   width: 1.5rem;
-  height: 1.5rem;
 }
 
 .expenseTitle {
@@ -15,15 +14,20 @@
   gap: 0.5rem;
 }
 
-.expenseTitle input {
+.expenseTitle select {
+  height: 2rem;
+}
+
+.titleInput {
   font-weight: 800;
-  font-size: 1.2rem;
-  width: 80%;
+  font-size: 0.8em;
+  padding: 0.5rem 0.7rem;
+  width: 90%;
 }
 
 .expenseDate {
   display: flex;
-  width: 63%;
+  width: 70%;
   margin-right: auto;
 }
 
