@@ -81,3 +81,16 @@
   width: 100%; /* 차트 너비 */
 }
 
+.tooltipLink {
+  background-color: #344fff;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-left: 5px;
+  cursor: pointer; /* 이거 해야 마우스 올렸을 때 마우스 모양이 예쁨 */
+  border: 1px solid #344fff;
+}
+
+
+

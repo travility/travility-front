@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import Select from 'react-select';
+import { Tooltip } from 'react-tooltip';
 import { getExpenseStatisticsByDate, getPaymentMethodStatisticsByDate, getStatisticsByCategoryAndDates } from "../../api/expenseApi";
 import 'chart.js/auto';
 import TotalAmountCategory from './TotalAmountCategory';
 import TotalResult from '../statistic/TotalResult';
 import styles from '../../styles/statistic/ExpenseStatistic.module.css';
+import { formatDate } from '../../util/calcUtils'; // import the formatDate function
 
 // 카테고리 목록
 const categories = [
@@ -60,7 +62,12 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
 
         // 기본적으로 첫 번째 날짜 선택
         const paymentData = await getPaymentMethodStatisticsByDate(accountBookId, uniqueDates[0]);
-        setPaymentMethodStatistics(paymentData);
+        if (Array.isArray(paymentData)) {
+          setPaymentMethodStatistics(paymentData);
+        } else {
+          console.error("Expected an array but got:", paymentData);
+          setPaymentMethodStatistics([]);
+        }
       } catch (error) {
         console.error("Failed to fetch statistics:", error);
       }
@@ -73,7 +80,12 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
   const handleDateChange = async (selectedOption) => {
     setSelectedDate(selectedOption.value);
     const paymentData = await getPaymentMethodStatisticsByDate(accountBookId, selectedOption.value);
-    setPaymentMethodStatistics(paymentData);
+    if (Array.isArray(paymentData)) {
+      setPaymentMethodStatistics(paymentData);
+    } else {
+      console.error("Expected an array but got:", paymentData);
+      setPaymentMethodStatistics([]);
+    }
   };
 
   // 카테고리 선택 핸들러
@@ -84,6 +96,11 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
         ? prevSelectedCategories.filter(category => category !== value) 
         : [...prevSelectedCategories, value]
     );
+  };
+
+  // 체크 해제 핸들러
+  const handleClearSelection = () => {
+    setSelectedCategories([]);
   };
 
   // 카테고리 선택하면 해당 데이터 가져올거에요
@@ -110,12 +127,12 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
               pointBorderColor: colors[colorIndex] // 포인트 테두리 색상
             };
           }));
-          setLineChartData({ labels: dates, datasets });
+          setLineChartData({ labels: dates.map(formatDate), datasets });
         } catch (error) {
           console.error("Failed to fetch line chart data:", error);
         }
       } else {
-        setLineChartData({ labels: dates, datasets: [{ label: '', data: [], borderColor: 'rgba(0,0,0,0)', fill: false }] });
+        setLineChartData({ labels: dates.map(formatDate), datasets: [{ label: '', data: [], borderColor: 'rgba(0,0,0,0)', fill: false }] });
       }
     };
 
@@ -217,18 +234,30 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
   };
 
   // 날짜 선택 옵션
-  const dateOptions = dates.map(date => ({ value: date, label: date }));
+  const dateOptions = dates.map(date => ({ value: date, label: formatDate(date) }));
 
   return (
     <div className={styles.statisticsContainer}>
       <div className={styles.headerContainer}>
         <button onClick={onBack} className={styles.backButton}>뒤로가기</button>
+        
         <TotalResult accountBookId={accountBookId} />
+        
       </div>
       <h2 className={styles.totalAmountHeader}>총 지출 내역</h2>
+      <a
+          className={styles.tooltipLink}
+          data-tooltip-id="expense-info"
+          data-tooltip-content="개인 지출 + (공유 지출 / 인원수)"
+          data-tooltip-variant="info"
+        >
+          ?
+        </a>
+        <Tooltip id="expense-info" />
       <TotalAmountCategory accountBookId={accountBookId} />
       <div>
         <h3>카테고리 선택</h3>
+        
         <div className={styles.radioGroup}>
           {categories.map(category => (
             <div key={category.en} className={styles.radioLabel}>
@@ -244,11 +273,13 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
               </label>
             </div>
           ))}
+          <button onClick={handleClearSelection} className={styles.backButton}>체크해제</button>
         </div>
+        
       </div>
       <div className={styles.lineChartContainer}>
         <div className={styles.lineChartWrapper}>
-          <Line data={lineChartData} options={options} /> {/*라인차트*/}
+          <Line data={lineChartData} options={options} /> {/* Line = 라인차트 */}
         </div>
       </div>
       <div className={styles.selectContainer}>
