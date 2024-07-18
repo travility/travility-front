@@ -7,7 +7,7 @@ import 'chart.js/auto';
 import TotalAmountCategory from './TotalAmountCategory';
 import TotalResult from '../statistic/TotalResult';
 import styles from '../../styles/statistic/ExpenseStatistic.module.css';
-import { formatDate } from '../../util/calcUtils'; // import the formatDate function
+import { formatDate } from '../../util/calcUtils';
 
 // 카테고리 목록
 const categories = [
@@ -172,14 +172,14 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }]
   };
 
-  // 차트 옵션 차트 옵션 차트 옵션 차트 옵션 차트 옵션 차트 옵션 차트 옵션 차트 옵션 차트 옵션 
+  // 차트 옵션
   const options = {
     scales: {
       x: {
         beginAtZero: true,
         grid: {
           lineWidth: 1, // x축 모든 라인 굵게
-          color: "#5e5e5e"
+          color: "#d1d1d1"
         },
         ticks: {
           color: "#000000", // 폰트 색상
@@ -192,7 +192,7 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
         beginAtZero: true,
         grid: {
           lineWidth: 1, // y축의 모든 라인 굵게
-          color: "#5e5e5e"
+          color: "#d1d1d1"
         },
         ticks: {
           color: "#000000", // 폰트 색상
@@ -226,11 +226,130 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }
   };
 
+  // 항목별 지출 차트 옵션
+  const categoryChartOptions = {
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          lineWidth: 1, // x축 모든 라인 굵게
+          color: "#d1d1d1"
+        },
+        ticks: {
+          color: "#000000", // 폰트 색상
+          font: {
+            size: 12 // 폰트 크기
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          lineWidth: 1, // y축의 모든 라인 굵게
+          color: "#d1d1d1"
+        },
+        ticks: {
+          color: "#000000", // 폰트 색상
+          font: {
+            size: 14 // 폰트 크기
+          }
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          generateLabels: (chart) => {
+            const dataset = chart.data.datasets[0];
+            return dataset.data.map((data, index) => ({
+              text: `${chart.data.labels[index]}`,
+              fillStyle: dataset.backgroundColor[index],
+              hidden: false,
+              index: index
+            }));
+          },
+          color: "black", // 범례 폰트 색상
+          font: {
+            size: 18 // 범례 폰트 크기
+          },
+          boxWidth: 45 // 범례 박스 너비
+        }
+      },
+      tooltip: {
+        mode: 'index', // 툴팁 모드 설정 : 마우스 아무데나 올려놔도 정보 뜸. 안하면 에임잡기 빡셈
+        intersect: false, // 교차여부
+        callbacks: {
+          label: (context) => `${context.dataset.label}: ${context.raw}`, // 툴팁 한글 라벨
+          labelColor: (context) => ({
+            borderColor: context.dataset.borderColor,
+            backgroundColor: context.dataset.backgroundColor
+          })
+        }
+      }
+    }
+  };
+
   // 결제 방법 차트 옵션
   const paymentMethodOptions = {
-    ...options,
-    categoryPercentage: 0.8,
-    barPercentage: 0.7,
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          lineWidth: 1, // x축 모든 라인 굵게
+          color: "#d1d1d1"
+        },
+        ticks: {
+          color: "#000000", // 폰트 색상
+          font: {
+            size: 15 // 폰트 크기
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          lineWidth: 1, // y축의 모든 라인 굵게
+          color: "#d1d1d1"
+        },
+        ticks: {
+          color: "#000000", // 폰트 색상
+          font: {
+            size: 14 // 폰트 크기
+          }
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          generateLabels: (chart) => {
+            const dataset = chart.data.datasets[0];
+            return dataset.data.map((data, index) => ({
+              text: `${chart.data.labels[index]}`,
+              fillStyle: dataset.backgroundColor[index],
+              hidden: false,
+              index: index
+            }));
+          },
+          color: "black", // 범례 폰트 색상
+          font: {
+            size: 18 // 범례 폰트 크기
+          },
+          boxWidth: 45 // 범례 박스 너비
+        }
+      },
+      tooltip: {
+        mode: 'index', // 툴팁 모드 설정 : 마우스 아무데나 올려놔도 정보 뜸. 안하면 에임잡기 빡셈
+        intersect: false, // 교차여부
+        callbacks: {
+          label: (context) => `${context.dataset.label}: ${context.raw}`, // 툴팁 한글 라벨
+          labelColor: (context) => ({
+            borderColor: context.dataset.borderColor,
+            backgroundColor: context.dataset.backgroundColor
+          })
+        }
+      }
+    }
   };
 
   // 날짜 선택 옵션
@@ -293,7 +412,7 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
       <div className={styles.chartsWrapper}>
         <div className={`${styles.chartContainer} ${styles.expenseChartContainer}`}>
           <h3 className={styles.chartTitle}>항목별 지출</h3>
-          <Bar data={data} options={options}/>
+          <Bar data={data} options={categoryChartOptions}/>
         </div>
         <div className={`${styles.chartContainer} ${styles.paymentChartContainer}`}>
           <h3 className={styles.chartTitle}>결제 방법</h3>
