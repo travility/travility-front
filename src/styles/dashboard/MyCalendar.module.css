@@ -1,7 +1,535 @@
 
-.my_calendar_container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ********************   Calendar   ******************************/
+
+.schedule_calendar_container {
+  background-color: var(--background-color);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  height: 100%;
 }
 
+ /* 팝업이 나타날 때 두 개의 컬럼 */
+ .schedule_calendar_container.show_popup {
+  grid-template-columns: 3fr 1fr; 
+}
+
+/* 팝업이 나타날 때 캘린더의 너비를 줄임 */
+.schedule_calendar_container.show_popup .calendar_container{
+  width: auto;
+}
+
+.calendar_container {
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  padding: 20px; /* 전체 패딩 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-height: auto;
+  margin: 0 auto;
+  background: var(--backgroung-color);
+  transition: width 0.3s ease-in-out;
+}
+
+
+/* 년월 부분 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.yearSelect {
+  font-size: 0.95rem;
+  padding: 5px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: var(--backgroung-color);
+  color: var(--text-color);
+
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+.yearSelect:focus {
+  border-color: var(--main-color);
+  outline: none;
+}
+
+.option {
+  font-size: 0.95rem;
+  padding: 5px;
+}
+
+
+.todayButton {
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  margin-left: -20px;
+  margin-right: 10px;
+}
+
+.todayButton:hover {
+  background-color: var(--second-color);
+}
+
+.header_years_month{
+  font-size: 1.5rem;
+  color: #727272b3;
+  font-weight: 550;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  color:var(--text-color);
+}
+
+.days {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+/* 세부조정 */
+/* 일 ~ 월 */
+.day {
+  flex: 1;
+  text-align: center;
+  font-weight: 530;
+  color: rgb(182, 192, 217);
+  font-size:1rem;
+  margin: 0 5px;
+}
+/* 일 */
+.day:first-child {
+  color: rgb(251, 15, 15);
+}
+/* 토 */
+.day:last-child {
+  color: #4C66F8;
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.row {
+  display: flex;
+  width: 100%;
+}
+
+/* 달력의 cell */
+.number {
+  position: relative;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  /*셀 안의 내용을 상하 분배*/
+  text-align: left;
+  cursor: pointer;
+  height: 110px;
+  flex:1;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+  min-width: 14.28%; /* 7개의 셀을 균등하게 나누기 위해 설정 */
+  border: 1px solid #E7EEF8;
+}
+
+.cell_total_amount {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-top: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: auto;
+}
+
+.event {
+  position: relative;
+  z-index: 3;
+  margin-top: auto;
+  font-size: 0.7rem;
+  font-weight: 550;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin: 0;
+}
+
+.cellWithEvent{
+  position: relative;
+}
+
+.cellWithEvent::after {
+  content: '';
+  display: block;
+  width: 0; 
+  height: 15px;
+  background-color: var(--point-color);
+  position: absolute;
+  top: 1.7rem;
+  left: 0;
+  z-index: 1;
+  transition: width 0.1s ease-in-out; /* 애니메이션 설정 */
+}
+
+.cellWithEvent.animate::after {
+  width: 100%;
+}
+
+/* 요소들의 순서를 정의 */
+.cell > .number {
+  order: 1;
+}
+
+.cell > .cellWithEvent {
+  order: 2;
+  position: relative;
+}
+
+.cell > .event {
+  order: 3;
+}
+
+.cell > .cell_total_amount {
+  order: 4;
+  margin-top: auto; 
+}
+
+
+/* 넘어가는 다음 달 표시 */
+.disabled {
+  color: #ccccccbb;
+}
+
+/* 오늘 날짜 표시 */
+.selected {
+  position: relative; 
+}
+
+/* today 꾸미기 투꾸 */
+.selected::before{
+  content: '🐷';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: transparent; 
+  border-radius: 0;
+  position: absolute;
+  top: 30%;
+  left: 9%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+
+
+
+
+/* ****************            popup                  *************** */
+
+.schedule_detail_container {
+  border-radius: 10px;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: auto;
+  /* 다크모드 */
+  background-color: var(--backgroung-color);
+}
+
+
+.schedule_detail_header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.icon {
+  width: 11px;
+  height: auto;
+  margin-right: 5px; 
+}
+
+.schedule_detail_header_container > p{
+ font-size: 0.8rem;
+ font-weight: 500;
+ letter-spacing: -1px;
+}
+
+.schedule_detail_modalBody {
+  margin-top: 10px;
+}
+
+.schedule_detail_modalImage {
+  /* width: 100%; */
+  height: 150px; 
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 10px;
+}
+
+.schedule_detail_filter_buttons_container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; 
+  border-bottom: 1px solid var(--text-color);
+}
+
+.schedule_detail_filter_buttons_container button {
+  border: none;
+  cursor: pointer;
+  margin-bottom: 5px; 
+  letter-spacing: -1px;
+  /* 다크모드 */
+  background:none;
+  color: var(--text-color);
+}
+
+.go_accountbook_detail_btn {
+  background-color: #657DF9 !important;
+  color: white !important;
+  border-radius: 8px;
+  padding: 3px 5px;
+  font-size: 0.6rem;
+  letter-spacing: -1px;
+  margin-left: 50px;
+}
+
+.selectedButton {
+  font-weight: bold;
+}
+
+.expenseList {
+  margin-bottom: 20px;
+}
+
+/* 지출 내역 */
+.categoryImg {
+  width: 1.30rem;
+  height: 1.30rem;
+  margin-right: 5px; 
+}
+
+.expenseItem {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.expense_info {
+  display: grid;
+  grid-template-areas:
+    "title curUnit amount expenseImg"
+    "type type type type"             ;
+  grid-template-columns: 95px auto auto 20px;
+  grid-template-rows: auto auto;
+  flex-grow: 1;
+}
+
+.expense_title{
+  grid-area: title;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expense_info > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.expense_curunit{
+  grid-area: curUnit;
+  font-size: 0.7rem;
+  margin-left: -18px;
+}
+
+.expense_amount{
+  grid-area: amount;
+  font-size: 0.7rem;
+  margin-left: -4px;
+  text-align: left;
+}
+
+.noExpenses{
+  font-size: 0.8rem;
+}
+
+.expenseImg {
+  grid-area: expenseImg;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: -3px;
+  background-color: var(--gray-color);
+}
+
+/* 개인경비 || 공용경비 */
+.type {
+  grid-area: type;
+  font-size: 0.60rem;
+  margin-top: 2px;
+  color: rgba(128, 128, 128, 0.745);
+  text-align: left;
+}
+
+
+/* Footer */
+
+.schedule_detail_modalFooter {
+  border-top: 1px solid var(--text-color);
+  padding-top: 10px;
+}
+
+.total_cost_container {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.total_cost_text {
+  font-size: 1rem;
+}
+
+.total_cost_amount {
+  font-size: 1rem;
+  color: #4C66F8;
+}
+
+.schedule_detail_Buttons_container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  &:hover{
+    color: var(--main-color);
+    text-decoration: underline;
+  }
+}
+
+/* ***************************   반응형 ************************************* */
+@media screen and (max-width: 530px) {
+  
+  .my_calendar_container {
+    display: grid;
+    grid-template-rows: 1fr; /* 기본 상태에서는 하나의 행 */
+    gap: 10px;
+    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
+    transition: grid-template-rows 0.3s ease; 
+  }
+  
+  /* 부모 그리드 컨테이너의 행에 직접 포함 */
+  .schedule_calendar_container {
+    display: contents; 
+  }
+
+  .calendar_container {
+    overflow: auto; /* 내용이 넘칠 때 숨기도록 설정 */
+  }
+
+  .detail_container {
+    max-width: 100%;
+  }
+
+  .show_popup .my_calendar_container {
+    grid-template-rows: 1fr 2fr;
+  }
+
+  .show_popup .calendar_container {
+    height: auto; /* 높이 비율 조정 */
+  }
+
+  .show_popup .detail_container {
+    height: auto;
+  }
+
+  /*************** 팝업 내에서 가로 배치 설정 ***************/
+  .schedule_detail_container {
+   width: 100%;
+   padding: 10px;
+  }
+
+  .schedule_detail_content_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 두 개의 열로 설정 */
+    grid-template-rows: auto auto auto auto;                  
+    gap: 10px;
+  }
+
+  .schedule_detail_header_container {
+    grid-column: 1 / -1; /* 그리드의 전체 열을 차지 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .schedule_detail_modalImage {
+    grid-row: 2 / 4;
+    grid-column: 1 / 2;
+    width: 250px;
+    max-width: 100%;
+    height: 100%;
+    max-height: 300px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .schedule_detail_filter_buttons_container {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    display: flex;
+    align-items: center;
+  }
+
+  .expenseList {
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .schedule_detail_modalFooter {
+    grid-column: 1 / -1; /* 그리드의 전체 열을 차지 */
+    display: flex;
+    justify-content: space-between;
+  }
+ 
+}

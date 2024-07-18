@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import styles from "../styles/components/AddExpense.module.css";
-import Swal from "sweetalert2";
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
 import {
   ModalOverlay,
   Modal,
@@ -10,22 +8,24 @@ import {
   Button,
   Input,
   ErrorMessage,
-} from "../styles/StyledComponents";
-import { useTheme } from "../styles/Theme";
-import { selectStyles } from "../util/CustomStyles";
+} from '../styles/StyledComponents';
+import { useTheme } from '../styles/Theme';
+import { handleNoImage } from '../util/swalUtils';
+import styles from '../styles/components/AddExpense.module.css';
+import { selectStyles } from '../util/CustomStyles';
 
 const categories = [
-  { name: "TRANSPORTATION", label: "교통" },
-  { name: "FOOD", label: "식비" },
-  { name: "TOURISM", label: "관광" },
-  { name: "ACCOMMODATION", label: "숙박" },
-  { name: "SHOPPING", label: "쇼핑" },
-  { name: "OTHERS", label: "기타" },
+  { name: 'TRANSPORTATION', label: '교통' },
+  { name: 'FOOD', label: '식비' },
+  { name: 'TOURISM', label: '관광' },
+  { name: 'ACCOMMODATION', label: '숙박' },
+  { name: 'SHOPPING', label: '쇼핑' },
+  { name: 'OTHERS', label: '기타' },
 ];
 
 const paymentMethod = [
-  { name: "CASH", label: "현금" },
-  { name: "CARD", label: "카드" },
+  { name: 'CASH', label: '현금' },
+  { name: 'CARD', label: '카드' },
 ];
 
 // 중복 통화 제거
@@ -39,15 +39,15 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
 
   const [newExpense, setNewExpense] = useState({
     expense: {
-      title: "",
-      category: "OTHERS",
+      title: '',
+      category: 'OTHERS',
       isShared: false,
-      paymentMethod: "CASH",
-      curUnit: uniqueCurrencies[0]?.value || "",
-      amount: "",
-      expenseDate: "",
-      expenseTime: "",
-      memo: "",
+      paymentMethod: 'CASH',
+      curUnit: uniqueCurrencies[0]?.value || '',
+      amount: '',
+      expenseDate: '',
+      expenseTime: '',
+      memo: '',
     },
     newImg: null,
     previewImg: null,
@@ -55,10 +55,10 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   });
 
   const [errors, setErrors] = useState({
-    title: "",
-    expenseDate: "",
-    expenseTime: "",
-    amount: "",
+    title: '',
+    expenseDate: '',
+    expenseTime: '',
+    amount: '',
   });
 
   const handleChange = (e) => {
@@ -70,7 +70,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   };
 
   const handleImageClick = () => {
-    document.getElementById("fileInput").click();
+    document.getElementById('fileInput').click();
   };
 
   const handleNewImg = (e) => {
@@ -80,13 +80,8 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     }
 
     const file = e.target.files[0];
-    if (!file.type.startsWith("image/")) {
-      Swal.fire({
-        title: "이미지 파일 아님",
-        text: "이미지 파일만 업로드 가능합니다",
-        icon: "error",
-        confirmButtonColor: "#2a52be",
-      });
+    if (!file.type.startsWith('image/')) {
+      handleNoImage();
       return;
     }
 
@@ -117,14 +112,14 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const getCategoryImage = (category) => {
     const isSelected = newExpense.expense.category === category;
     const suffix =
-      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
+      theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
     return `/images/account/category/${category.toLowerCase()}${suffix}.png`;
   };
 
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
     const suffix =
-      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
+      theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
     return `/images/account/${method.toLowerCase()}${suffix}.png`;
   };
 
@@ -132,10 +127,10 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     const { title, expenseDate, expenseTime, amount } = newExpense.expense;
     const newErrors = {};
 
-    if (!title) newErrors.title = "항목명을 입력해 주세요.";
-    if (!expenseDate) newErrors.expenseDate = "날짜를 선택해 주세요.";
-    if (!expenseTime) newErrors.expenseTime = "시간을 선택해 주세요.";
-    if (!amount) newErrors.amount = "금액을 입력해 주세요.";
+    if (!title) newErrors.title = '항목명을 입력해 주세요.';
+    if (!expenseDate) newErrors.expenseDate = '날짜를 선택해 주세요.';
+    if (!expenseTime) newErrors.expenseTime = '시간을 선택해 주세요.';
+    if (!amount) newErrors.amount = '금액을 입력해 주세요.';
 
     setErrors(newErrors);
 
@@ -148,6 +143,8 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     }
 
     const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`;
+    console.log(combinedDateTime);
+    console.log(newExpense.expense.expenseTime);
     const { expenseTime, amount, ...expenseDataWithoutTime } =
       newExpense.expense;
     const expenseData = {
@@ -156,11 +153,13 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
       expenseDate: combinedDateTime,
       accountBookId: accountBook.id,
     };
+    console.log(expenseData);
     const formData = new FormData();
-    formData.append("expenseInfo", JSON.stringify(expenseData));
+    formData.append('expenseInfo', JSON.stringify(expenseData));
     if (newExpense.newImg) {
-      formData.append("img", newExpense.newImg);
+      formData.append('img', newExpense.newImg);
     }
+    console.log(formData.get('expenseInfo'));
     onSubmit(formData);
     onClose();
   };
@@ -298,7 +297,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                       options={uniqueCurrencies}
                       styles={selectStyles}
                       isSearchable={false}
-                      noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
+                      noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
                     />
                   </div>
                 </div>

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import styles from '../../../styles/member/password/UpdatePasswordPage.module.css';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { updatePassword } from '../../../api/memberApi';
-import { handleSuccessLogout } from '../../../util/logoutUtils';
+import {
+  handleProblemSubject,
+  handleSuccessLogout,
+} from '../../../util/swalUtils';
 import Swal from 'sweetalert2';
 import { Button, ErrorMessage, Input } from '../../../styles/StyledComponents';
 
@@ -88,12 +91,7 @@ const UpdatePasswordPage = () => {
             confirmButtonColor: '#2a52be',
           });
         } else {
-          Swal.fire({
-            title: '비밀번호 변경 실패',
-            text: '비밀번호 변경 중 문제가 발생했습니다.',
-            icon: 'error',
-            confirmButtonColor: '#4568DC',
-          });
+          handleProblemSubject('비밀번호 변경');
         }
       }
     } else {
