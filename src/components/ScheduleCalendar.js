@@ -133,17 +133,16 @@ const ScheduleCalendar = ({
     });
   };
 
+
   //이벤트를 애니메이션으로 보여줌
   useEffect(() => {
     const cells = document.querySelectorAll(`.${styles.cellWithEvent}`);
     cells.forEach((cell, index) => {
       setTimeout(() => {
         cell.classList.add(styles.animate);
-      }, 100 * index); 
-      // 각 셀에 약간의 지연을 추가하여 애니메이션이 동시에 시작되지 않도록 
+      }); 
     });
   }, [events, dailyExpenses, currentMonth]);
-
 
 
   //년 월
@@ -242,18 +241,20 @@ const ScheduleCalendar = ({
             }
           >
             <span className={styles.number}>{formattedDate}</span>
+            <div className={styles.eventTitleContainer}>
             {eventsForDay.map((event, idx) =>
               isSameDay(event.start, cloneDay) ? (
-                <div key={event.title} className={styles.event}>
+                <div key={event.title} className={styles.eventTitle}>
                   {event.title}
                 </div>
               ) : null
             )}
             {totalExpense !== 0 && (
               <div className={styles.cell_total_amount}>
-                ₩{formatNumberWithCommas(totalExpense.toFixed(0))}
+                ₩ {formatNumberWithCommas(totalExpense.toFixed(0))}
               </div>
             )}
+            </div>
           </div>
         );
         day = addDays(day, 1);

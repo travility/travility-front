@@ -134,13 +134,6 @@
 }
 
 /* 달력의 cell */
-.number {
-  position: relative;
-  font-size: 0.8rem;
-  font-weight: 600;
-  z-index: 2;
-}
-
 .cell {
   display: flex;
   flex-direction: column;
@@ -159,28 +152,34 @@
   border: 1px solid #E7EEF8;
 }
 
-.cell_total_amount {
-  font-size: 0.7rem;
-  font-weight: 500;
-  color: var(--text-color);
-  margin-top: auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: auto;
+.number {
+  position: relative;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+  margin-right: 5px;
 }
 
-.event {
-  position: relative;
+.eventTitle {
+  position: absolute;
   z-index: 3;
-  margin-top: auto;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 550;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-  margin: 0;
+  top:1.8rem;
+}
+
+.cell_total_amount {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: auto;
 }
 
 .cellWithEvent{
@@ -197,11 +196,14 @@
   top: 1.7rem;
   left: 0;
   z-index: 1;
-  transition: width 0.1s ease-in-out; /* 애니메이션 설정 */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out; /* 애니메이션 설정 */
+  margin-top: 2px;
 }
 
 .cellWithEvent.animate::after {
   width: 100%;
+  opacity: 1;
 }
 
 /* 요소들의 순서를 정의 */
@@ -209,12 +211,15 @@
   order: 1;
 }
 
-.cell > .cellWithEvent {
+.cell > .eventTitleContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   order: 2;
-  position: relative;
+  margin-top: auto;
 }
 
-.cell > .event {
+.cell > .eventTitle {
   order: 3;
 }
 
@@ -232,21 +237,21 @@
 /* 오늘 날짜 표시 */
 .selected {
   position: relative; 
+ 
 }
 
 /* today 꾸미기 투꾸 */
 .selected::before{
   content: '🐷';
-  display: block;
+  display: inline-block;
   width: 10px;
   height: 10px;
   background-color: transparent; 
   border-radius: 0;
   position: absolute;
-  top: 30%;
-  left: 9%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  top: 0.40rem;
+  left: 1.6rem;
+  z-index: 1000;
 }
 
 
