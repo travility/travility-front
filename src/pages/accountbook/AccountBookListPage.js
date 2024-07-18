@@ -22,7 +22,7 @@ const AccountBookListPage = () => {
       try {
         //const data = await getAccountBooks();
         const data = await getAccountBooks(sort);
-        console.log(data);
+        //console.log(data);
         //console.log(data2);
         if (Array.isArray(data)) {
           setAccountBooks(data);
@@ -89,31 +89,36 @@ const AccountBookListPage = () => {
     <div className={styles.accountBook_list_page}>
       {accountBooks.length > 0 && (
         <>
-          <div className={styles.action_buttons}>
-            <Button className={styles.delete_button} onClick={toggleDeleteMode}>
-              {isDeleteMode ? '취소' : '삭제'}
-            </Button>
-            {isDeleteMode && (
+          <div className={styles.accountBook_list_header}>
+            <div className={styles.action_buttons}>
               <Button
-                className={styles.confirm_delete_button}
-                onClick={handleDeleteBooks}
-                disabled={selectedBooks.length === 0}
+                className={styles.delete_button}
+                onClick={toggleDeleteMode}
               >
-                선택 삭제
+                {isDeleteMode ? '취소' : '삭제'}
               </Button>
-            )}
-          </div>
-          <div>
-            <select
-              className={styles.sorttype}
-              value={sort}
-              onChange={handleSort}
-            >
-              <option value="new">최신순</option>
-              <option value="old">오래된순</option>
-              <option value="highest">높은지출순</option>
-              <option value="lowest">낮은지출순</option>
-            </select>
+              {isDeleteMode && (
+                <Button
+                  className={styles.confirm_delete_button}
+                  onClick={handleDeleteBooks}
+                  disabled={selectedBooks.length === 0}
+                >
+                  선택 삭제
+                </Button>
+              )}
+            </div>
+            <div className={styles.sort_container}>
+              <select
+                className={styles.sortType}
+                value={sort}
+                onChange={handleSort}
+              >
+                <option value="new">최신순</option>
+                <option value="old">오래된순</option>
+                <option value="highest">높은지출순</option>
+                <option value="lowest">낮은지출순</option>
+              </select>
+            </div>
           </div>
         </>
       )}
