@@ -12,7 +12,7 @@ import {
   Input,
 } from "../../../styles/StyledComponents";
 
-const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
+const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [newTripInfo, setNewTripInfo] = useState({
     tripInfo: {
       countryName: accountBook.countryName,
@@ -213,4 +213,4 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   );
 };
 
-export default TripInfo;
+export default UpdateTripInfo;
