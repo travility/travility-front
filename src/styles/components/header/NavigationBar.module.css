@@ -38,15 +38,64 @@
     overflow: hidden;
   }
 
-/* 햄버거바변경 */
-  @media screen and (max-width: 530px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .menuItem {
-      width: 100%;
-      margin: 0.5rem 0;
-    }
+  .hidden {
+    display: none;
   }
+
+  .dropdownItem {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+
+  .dropdownIcon {
+    position: absolute;
+    justify-content: center;
+    margin-top: 1.5px;
+    right: 15px; 
+    font-size: 0.8em;
+    display: none;
+  }
+
+
+
+/* 네비게이션바 반응형 변경: 활성 메뉴 선택시 나머지는 toggle */
+@media screen and (max-width: 530px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menuItem {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .menuItem.active {
+    display: block; /* 활성 메뉴는 항상 표시 */
+  }
+
+  .menuItem:not(.active) {
+    display: none; /* 비활성 메뉴는 숨김 */
+  }
+
+  .menuItem:hover .dropdown,
+  .menuItem.active .dropdown {
+    display: block; /* 반응형일 때만 드롭다운 표시 */
+  }
+
+  .dropdown {
+    display: block; /* 드롭다운 표시 */
+    position: static;
+    background-color: var(--background-color);
+    border: none;
+    width: 100%;
+    transition: height 1s ease;
+  }
+
+  .dropdownIcon {
+    display: inline; /* 반응형일 때만 드롭다운 표시 */
+  }
+
+}
+

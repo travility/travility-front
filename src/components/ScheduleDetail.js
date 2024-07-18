@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Scrollbar } from "react-scrollbars-custom";
 import { formatNumberWithCommas } from "../util/calcUtils";
-import styles from "../styles/components/ScheduleDetail.module.css";
-import { faExchange } from "@fortawesome/free-solid-svg-icons";
+import styles from '../styles/dashboard/MyCalendar.module.css';
+
 
 const categoryLabels = {
   TRANSPORTATION: "교통",
@@ -50,11 +50,6 @@ const ScheduleDetail = ({
     exchangeRates,
   });
 
-  // const categorizedExpenses = expenses.reduce((acc, expense) => {
-  //   const category = expense.category || 'OTHERS';
-  //   if (!acc[category]) acc[category] = [];
-  //   acc[category].push(expense);
-  //   return acc;
 
   useEffect(() => {
     updateFilteredTotalExpense();
@@ -100,6 +95,15 @@ const ScheduleDetail = ({
   const handleGoToAccountBookDetail = () => {
     navigate(`/accountbook/detail/${accountbookId}`);
   };
+
+
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + "...";
+  };
+
 
   return (
     <div className={styles.schedule_detail_container}>
@@ -172,7 +176,7 @@ const ScheduleDetail = ({
                         <div className={styles.expense_info}>
                           <div className={styles.expense_title_container}>
                             <span className={styles.expense_title}>
-                              {expense.title}
+                              { truncateText(expense.title, 5) }
                             </span>
                           </div>
                           <div className={styles.expense_ca_container}>
