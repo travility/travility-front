@@ -2,10 +2,10 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/main/AboutusPage.module.css';
 import Layout from '../../components/header/Layout.js';
-import { TokenStateContext } from '../../App.js';
+import { MemberInfoContext } from '../../App.js';
 
 const AboutUsPage = () => {
-  const { memberInfo } = useContext(TokenStateContext);
+  const { memberInfo } = useContext(MemberInfoContext);
   const navigate = useNavigate();
 
   const handleButtonClick = () => {

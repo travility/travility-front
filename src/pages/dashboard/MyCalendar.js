@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ScheduleCalendar from '../../components/ScheduleCalendar';
-import { fetchEvents, fetchTotalExpenses } from '../../api/scheduleApi'; 
+import { fetchEvents, fetchTotalExpenses } from '../../api/scheduleApi';
 import { parseISO, addDays, format } from 'date-fns';
 import styles from '../../styles/dashboard/MyCalendar.module.css';
 
 const MyCalendar = () => {
   const [events, setEvents] = useState([]);
   const [hasEvent, setHasEvent] = useState({});
-  const [accountBooks, setAccountBooks] = useState([]); 
+  const [accountBooks, setAccountBooks] = useState([]);
   const [dailyExpenses, setDailyExpenses] = useState({});
   const [totalExpenses, setTotalExpenses] = useState({});
   const [exchangeRates, setExchangeRates] = useState({});
@@ -16,7 +16,7 @@ const MyCalendar = () => {
     const fetchData = async () => {
       try {
         const eventsData = await fetchEvents();
-        console.log('Fetched Events:', eventsData); 
+        console.log('Fetched Events:', eventsData);
         const fetchedEvents = eventsData.map((event) => ({
           accountbookId: event.accountbookId,
           title: event.title,
@@ -24,12 +24,12 @@ const MyCalendar = () => {
           end: parseISO(event.end),
           className: styles.additionalEvent,
           countryName: event.countryName,
-          imgName: event.imgName
+          imgName: event.imgName,
         }));
         setEvents(fetchedEvents);
 
         const eventMap = {};
-        fetchedEvents.forEach(event => {
+        fetchedEvents.forEach((event) => {
           let day = new Date(event.start);
           while (day <= new Date(event.end)) {
             const formattedDate = format(day, 'yyyy-MM-dd');
@@ -39,18 +39,20 @@ const MyCalendar = () => {
         });
         setHasEvent(eventMap);
 
-        setAccountBooks(eventsData.map(event => ({
-          id: event.accountbookId,
-          imgName: event.imgName
-        })));
+        setAccountBooks(
+          eventsData.map((event) => ({
+            id: event.accountbookId,
+            imgName: event.imgName,
+          }))
+        );
 
         
         const expensesData = {};
         const totalExpensesData = {};
         const allExchangeRates = {};
 
-        const expensesPromises = eventsData.map(event =>
-          fetchTotalExpenses(event.accountbookId).then(totalExpenses => {
+        const expensesPromises = eventsData.map((event) =>
+          fetchTotalExpenses(event.accountbookId).then((totalExpenses) => {
             const { expenses, exchangeRates } = totalExpenses;
             
             // 환율 정보를 병합
@@ -59,7 +61,8 @@ const MyCalendar = () => {
             // 일별 지출 금액 계산
             expenses.forEach(expense => {
               const date = format(parseISO(expense.expenseDate), 'yyyy-MM-dd');
-              const amountInKRW = expense.amount * (exchangeRates[expense.curUnit] || 1);
+              const amountInKRW =
+                expense.amount * (exchangeRates[expense.curUnit] || 1);
               if (!expensesData[date]) {
                 expensesData[date] = 0;
               }
@@ -83,7 +86,10 @@ const MyCalendar = () => {
        console.log('Total Expenses:', totalExpensesData);
 
       } catch (error) {
-        console.error('가계부 데이터를 가져오는 중 오류가 발생했습니다:', error);
+        console.error(
+          '가계부 데이터를 가져오는 중 오류가 발생했습니다:',
+          error
+        );
       }
     };
 
@@ -95,10 +101,10 @@ const MyCalendar = () => {
           <ScheduleCalendar 
             events={events} 
             hasEvent={hasEvent}
-            accountBooks={accountBooks} 
+            accountBooks={accountBooks}
             dailyExpenses={dailyExpenses}
             totalExpenses={totalExpenses}
-            exchangeRates={exchangeRates}  
+            exchangeRates={exchangeRates}
           />
     </div> 
   );

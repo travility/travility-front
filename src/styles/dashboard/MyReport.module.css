@@ -1,81 +1,88 @@
-.header {
+.myReport {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: end;
+  justify-content: center;
 }
 
-.header .currency_label {
+.myReport_content {
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  margin-bottom: 1rem;
+}
+
+/* .header_title {
+  color: var(--main-color);
+} */
+
+.header_currencyLabel {
+  display: flex;
   font-size: 0.8rem;
   font-weight: 500;
+  color: var(--gray-color);
+}
+
+.currencyLabel_icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 0.3rem;
+}
+
+.currencyUnit {
   color: var(--text-color);
 }
 
-.header h2 {
-  color: var(--main-color);
-}
-
-.chart_section {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1fr;
-  grid-template-rows: 1fr 2fr;
-  gap: 2rem 1rem;
-  align-items: center;
-  justify-items: center;
-}
-
-.summary {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-  margin-right: 2rem;
-}
-
-.doughnutChart {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-  height: 100%;
-}
-
-.barChart_paymentMethod {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
+.header_totalAmount {
   display: flex;
-  align-items: center;
-  justify-items: center;
-  width: 100%;
-  padding: 0.8rem;
-  background-color: var(--light-color);
-  border-radius: 1rem;
-}
-
-.barChart_paymentMethod span {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-right: 1rem;
-}
-
-.barChart {
-  background-color: var(--background-color);
-  border-radius: 1rem;
-  padding: 0.5rem;
-  width: 80% !important;
-  height: 100%;
-}
-
-.total_expenses {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
-  align-self: end;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  background-color: var(--light-color);
-  padding: 0.5rem;
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  margin-bottom: 0.5rem;
   border-radius: 0.5rem;
+  color: var(--gray-color);
+  font-size: 0.8rem;
 }
 
-.total_amount {
+.totalAmount_icon {
+  width: 1.3rem;
+  margin-right: 0.1rem;
+}
+
+.totalAmount_title {
+  margin-right: 0.1rem;
+}
+
+.totalAmount_amount {
+  color: var(--text-color);
+  /* font-size: 1rem; */
+  text-overflow: ellipsis;
+}
+
+/* .header_totalAmount span {
+  display: none;
+}
+
+.header_totalAmount:hover span {
+  display: inline;
+  position: absolute;
+  top: 100%;
+  right: 30%;
+  background: var(--main-color);
+  color: white;
+  padding: 5px;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px var(--shadow-color);
+  width: 50%;
+} */
+
+/* .totalExpenses_amount {
   background-color: var(--background-color);
   border-radius: 0.5rem;
   padding: 1rem 0;
@@ -86,47 +93,92 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+} */
+
+.charts {
+  flex-direction: column;
+  display: flex;
+  gap: 2rem 1rem;
+  align-items: center;
+  justify-items: center;
 }
 
-.barChart_expense {
-  grid-column: 2 / 4;
-  grid-row: 2 / 3;
+.charts_summary {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.description {
+  line-height: 1.5;
+}
+
+.description_userName {
+  color: var(--main-color);
+  padding: 0.1rem;
+  border-bottom: 1px solid var(--main-color);
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.description_highlightCategory {
+  color: var(--point-color);
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.description_highlightPaymentMethod {
+  color: var(--point-color);
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.charts_category {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
   height: 100%;
 }
 
-.total_expenses span{
-  color: var(--text-color);
-  font-weight: 700;
+.category_title,
+.paymentMethod_title {
+  font-weight: 500;
 }
 
-.summary p {
-  font-size: 1em; 
-  font-weight: 700; 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.chartType {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.highlight_userName {
-  color: var(--pointor-color);
-  font-weight: 700;
-  font-size: 1.5em; 
+.chartType_doughnut,
+.chartType_bar {
+  width: 100%;
+  height: 250px;
 }
 
-.highlight_category {
-  color: green;
-  font-weight: 700;
-  font-size: 1.5em; 
+.doughnutChart,
+.barChart,
+.barChart2 {
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.highlight_paymentMethod {
-  color: blue;
-  font-weight: 700;
-  font-size: 1.5em; 
+.charts_paymentMethod {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
 }
 
-.no_account_book {
+.paymentMethod_chart {
+  width: 100%;
+  height: 100px;
+}
+
+.noAccountBook {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -140,8 +192,26 @@
   background-color: var(--light-color);
 }
 
-.no_account_book_icon {
+.noAccountBook_icon {
   font-size: 3rem;
   margin-bottom: 20px;
   color: var(--second-color);
+}
+
+@media (max-width: 768px) {
+  .charts_category {
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .chartType {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .chartType_doughnut,
+  .chartType_bar {
+    height: 200px; /* Adjust this height based on your needs */
+  }
 }

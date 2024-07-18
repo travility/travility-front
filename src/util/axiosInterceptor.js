@@ -4,7 +4,7 @@ import { saveToken } from './tokenUtils';
 import {
   handleAlreadyLoggedOut,
   handleTokenExpirationLogout,
-} from './logoutUtils';
+} from './swalUtils';
 
 const API_SERVER_HOST = 'http://localhost:8080/api';
 

@@ -15,11 +15,6 @@ export const removeToken = () => {
   localStorage.removeItem('Authorization');
 };
 
-//토큰 추출
-export const getToken = () => {
-  return localStorage.getItem('Authorization');
-};
-
 //토큰 유효성 검사
 export const validateToken = () => {
   if (isTokenPresent()) {
