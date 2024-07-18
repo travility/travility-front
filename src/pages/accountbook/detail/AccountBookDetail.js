@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   getAccountBookById,
   updateAccountBook,
@@ -17,13 +17,13 @@ import { addExpense } from "../../../api/expenseApi";
 import {
   handleSuccessSubject,
   handleFailureSubject,
-} from "../../../util/logoutUtils";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+} from '../../../util/swalUtils';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 
 const AccountBookDetail = () => {
   const { id } = useParams();
   const [accountBook, setAccountBook] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("all");
+  const [selectedDate, setSelectedDate] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
@@ -64,17 +64,17 @@ const AccountBookDetail = () => {
 
   const handleDateChange = (selectedDate) => setSelectedDate(selectedDate);
 
-  const handleShowAll = () => setSelectedDate("all");
+  const handleShowAll = () => setSelectedDate('all');
 
-  const handleShowPreparation = () => setSelectedDate("preparation");
+  const handleShowPreparation = () => setSelectedDate('preparation');
 
   const handleBudgetSubmit = async (budgets) => {
     try {
       await addBudgets(accountBook.id, budgets);
-      handleSuccessSubject("예산", "수정");
+      handleSuccessSubject('예산', '수정');
     } catch (error) {
-      console.error("Error updating budgets:", error);
-      handleFailureSubject("예산", "수정");
+      console.error('Error updating budgets:', error);
+      handleFailureSubject('예산', '수정');
     } finally {
       setIsBudgetModalOpen(false);
     }
@@ -83,10 +83,10 @@ const AccountBookDetail = () => {
   const handleExpenseSubmit = async (expense) => {
     try {
       await addExpense(expense);
-      handleSuccessSubject("지출", "추가");
+      handleSuccessSubject('지출', '추가');
     } catch (error) {
-      console.error("Error:", error);
-      handleFailureSubject("지출", "추가");
+      console.error('Error:', error);
+      handleFailureSubject('지출', '추가');
     } finally {
       setIsExpenseModalOpen(false);
     }
@@ -95,10 +95,10 @@ const AccountBookDetail = () => {
   const handleAccountBookSubmit = async (tripInfo) => {
     try {
       await updateAccountBook(accountBook.id, tripInfo);
-      handleSuccessSubject("가계부", "수정");
+      handleSuccessSubject('가계부', '수정');
     } catch (error) {
-      console.error("Error updating AccountBook: ", error);
-      handleFailureSubject("가계부", "수정");
+      console.error('Error updating AccountBook: ', error);
+      handleFailureSubject('가계부', '수정');
     } finally {
       setIsTripInfoModalOpen(false);
     }

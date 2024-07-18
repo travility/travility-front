@@ -17,17 +17,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
   text-align: center;
-  color: #666;
+  color: var(--text-color);
   font-size: 1.2rem;
-  padding: 20px;
-  border-radius: 10px;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: var(--light-color);
 }
 
 .no_memberList_icon {
   font-size: 3rem;
   margin-bottom: 20px;
-  color: #ccc;
+  color: var(--second-color);
 }
 
 .header {
@@ -39,7 +41,7 @@
 .title {
   font-size: 130%;
   font-weight: bold;
-  color: #657df9;
+  color: var(--main-color);
 }
 
 .statistics {
@@ -49,7 +51,7 @@
 
 .statistics span {
   font-weight: bold;
-  color: #657df9;
+  color: var(--main-color);
 }
 
 .memberList_container {
@@ -74,12 +76,12 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px var(--shadow-color);
 }
 
 .memberList th,
 .memberList td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--line-color);
   padding: 1% 1%;
   font-size: 70%;
   text-align: center;
@@ -89,9 +91,9 @@
 }
 
 .memberList th {
-  background-color: #f4f4f4;
+  background-color: var(--main-color);
   font-weight: bold;
-  color: #2c3e50;
+  color: white;
 }
 
 .memberList th:first-child {
@@ -110,12 +112,8 @@
   width: 10%;
 }
 
-.memberList tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
 .memberList tr:hover {
-  background-color: #f1f1f1;
+  background-color: #bfc9ff;
 }
 
 .img_socialtype {
@@ -124,7 +122,7 @@
 }
 
 .delete_icon {
-  color: #ccc;
+  color: var(--line-color);
   font-size: 120%;
   cursor: pointer;
 }
@@ -139,7 +137,7 @@
 
 .prev_button,
 .next_button {
-  color: white;
+  color: var(--background-color);
   background-color: #657df9;
 }
 
@@ -153,7 +151,7 @@
 .pagination .activePage {
   transition: background-color 0.3s ease;
   font-weight: bold;
-  color: white;
+  color: var(--background-color);
   background-color: #bfc9ff; /* 진하게 표시할 배경색 */
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   format,
   addMonths,
@@ -11,33 +11,27 @@ import {
   isSameMonth,
   isSameDay,
   setYear,
-} from "date-fns";
-import ScheduleDetail from "../components/ScheduleDetail";
-import {
-  fetchDailyExpenses,
-  fetchAllExpensesByAccountbookId,
-  fetchTotalExpenses,
-} from "../api/scheduleApi";
-import { formatNumberWithCommas, formatDate } from "../util/calcUtils";
-import styles from "../styles/components/ScheduleCalendar.module.css";
+} from 'date-fns';
+import ScheduleDetail from '../components/ScheduleDetail';
+import { fetchDailyExpenses, fetchAllExpensesByAccountbookId, fetchTotalExpenses } from '../api/scheduleApi'; 
+import { formatNumberWithCommas, formatDate } from '../util/calcUtils';
+import styles from '../styles/dashboard/MyCalendar.module.css';
 
 const ScheduleCalendar = ({
-  onDateClick,
-  events,
-  hasEvent,
-  accountBooks,
-  dailyExpenses,
+  onDateClick, 
+  events, 
+  hasEvent, 
+  accountBooks, 
+  dailyExpenses, 
   totalExpenses,
   exchangeRates,
 }) => {
+
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const currentYear = currentMonth.getFullYear();
+  const currentYear = currentMonth.getFullYear(); 
   const [startYear, setStartYear] = useState(currentYear - 20); //현재 년도 -20 부터
   const [endYear, setEndYear] = useState(currentYear + 1); //현재 년도 +20 까지만 로딩함
-  const years = Array.from(
-    { length: endYear - startYear + 1 },
-    (_, i) => startYear + i
-  ); //배열에 담아서 사용
+  const years = Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i); //배열에 담아서 사용
 
   //연도 변경
   const handleYearChange = (event) => {
@@ -56,16 +50,16 @@ const ScheduleCalendar = ({
   };
 
   //모달로 넘길 정보
-  const [popupInfo, setPopupInfo] = useState({
-    show: false,
-    date: null,
-    accountbookId: null,
+  const [popupInfo, setPopupInfo] = useState({ 
+    show: false, 
+    date: null, 
+    accountbookId: null, 
     expenses: [],
     curUnit: "",
     countryName: "",
     imgName: "",
     totalExpense: 0,
-    exchangeRates: {},
+    exchangeRates: {}
   });
 
   //날짜 클릭 시 동작
@@ -85,6 +79,7 @@ const ScheduleCalendar = ({
         (event.start <= date && event.end >= date)
     );
 
+
     if (eventsForDate.length === 0) {
       console.log("이 날짜에 이벤트가 없습니다.");
       return;
@@ -94,20 +89,19 @@ const ScheduleCalendar = ({
     const totalExpensesData = await fetchTotalExpenses(accountbookId);
     const { totalAmount, exchangeRates } = totalExpensesData;
 
-    console.log("Account Book ID:", accountbookId);
+    console.log("Account Book ID:", accountbookId); 
     console.log("Country Name:", countryName);
-    console.log("Image Name:", imgName);
+    console.log("Image Name:", imgName); 
 
     try {
       const expenses = await fetchAllExpensesByAccountbookId(accountbookId);
       console.log(`특정 날짜별 모든 지출 정보 ${formattedDate}:`, expenses);
 
-      const expensesForDate = expenses.filter(
-        (expense) => formatDate(expense.expenseDate) === formattedDate
+      const expensesForDate = expenses.filter(expense => 
+        formatDate(expense.expenseDate) === formattedDate
       );
 
-      const curUnit =
-        expensesForDate.length > 0 ? expensesForDate[0].curUnit : "";
+      const curUnit = expensesForDate.length > 0 ? expensesForDate[0].curUnit : "";
       const totalExpense = totalExpenses[accountbookId] || 0;
 
       setPopupInfo({
@@ -130,7 +124,7 @@ const ScheduleCalendar = ({
     setPopupInfo({
       show: false,
       date: null,
-      accountbookId: null,
+      accountbookId: null, 
       expenses: [],
       countryName: "",
       imgName: "",
@@ -139,21 +133,31 @@ const ScheduleCalendar = ({
     });
   };
 
+  //이벤트를 애니메이션으로 보여줌
+  useEffect(() => {
+    const cells = document.querySelectorAll(`.${styles.cellWithEvent}`);
+    cells.forEach((cell, index) => {
+      setTimeout(() => {
+        cell.classList.add(styles.animate);
+      }, 100 * index); 
+      // 각 셀에 약간의 지연을 추가하여 애니메이션이 동시에 시작되지 않도록 
+    });
+  }, [events, dailyExpenses, currentMonth]);
+
+
+
   //년 월
   const renderHeader = () => {
     return (
       <div className={styles.header}>
-        <button
-          className={styles.navButton}
-          onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-        >
+        <button className={styles.navButton} onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
           {"<"}
         </button>
         <div className={styles.centerSection}>
           {format(currentMonth, "MMM")}{" "}
-          <select
-            className={styles.yearSelect}
-            value={currentYear}
+          <select 
+            className={styles.yearSelect} 
+            value={currentYear} 
             onChange={handleYearChange}
           >
             {years.map((year) => (
@@ -167,10 +171,7 @@ const ScheduleCalendar = ({
           <button className={styles.todayButton} onClick={goToToday}>
             today
           </button>
-          <button
-            className={styles.navButton}
-            onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-          >
+          <button className={styles.navButton} onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
             {">"}
           </button>
         </div>
@@ -210,22 +211,23 @@ const ScheduleCalendar = ({
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
         const eventsForDay = events.filter((event) =>
-          isSameDay(event.start, cloneDay)
+          isSameDay(event.start, cloneDay) || (event.start <= cloneDay && event.end >= cloneDay)
         );
         const cellDate = format(day, "yyyy-MM-dd");
-        // 해당 날짜의 총 지출 금액 가져오기
         const totalExpense = dailyExpenses[cellDate] || 0;
+        // 해당 날짜의 총 지출 금액 가져오기
+        const hasEvent = eventsForDay.length > 0;
 
         days.push(
           <div
             className={`${styles.cell} ${
               !isSameMonth(day, monthStart)
                 ? styles.disabled
-                : isSameDay(day, new Date()) && hasEvent[cellDate]
+                : isSameDay(day, new Date()) && hasEvent
                 ? `${styles.selected} ${styles.cellWithEvent}`
                 : isSameDay(day, new Date())
                 ? styles.selected
-                : hasEvent[cellDate]
+                : hasEvent
                 ? styles.cellWithEvent
                 : ""
             }`}
@@ -240,11 +242,13 @@ const ScheduleCalendar = ({
             }
           >
             <span className={styles.number}>{formattedDate}</span>
-            {eventsForDay.map((event) => (
-              <div key={event.title} className={styles.event}>
-                {event.title}
-              </div>
-            ))}
+            {eventsForDay.map((event, idx) =>
+              isSameDay(event.start, cloneDay) ? (
+                <div key={event.title} className={styles.event}>
+                  {event.title}
+                </div>
+              ) : null
+            )}
             {totalExpense !== 0 && (
               <div className={styles.cell_total_amount}>
                 ₩{formatNumberWithCommas(totalExpense.toFixed(0))}
@@ -265,29 +269,29 @@ const ScheduleCalendar = ({
   };
 
   return (
-    <div
-      className={`${styles.calendar_container} ${
-        popupInfo.show ? styles.show_popup : ""
-      }`}
+    <div className={
+      `${styles.schedule_calendar_container} 
+       ${popupInfo.show ? styles.show_popup : ''}
+       `}
     >
-      <div className={styles.calendar}>
+      <div className={styles.calendar_container}>
         {renderHeader()}
         {renderDays()}
         {renderCells()}
       </div>
       {popupInfo.show && (
-        <div className={styles.schedule_detail_container}>
-          <ScheduleDetail
+        <div className={styles.detail_container}>
+          <ScheduleDetail 
             countryName={popupInfo.countryName}
-            date={popupInfo.date}
+            date={popupInfo.date} 
             imgName={popupInfo.imgName}
             expenses={popupInfo.expenses}
             curUnit={popupInfo.curUnit}
             totalExpense={popupInfo.totalExpense}
-            onClose={handleClosePopup}
             accountBooks={accountBooks}
             accountbookId={popupInfo.accountbookId}
             exchangeRates={popupInfo.exchangeRates}
+            onClose={handleClosePopup}
           />
         </div>
       )}
