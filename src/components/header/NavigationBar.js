@@ -6,11 +6,10 @@ import { TokenStateContext } from '../../App';
 const NavigationBar = () => {
   const { memberInfo } = useContext(TokenStateContext);
   const [activeMenu, setActiveMenu] = useState(null);
-  const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const usersMenus = [
     { name: '가계부 홈', path: '/main' },
@@ -46,14 +45,19 @@ const NavigationBar = () => {
   }
 
   const handleMenuClick = (path) => {
-    setActiveMenu(path);
-    navigate(path);
-    setMenuOpen(false);
+    if (window.innerWidth <= 530) {
+      setIsDropdownVisible(!isDropdownVisible);
+    } else {
+      setActiveMenu(path);
+      navigate(path);
+    }
   };
 
-  const handleToggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  }
+  const handleDropdownItemClick = (path) => {
+    setActiveMenu(path);
+    setIsDropdownVisible(false);
+    navigate(path);
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -62,19 +66,30 @@ const NavigationBar = () => {
           key={index}
           className={`${styles.menuItem} ${
             activeMenu === menu.path ? styles.active : ''
-          } ${hoveredMenu === menu.path ? styles.hovered : ''}
-            ${!menuOpen && activeMenu !== menu.path ?  styles.hidden: ''}
-          `}
-          onClick={() => {
-            handleMenuClick(menu.path)
-            handleToggleMenu();
-          }}
-          onMouseEnter={() => setHoveredMenu(menu.path)}
-          onMouseLeave={() => setHoveredMenu(null)}
+          } ${isDropdownVisible && window.innerWidth <= 530 ? styles.hidden : ''}`}
+          onClick={() => handleMenuClick(menu.path)}
         >
           {menu.name}
+          {activeMenu === menu.path && (
+            <span className={styles.dropdownIcon}>
+              {isDropdownVisible ? '▲' : '▼'}
+            </span>
+          )}
         </div>
       ))}
+      {isDropdownVisible && (
+        <div className={styles.dropdown}>
+          {menus.filter(menu => menu.path !== activeMenu).map((menu, index) => (
+            <div
+              key={index}
+              className={styles.dropdownItem}
+              onClick={() => handleDropdownItemClick(menu.path)}
+            >
+              {menu.name}
+            </div>
+          ))}
+        </div>
+      )}
       <span className={styles.animationEffect}></span>
     </nav>
   );
