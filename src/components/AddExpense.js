@@ -12,6 +12,7 @@ import {
 import { useTheme } from '../styles/Theme';
 import { handleNoImage } from '../util/swalUtils';
 import styles from '../styles/components/AddExpense.module.css';
+import { selectStyles } from '../util/CustomStyles';
 
 const categories = [
   { name: 'TRANSPORTATION', label: '교통' },
@@ -59,47 +60,6 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     expenseTime: '',
     amount: '',
   });
-
-  // React Select 커스텀
-  const customStyles = {
-    control: (base) => ({
-      ...base,
-      backgroundColor: 'var(--background-color)',
-      border: '1px solid var(--line-color)',
-      borderRadius: '0.3rem',
-      width: '5rem',
-      minHeight: '1rem',
-      color: 'var(--text-color)',
-      marginTop: '0.2rem',
-    }),
-    valueContainer: (base) => ({
-      ...base,
-      padding: '0.33rem 0.5rem',
-    }),
-    dropdownIndicator: (base) => ({
-      ...base,
-      padding: '0.33rem',
-    }),
-    option: (base) => ({
-      ...base,
-      display: 'flex',
-      alignItems: 'center',
-      background: 'var(--background-color)',
-      color: 'var(--text-color)',
-      fontSize: '0.7em',
-      ':hover': {
-        background: 'var(--main-color)',
-        color: '#ffffff',
-      },
-    }),
-    singleValue: (base) => ({
-      ...base,
-      display: 'flex',
-      alignItems: 'center',
-      color: 'var(--text-color)',
-      fontSize: '0.7em',
-    }),
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -335,7 +295,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                         }))
                       }
                       options={uniqueCurrencies}
-                      styles={customStyles}
+                      styles={selectStyles}
                       isSearchable={false}
                       noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
                     />

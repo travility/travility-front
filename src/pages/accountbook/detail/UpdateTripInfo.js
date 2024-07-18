@@ -13,7 +13,7 @@ import {
 } from '../../../styles/StyledComponents';
 import { handleNoImage } from '../../../util/swalUtils';
 
-const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
+const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [newTripInfo, setNewTripInfo] = useState({
     tripInfo: {
       countryName: accountBook.countryName,
@@ -209,4 +209,4 @@ const TripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   );
 };
 
-export default TripInfo;
+export default UpdateTripInfo;
