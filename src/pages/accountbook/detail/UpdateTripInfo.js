@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../../../styles/accountbook/UpdateTripInfo.module.css';
 import { formatDate } from '../../../util/calcUtils';
-import Swal from 'sweetalert2';
 import SearchCountry from '../../../components/SearchCountry';
 import {
   ModalOverlay,
@@ -183,7 +182,9 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                       className={styles.upload_image}
                       src={
                         newTripInfo.previewImg ||
-                        `http://localhost:8080/images/${accountBook.imgName}`
+                        (accountBook.imgName === null
+                          ? '/images/dashboard/default_image.png'
+                          : `http://localhost:8080/images/${accountBook.imgName}`)
                       }
                       alt="대표이미지"
                     />
