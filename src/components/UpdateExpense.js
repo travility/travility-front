@@ -77,9 +77,12 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    console.log(isEditable);
-    console.log(expense);
-    console.log(newExpense.expense);
+    // if(!expense.imgName){
+    //   setNewExpense({
+    //     ...newExpense,
+    //     previewImg : '/images/dashboard/default_image.png'
+    //   })
+    // }
   }, [isEditable, expense, newExpense.expense]);
 
   const handleInputChange = (e) => {
@@ -324,7 +327,9 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                       className={styles.upload_image}
                       src={
                         newExpense.previewImg ||
-                        `http://localhost:8080/images/${expense.imgName}`
+                        (expense.imgName === null
+                          ? '/images/dashboard/default_image.png'
+                          : `http://localhost:8080/images/${expense.imgName}`)
                       }
                       alt="대표이미지"
                     />
