@@ -92,7 +92,6 @@ const MyCalendar = () => {
 
   return (
     <div className={styles.my_calendar_container}>
-        <div className={styles.calendar_containter}>
           <ScheduleCalendar 
             events={events} 
             hasEvent={hasEvent}
@@ -101,7 +100,6 @@ const MyCalendar = () => {
             totalExpenses={totalExpenses}
             exchangeRates={exchangeRates}  
           />
-        </div>
     </div> 
   );
 };

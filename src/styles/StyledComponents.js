@@ -37,19 +37,19 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
   }
 
-  @media (max-width: 430px) {
+  @media (max-width: 530px) {
     html {
       font-size: 75%;
     }
   }
 
-  @media (min-width: 431px) and (max-width: 690px) {
+  @media (min-width: 531px) and (max-width: 860px) {
     html {
       font-size: 87.5%;
     }
   }
 
-  @media (min-width: 691px) and (max-width: 1024px) {
+  @media (min-width: 861px) and (max-width: 1024px) {
     html {
       font-size: 100%;
     }
@@ -112,7 +112,11 @@ const Inner = styled.div`
 `;
 
 const Container = styled.div`
-  padding: 2.5rem 4rem;
+  padding: 3rem 4rem;
+
+  @media (max-width: 530px) {
+    padding: 3rem 2.5rem;
+  }
 `;
 
 const Button = styled.button`

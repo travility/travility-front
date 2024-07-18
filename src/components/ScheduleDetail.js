@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Scrollbar } from 'react-scrollbars-custom';
-import { formatNumberWithCommas } from '../util/calcUtils';
-import styles from '../styles/components/ScheduleDetail.module.css';
-import { faExchange } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Scrollbar } from "react-scrollbars-custom";
+import { formatNumberWithCommas } from "../util/calcUtils";
+import styles from "../styles/components/ScheduleDetail.module.css";
+import { faExchange } from "@fortawesome/free-solid-svg-icons";
 
 const categoryLabels = {
-  TRANSPORTATION: '교통',
-  FOOD: '식비',
-  TOURISM: '관광',
-  ACCOMMODATION: '숙박',
-  SHOPPING: '쇼핑',
-  OTHERS: '기타',
+  TRANSPORTATION: "교통",
+  FOOD: "식비",
+  TOURISM: "관광",
+  ACCOMMODATION: "숙박",
+  SHOPPING: "쇼핑",
+  OTHERS: "기타",
 };
 
 const categoryImages = {
-  TRANSPORTATION: 'transportation.png',
-  ACCOMMODATION: 'accommodation.png',
-  FOOD: 'food.png',
-  TOURISM: 'tourism.png',
-  SHOPPING: 'shopping.png',
-  OTHERS: 'others.png',
+  TRANSPORTATION: "transportation.png",
+  ACCOMMODATION: "accommodation.png",
+  FOOD: "food.png",
+  TOURISM: "tourism.png",
+  SHOPPING: "shopping.png",
+  OTHERS: "others.png",
 };
 
 const ScheduleDetail = ({
@@ -34,12 +34,12 @@ const ScheduleDetail = ({
   exchangeRates,
   onClose,
 }) => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState("all");
   const [filteredTotalExpense, setFilteredTotalExpense] =
     useState(totalExpense);
   const navigate = useNavigate();
 
-  console.log('ScheduleDetail Props:', {
+  console.log("ScheduleDetail Props:", {
     accountbookId,
     countryName,
     imgName,
@@ -64,16 +64,16 @@ const ScheduleDetail = ({
     const newFilteredTotalExpense = expenses.reduce((sum, expense) => {
       const amountInKRW =
         expense.amount * (exchangeRates?.[expense.curUnit] || 1);
-      if (filter === 'all') return sum + amountInKRW;
-      if (filter === 'shared' && expense.isShared) return sum + amountInKRW;
-      if (filter === 'personal' && !expense.isShared) return sum + amountInKRW;
+      if (filter === "all") return sum + amountInKRW;
+      if (filter === "shared" && expense.isShared) return sum + amountInKRW;
+      if (filter === "personal" && !expense.isShared) return sum + amountInKRW;
       return sum;
     }, 0);
     setFilteredTotalExpense(newFilteredTotalExpense);
   };
 
   const categorizedExpenses = expenses.reduce((acc, expense) => {
-    const category = expense.category || 'OTHERS';
+    const category = expense.category || "OTHERS";
     if (!acc[category]) acc[category] = [];
     acc[category].push(expense);
     return acc;
@@ -82,9 +82,9 @@ const ScheduleDetail = ({
   const filteredExpenses = Object.keys(categorizedExpenses).reduce(
     (acc, category) => {
       const filtered = categorizedExpenses[category].filter((expense) => {
-        if (filter === 'all') return true;
-        if (filter === 'shared' && expense.isShared) return true;
-        if (filter === 'personal' && !expense.isShared) return true;
+        if (filter === "all") return true;
+        if (filter === "shared" && expense.isShared) return true;
+        if (filter === "personal" && !expense.isShared) return true;
         return false;
       });
 
@@ -118,29 +118,29 @@ const ScheduleDetail = ({
           className={styles.schedule_detail_modalImage}
           style={{
             backgroundImage: `url(http://localhost:8080/images/${imgName})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
         />
         <div className={styles.schedule_detail_filter_buttons_container}>
           <button
-            className={filter === 'all' ? styles.selectedButton : ''}
+            className={filter === "all" ? styles.selectedButton : ""}
             onClick={() => {
-              setFilter('all');
+              setFilter("all");
               setFilteredTotalExpense(totalExpense);
             }}
           >
             모두보기
           </button>
           <button
-            className={filter === 'shared' ? styles.selectedButton : ''}
-            onClick={() => setFilter('shared')}
+            className={filter === "shared" ? styles.selectedButton : ""}
+            onClick={() => setFilter("shared")}
           >
             공동
           </button>
           <button
-            className={filter === 'personal' ? styles.selectedButton : ''}
-            onClick={() => setFilter('personal')}
+            className={filter === "personal" ? styles.selectedButton : ""}
+            onClick={() => setFilter("personal")}
           >
             개인
           </button>
@@ -152,7 +152,7 @@ const ScheduleDetail = ({
           </button>
         </div>
         <Scrollbar
-          style={{ height: '200px' }}
+          style={{ height: "200px" }}
           className={styles.customScrollbar}
         >
           <div className={styles.expenseList}>
@@ -197,9 +197,9 @@ const ScheduleDetail = ({
                             />
                           )}
                           <span className={styles.type}>
-                            {expense.isShared ? '공동경비' : '개인경비'}
+                            {expense.isShared ? "공동경비" : "개인경비"}
                           </span>
-                        </div>{' '}
+                        </div>{" "}
                         {/* info끝 */}
                       </div>
                     );

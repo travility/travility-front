@@ -10,6 +10,8 @@ const NavigationBar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const usersMenus = [
     { name: '가계부 홈', path: '/main' },
     { name: '전체가계부', path: '/accountbook/list' },
@@ -46,7 +48,12 @@ const NavigationBar = () => {
   const handleMenuClick = (path) => {
     setActiveMenu(path);
     navigate(path);
+    setMenuOpen(false);
   };
+
+  const handleToggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  }
 
   return (
     <nav className={styles.navbar}>
@@ -55,8 +62,13 @@ const NavigationBar = () => {
           key={index}
           className={`${styles.menuItem} ${
             activeMenu === menu.path ? styles.active : ''
-          } ${hoveredMenu === menu.path ? styles.hovered : ''}`}
-          onClick={() => handleMenuClick(menu.path)}
+          } ${hoveredMenu === menu.path ? styles.hovered : ''}
+            ${!menuOpen && activeMenu !== menu.path ?  styles.hidden: ''}
+          `}
+          onClick={() => {
+            handleMenuClick(menu.path)
+            handleToggleMenu();
+          }}
           onMouseEnter={() => setHoveredMenu(menu.path)}
           onMouseLeave={() => setHoveredMenu(null)}
         >

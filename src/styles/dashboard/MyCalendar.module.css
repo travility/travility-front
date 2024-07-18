@@ -1,8 +1,7 @@
 
-
 /* ********************   Calendar   ******************************/
 
-.my_calendar_container {
+.schedule_calendar_container {
   background-color: var(--background-color);
   display: grid;
   grid-template-columns: 1fr;
@@ -10,54 +9,20 @@
   height: 100%;
 }
 
-.calendar_container {
-  display: grid;
-  grid-template-rows: 1fr;
-  gap: 10px;
-  width: 100%;
-  height: 100%;
-}
-
  /* 팝업이 나타날 때 두 개의 컬럼 */
-.calendar_container.show_popup {
+ .schedule_calendar_container.show_popup {
   grid-template-columns: 3fr 1fr; 
 }
 
 /* 팝업이 나타날 때 캘린더의 너비를 줄임 */
-.calendar_container.show_popup .calendar{
+.schedule_calendar_container.show_popup .calendar_container{
   width: auto;
 }
 
-/* 작은 화면에서 팝업이 나왔을 때 */
-@media (min-width: 375px) and (max-width: 690px) {
-  .my_calendar_container {
-    grid-template-rows: 1fr;
-    gap: 10px;
-    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
-  }
-
-  .calendar_container.show_popup {
-    grid-template-rows: 1fr 3fr; /* 팝업이 나타날 때 달력과 팝업의 비율 설정 */
-  }
-
-  .detail_container {
-    grid-row: 2 / 3; /* 팝업이 두 번째 행을 차지 */
-    width: 100%;  
-    height: 100%;
-  }
-
-  .calendar_container.show_popup .calendar {
-    grid-row: 1 / 2; /* 달력이 첫 번째 행을 차지 */
-    width: 100%;
-    height: auto; /* 팝업이 나타날 때 달력의 높이를 자동으로 설정 */
-  }
-}
-
-
-.calendar {
+.calendar_container {
   border: 1px solid #e0e0e0;
   border-radius: 30px;
-  padding: 30px; /* 전체 패딩 */
+  padding: 20px; /* 전체 패딩 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-height: auto;
@@ -84,6 +49,7 @@
   border-radius: 6px;
   background-color: var(--backgroung-color);
   color: var(--text-color);
+
   &:hover{
     cursor: pointer;
   }
@@ -190,7 +156,7 @@
   box-sizing: border-box;
   position: relative;
   min-width: 14.28%; /* 7개의 셀을 균등하게 나누기 위해 설정 */
-  border: 1px solid rgb(239, 243, 253);
+  border: 1px solid #E7EEF8;
 }
 
 .cell_total_amount {
@@ -226,7 +192,7 @@
   display: block;
   width: 0; 
   height: 15px;
-  background-color: rgba(56, 200, 171, 0.882);
+  background-color: var(--point-color);
   position: absolute;
   top: 1.7rem;
   left: 0;
@@ -291,15 +257,14 @@
 
 .schedule_detail_container {
   border-radius: 10px;
-  padding: 20px;
-  max-width: 300px;
-  min-width: 300px;
+  padding: 30px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
+  width: auto;
   /* 다크모드 */
   background-color: var(--backgroung-color);
 }
+
 
 .schedule_detail_header_container {
   display: flex;
@@ -371,7 +336,7 @@
 .categoryImg {
   width: 1.30rem;
   height: 1.30rem;
-  margin-right: 10px; 
+  margin-right: 5px; 
 }
 
 .expenseItem {
@@ -402,16 +367,17 @@
   justify-content: space-between;
 }
 
-
 .expense_curunit{
   grid-area: curUnit;
   font-size: 0.7rem;
+  margin-left: -18px;
 }
 
 .expense_amount{
   grid-area: amount;
   font-size: 0.7rem;
-  margin-left: -2px;
+  margin-left: -4px;
+  text-align: left;
 }
 
 .noExpenses{
@@ -478,3 +444,92 @@
   }
 }
 
+/* ***************************   반응형 ************************************* */
+@media screen and (max-width: 530px) {
+  
+  .my_calendar_container {
+    display: grid;
+    grid-template-rows: 1fr; /* 기본 상태에서는 하나의 행 */
+    gap: 10px;
+    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
+    transition: grid-template-rows 0.3s ease; 
+  }
+  
+  /* 부모 그리드 컨테이너의 행에 직접 포함 */
+  .schedule_calendar_container {
+    display: contents; 
+  }
+
+  .calendar_container {
+    overflow: auto; /* 내용이 넘칠 때 숨기도록 설정 */
+  }
+
+  .detail_container {
+    max-width: 100%;
+  }
+
+  .show_popup .my_calendar_container {
+    grid-template-rows: 1fr 2fr;
+  }
+
+  .show_popup .calendar_container {
+    height: auto; /* 높이 비율 조정 */
+  }
+
+  .show_popup .detail_container {
+    height: auto;
+  }
+
+  /*************** 팝업 내에서 가로 배치 설정 ***************/
+  .schedule_detail_container {
+   width: 100%;
+   padding: 10px;
+  }
+
+  .schedule_detail_content_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 두 개의 열로 설정 */
+    grid-template-rows: auto auto auto auto;                  
+    gap: 10px;
+  }
+
+  .schedule_detail_header_container {
+    grid-column: 1 / -1; /* 그리드의 전체 열을 차지 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .schedule_detail_modalImage {
+    grid-row: 2 / 4;
+    grid-column: 1 / 2;
+    width: 250px;
+    max-width: 100%;
+    height: 100%;
+    max-height: 300px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .schedule_detail_filter_buttons_container {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    display: flex;
+    align-items: center;
+  }
+
+  .expenseList {
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .schedule_detail_modalFooter {
+    grid-column: 1 / -1; /* 그리드의 전체 열을 차지 */
+    display: flex;
+    justify-content: space-between;
+  }
+ 
+}
