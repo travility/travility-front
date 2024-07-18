@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   getAccountBookById,
   updateAccountBook,
-} from '../../../api/accountbookApi';
-import AccountBookDate from './AccountBookDate';
-import ExpenseList from './ExpenseList';
-import ExpenseStatistic from '../../../components/statistic/ExpenseStatistic';
+} from "../../../api/accountbookApi";
+import AccountBookDate from "./AccountBookDate";
+import ExpenseList from "./ExpenseList";
 import AccountBookMenu from "./AccountBookMenu";
 import TripInfo from "../../../components/TripInfo";
 import UpdateTripInfo from "./UpdateTripInfo";
 import AddBudget from "../../../components/AddBudget";
 import AddExpense from "../../../components/AddExpense";
+import ExpenseStatistic from "../../../components/statistic/ExpenseStatistic";
 import { addBudgets } from "../../../api/budgetApi";
 import { addExpense } from "../../../api/expenseApi";
 import {
   handleSuccessSubject,
   handleFailureSubject,
 } from "../../../util/logoutUtils";
-import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
+import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 
 const AccountBookDetail = () => {
   const { id } = useParams();
@@ -36,7 +36,6 @@ const AccountBookDetail = () => {
       try {
         const data = await getAccountBookById(id);
         setAccountBook(data);
-        setFilteredExpenses(data.expenses || []); // 기본값으로 빈 배열 설정
       } catch (err) {
         setError(err);
       } finally {
@@ -46,14 +45,6 @@ const AccountBookDetail = () => {
 
     fetchAccountBook();
   }, [id]);
-
-  const handleShowStatistics = () => {
-    setShowStatistics(true);
-  };
-
-  const handleBackToSidebar = () => {
-    setShowStatistics(false);
-  };
 
   const getDateRange = (startDate, endDate) => {
     const dates = [];
@@ -127,26 +118,36 @@ const AccountBookDetail = () => {
 
   return (
     <div className={styles.dashboard}>
-      <div className={styles.sidebar}>
-        <div className={styles.tripInfoAndMenu}>
-          <TripInfo
-            accountBook={accountBook}
-            onClick={() => setIsTripInfoModalOpen(true)}
-          />
-          <AccountBookMenu
-            onBudgetClick={() => setIsBudgetModalOpen(true)}
-            onExpenseClick={() => setIsExpenseModalOpen(true)}
-          />
-        </div>
-        <AccountBookDate
-          accountBook={accountBook}
-          dates={dateList}
-          onDateChange={handleDateChange}
-          onShowAll={handleShowAll}
-          onShowPreparation={handleShowPreparation}
+      {showStatistics ? (
+        <ExpenseStatistic
+          accountBookId={accountBook.id}
+          onBack={() => setShowStatistics(false)}
         />
-      </div>
-      <ExpenseList accountBook={accountBook} selectedDate={selectedDate} />
+      ) : (
+        <>
+          <div className={styles.sidebar}>
+            <div className={styles.tripInfoAndMenu}>
+              <TripInfo
+                accountBook={accountBook}
+                onClick={() => setIsTripInfoModalOpen(true)}
+              />
+              <AccountBookMenu
+                onBudgetClick={() => setIsBudgetModalOpen(true)}
+                onExpenseClick={() => setIsExpenseModalOpen(true)}
+                onShowStatistics={() => setShowStatistics(true)}
+              />
+            </div>
+            <AccountBookDate
+              accountBook={accountBook}
+              dates={dateList}
+              onDateChange={handleDateChange}
+              onShowAll={handleShowAll}
+              onShowPreparation={handleShowPreparation}
+            />
+          </div>
+          <ExpenseList accountBook={accountBook} selectedDate={selectedDate} />
+        </>
+      )}
       {isBudgetModalOpen && (
         <AddBudget
           isOpen={isBudgetModalOpen}
@@ -172,22 +173,6 @@ const AccountBookDetail = () => {
           onSubmit={handleAccountBookSubmit}
           accountBook={accountBook}
         />
-      )}
-      {!showStatistics && (
-        <Sidebar
-          accountBook={accountBook}
-          dates={dateList}
-          onDateChange={handleDateChange}
-          onShowAll={handleShowAll}
-          onShowPreparation={handleShowPreparation}
-          expenses={accountBook.expenses || []}
-          onShowStatistics={handleShowStatistics}
-        />
-      )}
-      {showStatistics ? (
-        <ExpenseStatistic accountBookId={id} onBack={handleBackToSidebar} />
-      ) : (
-        <ExpenseList expenses={filteredExpenses} />
       )}
     </div>
   );
