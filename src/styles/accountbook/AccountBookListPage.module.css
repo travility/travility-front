@@ -9,17 +9,30 @@
   gap: 0.5rem;
 }
 
+.accountBook_list_header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 /*삭제*/
 .action_buttons {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
-  width: 10rem;
+  width: 9rem;
 }
 
 .confirm_delete_button {
   margin-top: 0;
   margin-left: 0.5rem;
+}
+
+.sortType {
+  width: 3.8rem;
+  height: 1.95rem;
+  border: 1px solid var(--line-color);
+  border-radius: 10px;
 }
 
 .select_overlay {
@@ -42,7 +55,7 @@
   border-radius: 1rem;
   background-color: var(--light-color);
 }
-  
+
 .no_account_book_icon {
   font-size: 3rem;
   margin-bottom: 20px;
@@ -53,6 +66,9 @@
 @media (max-width: 860px) {
   .accountBook_list_grid_container {
     grid-template-columns: repeat(3, 1fr);
+  }
+  .sortType {
+    width: 5.3rem;
   }
 }
 
