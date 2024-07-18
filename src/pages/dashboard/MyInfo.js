@@ -1,20 +1,18 @@
 import React, { useContext } from 'react';
 import { useState, useEffect } from 'react';
-// import { getMemberFromSession, deleteMember } from '../../api/memberApi'; // 백엔드 API 호출 부분은 주석처리
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/dashboard/MyInfo.module.css';
 import Swal from 'sweetalert2';
-import { TokenStateContext } from '../../App';
+import { MemberInfoContext } from '../../App';
+import { confirmPassword, deleteMember } from '../../api/memberApi';
 import {
-  confirmPassword,
-  deleteMember,
-  getMemberInfo,
-} from '../../api/memberApi';
-import { handleSuccessLogout } from '../../util/logoutUtils';
+  handleProblemSubject,
+  handleSuccessLogout,
+} from '../../util/swalUtils';
 import { Input } from '../../styles/StyledComponents';
 
 const MyInfo = () => {
-  const { memberInfo } = useContext(TokenStateContext);
+  const { memberInfo } = useContext(MemberInfoContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -59,12 +57,7 @@ const MyInfo = () => {
         })
         .catch((error) => {
           console.log(error);
-          Swal.fire({
-            icon: 'error',
-            title: '탈퇴 실패',
-            text: '회원 탈퇴 중 문제가 발생했습니다. 다시 시도해주세요.',
-            confirmButtonText: '확인',
-          });
+          handleProblemSubject('회원 탈퇴');
         });
     }
   };
@@ -100,10 +93,7 @@ const MyInfo = () => {
         }
       } catch (error) {
         console.log(error);
-        Swal.fire({
-          icon: 'error',
-          text: '비밀번호 확인 중 문제가 생겼습니다.',
-        });
+        handleProblemSubject('비밀번호 확인');
       }
     }
   };

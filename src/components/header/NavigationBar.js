@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/components/header/NavigationBar.module.css';
-import { TokenStateContext } from '../../App';
+import { MemberInfoContext } from '../../App';
 
 const NavigationBar = () => {
-  const { memberInfo } = useContext(TokenStateContext);
+  const { memberInfo } = useContext(MemberInfoContext);
   const [activeMenu, setActiveMenu] = useState(null);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const location = useLocation();

@@ -39,6 +39,10 @@ const SettlementPage = () => {
           totalSharedExpenseAndExchangeRates.totalSharedExpensesByCurrency
         );
 
+        console.log(
+          totalSharedExpenseAndExchangeRates.totalSharedExpensesByCurrency
+        );
+
         //공동 경비 총 합계
         const totalExpenses = Object.values(
           totalSharedExpenseAndExchangeRates.totalSharedExpensesByCurrency

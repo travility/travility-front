@@ -23,14 +23,13 @@ import SettlementExpenseListPage from './pages/accountbook/settlement/Settlement
 import ForgotPasswordPage from './pages/member/password/ForgotPasswordPage';
 import UpdatePasswordPage from './pages/member/password/UpdatePasswordPage';
 
-export const TokenStateContext = createContext();
+export const MemberInfoContext = createContext();
 
 function App() {
-  //const [tokenStatus, setTokenStatus] = useState();
   const [memberInfo, setMemberInfo] = useState();
   const navigate = useNavigate();
   const location = useLocation();
-  const { theme, toggleTheme, loadTheme } = useTheme();
+  const { theme, loadTheme } = useTheme();
 
   useEffect(() => {
     loadTheme(); // 기존 선택 테마 로드
@@ -53,7 +52,7 @@ function App() {
   }, [navigate, location, loadTheme]);
 
   return (
-    <TokenStateContext.Provider value={{ memberInfo }}>
+    <MemberInfoContext.Provider value={{ memberInfo }}>
       <StyledThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
         <GlobalStyle />
         <div>
@@ -137,7 +136,7 @@ function App() {
           </Routes>
         </div>
       </StyledThemeProvider>
-    </TokenStateContext.Provider>
+    </MemberInfoContext.Provider>
   );
 }
 

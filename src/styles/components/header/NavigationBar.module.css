@@ -1,42 +1,42 @@
 .navbar {
-    display: flex;
-    border-bottom: 1px solid var(--line-color);
-    margin: 0 2rem;
-    padding: 0 0.5rem;
-  }
-  
-  .menuItem {
-    padding: 0.5rem 1rem;
-    margin: 0 0.5rem;
-    cursor: pointer;
-    position: relative;
-    font-size: 0.9em;
-    font-weight: 600;
-  }
+  display: flex;
+  border-bottom: 1px solid var(--line-color);
+  margin: 0 2rem;
+  padding: 0 0.5rem;
+}
 
-  .menuItem::after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 2px;
-    background-color: var(--main-color);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
-  
-  .menuItem:hover::after,
-  .menuItem.hovered::after {
-    width: 100%;
-  }
-  
-  .menuItem.active {
-    background-color: var(--main-color);
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    color: #fff;
-    overflow: hidden;
-  }
+.menuItem {
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  position: relative;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.menuItem::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background-color: var(--main-color);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.menuItem:hover::after,
+.menuItem.hovered::after {
+  width: 100%;
+}
+
+.menuItem.active {
+  background-color: var(--main-color);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  color: #fff;
+  overflow: hidden;
+}
 
   .hidden {
     display: none;

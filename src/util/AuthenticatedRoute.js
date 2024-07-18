@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleAlreadyLoggedOut } from './logoutUtils';
+import { handleAlreadyLoggedOut } from './swalUtils';
 import { validateToken } from './tokenUtils';
 
 const AuthenticatedRoute = ({ children }) => {
