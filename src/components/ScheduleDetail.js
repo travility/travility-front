@@ -64,13 +64,9 @@ const ScheduleDetail = ({
     const newFilteredTotalExpense = expenses.reduce((sum, expense) => {
       const amountInKRW =
         expense.amount * (exchangeRates?.[expense.curUnit] || 1);
-      console.log(amountInKRW);
-      console.log(amountInKRW.toFixed(0));
-      if (filter === 'all') return sum + amountInKRW.toFixed(0);
-      if (filter === 'shared' && expense.isShared)
-        return sum + amountInKRW.toFixed(0);
-      if (filter === 'personal' && !expense.isShared)
-        return sum + amountInKRW.toFixed(0);
+      if (filter === 'all') return sum + amountInKRW;
+      if (filter === 'shared' && expense.isShared) return sum + amountInKRW;
+      if (filter === 'personal' && !expense.isShared) return sum + amountInKRW;
       return sum;
     }, 0);
     setFilteredTotalExpense(newFilteredTotalExpense);
