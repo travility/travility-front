@@ -25,14 +25,29 @@
   width: 90%;
 }
 
-.expenseDate {
+/* .expenseDateAndTime {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.expenseDate,
+.expenseTime {
+  padding: 0.4rem;
+} */
+
+.expenseDateAndTime {
   display: flex;
-  width: 70%;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  margin-top: 0.3rem;
   margin-right: auto;
 }
 
 .image_container::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -0.5rem;
   left: 0;
@@ -45,7 +60,7 @@
 .image_container {
   display: flex;
   text-align: center;
-  margin: 0.6rem 0;
+  margin: 0.9rem 0;
   max-height: 10rem;
   width: 100%;
   position: relative;
@@ -152,7 +167,7 @@
   margin-right: auto;
 }
 
-.isShared input[type="radio"] {
+.isShared input[type='radio'] {
   transform: scale(0.8);
   margin-right: 0.2rem;
 }
@@ -199,7 +214,7 @@
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
-  
+
 .cancel_button,
 .delete_button {
   flex: 1;
