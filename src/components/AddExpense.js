@@ -63,6 +63,22 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const newErrors = {};
+
+    if (name === 'expenseDate') {
+      if (new Date(value) < new Date(accountBook.startDate)) {
+        //선택 날짜가 시작 날짜 이전일 때,
+        newErrors.expenseDate = '준비 비용입니다.';
+      } else if (new Date(value) > new Date(accountBook.endDate)) {
+        //선택 날짜가 종료 날짜 이후일 때,
+        newErrors.expenseDate = '사후 비용입니다.';
+      }
+    }
+    setErrors((prevError) => ({
+      ...prevError,
+      ...newErrors,
+    }));
+
     setNewExpense((prev) => ({
       ...prev,
       expense: { ...prev.expense, [name]: value },
@@ -143,23 +159,23 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     }
 
     const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`;
-    console.log(combinedDateTime);
-    console.log(newExpense.expense.expenseTime);
+
     const { expenseTime, amount, ...expenseDataWithoutTime } =
       newExpense.expense;
+
     const expenseData = {
       ...expenseDataWithoutTime,
       amount: parseFloat(amount),
       expenseDate: combinedDateTime,
       accountBookId: accountBook.id,
     };
-    console.log(expenseData);
+
     const formData = new FormData();
     formData.append('expenseInfo', JSON.stringify(expenseData));
     if (newExpense.newImg) {
       formData.append('img', newExpense.newImg);
     }
-    console.log(formData.get('expenseInfo'));
+
     onSubmit(formData);
     onClose();
   };
