@@ -16,6 +16,13 @@ const TripInfo = ({
 }) => {
   const location = useLocation();
   const isDetailPage = location.pathname.startsWith(`/accountbook/detail`);
+  
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + "...";
+  };
 
   return (
     <div
@@ -49,7 +56,7 @@ const TripInfo = ({
             <img src={accountBook.countryFlag} alt="국기" />
           </span>
           <span className={styles.accountBook_list_title}>
-            {accountBook.title}
+            {truncateText(accountBook.title, 8)}
           </span>
         </div>
         <span className={styles.accountBook_list_dates}>

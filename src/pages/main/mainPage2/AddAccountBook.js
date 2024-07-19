@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchCountry from "../../../components/SearchCountry";
 import AddBudget from "../../../components/AddBudget";
@@ -22,6 +22,11 @@ const AddAccountBook = () => {
   const [inputCount, setInputCount] = useState(0); // 글자수 변경 카운트
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
+
+  //모달 위치 동적 계산
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const inputRef = useRef(null);
+
 
   // 여행 추가
   const handleAddAccountBook = async () => {
@@ -69,6 +74,37 @@ const AddAccountBook = () => {
     setFormErrors((prevErrors) => ({ ...prevErrors, countryName: "" }));
     setIsCountryModalOpen(false);
   };
+
+  // 모달 위치 동적 계산
+  const handleOpenCountryModal = () => {
+    if (inputRef.current) {
+      const inputRect = inputRef.current.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      let leftPosition = inputRect.left + window.scrollX;
+
+      // 반응형 조정을 위한 예제 (화면 크기에 따라 위치 조정)
+      if (viewportWidth <= 530) { 
+        leftPosition = inputRect.left + window.scrollX - 3; 
+      } else if (viewportWidth >= 531 && viewportWidth <= 860) {
+        leftPosition = inputRect.left + window.scrollX - 10; 
+      } else if (viewportWidth >= 861 && viewportWidth <= 1024) {
+        leftPosition = inputRect.left + window.scrollX - 5; 
+      }else { 
+        leftPosition = inputRect.left + window.scrollX - 250;
+      }
+
+      console.log('input 위치:', inputRect); 
+
+      setModalPosition({
+        top: inputRect.bottom + window.scrollY - 18,
+        left: leftPosition,
+      });
+    }
+    setIsCountryModalOpen(true);
+  };
+
+  
+
 
   // 예산 제출
   const handleBudgetSubmit = (budgets) => {
@@ -178,7 +214,9 @@ const AddAccountBook = () => {
           <label>어디로 떠나시나요?</label>
           <div
             className={styles.country_input}
-            onClick={() => setIsCountryModalOpen(true)}
+            /* onClick={() => setIsCountryModalOpen(true)} */
+            onClick={handleOpenCountryModal}
+            ref={inputRef}
           >
             {countryName ? (
               <div className={styles.selectedCountry}>
@@ -190,12 +228,13 @@ const AddAccountBook = () => {
                 <span>{countryName}</span>
               </div>
             ) : (
-              <Input type="text" placeholder="여행지 선택" readOnly />
+              <Input ref={inputRef} type="text" placeholder="여행지 선택" readOnly />
             )}
             <button
               type="button"
               className={styles.search_button}
-              onClick={() => setIsCountryModalOpen(true)}
+             /*  onClick={() => setIsCountryModalOpen(true)} */
+              onClick={handleOpenCountryModal}
             >
               <img src="/images/main/mainPage/search_br.png" alt="Search" />
             </button>
@@ -258,10 +297,11 @@ const AddAccountBook = () => {
         />
       )}
       {isCountryModalOpen && (
-        <SearchCountry
-          onSelectCountry={handleCountrySelect}
-          closeModal={() => setIsCountryModalOpen(false)}
-        />
+      <SearchCountry
+        onSelectCountry={handleCountrySelect}
+        closeModal={() => setIsCountryModalOpen(false)}
+        modalPosition={modalPosition} // modalPosition을 전달
+      />
       )}
     </div>
   );
