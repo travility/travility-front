@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getAccountBooks, deleteAccountBook } from "../../api/accountbookApi";
-import styles from "../../styles/accountbook/AccountBookListPage.module.css";
-import { Button } from "../../styles/StyledComponents";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import TripInfo from "../../components/TripInfo";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAccountBooks, deleteAccountBook } from '../../api/accountbookApi';
+import styles from '../../styles/accountbook/AccountBookListPage.module.css';
+import { Button } from '../../styles/StyledComponents';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Select from 'react-select';
+import { selectStyles2 } from '../../util/CustomStyles';
+import TripInfo from '../../components/TripInfo';
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -13,18 +15,21 @@ const AccountBookListPage = () => {
   const [accountBooks, setAccountBooks] = useState([]);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [sort, setSort] = useState({ label: '최신순', value: 'new' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAccountBooks = async () => {
       try {
-        const data = await getAccountBooks();
-        console.log(data);
+        //const data = await getAccountBooks();
+        const data = await getAccountBooks(sort.value);
+        //console.log(data);
+        //console.log(data2);
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
-          setError(new Error("Unexpected response format"));
+          setError(new Error('Unexpected response format'));
         }
       } catch (error) {
         setError(error);
@@ -34,7 +39,7 @@ const AccountBookListPage = () => {
     };
 
     fetchAccountBooks();
-  }, [id]);
+  }, [id, sort]);
 
   const handleAccountBookClick = (accountBook) => {
     if (!isDeleteMode) {
@@ -42,6 +47,17 @@ const AccountBookListPage = () => {
     } else {
       handleSelectBook(accountBook);
     }
+  };
+
+  const sortOptions = [
+    { value: 'new', label: '최신순' },
+    { value: 'old', label: '오래된순' },
+    { value: 'highest', label: '높은지출순' },
+    { value: 'lowest', label: '낮은지출순' },
+  ];
+
+  const handleSort = (sortOption) => {
+    setSort(sortOption);
   };
 
   const handleDeleteBooks = async () => {
@@ -53,7 +69,7 @@ const AccountBookListPage = () => {
       setIsDeleteMode(false);
       setSelectedBooks([]);
     } catch (error) {
-      console.error("Failed to delete account books:", error);
+      console.error('Failed to delete account books:', error);
     }
   };
 
@@ -81,20 +97,37 @@ const AccountBookListPage = () => {
   return (
     <div className={styles.accountBook_list_page}>
       {accountBooks.length > 0 && (
-        <div className={styles.action_buttons}>
-          <Button className={styles.delete_button} onClick={toggleDeleteMode}>
-            {isDeleteMode ? "취소" : "삭제"}
-          </Button>
-          {isDeleteMode && (
-            <Button
-              className={styles.confirm_delete_button}
-              onClick={handleDeleteBooks}
-              disabled={selectedBooks.length === 0}
-            >
-              선택 삭제
-            </Button>
-          )}
-        </div>
+        <>
+          <div className={styles.accountBook_list_header}>
+            <div className={styles.action_buttons}>
+              <Button
+                className={styles.delete_button}
+                onClick={toggleDeleteMode}
+              >
+                {isDeleteMode ? '취소' : '삭제'}
+              </Button>
+              {isDeleteMode && (
+                <Button
+                  className={styles.confirm_delete_button}
+                  onClick={handleDeleteBooks}
+                  disabled={selectedBooks.length === 0}
+                >
+                  선택 삭제
+                </Button>
+              )}
+            </div>
+            <div className={styles.sort_container}>
+              <Select
+                id="sort"
+                value={sort}
+                onChange={handleSort}
+                options={sortOptions}
+                className={styles.sortType}
+                styles={selectStyles2}
+              ></Select>
+            </div>
+          </div>
+        </>
       )}
       {accountBooks.length === 0 ? (
         <div className={styles.no_account_book}>

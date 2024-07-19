@@ -18,6 +18,8 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
+import Select from 'react-select';
+import { selectStyles2 } from '../../util/CustomStyles';
 
 const UsersPage = () => {
   const [memberList, setMemberList] = useState([]);
@@ -26,13 +28,18 @@ const UsersPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
   const pageSize = 10;
-  const [sort, setSort] = useState('desc');
+  const [sort, setSort] = useState({ value: 'desc', label: '최신순' });
   const navigate = useNavigate();
 
-  const handleSort = (e) => {
-    setSort(e.target.value);
+  const handleSort = (sortOption) => {
+    setSort(sortOption);
     setCurrentPage(1);
   };
+
+  const sortOptions = [
+    { value: 'desc', label: '최신순' },
+    { value: 'asc', label: '오래된순' },
+  ];
 
   const handleDeleteMember = async (username) => {
     const { value: text } = await Swal.fire({
@@ -82,7 +89,11 @@ const UsersPage = () => {
       const newMembersToday = await getNewMembersCountToday();
       settodayCount(newMembersToday);
 
-      const members = await getMemberList(currentPage - 1, pageSize, sort);
+      const members = await getMemberList(
+        currentPage - 1,
+        pageSize,
+        sort.value
+      );
       setMemberList(members);
       console.log(members);
     } catch (error) {
@@ -144,15 +155,14 @@ const UsersPage = () => {
               </p>
             </div>
             <div className={styles.memberList_container}>
-              <div className={styles.sorttype_container}>
-                <select
-                  className={styles.sorttype}
+              <div className={styles.sortType_container}>
+                <Select
+                  id="sort"
                   value={sort}
                   onChange={handleSort}
-                >
-                  <option value="desc">최신순</option>
-                  <option value="asc">오래된순</option>
-                </select>
+                  options={sortOptions}
+                  styles={selectStyles2}
+                ></Select>
               </div>
               <table className={styles.memberList}>
                 <thead>
