@@ -28,11 +28,16 @@
   margin-left: 0.5rem;
 }
 
+.sort_container {
+  position: relative;
+  align-items: center;
+  font-size: 0.8em;
+}
+
 .sortType {
-  width: 3.8rem;
-  height: 1.95rem;
-  border: 1px solid var(--line-color);
-  border-radius: 10px;
+  width: 100%;
+  height: 80%;
+  z-index: 9999;
 }
 
 .select_overlay {
@@ -67,9 +72,9 @@
   .accountBook_list_grid_container {
     grid-template-columns: repeat(3, 1fr);
   }
-  .sortType {
+  /* .sortType {
     width: 5.3rem;
-  }
+  } */
 }
 
 @media (max-width: 690px) {
