@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getAccountBooks, deleteAccountBook } from '../../api/accountbookApi';
 import styles from '../../styles/accountbook/AccountBookListPage.module.css';
-import { Button } from '../../styles/StyledComponents';
+import { Button, Input } from '../../styles/StyledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
@@ -16,16 +16,14 @@ const AccountBookListPage = () => {
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [sort, setSort] = useState({ label: '최신순', value: 'new' });
+  const [searchText, setSearchText] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAccountBooks = async () => {
       try {
-        //const data = await getAccountBooks();
         const data = await getAccountBooks(sort.value);
-        //console.log(data);
-        //console.log(data2);
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
@@ -40,6 +38,15 @@ const AccountBookListPage = () => {
 
     fetchAccountBooks();
   }, [id, sort]);
+
+  //실시간 검색 필터링
+  const filteredAccountBooks = accountBooks.filter((accountBook) => {
+    const lowerSearchText = searchText.toLowerCase(); //겁색어 소문자로 변경
+    return (
+      accountBook.title.toLowerCase().includes(lowerSearchText) ||
+      accountBook.countryName.toLowerCase().includes(lowerSearchText)
+    );
+  });
 
   const handleAccountBookClick = (accountBook) => {
     if (!isDeleteMode) {
@@ -58,6 +65,10 @@ const AccountBookListPage = () => {
 
   const handleSort = (sortOption) => {
     setSort(sortOption);
+  };
+
+  const handleSearch = (e) => {
+    setSearchText(e.target.value);
   };
 
   const handleDeleteBooks = async () => {
@@ -99,6 +110,24 @@ const AccountBookListPage = () => {
       {accountBooks.length > 0 && (
         <>
           <div className={styles.accountBook_list_header}>
+            <div className={styles.sort_search_container}>
+              <Select
+                id="sort"
+                value={sort}
+                onChange={handleSort}
+                options={sortOptions}
+                className={styles.sortType}
+                styles={selectStyles2}
+              ></Select>
+              <Input
+                className={styles.search}
+                type="text"
+                value={searchText}
+                onChange={handleSearch}
+                placeholder="검색어를 입력하세요"
+              ></Input>
+            </div>
+
             <div className={styles.action_buttons}>
               <Button
                 className={styles.delete_button}
@@ -115,16 +144,6 @@ const AccountBookListPage = () => {
                   선택 삭제
                 </Button>
               )}
-            </div>
-            <div className={styles.sort_container}>
-              <Select
-                id="sort"
-                value={sort}
-                onChange={handleSort}
-                options={sortOptions}
-                className={styles.sortType}
-                styles={selectStyles2}
-              ></Select>
             </div>
           </div>
         </>
@@ -143,7 +162,7 @@ const AccountBookListPage = () => {
         </div>
       ) : (
         <div className={styles.accountBook_list_grid_container}>
-          {accountBooks.map((accountBook) => (
+          {filteredAccountBooks.map((accountBook) => (
             <TripInfo
               key={accountBook.id}
               accountBook={accountBook}
