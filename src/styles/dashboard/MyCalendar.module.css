@@ -20,6 +20,7 @@
 }
 
 .calendar_container {
+  display: grid;
   border: 1px solid #e0e0e0;
   border-radius: 30px;
   padding: 20px; /* 전체 패딩 */
@@ -34,25 +35,31 @@
 
 /* 년월 부분 */
 .header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   padding: 10px;
   margin-bottom: 15px;
 }
 
-.yearSelect {
-  font-size: 0.95rem;
-  padding: 5px;
-  margin-left: 10px;
+.centerSection {
+  font-size: 1rem;
+  grid-column: 2;
+  justify-self: center;
+  
+}
+
+.yearSelect{
   border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: var(--backgroung-color);
   color: var(--text-color);
-
+  background-color: var(--backgroung-color);
+  padding: 3px;
+  margin-left: 5px;
+  font-size: 0.9rem;
   &:hover{
-    cursor: pointer;
-  }
+      cursor: pointer;
+    }
 }
 
 .yearSelect:focus {
@@ -86,6 +93,8 @@
   font-size: 1.5rem;
   color: #727272b3;
   font-weight: 550;
+  grid-column: 2;
+  justify-self: center;
 }
 
 .navButton {
@@ -95,16 +104,16 @@
   font-size: 1rem;
   font-weight: bold;
   color:var(--text-color);
+  grid-column: 1;
+  justify-self: start;
 }
 
 .days {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7개의 열을 동일한 너비로 설정 */
   padding: 10px 0;
 }
 
-/* 세부조정 */
-/* 일 ~ 월 */
 .day {
   flex: 1;
   text-align: center;
@@ -113,24 +122,28 @@
   font-size:1rem;
   margin: 0 5px;
 }
+
 /* 일 */
 .day:first-child {
   color: rgb(251, 15, 15);
 }
+
 /* 토 */
 .day:last-child {
   color: #4C66F8;
 }
 
 .body {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  /* flex-wrap: wrap;
+  justify-content: space-between; */
 }
 
 .row {
-  display: flex;
-  width: 100%;
+  display: contents;
+  /* display: flex;
+  width: 100%; */
 }
 
 /* 달력의 cell */
@@ -143,7 +156,6 @@
   text-align: left;
   cursor: pointer;
   height: 110px;
-  flex:1;
   overflow: hidden;
   padding: 10px;
   box-sizing: border-box;
@@ -295,7 +307,7 @@
 }
 
 .schedule_detail_modalImage {
-  /* width: 100%; */
+  width: 100%;
   height: 150px; 
   background-size: cover;
   background-position: center;
@@ -450,7 +462,7 @@
 }
 
 /* ***************************   반응형 ************************************* */
-@media screen and (max-width: 530px) {
+@media (max-width: 530px) {
   
   .my_calendar_container {
     display: grid;
@@ -466,11 +478,14 @@
   }
 
   .calendar_container {
-    overflow: auto; /* 내용이 넘칠 때 숨기도록 설정 */
+    overflow: auto;
+    height: 65vh; /* 작은 화면에서 달력의 기본 높이 설정 */
+    transition: height 0.3s ease;
   }
 
   .detail_container {
     max-width: 100%;
+    transition: height 0.3s ease;
   }
 
   .show_popup .my_calendar_container {
@@ -478,11 +493,11 @@
   }
 
   .show_popup .calendar_container {
-    height: auto; /* 높이 비율 조정 */
+    height: 35vh; /* 팝업이 표시될 때 달력의 높이 비율 조정 */
   }
 
   .show_popup .detail_container {
-    height: auto;
+    height: 65vh;
   }
 
   /*************** 팝업 내에서 가로 배치 설정 ***************/
@@ -503,7 +518,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
   }
 
   .schedule_detail_modalImage {
@@ -536,5 +551,70 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .eventTitle{
+    font-size: 0.65rem;
+    margin-top: 3px;
+    margin-left: -3px;
+  }
+
+  .selected::before{
+    background-color: transparent; 
+    top: 0.55rem;
+    z-index: 1000;
+  }
+  
+  .schedule_detail_filter_buttons_container button {
+    font-size: 0.85rem;
+  }
+
+  .schedule_detail_header_container
+  {
+    font-size: 1.25rem;
+  }
+
+  .schedule_detail_header_container > p{
+    font-size: 0.9rem;
+  }
+
+  .expense_title{
+    margin-left: 3px;
+  }
+
+  .type{
+    margin-left: 4px;
+  }
+
+  .total_cost_amount{
+    margin-left: 10px
+  }
+
+  .schedule_detail_Buttons_container {
+    display: flex;
+    align-content: space-between;
+  }
+
+  .icon {
+    width: 8px;
+  }
+
+  .cell{
+    height: 90px;
+  }
  
+}
+
+@media (min-width: 531px) and (max-width: 860px) {
+  .eventTitle{
+    font-size: 0.65rem;
+    margin-top: 2px;
+  }
+}
+
+@media (min-width: 861px) and (max-width: 1024px) {
+ 
+}
+
+@media (min-width: 1025px) {
+  
 }

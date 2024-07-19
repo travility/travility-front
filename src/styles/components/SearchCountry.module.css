@@ -1,32 +1,84 @@
 .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: absolute;
+  width: 76rem; /* 가로 스크롤 안 생기는 최소 크기 */
+  height: auto;
+  z-index: 1000;
   }
-  
+
   .modalContent {
-    background: white;
+    background: var(--background-color);
     padding: 20px;
     border-radius: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 20%;
-    max-height: 300px;
+    max-height: 65rem;
     position: relative;
     overflow: hidden;
+    font-size: 0.8rem;
+
+
+     @media screen and (max-width: 530px)  {
+       width: 25%;
+       height: 10%;
+       font-size: 0.7rem;
+
+       .flag {
+        width: 13px;
+        height: 13px;
+        margin-right: 10px;
+        border-radius: 50%; 
+      }
+
+      .modalSearchInput {
+        color: var(--text-color);
+        font-size: 0.8rem;
+      }
+
+      .closeButton{
+        margin-top: 0.80rem;
+        right: 32px;
+      }
+    
+      .modalSearchInput{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .dropdownItem {
+        padding: 10px;
+        margin: 1px 0;
+      }
+    }
+
+    @media (min-width: 531px) and (max-width: 860px) {
+
+      .modalSearchInput{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .dropdownItem {
+        padding: 10px;
+        margin: 1px 0;
+      }
+
+      .modalSearchInput {
+        font-size: 0.8rem;
+      }
+
+    }
   }
+ 
   
   .closeButton {
     background: none;
     border: none;
     font-size: 1.5em;
     position: absolute;
-    right: 45px;
+    right: 36px;
+    margin-top: 6px;
     cursor: pointer;
     color:rgb(147, 147, 147);
     width: 10px !important;
@@ -43,6 +95,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
   }
 
   .countryFlagsContainer {
@@ -65,7 +119,7 @@
   }
   
   .dropdownItem:hover {
-    background-color: #f1f1f1; /* 호버 효과 추가 */
+    background-color: var(--shadow-color)/* 호버 효과 추가 */
   }
   
   .flag {

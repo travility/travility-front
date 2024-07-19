@@ -115,6 +115,9 @@ const ScheduleCalendar = ({
         totalExpense: totalAmount,
         exchangeRates: exchangeRates,
       });
+
+      adjustCalendarHeight(); // 팝업 열릴 때 높이 조정
+
     } catch (error) {
       console.error("지출 항목을 가져오는 중 오류가 발생했습니다:", error);
     }
@@ -131,10 +134,15 @@ const ScheduleCalendar = ({
       curUnit: "",
       totalExpense: 0,
     });
+     
+    const calendarContainer = document.getElementById('calendarContainer');
+    if (calendarContainer) {
+      adjustCalendarHeight(); //닫힐 때 높이 조정
+    }
   };
 
 
-  //이벤트를 애니메이션으로 보여줌
+  //이벤트 pop 이펙트
   useEffect(() => {
     const cells = document.querySelectorAll(`.${styles.cellWithEvent}`);
     cells.forEach((cell, index) => {
@@ -144,6 +152,24 @@ const ScheduleCalendar = ({
     });
   }, [events, dailyExpenses, currentMonth]);
 
+
+  //캘린더 높이 동적 조정
+  const adjustCalendarHeight = () => {
+    const calendarContainer = document.getElementById('calendarContainer');
+  
+      if (calendarContainer) {  // calendarContainer가 존재하는지 확인
+        const calendarContent = calendarContainer.querySelector(`.${styles.calendarContent}`); // 달력의 내용 요소를 선택
+      if (calendarContent) {
+        const contentHeight = calendarContent.scrollHeight; // 내용의 전체 높이
+        const containerHeight = window.innerHeight * 0.6; 
+        calendarContainer.style.height = contentHeight > containerHeight ? `${containerHeight}px` : `${contentHeight}px`;
+      }
+     }
+  };
+
+  useEffect(() => {
+    adjustCalendarHeight();
+  }, [popupInfo.show]);
 
   //년 월
   const renderHeader = () => {
@@ -275,10 +301,12 @@ const ScheduleCalendar = ({
        ${popupInfo.show ? styles.show_popup : ''}
        `}
     >
-      <div className={styles.calendar_container}>
+      <div className={styles.calendar_container} id="calendarContainer">
+      <div className={styles.calendarContent}>
         {renderHeader()}
         {renderDays()}
         {renderCells()}
+      </div>
       </div>
       {popupInfo.show && (
         <div className={styles.detail_container}>
