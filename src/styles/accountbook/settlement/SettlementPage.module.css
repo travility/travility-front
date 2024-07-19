@@ -59,6 +59,7 @@
 
 .tripInfo {
   height: 200px;
+  background-color: #9d9d9d;
   background-size: cover;
   background-position: center;
   border-radius: 8px;

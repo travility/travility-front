@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from '../../../styles/accountbook/SettlementPage.module.css';
+import styles from '../../../styles/accountbook/settlement/SettlementPage.module.css';
 import { formatNumberWithCommas, formatDate } from '../../../util/calcUtils';
 import { Button } from '../../../styles/StyledComponents';
 import {
@@ -131,7 +131,11 @@ const SettlementPage = () => {
               <div
                 className={styles.tripInfo}
                 style={{
-                  backgroundImage: `url(http://localhost:8080/images/${accountBook.imgName})`,
+                  backgroundImage: `url(${
+                    accountBook.imgName
+                      ? `http://localhost:8080/images/${accountBook.imgName}`
+                      : '/images/dashboard/default_image.png'
+                  })`,
                 }}
               >
                 <div className={styles.accountBook_list_item_detail}>
