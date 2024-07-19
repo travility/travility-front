@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from '../../../styles/accountbook/UpdateTripInfo.module.css';
 import { formatDate } from '../../../util/calcUtils';
 import SearchCountry from '../../../components/SearchCountry';
@@ -27,6 +27,10 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     isModalOpen: false,
     isDefaultImage: true,
   });
+
+  //모달 위치 동적 계산
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const inputRef = useRef(null);
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
@@ -85,6 +89,35 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     onSubmit(formData);
   };
 
+  //모달 위치 동적 계산 함수
+  const handleOpenCountryModal = () => {
+    if (inputRef.current) {
+      const inputRect = inputRef.current.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      let leftPosition = inputRect.left + window.scrollX;
+
+      // 반응형 조정을 위한 예제 (화면 크기에 따라 위치 조정)
+      if (viewportWidth <= 530) { 
+        leftPosition = inputRect.left + window.scrollX; 
+      } else if (viewportWidth >= 531 && viewportWidth <= 860) {
+        leftPosition = inputRect.left + window.scrollX; 
+      } else if (viewportWidth >= 861 && viewportWidth <= 1024) {
+        leftPosition = inputRect.left + window.scrollX ; 
+      }else { 
+        leftPosition = inputRect.left + window.scrollX;
+      }
+
+      console.log('input 위치:', inputRect); 
+
+      setModalPosition({
+        top: inputRect.bottom + window.scrollY,
+        left: leftPosition,
+      });
+    }
+    setNewTripInfo((prev) => ({ ...prev, isModalOpen: true }));
+  };
+
+
   return (
     <>
       {isOpen && (
@@ -100,10 +133,9 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   <div className={styles.tripInfo_formGroup}>
                     <label>여행지</label>
                     <div
-                      onClick={() =>
-                        setNewTripInfo({ ...newTripInfo, isModalOpen: true })
-                      }
+                      onClick={handleOpenCountryModal}
                       className={styles.selectedCountry}
+                      ref={inputRef}
                     >
                       <img
                         src={newTripInfo.tripInfo.countryFlag}
@@ -198,10 +230,9 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
           </Modal>
           {newTripInfo.isModalOpen && (
             <SearchCountry
-              onSelectCountry={handleCountrySelect}
-              closeModal={() =>
-                setNewTripInfo({ ...newTripInfo, isModalOpen: false })
-              }
+            onSelectCountry={handleCountrySelect}
+            closeModal={() => setNewTripInfo((prev) => ({ ...prev, isModalOpen: false }))}
+            modalPosition={modalPosition} // modalPosition을 전달
             />
           )}
         </ModalOverlay>

@@ -84,9 +84,9 @@ const AddAccountBook = () => {
 
       // 반응형 조정을 위한 예제 (화면 크기에 따라 위치 조정)
       if (viewportWidth <= 530) { 
-        leftPosition = inputRect.left + window.scrollX - 3; 
+        leftPosition = inputRect.left + window.scrollX; 
       } else if (viewportWidth >= 531 && viewportWidth <= 860) {
-        leftPosition = inputRect.left + window.scrollX - 10; 
+        leftPosition = inputRect.left + window.scrollX; 
       } else if (viewportWidth >= 861 && viewportWidth <= 1024) {
         leftPosition = inputRect.left + window.scrollX - 5; 
       }else { 
