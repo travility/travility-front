@@ -5,6 +5,8 @@ import styles from '../../styles/accountbook/AccountBookListPage.module.css';
 import { Button } from '../../styles/StyledComponents';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Select from 'react-select';
+import { selectStyles2 } from '../../util/CustomStyles';
 import TripInfo from '../../components/TripInfo';
 
 const AccountBookListPage = () => {
@@ -13,7 +15,7 @@ const AccountBookListPage = () => {
   const [accountBooks, setAccountBooks] = useState([]);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [sort, setSort] = useState('new');
+  const [sort, setSort] = useState({ label: '최신순', value: 'new' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +23,7 @@ const AccountBookListPage = () => {
     const fetchAccountBooks = async () => {
       try {
         //const data = await getAccountBooks();
-        const data = await getAccountBooks(sort);
+        const data = await getAccountBooks(sort.value);
         //console.log(data);
         //console.log(data2);
         if (Array.isArray(data)) {
@@ -47,8 +49,15 @@ const AccountBookListPage = () => {
     }
   };
 
-  const handleSort = (e) => {
-    setSort(e.target.value);
+  const sortOptions = [
+    { value: 'new', label: '최신순' },
+    { value: 'old', label: '오래된순' },
+    { value: 'highest', label: '높은지출순' },
+    { value: 'lowest', label: '낮은지출순' },
+  ];
+
+  const handleSort = (sortOption) => {
+    setSort(sortOption);
   };
 
   const handleDeleteBooks = async () => {
@@ -108,16 +117,14 @@ const AccountBookListPage = () => {
               )}
             </div>
             <div className={styles.sort_container}>
-              <select
-                className={styles.sortType}
+              <Select
+                id="sort"
                 value={sort}
                 onChange={handleSort}
-              >
-                <option value="new">최신순</option>
-                <option value="old">오래된순</option>
-                <option value="highest">높은지출순</option>
-                <option value="lowest">낮은지출순</option>
-              </select>
+                options={sortOptions}
+                className={styles.sortType}
+                styles={selectStyles2}
+              ></Select>
             </div>
           </div>
         </>
