@@ -72,6 +72,8 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
       } else if (new Date(value) > new Date(accountBook.endDate)) {
         //선택 날짜가 종료 날짜 이후일 때,
         newErrors.expenseDate = '사후 비용입니다.';
+      } else {
+        newErrors.expenseDate = '';
       }
     }
     setErrors((prevError) => ({
