@@ -6,9 +6,10 @@ import { MemberInfoContext } from '../../App';
 const NavigationBar = () => {
   const { memberInfo } = useContext(MemberInfoContext);
   const [activeMenu, setActiveMenu] = useState(null);
-  const [hoveredMenu, setHoveredMenu] = useState(null);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
 
   const usersMenus = [
     { name: '가계부 홈', path: '/main' },
@@ -44,7 +45,17 @@ const NavigationBar = () => {
   }
 
   const handleMenuClick = (path) => {
+    if (window.innerWidth <= 530) {
+      setIsDropdownVisible(!isDropdownVisible);
+    } else {
+      setActiveMenu(path);
+      navigate(path);
+    }
+  };
+
+  const handleDropdownItemClick = (path) => {
     setActiveMenu(path);
+    setIsDropdownVisible(false);
     navigate(path);
   };
 
@@ -55,14 +66,30 @@ const NavigationBar = () => {
           key={index}
           className={`${styles.menuItem} ${
             activeMenu === menu.path ? styles.active : ''
-          } ${hoveredMenu === menu.path ? styles.hovered : ''}`}
+          } ${isDropdownVisible && window.innerWidth <= 530 ? styles.hidden : ''}`}
           onClick={() => handleMenuClick(menu.path)}
-          onMouseEnter={() => setHoveredMenu(menu.path)}
-          onMouseLeave={() => setHoveredMenu(null)}
         >
           {menu.name}
+          {activeMenu === menu.path && (
+            <span className={styles.dropdownIcon}>
+              {isDropdownVisible ? '▲' : '▼'}
+            </span>
+          )}
         </div>
       ))}
+      {isDropdownVisible && (
+        <div className={styles.dropdown}>
+          {menus.filter(menu => menu.path !== activeMenu).map((menu, index) => (
+            <div
+              key={index}
+              className={styles.dropdownItem}
+              onClick={() => handleDropdownItemClick(menu.path)}
+            >
+              {menu.name}
+            </div>
+          ))}
+        </div>
+      )}
       <span className={styles.animationEffect}></span>
     </nav>
   );
