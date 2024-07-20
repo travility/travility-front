@@ -65,3 +65,14 @@ export const deleteAccountBook = async (id) => {
     throw error;
   }
 };
+
+//가계부 엑셀화
+export const exportAccountBook = async (id, krw) => {
+  const response = await axiosInstance.get(
+    `/accountbook/${id}/export?krw=${krw}`,
+    {
+      responseType: 'blob', // 응답을 Blob으로 처리
+    }
+  );
+  return response;
+};
