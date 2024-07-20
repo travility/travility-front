@@ -143,6 +143,7 @@
 
 .category_title,
 .paymentMethod_title {
+  color: var(--text-color);
   font-weight: 500;
 }
 

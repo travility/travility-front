@@ -111,21 +111,25 @@ const AccountBookListPage = () => {
         <>
           <div className={styles.accountBook_list_header}>
             <div className={styles.sort_search_container}>
-              <Select
-                id="sort"
-                value={sort}
-                onChange={handleSort}
-                options={sortOptions}
-                className={styles.sortType}
-                styles={selectStyles2}
-              ></Select>
-              <Input
-                className={styles.search}
-                type="text"
-                value={searchText}
-                onChange={handleSearch}
-                placeholder="검색어를 입력하세요"
-              ></Input>
+              <span>
+                <Select
+                  id="sort"
+                  value={sort}
+                  onChange={handleSort}
+                  options={sortOptions}
+                  className={styles.sortType}
+                  styles={selectStyles2}
+                ></Select>
+              </span>
+              <span className={styles.search_container}>
+                <Input
+                  className={styles.search}
+                  type="text"
+                  value={searchText}
+                  onChange={handleSearch}
+                  placeholder="여행 제목 또는 국가"
+                ></Input>
+              </span>
             </div>
 
             <div className={styles.action_buttons}>
