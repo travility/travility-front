@@ -14,12 +14,14 @@ import {
   calculateAverageExchangeRates,
 } from '../../../util/calcUtils';
 import { selectStyles } from '../../../util/CustomStyles';
+import ExportAccountBook from '../../../components/ExportAccountBook';
 
 const ExpenseList = ({ accountBook, selectedDate }) => {
   const [filter, setFilter] = useState('all');
   const [currency, setCurrency] = useState({ label: '전체', value: 'all' });
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [filteredBudgets, setFilteredBudgets] = useState([]);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -225,102 +227,127 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       : totalExpensesInKRW;
 
   return (
-    <div className={styles.expenseList_container}>
-      <div className={styles.expenseList_header}>
-        <div className={styles.expenseList_buttons}>
-          <div className={styles.filter_buttons}>
-            <Button
-              className={filter === 'all' ? styles.selected_button : ''}
-              onClick={() => handleFilterChange('all')}
-            >
-              모두보기
-            </Button>
-            <Button
-              className={filter === 'shared' ? styles.selected_button : ''}
-              onClick={() => handleFilterChange('shared')}
-            >
-              공동경비
-            </Button>
-            <Button
-              className={filter === 'personal' ? styles.selected_button : ''}
-              onClick={() => handleFilterChange('personal')}
-            >
-              개인경비
-            </Button>
-          </div>
-          <div className={styles.settlement_button}>
-            <Button onClick={goSettlement}>정산하기</Button>
-          </div>
-        </div>
-        <div className={styles.expenseList_summary_container}>
-          <div className={styles.currencyAndTotalAmount}>
-            <div className={styles.currency_select}>
-              <label htmlFor="currency">화폐 :</label>
-              <Select
-                id="currency"
-                value={currency}
-                onChange={handleCurrencyChange}
-                options={[{ label: '전체', value: 'all' }, ...uniqueCurrencies]}
-                styles={selectStyles}
-                isSearchable={false}
-                noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
-              />
+    <>
+      <div className={styles.expenseList_container}>
+        <div className={styles.expenseList_header}>
+          <div className={styles.expenseList_buttons}>
+            <div className={styles.filter_buttons}>
+              <Button
+                className={filter === 'all' ? styles.selected_button : ''}
+                onClick={() => handleFilterChange('all')}
+              >
+                모두보기
+              </Button>
+              <Button
+                className={filter === 'shared' ? styles.selected_button : ''}
+                onClick={() => handleFilterChange('shared')}
+              >
+                공동경비
+              </Button>
+              <Button
+                className={filter === 'personal' ? styles.selected_button : ''}
+                onClick={() => handleFilterChange('personal')}
+              >
+                개인경비
+              </Button>
             </div>
-            <div className={styles.totalAmount_container}>
-              <div className={styles.totalAmount_label}>지출 합계 :</div>
-              <div className={styles.totalAmount}>
-                {currency.value === 'all' || currency.value === 'KRW' ? (
-                  ''
-                ) : (
-                  <>
-                    <div className={styles.amountCurrency}>
-                      ({currency.value}{' '}
-                      {formatNumberWithCommas(
-                        totalExpensesInSelectedCurrency.toFixed(2)
-                      )}
-                      )
-                    </div>
-                  </>
-                )}
-                <div className={styles.amountKRW}>
-                  {formatNumberWithCommas(totalAmountInKRWForFilteredExpenses)}{' '}
-                  원<label>** 원화 환산 금액</label>
+
+            <div className={styles.settlement_button}>
+              {filter === 'shared' ? (
+                <Button onClick={goSettlement}>정산하기</Button>
+              ) : (
+                <Button onClick={() => setIsExportModalOpen(true)}>
+                  내보내기
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className={styles.expenseList_summary_container}>
+            <div className={styles.currencyAndTotalAmount}>
+              <div className={styles.currency_select}>
+                <label htmlFor="currency">화폐 :</label>
+                <Select
+                  id="currency"
+                  value={currency}
+                  onChange={handleCurrencyChange}
+                  options={[
+                    { label: '전체', value: 'all' },
+                    ...uniqueCurrencies,
+                  ]}
+                  styles={selectStyles}
+                  isSearchable={false}
+                  noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
+                />
+              </div>
+              <div className={styles.totalAmount_container}>
+                <div className={styles.totalAmount_label}>지출 합계 :</div>
+                <div className={styles.totalAmount}>
+                  {currency.value === 'all' || currency.value === 'KRW' ? (
+                    ''
+                  ) : (
+                    <>
+                      <div className={styles.amountCurrency}>
+                        ({currency.value}{' '}
+                        {formatNumberWithCommas(
+                          totalExpensesInSelectedCurrency.toFixed(2)
+                        )}
+                        )
+                      </div>
+                    </>
+                  )}
+                  <div className={styles.amountKRW}>
+                    {formatNumberWithCommas(
+                      totalAmountInKRWForFilteredExpenses
+                    )}{' '}
+                    원<label>** 원화 환산 금액</label>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className={styles.expenseList_summary}>
-            <span className={styles.summaryInfo}>
-              <label>총 예산</label> {fomattedTotalBudget}
-            </span>
-            <span className={styles.summaryInfo}>
-              <label>누적 지출</label> {formattedCumulativeTotalExpenses}
-            </span>
-            <span className={styles.summaryInfo}>
-              <label>잔액</label> {remainingBudget}
-            </span>
+            <div className={styles.expenseList_summary}>
+              <span className={styles.summaryInfo}>
+                <label>총 예산</label> {fomattedTotalBudget}
+              </span>
+              <span className={styles.summaryInfo}>
+                <label>누적 지출</label> {formattedCumulativeTotalExpenses}
+              </span>
+              <span className={styles.summaryInfo}>
+                <label>잔액</label> {remainingBudget}
+              </span>
+            </div>
           </div>
         </div>
+        <div className={styles.expenseList}>
+          {Object.keys(groupedExpenses).length === 0 ? (
+            <p className={styles.noExpenses}>
+              아직 등록된 지출내역이 없어요 😅
+            </p>
+          ) : (
+            Object.keys(groupedExpenses).map((date, index) => (
+              <div key={index}>
+                <div className={styles.expenseDate}>{date}</div>
+                {groupedExpenses[date].map((expense, idx) => (
+                  <ExpenseItem
+                    key={idx}
+                    expense={expense}
+                    accountBook={accountBook}
+                  />
+                ))}
+              </div>
+            ))
+          )}
+        </div>
       </div>
-      <div className={styles.expenseList}>
-        {Object.keys(groupedExpenses).length === 0 ? (
-          <p className={styles.noExpenses}>아직 등록된 지출내역이 없어요 😅</p>
-        ) : (
-          Object.keys(groupedExpenses).map((date, index) => (
-            <div key={index}>
-              <div className={styles.expenseDate}>{date}</div>
-              {groupedExpenses[date].map((expense, idx) => (
-                <ExpenseItem
-                  key={idx}
-                  expense={expense}
-                  accountBook={accountBook}
-                />
-              ))}
-            </div>
-          ))
-        )}
-      </div>
-    </div>
+      {isExportModalOpen && (
+        <ExportAccountBook
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          id={accountBook.id}
+          countryName={accountBook.countryName}
+          title={accountBook.title}
+        />
+      )}
+    </>
   );
 };
 
