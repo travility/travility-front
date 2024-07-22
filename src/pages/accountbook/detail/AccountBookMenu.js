@@ -1,12 +1,16 @@
-import React from "react";
-import { Button } from "../../../styles/StyledComponents";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
+import React from 'react';
+import { Button } from '../../../styles/StyledComponents';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
 
-const AccountBookMenu = ({ onBudgetClick, onExpenseClick, onShowStatistics }) => {
+const AccountBookMenu = ({
+  onBudgetClick,
+  onExpenseClick,
+  goExpenseStatistic,
+}) => {
   return (
     <div className={styles.accountbook_icons}>
       <span>
-        <Button onClick={onShowStatistics}>
+        <Button onClick={goExpenseStatistic}>
           <img src="/images/account/statistic.png" alt="statistic" />
           <p>지출 통계</p>
         </Button>

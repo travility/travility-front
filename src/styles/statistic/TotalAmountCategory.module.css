@@ -1,12 +1,14 @@
 .categoryContainer {
   display: flex;
+  flex-wrap: wrap; /* 줄 바꿈 허용 */
   justify-content: space-between;
-  flex-wrap: nowrap;
+  gap: 10px; /* 박스 간격을 위한 여백 */
   width: 100%;
+  box-sizing: border-box;
 }
 
 .categoryBox {
-  width: 150px;  /* 너비 고정 */
+  flex: 1 1 100px; /* 최소 너비 150px, 너비 조정 가능 */
   height: 100px; /* 높이 고정 */
   border-radius: 10px;
   padding: 10px;
@@ -15,7 +17,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin: 5px; /* 박스 간격을 위한 여백 */
   border: 2px solid; /* 테두리 두께 */
 }
 
@@ -27,4 +28,17 @@
 .categoryAmount {
   font-size: 20px; /* 글씨 크기 */
   font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .categoryBox {
+    flex: 1 1 calc(50% - 20px); /* 너비 50%, 간격 고려 */
+  }
+}
+
+@media (max-width: 480px) {
+  .categoryBox {
+    flex: 1 1 calc(100% - 20px); /* 너비 100%, 간격 고려 */
+  }
 }
