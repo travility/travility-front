@@ -8,6 +8,10 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import { selectStyles2 } from '../../util/CustomStyles';
 import TripInfo from '../../components/TripInfo';
+import {
+  handleFailureSubject,
+  handleSuccessSubject,
+} from '../../util/swalUtils';
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -77,10 +81,12 @@ const AccountBookListPage = () => {
       setAccountBooks((prevBooks) =>
         prevBooks.filter((book) => !selectedBooks.includes(book.id))
       );
+      handleSuccessSubject('가계부', '삭제');
       setIsDeleteMode(false);
       setSelectedBooks([]);
     } catch (error) {
       console.error('Failed to delete account books:', error);
+      handleFailureSubject('가계부', '삭제');
     }
   };
 

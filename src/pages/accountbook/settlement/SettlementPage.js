@@ -9,6 +9,7 @@ import {
 } from '../../../api/settlementApi';
 import Share from '../../../components/settlement/Share';
 import SettlementDetail from '../../../components/settlement/SettlementDetail';
+import { handleProblemSubject } from '../../../util/swalUtils';
 
 const SettlementPage = () => {
   const { id } = useParams();
@@ -60,6 +61,7 @@ const SettlementPage = () => {
         setDisplayedPerPersonExpense(0); //애니메이션 실행 전 초기화
       } catch (error) {
         console.error(error);
+        handleProblemSubject('가계부 정산');
       }
     };
     fetchData();
