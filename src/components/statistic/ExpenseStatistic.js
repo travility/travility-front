@@ -60,7 +60,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
         setDates(uniqueDates);
         setSelectedDate(uniqueDates[0]); 
 
-        // 기본적으로 첫 번째 날짜 선택
         const paymentData = await getPaymentMethodStatisticsByDate(accountBookId, uniqueDates[0]);
         if (Array.isArray(paymentData)) {
           setPaymentMethodStatistics(paymentData);
@@ -76,7 +75,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     fetchData();
   }, [accountBookId]);
 
-  // 날짜 선택 핸들러
   const handleDateChange = async (selectedOption) => {
     setSelectedDate(selectedOption.value);
     const paymentData = await getPaymentMethodStatisticsByDate(accountBookId, selectedOption.value);
@@ -88,7 +86,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }
   };
 
-  // 카테고리 선택 핸들러
   const handleCategoryChange = async (event) => {
     const value = event.target.value;
     setSelectedCategories(prevSelectedCategories => 
@@ -98,12 +95,14 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     );
   };
 
-  // 체크 해제 핸들러
   const handleClearSelection = () => {
     setSelectedCategories([]);
   };
 
-  // 카테고리 선택하면 해당 데이터 가져올거에요
+  const handleSelectAll = () => {
+    setSelectedCategories(categories.map(category => category.en));
+  };
+
   useEffect(() => {
     const fetchLineChartData = async () => {
       if (selectedCategories.length > 0) {
@@ -141,7 +140,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }
   }, [selectedCategories, dates]);
 
-  // 선택된 날짜의 카테고리별 데이터 골라먹기
   const filteredData = statistics
     .filter(stat => stat.date === selectedDate)
     .reduce((acc, stat) => {
@@ -149,7 +147,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
       return acc;
     }, {});
 
-  // 카테고리별 데이터 설정
   const data = {
     labels: categories.map(category => category.ko),
     datasets: [{
@@ -159,7 +156,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }]
   };
 
-  // 결제 방법별 데이터 설정
   const paymentMethodData = {
     labels: paymentMethods.map(method => method.ko),
     datasets: [{
@@ -172,32 +168,31 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }]
   };
 
-  // 차트 옵션
   const options = {
     scales: {
       x: {
         beginAtZero: true,
         grid: {
-          lineWidth: 1, // x축 모든 라인 굵게
+          lineWidth: 1,
           color: "#d1d1d1"
         },
         ticks: {
-          color: "#000000", // 폰트 색상
+          color: "#000000",
           font: {
-            size: 15 // 폰트 크기
+            size: 15
           }
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          lineWidth: 1, // y축의 모든 라인 굵게
+          lineWidth: 1,
           color: "#d1d1d1"
         },
         ticks: {
-          color: "#000000", // 폰트 색상
+          color: "#000000",
           font: {
-            size: 14 // 폰트 크기
+            size: 14
           }
         }
       }
@@ -205,18 +200,18 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     plugins: {
       legend: {
         labels: {
-          color: "black", // 범례 폰트 색상
+          color: "black",
           font: {
-            size: 18 // 범례 폰트 크기
+            size: 18
           },
-          boxWidth: 45 // 범례 박스 너비
+          boxWidth: 45
         }
       },
       tooltip: {
-        mode: 'index', // 툴팁 모드 설정 : 마우스 아무데나 올려놔도 정보 뜸. 안하면 에임잡기 빡셈
-        intersect: false, // 교차여부
+        mode: 'index',
+        intersect: false,
         callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`, // 툴팁 한글 라벨
+          label: (context) => `${context.dataset.label}: ${context.raw}`,
           labelColor: (context) => ({
             borderColor: context.dataset.borderColor,
             backgroundColor: context.dataset.backgroundColor
@@ -226,32 +221,31 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }
   };
 
-  // 항목별 지출 차트 옵션
   const categoryChartOptions = {
     scales: {
       x: {
         beginAtZero: true,
         grid: {
-          lineWidth: 1, // x축 모든 라인 굵게
+          lineWidth: 1,
           color: "#d1d1d1"
         },
         ticks: {
-          color: "#000000", // 폰트 색상
+          color: "#000000",
           font: {
-            size: 12 // 폰트 크기
+            size: 12
           }
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          lineWidth: 1, // y축의 모든 라인 굵게
+          lineWidth: 1,
           color: "#d1d1d1"
         },
         ticks: {
-          color: "#000000", // 폰트 색상
+          color: "#000000",
           font: {
-            size: 14 // 폰트 크기
+            size: 14
           }
         }
       }
@@ -268,13 +262,13 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
               index: index
             }));
           },
-          color: "black", // 범례 폰트 색상
+          color: "black",
           font: {
-            size: 18 // 범례 폰트 크기
+            size: 18
           },
-          boxWidth: 45 // 범례 박스 너비
+          boxWidth: 45
         },
-        onClick: (e, legendItem, legend) => { // 작동안됨
+        onClick: (e, legendItem, legend) => {
           const index = legendItem.index;
           const ci = legend.chart;
           const meta = ci.getDatasetMeta(0);
@@ -284,10 +278,10 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
         }
       },
       tooltip: {
-        mode: 'index', // 툴팁 모드 설정 : 마우스 아무데나 올려놔도 정보 뜸. 안하면 에임잡기 빡셈
-        intersect: false, // 교차여부
+        mode: 'index',
+        intersect: false,
         callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`, // 툴팁 한글 라벨
+          label: (context) => `${context.dataset.label}: ${context.raw}`,
           labelColor: (context) => ({
             borderColor: context.dataset.borderColor,
             backgroundColor: context.dataset.backgroundColor
@@ -297,32 +291,31 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }
   };
 
-  // 결제 방법 차트 옵션
   const paymentMethodOptions = {
     scales: {
       x: {
         beginAtZero: true,
         grid: {
-          lineWidth: 1, // x축 모든 라인 굵게
+          lineWidth: 1,
           color: "#d1d1d1"
         },
         ticks: {
-          color: "#000000", // 폰트 색상
+          color: "#000000",
           font: {
-            size: 15 // 폰트 크기
+            size: 15
           }
         }
       },
       y: {
         beginAtZero: true,
         grid: {
-          lineWidth: 1, // y축의 모든 라인 굵게
+          lineWidth: 1,
           color: "#d1d1d1"
         },
         ticks: {
-          color: "#000000", // 폰트 색상
+          color: "#000000",
           font: {
-            size: 14 // 폰트 크기
+            size: 14
           }
         }
       }
@@ -339,18 +332,18 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
               index: index
             }));
           },
-          color: "black", // 범례 폰트 색상
+          color: "black",
           font: {
-            size: 18 // 범례 폰트 크기
+            size: 18
           },
-          boxWidth: 45 // 범례 박스 너비
+          boxWidth: 45
         }
       },
       tooltip: {
-        mode: 'index', // 툴팁 모드 설정 : 마우스 아무데나 올려놔도 정보 뜸. 안하면 에임잡기 빡셈
-        intersect: false, // 교차여부
+        mode: 'index',
+        intersect: false,
         callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`, // 툴팁 한글 라벨
+          label: (context) => `${context.dataset.label}: ${context.raw}`,
           labelColor: (context) => ({
             borderColor: context.dataset.borderColor,
             backgroundColor: context.dataset.backgroundColor
@@ -360,7 +353,6 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
     }
   };
 
-  // 날짜 선택 옵션
   const dateOptions = dates.map(date => ({ value: date, label: formatDate(date) }));
 
   return (
@@ -400,6 +392,7 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
               </label>
             </div>
           ))}
+          <button onClick={handleSelectAll} className={styles.backButton}>전체선택</button>
           <button onClick={handleClearSelection} className={styles.backButton}>체크해제</button>
         </div>
         
