@@ -176,7 +176,7 @@ const ScheduleDetail = ({
                         <div className={styles.expense_info}>
                           <div className={styles.expense_title_container}>
                             <span className={styles.expense_title}>
-                              {truncateText(expense.title, 5)}
+                              {truncateText(expense.title, 4)}
                             </span>
                           </div>
                           <div className={styles.expense_ca_container}>
