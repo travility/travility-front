@@ -37,11 +37,14 @@
 }
 
 .sortType {
-  width: 100%;
+  /* width: 100%; */
+  max-width: 20rem;
   height: 80%;
   /* margin-right: 0.3rem; */
   z-index: 9999;
+  font-size: 1rem;
 }
+
 
 /*삭제*/
 .action_buttons {
@@ -50,6 +53,7 @@
   align-items: center;
   margin-bottom: 1rem;
   width: 9rem;
+  font-size: 0.9rem;
 }
 
 .confirm_delete_button {
