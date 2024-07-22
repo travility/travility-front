@@ -16,15 +16,34 @@
   margin-bottom: 1.5rem;
 }
 
-.total_title,
+/* 일자별 지출, 지출 한눈에 보기 TITLE */
+
 .chartsWrapper_title,
 .categorySelection_title {
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  width: 200px;
+  padding: 10px;
+  text-align: left;
 }
+
+.expenseStatistic_date_container{
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
 
 .expenseStatistic_chartTitle {
   margin-bottom: 10px;
   font-weight: 500;
+  color: black;
+}
+
+.expenseStatistic_day_selectContainer{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%; 
 }
 
 .chartsWrapper_chart {
@@ -34,7 +53,7 @@
   width: 100%;
   /* height: 300px; */
   box-sizing: border-box;
-  margin-bottom: 1.5rem;
+  margin-bottom: 5rem;
 }
 
 .expenseStatistic_chartContainer {
@@ -42,11 +61,12 @@
   margin-top: 1rem;
   padding: 20px;
   box-sizing: border-box;
-  border: 1px solid #d1d1d1;
+  border: 1px solid var(--line-color);
   border-radius: 10px;
   min-width: 300px;
   width: 100%;
   height: 100%;
+  background-color: white;
 }
 
 .categoryChart {
@@ -76,6 +96,10 @@
   justify-content: center;
   box-sizing: border-box;
   height: 500px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid var(--line-color);
+  padding: 20px;
 }
 
 .expenseStatistic_lineChartWrapper {
@@ -87,6 +111,7 @@
 .lineChart {
   width: 100%;
 }
+
 
 @media (max-width: 768px) {
   .chartsWrapper_chart {

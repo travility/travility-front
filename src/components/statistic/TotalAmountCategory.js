@@ -4,16 +4,16 @@ import styles from '../../styles/statistic/TotalAmountCategory.module.css';
 
 // 총 지출내역 밑에 카테고리별 총지출 써져있는거
 const categories = [
-  { en: 'TRANSPORTATION', ko: '교통' },
   { en: 'ACCOMMODATION', ko: '숙박' },
+  { en: 'TRANSPORTATION', ko: '교통' },
+  { en: 'SHOPPING', ko: '쇼핑' },
   { en: 'FOOD', ko: '식비' },
   { en: 'TOURISM', ko: '관광' },
-  { en: 'SHOPPING', ko: '쇼핑' },
   { en: 'OTHERS', ko: '기타' }
 ];
 
 const categoryColors = [
-  '#5DA7FF', 
+  'textColor', 
 ];
 
 const TotalAmountCategory = ({ accountBookId }) => {

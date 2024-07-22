@@ -10,13 +10,13 @@ import {
 import 'chart.js/auto';
 import TotalAmountCategory from './TotalAmountCategory';
 import TotalResult from '../statistic/TotalResult';
-import styles from '../../styles/statistic/ExpenseStatistic.module.css';
+import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../../util/calcUtils';
 import { Button } from '../../styles/StyledComponents';
-import { useNavigate, useParams } from 'react-router-dom';
+import styles from '../../styles/statistic/ExpenseStatistic.module.css';
+import { selectStyles3 } from '../../util/CustomStyles';
 
 // 카테고리 목록
-
 const categories = [
   { en: 'ACCOMMODATION', ko: '숙박' },
   { en: 'TRANSPORTATION', ko: '교통' },
@@ -45,6 +45,7 @@ const colors = [
   '#FEC144',
   '#B5CE2A',
   '#828C98',
+  '#ff8bd2'
 ];
 
 // 결제 방법 목록
@@ -133,7 +134,7 @@ const ExpenseStatistic = () => {
     setSelectedCategories([]);
   };
 
-  // 카테고리 선택하면 해당 데이터 가져올거에요
+  // 라인차트 숙박 ~ 전체지출 
   useEffect(() => {
     const fetchLineChartData = async () => {
       if (selectedCategories.length > 0) {
@@ -227,7 +228,7 @@ const ExpenseStatistic = () => {
           color: '#d1d1d1',
         },
         ticks: {
-          color: '#000000', // 폰트 색상
+          color: 'black', // 폰트 색상
           font: {
             size: 15, // 폰트 크기
           },
@@ -240,7 +241,7 @@ const ExpenseStatistic = () => {
           color: '#d1d1d1',
         },
         ticks: {
-          color: '#000000', // 폰트 색상
+          color: 'black', // 폰트 색상
           font: {
             size: 14, // 폰트 크기
           },
@@ -281,7 +282,7 @@ const ExpenseStatistic = () => {
           color: '#d1d1d1',
         },
         ticks: {
-          color: '#000000', // 폰트 색상
+          color: 'black', // 폰트 색상
           font: {
             size: 12, // 폰트 크기
           },
@@ -294,7 +295,7 @@ const ExpenseStatistic = () => {
           color: '#d1d1d1',
         },
         ticks: {
-          color: '#000000', // 폰트 색상
+          color: 'black', // 폰트 색상
           font: {
             size: 14, // 폰트 크기
           },
@@ -368,7 +369,7 @@ const ExpenseStatistic = () => {
           color: '#d1d1d1',
         },
         ticks: {
-          color: '#000000', // 폰트 색상
+          color: 'black', // 폰트 색상
           font: {
             size: 15, // 폰트 크기
           },
@@ -443,25 +444,20 @@ const ExpenseStatistic = () => {
         </div>
       </div>
       <div className={styles.expenseStatistic_content}>
-        {/* <h2 className={styles.expenseStatistic_totalAmountHeader}>총 지출 내역</h2> */}
-        {/* <a
-          className={styles.expenseStatistic_tooltipLink}
-          data-tooltip-id="expense-info"
-          data-tooltip-content="개인 지출 + (공유 지출 / 인원수)"
-          data-tooltip-variant="info"
-        >
-          ?
-        </a> */}
-
+         
         <div className={styles.expenseStatistic_chartsWrapper}>
-          <div className={styles.chartsWrapper_title}>일자별 지출</div>
-          <div className={styles.expenseStatistic_selectContainer}>
-            <Select
-              options={dateOptions}
-              onChange={handleDateChange}
-              placeholder="날짜 선택"
-              noOptionsMessage={() => '선택 가능한 날짜가 없습니다.'}
-            />
+          <div className={styles.expenseStatistic_date_container}>
+             <div className={styles.chartsWrapper_title}>📆 일자별 지출</div>
+              <Select
+                  options={dateOptions}
+                  onChange={handleDateChange}
+                  placeholder="날짜 선택"
+                  noOptionsMessage={() => '선택 가능한 날짜가 없습니다.'}
+                  styles
+                  ={selectStyles3}
+                />
+             <div className={styles.expenseStatistic_day_selectContainer}>
+            </div>
           </div>
           <div className={styles.chartsWrapper_chart}>
             <div className={styles.expenseStatistic_chartContainer}>
@@ -486,10 +482,10 @@ const ExpenseStatistic = () => {
             </div>
           </div>
         </div>
+        <div className={styles.expenseStatistic_chartsWrapper}>
+          <div className={styles.categorySelection_title}>🔎 지출 한눈에 보기</div>
         <div className={styles.expenseStatistic_categorySelection}>
-          <div className={styles.categorySelection_title}>지출 한눈에 보기</div>
           <div className={styles.expenseStatistic_total}>
-            {/* <div className={styles.total_title}>항목별 지출</div> */}
             <Tooltip id="expense-info" />
             <TotalAmountCategory accountBookId={id} />
           </div>
@@ -524,6 +520,7 @@ const ExpenseStatistic = () => {
               options={options}
             />
           </div>
+        </div>
         </div>
       </div>
     </div>
