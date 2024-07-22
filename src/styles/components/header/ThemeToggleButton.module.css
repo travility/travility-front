@@ -1,11 +1,11 @@
 .toggleTheme_button {
-  width: 3.5rem;
-  height: 1rem;
+  width: 4rem;
+  height: 1.5rem;
   border-radius: 1rem;
   position: relative;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  border: 2px solid var(--second-color);
+  border: 1.5px solid var(--second-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,7 +22,7 @@
 
 .themeText {
   color: var(--text-color);
-  font-size: 0.4em;
+  font-size: 0.5em;
   font-weight: 800;
   white-space: nowrap;
   padding: 0 0.2rem;

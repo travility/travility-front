@@ -1,21 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../../styles/components/header/Header.module.css';
-import { logout } from '../../api/memberApi';
+import React, { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../../styles/components/header/Header.module.css";
+import { logout } from "../../api/memberApi";
 import {
   handleAlreadyLoggedOut,
   handleProblemSubject,
   handleSuccessLogout,
   handleTokenExpirationLogout,
-} from '../../util/swalUtils';
-import { MemberInfoContext } from '../../App';
-import ThemeToggleButton from './ThemeToggleButton';
-import { useTheme } from '../../styles/Theme';
+} from "../../util/swalUtils";
+import { MemberInfoContext } from "../../App";
+import ThemeToggleButton from "./ThemeToggleButton";
+import { useTheme } from "../../styles/Theme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes, faBars } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const { memberInfo } = useContext(MemberInfoContext);
-  const [name, setName] = useState('');
-  const [role, setRole] = useState('');
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,25 +37,25 @@ const Header = () => {
     } catch (error) {
       console.log(error);
       const errorMessage = error.response.data;
-      if (errorMessage === 'refresh token expired') {
+      if (errorMessage === "refresh token expired") {
         //리프레시 토큰 만료
         handleTokenExpirationLogout();
       } else if (
-        errorMessage === 'refresh token null' ||
-        errorMessage === 'invalid refresh token'
+        errorMessage === "refresh token null" ||
+        errorMessage === "invalid refresh token"
       ) {
         handleAlreadyLoggedOut();
       } else {
-        handleProblemSubject('로그아웃');
+        handleProblemSubject("로그아웃");
       }
     }
   };
 
   const handleLogoClick = () => {
     if (memberInfo) {
-      navigate('/main');
+      navigate("/main");
     } else {
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -61,31 +63,23 @@ const Header = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const logoStyle = {
-    color: location.pathname === '/' ? '#fff' : 'var(--main-color)',
-  };
-
   const handleMouseOver = (e) => {
-    const img = e.currentTarget.querySelector('img');
+    const img = e.currentTarget.querySelector("img");
     if (img) {
-      img.src = '/images/person_circle_pk.png';
+      img.src = "/images/person_circle_pk.png";
     }
   };
 
   const handleMouseOut = (e) => {
-    const img = e.currentTarget.querySelector('img');
+    const img = e.currentTarget.querySelector("img");
     if (img) {
-      img.src = '/images/person_circle.png';
+      img.src = "/images/person_circle.png";
     }
   };
 
   return (
     <header className={styles.header_container}>
-      <div
-        className={styles.header_logo}
-        onClick={handleLogoClick}
-        style={logoStyle}
-      >
+      <div className={styles.header_logo} onClick={handleLogoClick}>
         <div className={styles.logo_container}>
           <img src="/images/main/logo.png" alt="logo" className={styles.logo} />
           <img
@@ -96,21 +90,28 @@ const Header = () => {
         </div>
         TRAVILITY
       </div>
-      {memberInfo && location.pathname !== '/' && (
-        <div className={styles.header_right}>
-          <span
-            className={`${styles.header_welcome_message} ${
-              isSidebarOpen ? styles.open : ''
-            }`}
-          >
-            {role === 'ROLE_ADMIN' ? (
+      <div className={styles.header_right}>
+        <ThemeToggleButton toggleTheme={toggleTheme} currentTheme={theme} />
+        {memberInfo && (
+          <button className={styles.toggle_button} onClick={toggleSidebar}>
+            <FontAwesomeIcon
+              icon={isSidebarOpen ? faTimes : faBars}
+              size="sm"
+            />
+          </button>
+        )}
+      </div>
+      {isSidebarOpen && (
+        <div className={styles.sidebar}>
+          <span className={styles.header_welcome_message}>
+            {role === "ROLE_ADMIN" ? (
               <span className={styles.admin_message}>
                 현재 관리자 모드입니다
               </span>
             ) : (
               <>
                 <button
-                  onClick={() => navigate('/dashboard/myinfo')}
+                  onClick={() => navigate("/dashboard/myinfo")}
                   className={styles.user_button}
                   onMouseOver={handleMouseOver}
                   onMouseOut={handleMouseOut}
@@ -121,27 +122,16 @@ const Header = () => {
                 님 반갑습니다!
               </>
             )}
-            <button className={styles.toggle_button} onClick={toggleSidebar}>
-              {isSidebarOpen ? '>' : '<'}
-            </button>
           </span>
-          {isSidebarOpen && (
-            <div className={styles.sidebar}>
-              <button className={styles.logout_button} onClick={handleLogout}>
-                Logout
-              </button>
-              <button
-                className={styles.nav_second_button}
-                onClick={() => navigate('/')}
-              >
-                About Us
-              </button>
-              <ThemeToggleButton
-                toggleTheme={toggleTheme}
-                currentTheme={theme}
-              />
-            </div>
-          )}
+          <button className={styles.logout_button} onClick={handleLogout}>
+            Logout
+          </button>
+          <button
+            className={styles.nav_second_button}
+            onClick={() => navigate("/")}
+          >
+            About Us
+          </button>
         </div>
       )}
     </header>

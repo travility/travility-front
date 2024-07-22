@@ -197,7 +197,7 @@
 }
 
 .summaryInfo label {
-  color: var(--dark-color);
+  color: var(--bold-color);
   font-size: 0.8em;
 }
 
@@ -314,7 +314,13 @@
 }
 
 /* 반응형 디자인 */
-@media (max-width: 750px) {
+@media (max-width: 850px) {
+  .expenseList_summary {
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 767px) {
   .dashboard {
     grid-template-columns: 1fr;
   }
@@ -395,6 +401,10 @@
     color: var(--point-color);
   }
 
+  .expenseList_summary {
+    font-size: 0.8em;
+  }
+
   .expenseList_container {
     padding-left: 0;
   }
@@ -405,9 +415,9 @@
     padding: 0.7rem;
   }
 
-  .accountbook_icons button {
+  .tripInfoAndMenu {
     flex-direction: column;
-    gap: 0.2rem;
+    align-items: center;
   }
 }
 

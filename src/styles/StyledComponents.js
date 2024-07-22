@@ -37,19 +37,19 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
   }
 
-  @media (max-width: 530px) {
+  @media (max-width: 480px) {
     html {
-      font-size: 75%;
+      font-size: 80%;
     }
   }
 
-  @media (min-width: 531px) and (max-width: 860px) {
+  @media (min-width: 481px) and (max-width: 767px) {
     html {
       font-size: 87.5%;
     }
   }
 
-  @media (min-width: 861px) and (max-width: 1024px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     html {
       font-size: 100%;
     }
@@ -114,7 +114,7 @@ const Inner = styled.div`
 const Container = styled.div`
   padding: 3rem 4rem;
 
-  @media (max-width: 530px) {
+  @media (max-width: 540px) {
     padding: 3rem 2.5rem;
   }
 `;
@@ -175,6 +175,10 @@ const Input = styled.input`
   &::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  @media (max-width: 530px) {
+    padding: 0.7rem;
   }
 `;
 
