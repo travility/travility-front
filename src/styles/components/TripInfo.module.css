@@ -9,8 +9,8 @@
     background-size: cover;
     background-position: center;
     width: 100%;
-    min-width: 11rem;
-    min-height: 7rem;
+    min-width: 12rem;
+    min-height: 8rem;
     position: relative;
     padding: 0.5rem;
   }
@@ -63,7 +63,7 @@
     font-size: 0.8em;
     align-self: flex-end;
     z-index: 2;
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 
   .accountBook_list_amount label {

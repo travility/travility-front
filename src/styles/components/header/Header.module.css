@@ -3,11 +3,11 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 0 1rem;
 }
 
 .header_logo {
   cursor: pointer;
-  padding: 0 1rem;
   font-weight: bold;
   color: var(--main-color);
   font-size: 1.5rem;
@@ -67,21 +67,20 @@
   align-items: center;
   position: relative;
   transition: transform 0.3s ease-in-out;
-  margin: 0 1rem;
 }
 
 .header_welcome_message {
   font-size: 0.7em;
   font-weight: 500;
   display: flex;
-  align-items: end;
+  align-items: center;
   white-space: nowrap;
 }
 
 .header_welcome_message .user_button {
   display: flex;
   align-items: center;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 600;
   border: none;
   background: none;
@@ -99,11 +98,6 @@
   width: 0.9rem;
   margin-right: 0.3rem;
 }
-
-.header_welcome_message.open {
-  margin-right: 12rem;
-}
-
 .admin_message {
   text-decoration: underline;
   color: var(--main-color);
@@ -111,50 +105,50 @@
 }
 
 .toggle_button {
-  background: var(--main-color);
-  border: 2px solid var(--light-color);
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-align: center;
-  color: #ffffff;
-  height: 1.5rem;
-  width: 1.5rem;
+  font-size: 1.2em;
   margin-left: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle_button:hover {
+  color: var(--main-color);
 }
 
 .sidebar {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  background: var(--light-color);
-  padding: 0.5rem;
+  background: var(--background-color);
+  padding: 1rem 2rem;
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 12rem;
-  height: 1.5rem;
+  top: 3.7rem;
+  right: 2.3rem;
+  border: 1px solid var(--line-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
-.logout_button,
-.nav_second_button {
+.sidebar button {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.6em;
-  font-weight: 700;
+  font-size: 0.7em;
+  font-weight: 600;
   color: var(--text-color);
   white-space: nowrap;
+  margin: 0.3rem 0;
 }
 
-.logout_button:hover,
-.nav_second_button:hover {
+.sidebar button:hover {
   color: var(--point-color);
-}
-
-.nav_second_button::before {
-  content: '|';
-  margin-right: 0.5rem;
-  color: var(--text-color);
 }

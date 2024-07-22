@@ -25,7 +25,7 @@ const AccountBookDate = ({
     const handleResize = () => {
       setIsMobileView(window.innerWidth <= 750);
       setItemsPerPage(
-        window.innerWidth <= 530 ? (window.innerWidth <= 450 ? 4 : 5) : 6
+        window.innerWidth <= 540 ? (window.innerWidth <= 450 ? 4 : 5) : 6
       );
     };
 
