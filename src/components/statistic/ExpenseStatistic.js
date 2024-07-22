@@ -31,7 +31,15 @@ const categoryMap = {
 };
 
 // 카테고리 색 배열
-const colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#a9a9a9'];
+const colors = [
+  '#e6194b', 
+  '#3cb44b', 
+  '#ffe119', 
+  '#4363d8', 
+  '#f58231', 
+  '#911eb4', 
+  '#a9a9a9'
+];
 
 // 결제 방법 목록
 const paymentMethods = [
