@@ -50,14 +50,14 @@ const TotalResult = ({ accountBookId }) => {
         <div>
           이번 여행에서{' '}
           <span className={styles.highlight}>
-            {formatNumberWithCommas(totalexpenses)}
+            {formatNumberWithCommas(totalexpenses)} 
           </span>
-          원 썼어요!
+           원 썼어요!
         </div>
         <div>
           {remainingBudget > 0 ? (
             <>
-              예산 {formatNumberWithCommas(totalBudget)}원에서{' '}
+              예산 {formatNumberWithCommas(totalBudget)} 원에서{' '}
               <span className={styles.highlight}>
                 {formatNumberWithCommas(remainingBudget)}
               </span>
@@ -69,16 +69,13 @@ const TotalResult = ({ accountBookId }) => {
               <span className={styles.highlight}>
                 {formatNumberWithCommas(-remainingBudget)}
               </span>
-              원 더 사용했어요!
+              원 더 사용했어요.
             </>
           ) : (
             '예산과 동일하게 사용했어요!'
           )}
         </div>
       </div>
-      {/* <p className={styles.totalBudget}>
-        *예산 : {totalBudget.toLocaleString()}원
-      </p> */}
     </div>
   );
 };
