@@ -266,10 +266,12 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
             </div>
 
             <div className={styles.settlement_button}>
-              {filter === 'shared' ? (
+              {filter === 'all' ? (
+                <Button onClick={goExport}>내보내기</Button>
+              ) : filter === 'shared' ? (
                 <Button onClick={goSettlement}>정산하기</Button>
               ) : (
-                <Button onClick={goExport}>내보내기</Button>
+                ''
               )}
             </div>
           </div>
