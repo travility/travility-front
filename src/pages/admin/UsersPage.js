@@ -145,10 +145,8 @@ const UsersPage = () => {
           <div className={styles.content}>
             <div className={styles.statistics}>
               <p>
-                총 회원 수는 <span>{totalCount}</span> 명입니다.
-              </p>
-              <p>
-                오늘 신규 가입자 수는 <span>{todayCount}</span> 명입니다.
+                총 회원 수는 <span>{totalCount}</span> 명이고, 오늘 가입자 수는{' '}
+                <span>{todayCount}</span> 명입니다.
               </p>
             </div>
             <div className={styles.memberList_container}>

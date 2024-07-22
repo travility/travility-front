@@ -75,7 +75,7 @@
   font-weight: 500;
   display: flex;
   align-items: end;
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .header_welcome_message .user_button {
@@ -102,6 +102,12 @@
 
 .header_welcome_message.open {
   margin-right: 12rem;
+}
+
+.admin_message {
+  text-decoration: underline;
+  color: var(--main-color);
+  text-align: center;
 }
 
 .toggle_button {
@@ -139,7 +145,7 @@
   font-size: 0.6em;
   font-weight: 700;
   color: var(--text-color);
-  white-space: nowrap
+  white-space: nowrap;
 }
 
 .logout_button:hover,

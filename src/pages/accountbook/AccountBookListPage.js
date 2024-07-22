@@ -12,6 +12,7 @@ import {
   handleFailureSubject,
   handleSuccessSubject,
 } from '../../util/swalUtils';
+import Swal from 'sweetalert2';
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -60,7 +61,6 @@ const AccountBookListPage = () => {
     }
   };
 
-
   const sortOptions = [
     { value: 'new', label: '최신순' },
     { value: 'old', label: '오래된순' },
@@ -77,18 +77,30 @@ const AccountBookListPage = () => {
   };
 
   const handleDeleteBooks = async () => {
-    try {
-      await Promise.all(selectedBooks.map((id) => deleteAccountBook(id)));
-      setAccountBooks((prevBooks) =>
-        prevBooks.filter((book) => !selectedBooks.includes(book.id))
-      );
-      handleSuccessSubject('가계부', '삭제');
-      setIsDeleteMode(false);
-      setSelectedBooks([]);
-    } catch (error) {
-      console.error('Failed to delete account books:', error);
-      handleFailureSubject('가계부', '삭제');
-    }
+    Swal.fire({
+      title: '정말로 삭제하시겠습니까?',
+      text: '가계부 내용이 전부 삭제됩니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--main-color)',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          Promise.all(selectedBooks.map((id) => deleteAccountBook(id)));
+          setAccountBooks((prevBooks) =>
+            prevBooks.filter((book) => !selectedBooks.includes(book.id))
+          );
+          handleSuccessSubject('가계부', '삭제');
+          setIsDeleteMode(false);
+          setSelectedBooks([]);
+        } catch (error) {
+          console.error('Failed to delete account books:', error);
+          handleFailureSubject('가계부', '삭제');
+        }
+      }
+    });
   };
 
   const handleSelectBook = (accountBook) => {
