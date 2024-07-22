@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../../../styles/accountbook/SettlementExpenseListPage.module.css";
-import { Button } from "../../../styles/StyledComponents";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styles from '../../../styles/accountbook/settlement/SettlementExpenseListPage.module.css';
+import { Button } from '../../../styles/StyledComponents';
 
 const categoryImages = {
-  TRANSPORTATION: "transportation.png",
-  ACCOMMODATION: "accommodation.png",
-  FOOD: "food.png",
-  TOURISM: "tourism.png",
-  SHOPPING: "shopping.png",
-  OTHERS: "others.png",
+  TRANSPORTATION: 'transportation.png',
+  ACCOMMODATION: 'accommodation.png',
+  FOOD: 'food.png',
+  TOURISM: 'tourism.png',
+  SHOPPING: 'shopping.png',
+  OTHERS: 'others.png',
 };
 
 const SettlementExpenseListPage = () => {
@@ -60,7 +60,7 @@ const SettlementExpenseListPage = () => {
                   <img
                     className={styles.categoryImg}
                     src={`/images/account/category/${
-                      categoryImages[expense.category] || "others.png"
+                      categoryImages[expense.category] || 'others.png'
                     }`}
                     alt={expense.category}
                   />
@@ -73,7 +73,7 @@ const SettlementExpenseListPage = () => {
                       src={`http://localhost:8080/images/${expense.imgName}`}
                       alt="지출 이미지"
                       onError={(e) => {
-                        e.target.style.display = "none";
+                        e.target.style.display = 'none';
                       }}
                     />
                   ) : (

@@ -64,19 +64,10 @@
   table-layout: fixed;
 }
 
-.sorttype_container {
+.sortType_container {
   float: right;
-}
-
-.sorttype {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 0.7em;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px var(--shadow-color);
+  padding: 0.05rem;
+  margin-bottom: 1rem;
 }
 
 .memberList th,

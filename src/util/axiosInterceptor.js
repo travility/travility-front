@@ -39,10 +39,7 @@ axiosInstance.interceptors.response.use(
     // 2xx 외의 범위에 있는 상태 코드 or 응답 오류가 있는 작업 수행
     const originalRequest = error.config; // 원래 요청 정보
 
-    if (
-      error.response.status === 401 &&
-      error.response.data === 'access token expired'
-    ) {
+    if (error.response.data === 'access token expired') {
       if (!isRefreshing) {
         //재발급 중
         isRefreshing = true;
@@ -59,6 +56,7 @@ axiosInstance.interceptors.response.use(
 
           return axiosInstance(originalRequest); // 최종적으로 원래 요청 재시도
         } catch (error) {
+          console.log(error);
           isRefreshing = false;
           if (error.response.data === 'refresh token expired') {
             //리프레시 토큰 만료

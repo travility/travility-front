@@ -1,0 +1,39 @@
+.exportAccountBook_content {
+  margin-top: 1rem;
+}
+
+.description {
+  font-size: 0.8rem;
+  color: var(--gray-color);
+  margin-bottom: 1.5rem;
+}
+
+.description2 {
+  font-size: 0.5rem;
+  color: var(--gray-color);
+  margin-top: 1.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.exportOption_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.exportOption {
+  display: flex;
+  align-items: center; /* 세로 가운데 정렬 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 */
+}
+
+.exportOption label {
+  font-size: 1rem; /* 폰트 크기 */
+  white-space: nowrap; /* 줄 바꿈 방지 */
+}
+
+.radio {
+  transform: scale(0.8); /* 라디오 버튼 크기 조정 */
+  margin-right: 0.5rem; /* 버튼과 텍스트 간의 간격 */
+}

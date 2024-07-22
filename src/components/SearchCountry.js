@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import styles from '../styles/components/SearchCountry.module.css';
 import { fetchCountryFlags } from '../api/accountbookApi';
 import { Scrollbar } from 'react-scrollbars-custom';
 
-const SearchCountry = ({ onSelectCountry, closeModal }) => {
+const SearchCountry = forwardRef(({ onSelectCountry, closeModal, modalPosition = { top: 0, left: 0 } }, ref) => {
   const [modalSearchCountry, setModalSearchCountry] = useState('');
   const [countries, setCountries] = useState([]);
 
@@ -24,8 +24,24 @@ const SearchCountry = ({ onSelectCountry, closeModal }) => {
     country.country_nm.includes(modalSearchCountry)
   );
 
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      console.log('focus on SearchCountry');
+    },
+  }));
+
+  console.log('modalPosition:', modalPosition); 
+
   return (
-    <div className={styles.modalOverlay}>
+    <div 
+     ref={ref}
+     className={styles.modalOverlay}
+     style={{
+      position: 'absolute',
+      top: `${modalPosition.top}px`,
+      left: `${modalPosition.left}px`,
+     }}
+    >
       <div className={styles.modalContent}>
         <button className={styles.closeButton} onClick={closeModal}>
           &times;
@@ -67,6 +83,6 @@ const SearchCountry = ({ onSelectCountry, closeModal }) => {
       </div>
     </div>
   );
-};
+});
 
 export default SearchCountry;
