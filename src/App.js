@@ -22,6 +22,7 @@ import SettlementPage from './pages/accountbook/settlement/SettlementPage';
 import SettlementExpenseListPage from './pages/accountbook/settlement/SettlementExpenseListPage';
 import ForgotPasswordPage from './pages/member/password/ForgotPasswordPage';
 import UpdatePasswordPage from './pages/member/password/UpdatePasswordPage';
+import ExpenseStatistic from './components/statistic/ExpenseStatistic';
 
 export const MemberInfoContext = createContext();
 
@@ -121,6 +122,14 @@ function App() {
                 element={
                   <AuthenticatedRoute>
                     <AccountBookDetail />
+                  </AuthenticatedRoute>
+                }
+              />
+              <Route
+                path="/accountbook/detail/:id/statistics"
+                element={
+                  <AuthenticatedRoute>
+                    <ExpenseStatistic />
                   </AuthenticatedRoute>
                 }
               />
