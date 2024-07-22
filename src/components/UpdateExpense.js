@@ -18,6 +18,7 @@ import {
 } from '../styles/StyledComponents';
 import { useTheme } from '../styles/Theme';
 import { selectStyles } from '../util/CustomStyles';
+import Swal from 'sweetalert2';
 
 // 지출 카테고리
 const categories = [
@@ -166,14 +167,26 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
   // 지출 삭제
   const handleDeleteExpense = (e) => {
     e.preventDefault();
-    deleteExpense(expense.id)
-      .then(() => {
-        handleSuccessSubject('지출', '삭제');
-      })
-      .catch((error) => {
-        console.log(error);
-        handleFailureSubject('지출', '삭제');
-      });
+    Swal.fire({
+      title: '정말로 삭제하시겠습니까?',
+      text: '지출이 삭제됩니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--main-color)',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteExpense(expense.id)
+          .then(() => {
+            handleSuccessSubject('지출', '삭제');
+          })
+          .catch((error) => {
+            console.log(error);
+            handleFailureSubject('지출', '삭제');
+          });
+      }
+    });
   };
 
   const handlePaymentMethodChange = (paymentMethod) => {

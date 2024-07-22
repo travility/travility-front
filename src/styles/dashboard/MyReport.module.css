@@ -144,7 +144,13 @@
 .category_title,
 .paymentMethod_title {
   color: var(--text-color);
-  font-weight: 500;
+  font-style: italic;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+    font-weight: 700;
+    color: var(--pointor-color);
+  }
 }
 
 .chartType {

@@ -104,7 +104,9 @@ const Header = () => {
             }`}
           >
             {role === 'ROLE_ADMIN' ? (
-              <>현재 관리자 모드입니다</>
+              <span className={styles.admin_message}>
+                현재 관리자 모드입니다
+              </span>
             ) : (
               <>
                 <button
