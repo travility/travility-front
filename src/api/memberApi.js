@@ -31,7 +31,7 @@ export const login = async (data) => {
 };
 
 // OAuth2 쿠키로부터 응답 헤더 토큰 생성
-export const getTokenfromCookie = async () => {
+export const setAccessTokenFromRefreshToken = async () => {
   const response = await axios.get(`${API_SERVER_HOST}/auth/social-jwt`, {
     withCredentials: true,
   }); // 인증정보를 포함하여 요청

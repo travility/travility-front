@@ -5,7 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../styles/StyledComponents';
 import { forgotPassword } from '../../../api/memberApi';
 import Swal from 'sweetalert2';
-import { handleSuccessSubjectNotReload } from '../../../util/swalUtils';
+import {
+  handleProblemSubject,
+  handleSuccessSubjectNotReload,
+} from '../../../util/swalUtils';
 
 const ForgotPasswordPage = () => {
   const [username, setUsername] = useState('');
@@ -44,14 +47,12 @@ const ForgotPasswordPage = () => {
     forgotPassword(data)
       .then((response) => {
         console.log(response);
-        if (response.data === 'Success to send email') {
-          handleSuccessSubjectNotReload(
-            '임시 비밀번호',
-            '발급',
-            navigate,
-            '/forgotPassword'
-          );
-        }
+        handleSuccessSubjectNotReload(
+          '임시 비밀번호',
+          '발급',
+          navigate,
+          '/forgotPassword'
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -66,7 +67,7 @@ const ForgotPasswordPage = () => {
           }).then(() => {
             navigate('/signup');
           });
-        } else if (errorMessage === 'Social forgotPassword user') {
+        } else if (errorMessage === 'Social login user') {
           //소셜 로그인 회원
           Swal.fire({
             title: '소셜 로그인 회원',
@@ -84,6 +85,8 @@ const ForgotPasswordPage = () => {
             icon: 'error',
             confirmButtonColor: 'var(--main-color)',
           });
+        } else {
+          handleProblemSubject('메일 전송');
         }
       });
   };

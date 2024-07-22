@@ -9,6 +9,7 @@ import {
 } from '../styles/StyledComponents';
 import styles from '../styles/accountbook/ExportAccountBook.module.css';
 import { exportAccountBook } from '../api/accountbookApi';
+import { handleProblemSubject } from '../util/swalUtils';
 
 const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
   const [krw, setKrw] = useState(false);
@@ -22,7 +23,6 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
   const handleExport = async () => {
     try {
       const response = await exportAccountBook(id, krw);
-      console.log(response);
 
       if (response.data instanceof Blob) {
         //응답 데이터가 blob인지 확인(바이너리 데이터 타입)
@@ -34,9 +34,11 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
       } else {
         // 만약 Blob이 아닌 다른 형태로 반환된 경우, 예외 처리
         console.error('Response data is not a Blob');
+        handleProblemSubject('내보내기');
       }
     } catch (error) {
       console.log(error);
+      handleProblemSubject('내보내기');
     }
   };
 

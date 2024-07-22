@@ -15,18 +15,7 @@ export const addAccountBook = async (accountBookData) => {
   return response.data;
 };
 
-//가계부 전체 조회
-// export const getAccountBooks = async () => {
-//   try {
-//     const response = await axiosInstance.get('/accountbook/accountbooks');
-//     console.log('API Response:', response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Error fetching account books:', error);
-//     throw error;
-//   }
-// };
-
+//전체 가계부 조회
 export const getAccountBooks = async (sort) => {
   const response = await axiosInstance.get(
     `/accountbook/accountbooks?sort=${sort}`

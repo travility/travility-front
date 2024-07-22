@@ -112,6 +112,19 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     }
   };
 
+  const goExport = () => {
+    if (accountBook.expenses.length === 0) {
+      Swal.fire({
+        title: '내보내기 실패',
+        text: '지출이 없습니다',
+        icon: 'error',
+        confirmButtonColor: '#2a52be',
+      });
+    } else {
+      setIsExportModalOpen(true);
+    }
+  };
+
   const groupedExpenses = filteredExpenses.reduce((acc, expense) => {
     const date = new Date(expense.expenseDate).toLocaleDateString();
     if (!acc[date]) {
@@ -256,9 +269,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
               {filter === 'shared' ? (
                 <Button onClick={goSettlement}>정산하기</Button>
               ) : (
-                <Button onClick={() => setIsExportModalOpen(true)}>
-                  내보내기
-                </Button>
+                <Button onClick={goExport}>내보내기</Button>
               )}
             </div>
           </div>

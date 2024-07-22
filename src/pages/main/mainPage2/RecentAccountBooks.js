@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import TripInfo from '../../../components/TripInfo';
 import styles from '../../../styles/main/mainPage2/MainPage.module.css';
+import { handleProblemSubject } from '../../../util/swalUtils';
 
 // 최근 내 가계부
 const RecentAccountBooks = () => {
@@ -25,14 +26,15 @@ const RecentAccountBooks = () => {
   useEffect(() => {
     const fetchAccountBooks = async () => {
       try {
-        //const data = await getAccountBooks();
         const data = await getAccountBooks('new');
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
+          handleProblemSubject('가계부 조회');
           setError(new Error('Unexpected response format'));
         }
       } catch (error) {
+        handleProblemSubject('가계부 조회');
         setError(error);
       } finally {
         setLoading(false);

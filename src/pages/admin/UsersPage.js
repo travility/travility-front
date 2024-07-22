@@ -95,13 +95,10 @@ const UsersPage = () => {
         sort.value
       );
       setMemberList(members);
-      console.log(members);
     } catch (error) {
       console.log(error);
-      if (error.response?.data?.message === 'Access denied') {
+      if (error.response.data === 'Access denied') {
         handleAccessDenied(navigate);
-      } else if (error.response?.data?.message === 'Token expired') {
-        handleTokenExpirationLogout(navigate);
       }
     }
   };

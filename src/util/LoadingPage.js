@@ -1,20 +1,22 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getTokenfromCookie } from '../api/memberApi';
+import { setAccessTokenFromRefreshToken } from '../api/memberApi';
+import { saveToken } from './tokenUtils';
+import { handleProblemSubject } from './swalUtils';
 
 const LoadingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getTokenfromCookie()
+    setAccessTokenFromRefreshToken()
       .then((response) => {
         const token = response.headers.get('Authorization');
-        console.log(token);
-        localStorage.setItem('Authorization', token);
-        navigate('/'); //원래는 가계부 등록 페이지로 가야함
+        saveToken(token);
+        navigate('/');
       })
       .catch((error) => {
         console.log(error);
+        handleProblemSubject('소셜 로그인');
       });
   });
 
