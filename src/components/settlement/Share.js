@@ -8,7 +8,7 @@ import { CloseButton } from 'react-bootstrap';
 import styles from '../../styles/components/Share.module.css';
 import { useLocation } from 'react-router-dom';
 
-const Share = ({ isOpen, onClose, imgName, countryName }) => {
+const Share = ({ isOpen, onClose, countryName }) => {
   const location = useLocation();
   const pathName = location.pathname.substring(1);
 
@@ -30,7 +30,6 @@ const Share = ({ isOpen, onClose, imgName, countryName }) => {
       kakao.Share.sendCustom({
         templateId: 109810,
         templateArgs: {
-          //imgName: imgName,
           countryName: countryName,
           pathName: pathName,
         },
