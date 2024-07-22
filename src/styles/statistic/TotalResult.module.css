@@ -1,0 +1,16 @@
+.budgetContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.budgetHeader {
+  font-weight: bold;
+  color: black;
+}
+
+.totalBudget {
+  font-size: 0.8rem;
+  color: gray;
+}

@@ -2,11 +2,11 @@ import React from "react";
 import { Button } from "../../../styles/StyledComponents";
 import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
 
-const AccountBookMenu = ({ onBudgetClick, onExpenseClick }) => {
+const AccountBookMenu = ({ onBudgetClick, onExpenseClick, onShowStatistics }) => {
   return (
     <div className={styles.accountbook_icons}>
       <span>
-        <Button>
+        <Button onClick={onShowStatistics}>
           <img src="/images/account/statistic.png" alt="statistic" />
           <p>지출 통계</p>
         </Button>

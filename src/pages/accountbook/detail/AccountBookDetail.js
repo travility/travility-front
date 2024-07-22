@@ -3,16 +3,17 @@ import { useParams } from 'react-router-dom';
 import {
   getAccountBookById,
   updateAccountBook,
-} from '../../../api/accountbookApi';
-import AccountBookDate from './AccountBookDate';
-import ExpenseList from './ExpenseList';
-import AccountBookMenu from './AccountBookMenu';
-import TripInfo from '../../../components/TripInfo';
-import UpdateTripInfo from './UpdateTripInfo';
-import AddBudget from '../../../components/AddBudget';
-import AddExpense from '../../../components/AddExpense';
-import { addBudgets } from '../../../api/budgetApi';
-import { addExpense } from '../../../api/expenseApi';
+} from "../../../api/accountbookApi";
+import AccountBookDate from "./AccountBookDate";
+import ExpenseList from "./ExpenseList";
+import AccountBookMenu from "./AccountBookMenu";
+import TripInfo from "../../../components/TripInfo";
+import UpdateTripInfo from "./UpdateTripInfo";
+import AddBudget from "../../../components/AddBudget";
+import AddExpense from "../../../components/AddExpense";
+import ExpenseStatistic from "../../../components/statistic/ExpenseStatistic";
+import { addBudgets } from "../../../api/budgetApi";
+import { addExpense } from "../../../api/expenseApi";
 import {
   handleSuccessSubject,
   handleFailureSubject,
@@ -28,6 +29,7 @@ const AccountBookDetail = () => {
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
+  const [showStatistics, setShowStatistics] = useState(false);
 
   useEffect(() => {
     const fetchAccountBook = async () => {
@@ -116,26 +118,36 @@ const AccountBookDetail = () => {
 
   return (
     <div className={styles.dashboard}>
-      <div className={styles.sidebar}>
-        <div className={styles.tripInfoAndMenu}>
-          <TripInfo
-            accountBook={accountBook}
-            onClick={() => setIsTripInfoModalOpen(true)}
-          />
-          <AccountBookMenu
-            onBudgetClick={() => setIsBudgetModalOpen(true)}
-            onExpenseClick={() => setIsExpenseModalOpen(true)}
-          />
-        </div>
-        <AccountBookDate
-          accountBook={accountBook}
-          dates={dateList}
-          onDateChange={handleDateChange}
-          onShowAll={handleShowAll}
-          onShowPreparation={handleShowPreparation}
+      {showStatistics ? (
+        <ExpenseStatistic
+          accountBookId={accountBook.id}
+          onBack={() => setShowStatistics(false)}
         />
-      </div>
-      <ExpenseList accountBook={accountBook} selectedDate={selectedDate} />
+      ) : (
+        <>
+          <div className={styles.sidebar}>
+            <div className={styles.tripInfoAndMenu}>
+              <TripInfo
+                accountBook={accountBook}
+                onClick={() => setIsTripInfoModalOpen(true)}
+              />
+              <AccountBookMenu
+                onBudgetClick={() => setIsBudgetModalOpen(true)}
+                onExpenseClick={() => setIsExpenseModalOpen(true)}
+                onShowStatistics={() => setShowStatistics(true)}
+              />
+            </div>
+            <AccountBookDate
+              accountBook={accountBook}
+              dates={dateList}
+              onDateChange={handleDateChange}
+              onShowAll={handleShowAll}
+              onShowPreparation={handleShowPreparation}
+            />
+          </div>
+          <ExpenseList accountBook={accountBook} selectedDate={selectedDate} />
+        </>
+      )}
       {isBudgetModalOpen && (
         <AddBudget
           isOpen={isBudgetModalOpen}
