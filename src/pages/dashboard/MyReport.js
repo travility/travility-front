@@ -49,9 +49,7 @@ const options = {
 
         let percentage = ((value / sum) * 100).toFixed(0) + '%'; // 백분율 계산
 
-        if (percentage === '0%') return '';
-
-        return percentage;
+        return percentage === '0%' ? '' : percentage;
       },
       color: '#fff',
       display: true, // 차트에 항목 표시
@@ -169,7 +167,6 @@ const MyReport = () => {
   const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제 방법
   const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부
   const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 애니메이션
-  const [isHovered, setIsHovered] = useState(false); // 마우스 오버 상태
 
   useEffect(() => {
     async function fetchData() {

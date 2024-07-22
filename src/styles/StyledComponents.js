@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -143,7 +143,7 @@ const Button = styled.button`
 
 const Input = styled.input`
   padding: 0.5rem;
-  margin-top: 0.2rem;
+  // margin-top: 0.2rem;
   width: 100%;
   border: 1px solid var(--line-color);
   border-radius: 0.3rem;
@@ -162,12 +162,12 @@ const Input = styled.input`
     color: var(--gray-color);
   }
 
-  &[type="date"] {
+  &[type='date'] {
     font-family: var(--font-family);
     padding: 0.4rem;
   }
 
-  &[type="number"] {
+  &[type='number'] {
     -moz-appearance: textfield;
   }
 

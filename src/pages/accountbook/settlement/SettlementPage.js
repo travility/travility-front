@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import styles from '../../../styles/accountbook/SettlementPage.module.css';
+import styles from '../../../styles/accountbook/settlement/SettlementPage.module.css';
 import { formatNumberWithCommas, formatDate } from '../../../util/calcUtils';
 import { Button } from '../../../styles/StyledComponents';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../../../api/settlementApi';
 import Share from '../../../components/settlement/Share';
 import SettlementDetail from '../../../components/settlement/SettlementDetail';
+import { handleProblemSubject } from '../../../util/swalUtils';
 
 const SettlementPage = () => {
   const { id } = useParams();
@@ -60,6 +61,7 @@ const SettlementPage = () => {
         setDisplayedPerPersonExpense(0); //애니메이션 실행 전 초기화
       } catch (error) {
         console.error(error);
+        handleProblemSubject('가계부 정산');
       }
     };
     fetchData();
@@ -131,7 +133,11 @@ const SettlementPage = () => {
               <div
                 className={styles.tripInfo}
                 style={{
-                  backgroundImage: `url(http://localhost:8080/images/${accountBook.imgName})`,
+                  backgroundImage: `url(${
+                    accountBook.imgName
+                      ? `http://localhost:8080/images/${accountBook.imgName}`
+                      : '/images/dashboard/default_image.png'
+                  })`,
                 }}
               >
                 <div className={styles.accountBook_list_item_detail}>

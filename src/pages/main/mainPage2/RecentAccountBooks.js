@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getAccountBooks } from "../../../api/accountbookApi";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getAccountBooks } from '../../../api/accountbookApi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronUp,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import TripInfo from "../../../components/TripInfo";
-import styles from "../../../styles/main/mainPage2/MainPage.module.css";
+} from '@fortawesome/free-solid-svg-icons';
+import TripInfo from '../../../components/TripInfo';
+import styles from '../../../styles/main/mainPage2/MainPage.module.css';
+import { handleProblemSubject } from '../../../util/swalUtils';
 
 // 최근 내 가계부
 const RecentAccountBooks = () => {
@@ -25,13 +26,15 @@ const RecentAccountBooks = () => {
   useEffect(() => {
     const fetchAccountBooks = async () => {
       try {
-        const data = await getAccountBooks(id);
+        const data = await getAccountBooks('new');
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
-          setError(new Error("Unexpected response format"));
+          handleProblemSubject('가계부 조회');
+          setError(new Error('Unexpected response format'));
         }
       } catch (error) {
+        handleProblemSubject('가계부 조회');
         setError(error);
       } finally {
         setLoading(false);
@@ -51,11 +54,11 @@ const RecentAccountBooks = () => {
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize(); // 초기 실행을 위해 호출
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 

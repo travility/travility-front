@@ -14,6 +14,7 @@ import {
   CloseButton,
   Button,
   Input,
+  ErrorMessage,
 } from '../styles/StyledComponents';
 import { useTheme } from '../styles/Theme';
 import { selectStyles } from '../util/CustomStyles';
@@ -56,7 +57,7 @@ const paymentMethod = [
 
 // 지출 항목 업데이트
 const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
-  const [newExpense, setNewExpense] = useState({
+  const [oirginalExpense, setOriginalExpense] = useState({
     expense: {
       expenseDate: expense.expenseDate.split('T')[0],
       expenseTime: expense.expenseDate.split('T')[1],
@@ -73,20 +74,32 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
     isDefaultImage: true,
   });
 
+  const [newExpense, setNewExpense] = useState({ ...oirginalExpense });
   const [isEditable, setIsEditable] = useState(false);
+  const [errors, setErrors] = useState({
+    expenseDate: '',
+  });
   const { theme } = useTheme();
 
-  useEffect(() => {
-    // if(!expense.imgName){
-    //   setNewExpense({
-    //     ...newExpense,
-    //     previewImg : '/images/dashboard/default_image.png'
-    //   })
-    // }
-  }, [isEditable, expense, newExpense.expense]);
+  useEffect(() => {}, [isEditable, expense, newExpense.expense]);
 
   const handleInputChange = (e) => {
     const { name, value, type } = e.target;
+    const newErrors = {};
+
+    if (name === 'expenseDate') {
+      if (new Date(value) < new Date(accountBook.startDate)) {
+        //선택 날짜가 시작 날짜 이전일 때,
+        newErrors.expenseDate = '준비 비용입니다.';
+      } else if (new Date(value) > new Date(accountBook.endDate)) {
+        //선택 날짜가 종료 날짜 이후일 때,
+        newErrors.expenseDate = '사후 비용입니다.';
+      } else {
+        newErrors.expenseDate = '';
+      }
+    }
+    setErrors(newErrors);
+
     setNewExpense((prevState) => ({
       ...prevState,
       expense: {
@@ -126,20 +139,19 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
   // 지출 수정
   const handleUpdateExpense = (e) => {
     e.preventDefault();
+
     const combinedDateTime = `${newExpense.expense.expenseDate}T${newExpense.expense.expenseTime}`;
     const { expenseTime, ...expenseDataWithoutTime } = newExpense.expense;
     const expenseData = {
       ...expenseDataWithoutTime,
       expenseDate: combinedDateTime,
     };
+
     const formData = new FormData();
     formData.append('expenseInfo', JSON.stringify(expenseData));
     if (newExpense.newImg) {
       formData.append('img', newExpense.newImg);
     }
-
-    console.log(formData.get('expenseInfo'));
-    console.log(formData.get('img'));
 
     updateExpense(expense.id, formData)
       .then(() => {
@@ -182,18 +194,6 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
     return `/images/account/${method.toLowerCase()}${suffix}.png`;
   };
 
-  //공동경비 or 개인경비
-  const handleSharedChange = (e) => {
-    const isShared = e.target.name === 'isShared';
-    setNewExpense({
-      ...newExpense,
-      expense: {
-        ...newExpense.expense,
-        isShared: isShared,
-      },
-    });
-  };
-
   //편집 가능 상태 여부
   const toggleEditable = (e) => {
     e.preventDefault();
@@ -207,6 +207,8 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
   // 편집모드 취소
   const handleCancelEdit = (e) => {
     e.preventDefault();
+    setNewExpense({ ...oirginalExpense }); //취소할 경우 원래 상태로 되돌아감
+    setErrors('');
     setIsEditable(false);
   };
 
@@ -280,7 +282,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
               </ModalHeader>
               <div className={`${styles.modalContent}`}>
                 <div
-                  className={`${styles.expenseDate} ${
+                  className={`${styles.expenseDateAndTime} ${
                     !isEditable ? 'readOnly' : ''
                   }`}
                 >
@@ -300,6 +302,11 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                     onChange={handleInputChange}
                     className={`${!isEditable ? styles.readOnlyInput : ''}`}
                   ></Input>
+                </div>
+                <div className="error_container">
+                  {errors.expenseDate && (
+                    <ErrorMessage>{errors.expenseDate}</ErrorMessage>
+                  )}
                 </div>
                 <div className={styles.image_container}>
                   {isEditable && (

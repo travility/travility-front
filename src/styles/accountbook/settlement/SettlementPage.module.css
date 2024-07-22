@@ -44,6 +44,7 @@
 .settlementContent {
   max-width: 500px;
   padding: 20px;
+  border: 1px solid var(--line-color);
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   margin-top: 20px;
@@ -53,12 +54,13 @@
   text-align: center;
   font-size: 24px;
   font-weight: bold;
-  color: #333333;
+  color: var(--text-color);
   margin-bottom: 10px;
 }
 
 .tripInfo {
   height: 200px;
+  background-color: #9d9d9d;
   background-size: cover;
   background-position: center;
   border-radius: 8px;

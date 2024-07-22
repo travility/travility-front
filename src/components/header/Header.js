@@ -2,7 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../styles/components/header/Header.module.css';
 import { logout } from '../../api/memberApi';
-import { handleSuccessLogout } from '../../util/swalUtils';
+import {
+  handleAlreadyLoggedOut,
+  handleProblemSubject,
+  handleSuccessLogout,
+  handleTokenExpirationLogout,
+} from '../../util/swalUtils';
 import { MemberInfoContext } from '../../App';
 import ThemeToggleButton from './ThemeToggleButton';
 import { useTheme } from '../../styles/Theme';
@@ -29,6 +34,18 @@ const Header = () => {
       handleSuccessLogout(navigate);
     } catch (error) {
       console.log(error);
+      const errorMessage = error.response.data;
+      if (errorMessage === 'refresh token expired') {
+        //리프레시 토큰 만료
+        handleTokenExpirationLogout();
+      } else if (
+        errorMessage === 'refresh token null' ||
+        errorMessage === 'invalid refresh token'
+      ) {
+        handleAlreadyLoggedOut();
+      } else {
+        handleProblemSubject('로그아웃');
+      }
     }
   };
 
