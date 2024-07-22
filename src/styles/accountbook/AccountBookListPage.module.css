@@ -45,6 +45,12 @@
   font-size: 1rem;
 }
 
+:global(.css-t7pedk-singleValue) {
+  overflow: hidden !important; 
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  width: 350px;
+}
 
 /*삭제*/
 .action_buttons {
