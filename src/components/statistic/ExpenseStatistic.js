@@ -264,7 +264,7 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
             return dataset.data.map((data, index) => ({
               text: `${chart.data.labels[index]}`,
               fillStyle: dataset.backgroundColor[index],
-              hidden: false,
+              hidden: dataset._meta && dataset._meta[Object.keys(dataset._meta)[0]].data[index].hidden,
               index: index
             }));
           },
@@ -273,6 +273,14 @@ const ExpenseStatistic = ({ accountBookId, onBack }) => {
             size: 18 // 범례 폰트 크기
           },
           boxWidth: 45 // 범례 박스 너비
+        },
+        onClick: (e, legendItem, legend) => { // 작동안됨
+          const index = legendItem.index;
+          const ci = legend.chart;
+          const meta = ci.getDatasetMeta(0);
+
+          meta.data[index].hidden = !meta.data[index].hidden;
+          ci.update();
         }
       },
       tooltip: {
