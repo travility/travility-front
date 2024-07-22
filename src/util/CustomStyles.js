@@ -80,5 +80,8 @@ export const selectStyles2 = {
     color: 'var(--text-color)',
     fontSize: '0.6em',
     fontWeight: '700',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   }),
 };
