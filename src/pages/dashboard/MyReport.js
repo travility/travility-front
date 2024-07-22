@@ -89,9 +89,15 @@ const horizontalBarOptions = {
   scales: {
     x: {
       beginAtZero: true,
+      grid: {
+        display: false,
+      },
     },
     y: {
       beginAtZero: true,
+      grid: {
+        display: false,
+      },
     },
   },
 };
@@ -122,6 +128,14 @@ const verticalBarOptions = {
   scales: {
     y: {
       beginAtZero: true,
+      grid: {
+        display: false,
+      },
+    },
+    x: {
+      grid: {
+        display: false,
+      },
     },
   },
 };
