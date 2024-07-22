@@ -34,7 +34,7 @@ const TotalResult = ({ accountBookId }) => {
   };
 
   return (
-    <div className={styles.budgetContainer}>
+    <div className={styles.budgetContainer}> 
       <h3 className={styles.budgetHeader}>{renderBudgetMessage()}</h3>
       <p className={styles.totalBudget}>*예산 : {totalBudget.toLocaleString()}원</p>
     </div>

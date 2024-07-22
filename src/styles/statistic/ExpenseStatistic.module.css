@@ -1,96 +1,104 @@
-.statisticsContainer {
+.expenseStatistic_header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.expenseStatistic_content {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-.selectContainer {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.chartsWrapper {
+.expenseStatistic_total {
   display: flex;
-  width: 100%;
-  justify-content: space-between; /* 차트를 좌우로 배치 */
+  flex-direction: column;
+  margin-bottom: 1.5rem;
 }
 
-.chartContainer {
-  width: 48%; /* 차트 너비 조정 */
-  height: 300px; /* 원하는 높이로 조정 */
+.total_title,
+.chartsWrapper_title,
+.categorySelection_title {
+  margin-bottom: 1rem;
 }
 
-.chartTitle {
-  text-align: left;
-  width: 100%;
+.expenseStatistic_chartTitle {
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
-.backButton {
-  align-self: flex-start;
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.backButton:hover {
-  background-color: #0056b3;
-}
-
-.totalAmountHeader {
-  font-weight: bold;
-  color: black;
-  align-self: flex-start;
-  margin-bottom: 20px;
-}
-
-.headerContainer {
+.chartsWrapper_chart {
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  /* height: 300px; */
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
 }
 
-.radioGroup {
-  display: flex;
+.expenseStatistic_chartContainer {
+  flex: 1;
+  margin-top: 1rem;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 1px solid #d1d1d1;
+  border-radius: 10px;
+  min-width: 300px;
+  width: 100%;
+  height: 100%;
+}
+
+.categoryChart {
+  width: 100%;
+  height: 100%;
+}
+
+.categorySelection__checkboxGroup {
+  /* display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  width: 100%; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 5px;
 }
 
-.radioLabel {
+.labelContainer {
+  flex: 1 1 5rem; /* 최소 너비 100px, 공간을 동일하게 차지 */
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  margin: 0.3rem; /* 여백 */
 }
 
-/* 라인차트 랜더링되는거 */
-.lineChartContainer {
-  width: 100%; /* 이거 조정하면됨 */
-  height: 500px; /* 이거 조정하면됨 */
+.expenseStatistic_lineChartContainer {
   display: flex;
-  justify-content: center; 
-  align-items: center; 
-  margin-bottom: 20px;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 500px;
 }
 
-.lineChartWrapper {
-  width: 100%; /* 차트 너비 */
+.expenseStatistic_lineChartWrapper {
+  flex: 1;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
-.tooltipLink {
-  background-color: #344fff;
-  color: #ffffff;
-  font-weight: bold;
-  padding: 5px 12px;
-  border-radius: 20px;
-  margin-left: 5px;
-  cursor: pointer; /* 이거 해야 마우스 올렸을 때 마우스 모양이 예쁨 */
-  border: 1px solid #344fff;
+.lineChart {
+  width: 100%;
 }
 
+@media (max-width: 768px) {
+  .chartsWrapper_chart {
+    flex-direction: column;
+    gap: 1rem;
+  }
 
+  .expenseStatistic_chartContainer {
+    width: 100%;
+  }
 
+  .expenseStatistic_lineChartWrapper {
+    padding: 5px; /* 모바일에서 여백 감소 */
+  }
+}
