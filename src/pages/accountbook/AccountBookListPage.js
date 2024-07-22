@@ -45,7 +45,7 @@ const AccountBookListPage = () => {
 
   //실시간 검색 필터링
   const filteredAccountBooks = accountBooks.filter((accountBook) => {
-    const lowerSearchText = searchText.toLowerCase(); //겁색어 소문자로 변경
+    const lowerSearchText = searchText.toLowerCase(); //검색어 소문자로 변경
     return (
       accountBook.title.toLowerCase().includes(lowerSearchText) ||
       accountBook.countryName.toLowerCase().includes(lowerSearchText)
@@ -59,6 +59,7 @@ const AccountBookListPage = () => {
       handleSelectBook(accountBook);
     }
   };
+
 
   const sortOptions = [
     { value: 'new', label: '최신순' },
@@ -117,13 +118,12 @@ const AccountBookListPage = () => {
         <>
           <div className={styles.accountBook_list_header}>
             <div className={styles.sort_search_container}>
-              <span>
+              <span className={styles.sortType}>
                 <Select
                   id="sort"
                   value={sort}
                   onChange={handleSort}
                   options={sortOptions}
-                  className={styles.sortType}
                   styles={selectStyles2}
                 ></Select>
               </span>
