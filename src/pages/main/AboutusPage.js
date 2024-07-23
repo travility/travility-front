@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { MemberInfoContext } from "../../App.js";
-import { motion, useAnimation } from "framer-motion";
-import { useTheme } from "../../styles/Theme";
-import styles from "../../styles/main/AboutusPage.module.css";
-import Header from "../../components/header/Header.js";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MemberInfoContext } from '../../App.js';
+import { motion, useAnimation } from 'framer-motion';
+import { useTheme } from '../../styles/Theme';
+import styles from '../../styles/main/AboutusPage.module.css';
+import Header from '../../components/header/Header.js';
 
 const AboutUsPage = () => {
   const { memberInfo } = useContext(MemberInfoContext);
@@ -18,19 +18,19 @@ const AboutUsPage = () => {
   const [section2InView, setSection2InView] = useState(false);
 
   const handleButtonClick = () => {
-    navigate(memberInfo ? "/main" : "/login");
+    navigate(memberInfo ? '/main' : '/login');
   };
 
   const travelVariants = {
-    hidden: { x: "-100%", opacity: 0 },
-    visible: { x: "0%", opacity: 1 },
-    combined: { x: "0%", opacity: 0 },
+    hidden: { x: '-100%', opacity: 0 },
+    visible: { x: '0%', opacity: 1 },
+    combined: { x: '0%', opacity: 0 },
   };
 
   const facilityVariants = {
-    hidden: { x: "100%", opacity: 0 },
-    visible: { x: "0%", opacity: 1 },
-    combined: { x: "0%", opacity: 0 },
+    hidden: { x: '100%', opacity: 0 },
+    visible: { x: '0%', opacity: 1 },
+    combined: { x: '0%', opacity: 0 },
   };
 
   const combinedVariants = {
@@ -45,9 +45,9 @@ const AboutUsPage = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            controls.start("visible");
+            controls.start('visible');
             setTimeout(() => {
-              controls.start("combined");
+              controls.start('combined');
               setShowCombined(true);
             }, 800);
           }
@@ -74,25 +74,25 @@ const AboutUsPage = () => {
           if (entry.isIntersecting) {
             icons.forEach((icon, index) => {
               setTimeout(() => {
-                icon.classList.add(styles["icon-visible"]);
+                icon.classList.add(styles['icon-visible']);
               }, index * 500);
             });
             intervalId = setInterval(() => {
               icons.forEach((icon, index) => {
                 setTimeout(() => {
-                  icon.classList.add(styles["icon-visible"]);
+                  icon.classList.add(styles['icon-visible']);
                 }, index * 500);
               });
               setTimeout(() => {
                 icons.forEach((icon) =>
-                  icon.classList.remove(styles["icon-visible"])
+                  icon.classList.remove(styles['icon-visible'])
                 );
               }, icons.length * 500 + 500);
             }, icons.length * 500 + 700);
           } else {
             clearInterval(intervalId);
             icons.forEach((icon) =>
-              icon.classList.remove(styles["icon-visible"])
+              icon.classList.remove(styles['icon-visible'])
             );
           }
         });
@@ -114,7 +114,7 @@ const AboutUsPage = () => {
       if (section2InView) {
         const { top, height } = section2.getBoundingClientRect();
         const scrollProgress = Math.max(0, Math.min(1, 1 - (top / height) * 2));
-        section2.style.setProperty("--scroll-progress", scrollProgress);
+        section2.style.setProperty('--scroll-progress', scrollProgress);
       }
     };
 
@@ -123,10 +123,10 @@ const AboutUsPage = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setSection2InView(true);
-            window.addEventListener("scroll", handleScroll);
+            window.addEventListener('scroll', handleScroll);
           } else {
             setSection2InView(false);
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('scroll', handleScroll);
           }
         });
       },
@@ -136,15 +136,38 @@ const AboutUsPage = () => {
     observer.observe(section2);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       observer.unobserve(section2);
     };
   }, [section2InView]);
 
   const getImageSrc = (imageName) => {
-    return theme === "dark"
+    return theme === 'dark'
       ? `/images/main/${imageName}_wt.png`
       : `/images/main/${imageName}.png`;
+  };
+
+  const goGithub = () => {
+    window.open(
+      'https://github.com/The-Forest-of-Labor-Development/travility-back_',
+      '_blank'
+    );
+  };
+
+  const goFigma = () => {
+    window.open(
+      'https://www.figma.com/design/tEJo1b5V0vTel2IvEKSxwx/Travility?m=auto&t=0RiTjBr3yqY8bVFd-6',
+      '_blank'
+    );
+  };
+
+  const handleCopyClipBoard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('복사 완료');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const sectionVariants = {
@@ -175,7 +198,7 @@ const AboutUsPage = () => {
             당신의 여행을 더 완벽하게,
           </motion.h2>
           <button className={styles.login_button} onClick={handleButtonClick}>
-            <p>{memberInfo ? "Main" : "Login"}</p>
+            <p>{memberInfo ? 'Main' : 'Login'}</p>
           </button>
         </div>
       </motion.section>
@@ -207,9 +230,9 @@ const AboutUsPage = () => {
             Facility
           </motion.h1>
           <motion.h1
-            className={`${styles.combined} ${showCombined ? styles.show : ""}`}
+            className={`${styles.combined} ${showCombined ? styles.show : ''}`}
             initial="hidden"
-            animate={showCombined ? "combined" : "hidden"}
+            animate={showCombined ? 'combined' : 'hidden'}
             variants={combinedVariants}
             transition={{ duration: 1.5 }}
           >
@@ -282,7 +305,7 @@ const AboutUsPage = () => {
             </p>
           </motion.div>
           <motion.div
-            className={styles["image-container"]}
+            className={styles['image-container']}
             variants={sectionVariants}
             transition={{ delay: 0.5 }}
           >
@@ -367,7 +390,7 @@ const AboutUsPage = () => {
       >
         <div className={styles.textImageSection}>
           <motion.div
-            className={styles["image-container"]}
+            className={styles['image-container']}
             variants={sectionVariants}
           >
             <img src="https://via.placeholder.com/800x400" alt="section5" />
@@ -401,7 +424,7 @@ const AboutUsPage = () => {
             </p>
           </motion.div>
           <motion.div
-            className={styles["image-container"]}
+            className={styles['image-container']}
             variants={sectionVariants}
             transition={{ delay: 0.5 }}
           >
@@ -428,14 +451,17 @@ const AboutUsPage = () => {
             지금 시작해보세요.
           </motion.h2>
           <div className={styles.buttonGroup}>
-            <motion.button whileHover={{ scale: 1.05 }}>
-              <img src={getImageSrc("github")} alt="github" />
+            <motion.button whileHover={{ scale: 1.05 }} onClick={goGithub}>
+              <img src={getImageSrc('github')} alt="github" />
             </motion.button>
-            <motion.button whileHover={{ scale: 1.05 }}>
+            <motion.button whileHover={{ scale: 1.05 }} onClick={goFigma}>
               <img src="/images/main/figma.png" alt="figma" />
             </motion.button>
-            <motion.button whileHover={{ scale: 1.05 }}>
-              <img src={getImageSrc("link")} alt="link" />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              onClick={() => handleCopyClipBoard(`${window.location.href}`)}
+            >
+              <img src={getImageSrc('link')} alt="link" />
             </motion.button>
           </div>
         </div>

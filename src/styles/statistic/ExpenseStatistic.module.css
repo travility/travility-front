@@ -20,30 +20,28 @@
 
 .chartsWrapper_title,
 .categorySelection_title {
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 600;
-  width: 200px;
-  padding: 10px;
+  padding: 1rem 0;
   text-align: left;
 }
 
-.expenseStatistic_date_container{
+.expenseStatistic_date_container {
   display: grid;
   grid-template-columns: 1fr;
 }
 
-
 .expenseStatistic_chartTitle {
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
   font-weight: 500;
-  color: black;
+  color: var(--text-color);
 }
 
-.expenseStatistic_day_selectContainer{
+.expenseStatistic_day_selectContainer {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 100%; 
+  width: 100%;
 }
 
 .chartsWrapper_chart {
@@ -51,7 +49,6 @@
   justify-content: space-between;
   gap: 1rem;
   width: 100%;
-  /* height: 300px; */
   box-sizing: border-box;
   margin-bottom: 5rem;
 }
@@ -59,59 +56,61 @@
 .expenseStatistic_chartContainer {
   flex: 1;
   margin-top: 1rem;
-  padding: 20px;
+  padding: 2rem;
   box-sizing: border-box;
   border: 1px solid var(--line-color);
   border-radius: 10px;
   min-width: 300px;
   width: 100%;
-  height: 100%;
-  background-color: white;
+  background-color: var(--background-color);
 }
 
-.categoryChart {
+.barChartWrapper {
+  width: 100%;
+  height: 300px;
+}
+
+.categoryChart,
+.paymentChart {
   width: 100%;
   height: 100%;
 }
 
 .categorySelection__checkboxGroup {
-  /* display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%; */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  gap: 5px;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .labelContainer {
-  flex: 1 1 5rem; /* 최소 너비 100px, 공간을 동일하게 차지 */
+  flex: 1 1 5rem;
   display: flex;
   align-items: center;
-  margin: 0.3rem; /* 여백 */
+  margin: 0.3rem;
 }
 
 .expenseStatistic_lineChartContainer {
   display: flex;
   justify-content: center;
   box-sizing: border-box;
-  height: 500px;
-  background-color: white;
+  background-color: var(--background-color);
   border-radius: 8px;
   border: 1px solid var(--line-color);
-  padding: 20px;
+  padding: 2rem;
 }
 
 .expenseStatistic_lineChartWrapper {
   flex: 1;
   box-sizing: border-box;
   max-width: 100%;
+  overflow-x: auto; /* 가로 스크롤 활성화 */
 }
 
 .lineChart {
-  width: 100%;
+  min-width: 600px;
+  height: 100%;
 }
-
 
 @media (max-width: 768px) {
   .chartsWrapper_chart {
@@ -124,6 +123,14 @@
   }
 
   .expenseStatistic_lineChartWrapper {
-    padding: 5px; /* 모바일에서 여백 감소 */
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lineChart {
+    width: 100%;
+    min-width: 480px;
+    min-height: 240px;
   }
 }
