@@ -92,6 +92,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     setFilteredBudgets(filteredBudg);
   }, [
     accountBook.startDate,
+    accountBook.endDate,
     selectedDate,
     filter,
     currency,
@@ -211,7 +212,9 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   };
 
   const cumulativeTotalExpenses =
-    selectedDate !== 'all' && selectedDate !== 'preparation'
+    selectedDate !== 'all' &&
+    selectedDate !== 'preparation' &&
+    selectedDate !== 'after'
       ? calculateCumulativeTotalExpenses(selectedDate, currency.value)
       : currency.value === 'all'
       ? totalExpensesInKRW
@@ -248,7 +251,9 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   };
 
   const totalAmountInKRWForFilteredExpenses =
-    selectedDate !== 'all' && selectedDate !== 'preparation'
+    selectedDate !== 'all' &&
+    selectedDate !== 'preparation' &&
+    selectedDate !== 'after'
       ? calculateTotalAmountInKRWForFilteredExpenses(filteredExpenses)
       : totalExpensesInKRW;
 
