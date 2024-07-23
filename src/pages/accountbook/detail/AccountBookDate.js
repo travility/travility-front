@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useMemo } from "react";
-import styles from "../../../styles/accountbook/AccountBookDetail.module.css";
-import { formatDate } from "../../../util/calcUtils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect, useMemo } from 'react';
+import styles from '../../../styles/accountbook/AccountBookDetail.module.css';
+import { formatDate } from '../../../util/calcUtils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronUp,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
-import { Button } from "../../../styles/StyledComponents";
+} from '@fortawesome/free-solid-svg-icons';
+import { Button } from '../../../styles/StyledComponents';
 
 const AccountBookDate = ({
   dates,
   onDateChange,
   onShowAll,
   onShowPreparation,
+  onShowAfter,
 }) => {
-  const [selectedOption, setSelectedOption] = useState("all");
+  const [selectedOption, setSelectedOption] = useState('all');
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 750);
@@ -29,16 +30,16 @@ const AccountBookDate = ({
       );
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   const memoizedDates = useMemo(
-    () => ["all", "preparation", ...dates],
+    () => ['all', 'preparation', 'after', ...dates],
     [dates]
   );
 
@@ -49,13 +50,18 @@ const AccountBookDate = ({
   };
 
   const handleShowAll = () => {
-    setSelectedOption("all");
+    setSelectedOption('all');
     onShowAll();
   };
 
   const handleShowPreparation = () => {
-    setSelectedOption("preparation");
+    setSelectedOption('preparation');
     onShowPreparation();
+  };
+
+  const handleShowAfter = () => {
+    setSelectedOption('after');
+    onShowAfter();
   };
 
   const handlePrevClick = () => {
@@ -83,27 +89,38 @@ const AccountBookDate = ({
         {memoizedDates
           .slice(visibleStartIndex, visibleStartIndex + itemsPerPage)
           .map((date, index) => {
-            if (date === "all") {
+            if (date === 'all') {
               return (
                 <Button
                   key="all"
                   onClick={handleShowAll}
-                  className={selectedOption === "all" ? styles.selected : ""}
+                  className={selectedOption === 'all' ? styles.selected : ''}
                 >
                   모두 보기
                 </Button>
               );
             }
-            if (date === "preparation") {
+            if (date === 'preparation') {
               return (
                 <Button
                   key="preparation"
                   onClick={handleShowPreparation}
                   className={
-                    selectedOption === "preparation" ? styles.selected : ""
+                    selectedOption === 'preparation' ? styles.selected : ''
                   }
                 >
                   준비
+                </Button>
+              );
+            }
+            if (date === 'after') {
+              return (
+                <Button
+                  key="after"
+                  onClick={handleShowAfter}
+                  className={selectedOption === 'after' ? styles.selected : ''}
+                >
+                  사후
                 </Button>
               );
             }
@@ -114,7 +131,7 @@ const AccountBookDate = ({
                 className={
                   selectedOption === date.toLocaleDateString()
                     ? styles.selected
-                    : ""
+                    : ''
                 }
               >
                 Day {index + 1 + visibleStartIndex - 2}
@@ -122,7 +139,7 @@ const AccountBookDate = ({
                   className={styles.tripDate}
                   data-day={formatDate(date.toISOString()).replace(
                     /\d{4}./,
-                    ""
+                    ''
                   )}
                 >
                   {formatDate(date.toISOString())}

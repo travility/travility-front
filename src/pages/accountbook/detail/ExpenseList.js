@@ -38,8 +38,15 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     //여행 시작날짜
     const startDate = formatDate(accountBook.startDate);
 
-    if (selectedDate !== 'all' && selectedDate !== 'preparation') {
-      //선택된 날짜 지출 필터링 ('전체' or '준비' 아닐 경우)
+    //여행 종료날짜
+    const endDate = formatDate(accountBook.endDate);
+
+    if (
+      selectedDate !== 'all' &&
+      selectedDate !== 'preparation' &&
+      selectedDate !== 'after'
+    ) {
+      //선택된 날짜 지출 필터링 ('전체' or '준비' or '사후' 아닐 경우)
       const selected = formatDate(selectedDate);
       filteredExp = filteredExp.filter(
         (expense) =>
@@ -49,6 +56,10 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       //'준비'일경우, 시작 날짜 이전 지출 필터링
       filteredExp = filteredExp.filter(
         (expense) => formatDate(expense.expenseDate) < startDate
+      );
+    } else if (selectedDate === 'after') {
+      filteredExp = filteredExp.filter(
+        (expense) => formatDate(expense.expenseDate) > endDate
       );
     }
 
