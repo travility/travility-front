@@ -109,7 +109,7 @@ const SettlementPage = () => {
         <div className={styles.SettlementPage_header}>
           <div className={styles.goBackButton_container}>
             <Button className={styles.goBackButton} onClick={goBack}>
-              <p className={styles.goBackButton_text}>뒤로가기</p>
+              <p className={styles.goBackButton_text}>←</p>
             </Button>
           </div>
           <div className={styles.shareButton_container}>

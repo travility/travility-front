@@ -3,8 +3,8 @@ import {
   ModalOverlay,
   Modal,
   ModalHeader,
+  CloseButton,
 } from '../../styles/StyledComponents';
-import { CloseButton } from 'react-bootstrap';
 import styles from '../../styles/components/Share.module.css';
 import { useLocation } from 'react-router-dom';
 

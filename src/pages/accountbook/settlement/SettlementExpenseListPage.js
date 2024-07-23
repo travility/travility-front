@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from '../../../styles/accountbook/settlement/SettlementExpenseListPage.module.css';
 import { Button } from '../../../styles/StyledComponents';
+import { formatNumberWithCommas } from '../../../util/calcUtils';
+import UpdateExpense from '../../../components/UpdateExpense';
 
 const categoryImages = {
   TRANSPORTATION: 'transportation.png',
@@ -17,13 +19,20 @@ const SettlementExpenseListPage = () => {
   const navigate = useNavigate();
   const accountBook = state?.accountBook;
   const [groupedExpenses, setGroupedExpenses] = useState({});
+  const [isUpdateExpenseModalOpen, setIsUpdateExpenseModalOpen] =
+    useState(false);
+  const [selectedExpense, setSelectedExpense] = useState();
 
   useEffect(() => {
-    // 공동경비 지출내역 필터링
+    // 가계부가 있다면
     if (accountBook) {
-      const sharedExpenses = accountBook.expenses.filter(
-        (expense) => expense.isShared
-      );
+      let sharedExpenses = accountBook.expenses
+        .filter(
+          //공동 경비 필터링
+          (expense) => expense.isShared
+        )
+        .sort((a, b) => new Date(a.expenseDate) - new Date(b.expenseDate)); //날짜 오름차순 정렬
+
       // 지출일자별 그룹화
       const grouped = sharedExpenses.reduce((acc, expense) => {
         const date = new Date(expense.expenseDate).toLocaleDateString();
@@ -41,58 +50,84 @@ const SettlementExpenseListPage = () => {
     return <div>Loading...</div>;
   }
 
+  const openUpdateExpense = (expense) => {
+    setIsUpdateExpenseModalOpen(true);
+    setSelectedExpense(expense);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
 
   return (
-    <div className={styles.expenseList_container}>
-      <h2 className={styles.accountBook_title}>{accountBook.title}</h2>
-      <div className={styles.expenseList}>
-        {Object.keys(groupedExpenses).length === 0 ? (
-          <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
-        ) : (
-          Object.keys(groupedExpenses).map((date, index) => (
-            <div key={index}>
-              <div className={styles.expenseDate}>{date}</div>
-              {groupedExpenses[date].map((expense, idx) => (
-                <div key={idx} className={styles.expenseItem}>
-                  <img
-                    className={styles.categoryImg}
-                    src={`/images/accountbook/category/${
-                      categoryImages[expense.category] || 'others.png'
-                    }`}
-                    alt={expense.category}
-                  />
-                  <span className={styles.currency}>{expense.curUnit}</span>
-                  <span className={styles.amount}>{expense.amount}</span>
-                  <span className={styles.description}>{expense.title}</span>
-                  {expense.imgName ? (
-                    <img
-                      className={styles.expenseImg}
-                      src={`http://localhost:8080/images/${expense.imgName}`}
-                      alt="지출 이미지"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                      }}
-                    />
-                  ) : (
-                    <img
-                      className={styles.expenseImg}
-                      src="/images/dashboard/default_image.png"
-                      alt="지출 이미지"
-                    ></img>
-                  )}
+    <>
+      <div className={styles.settlementExpenseListPage}>
+        <div className={styles.settlementExpenseListPage_header}>
+          <Button onClick={goBack}>←</Button>
+        </div>
+        <div className={styles.expenseList_container}>
+          <h2 className={styles.accountBook_title}>{accountBook.title}</h2>
+          <div className={styles.expenseList}>
+            {Object.keys(groupedExpenses).length === 0 ? (
+              <p className={styles.noExpenses}>지출 내역이 없습니다.</p>
+            ) : (
+              Object.keys(groupedExpenses).map((date, index) => (
+                <div key={index}>
+                  <div className={styles.expenseDate}>{date}</div>
+                  {groupedExpenses[date].map((expense, idx) => (
+                    <div
+                      key={idx}
+                      className={styles.expenseItem}
+                      onClick={() => openUpdateExpense(expense)}
+                    >
+                      <img
+                        className={styles.categoryImg}
+                        src={`/images/accountbook/category/${
+                          categoryImages[expense.category] || 'others.png'
+                        }`}
+                        alt={expense.category}
+                      />
+                      <span className={styles.currency}>{expense.curUnit}</span>
+                      <span className={styles.amount}>
+                        {formatNumberWithCommas(expense.amount)}
+                      </span>
+                      <span className={styles.description}>
+                        {expense.title}
+                      </span>
+                      {expense.imgName ? (
+                        <img
+                          className={styles.expenseImg}
+                          src={`http://localhost:8080/images/${expense.imgName}`}
+                          alt="지출 이미지"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <img
+                          className={styles.expenseImg}
+                          src="/images/dashboard/default_image.png"
+                          alt="지출 이미지"
+                        ></img>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ))
-        )}
+              ))
+            )}
+          </div>
+        </div>
       </div>
-      <div>
-        <Button onClick={goBack}>돌아가기</Button>
-      </div>
-    </div>
+      {isUpdateExpenseModalOpen && (
+        <UpdateExpense
+          isOpen={isUpdateExpenseModalOpen}
+          onClose={() => setIsUpdateExpenseModalOpen(false)}
+          isSettlement={true}
+          expense={selectedExpense}
+          accountBook={accountBook}
+        />
+      )}
+    </>
   );
 };
 
