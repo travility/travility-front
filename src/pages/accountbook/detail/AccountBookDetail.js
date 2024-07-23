@@ -68,6 +68,8 @@ const AccountBookDetail = () => {
 
   const handleShowPreparation = () => setSelectedDate('preparation');
 
+  const handleShowAfter = () => setSelectedDate('after');
+
   //예산 수정
   const handleBudgetSubmit = async (budgets) => {
     try {
@@ -144,6 +146,7 @@ const AccountBookDetail = () => {
           onDateChange={handleDateChange}
           onShowAll={handleShowAll}
           onShowPreparation={handleShowPreparation}
+          onShowAfter={handleShowAfter}
         />
       </div>
       <ExpenseList accountBook={accountBook} selectedDate={selectedDate} />
