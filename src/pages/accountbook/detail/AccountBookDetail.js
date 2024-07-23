@@ -68,6 +68,7 @@ const AccountBookDetail = () => {
 
   const handleShowPreparation = () => setSelectedDate('preparation');
 
+  //예산 수정
   const handleBudgetSubmit = async (budgets) => {
     try {
       await addBudgets(accountBook.id, budgets);
@@ -80,6 +81,7 @@ const AccountBookDetail = () => {
     }
   };
 
+  //지출 추가
   const handleExpenseSubmit = async (expense) => {
     try {
       await addExpense(expense);
@@ -92,6 +94,7 @@ const AccountBookDetail = () => {
     }
   };
 
+  //가계부 수정
   const handleAccountBookSubmit = async (tripInfo) => {
     try {
       await updateAccountBook(accountBook.id, tripInfo);
@@ -104,6 +107,7 @@ const AccountBookDetail = () => {
     }
   };
 
+  //지출 통계 이동
   const goExpenseStatistic = () => {
     navigate(`/accountbook/detail/${id}/statistics`);
   };

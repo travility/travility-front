@@ -45,8 +45,7 @@ const ForgotPasswordPage = () => {
     };
 
     forgotPassword(data)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         handleSuccessSubjectNotReload(
           '임시 비밀번호',
           '발급',

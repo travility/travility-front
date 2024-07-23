@@ -70,7 +70,7 @@ const TripInfo = ({
         </span>
         {isDetailPage ? (
           <span className={styles.accountBook_list_edit}>
-            <img src="/images/account/add_box.png" alt="+" />
+            <img src="/images/accountbook/add_box.png" alt="+" />
             {accountBook.imgName ? '수정하기' : '사진을 추가하세요.'}
           </span>
         ) : (

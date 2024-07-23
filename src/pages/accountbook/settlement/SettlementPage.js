@@ -120,7 +120,7 @@ const SettlementPage = () => {
               <p className={styles.shareButton_text}>공유하기</p>
               <img
                 className={styles.shareButton_icon}
-                src="/images/account/share.png"
+                src="/images/accountbook/settlement/share.png"
                 alt="공유하기"
               />
             </Button>

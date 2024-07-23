@@ -53,7 +53,7 @@ const Share = ({ isOpen, onClose, countryName }) => {
               >
                 <img
                   className={styles.share_icon}
-                  src="/images/account/link.png"
+                  src="/images/accountbook/settlement/link.png"
                   alt="링크로 공유하기"
                 />
                 링크로 공유하기

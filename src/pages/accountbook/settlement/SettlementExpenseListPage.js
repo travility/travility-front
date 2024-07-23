@@ -59,7 +59,7 @@ const SettlementExpenseListPage = () => {
                 <div key={idx} className={styles.expenseItem}>
                   <img
                     className={styles.categoryImg}
-                    src={`/images/account/category/${
+                    src={`/images/accountbook/category/${
                       categoryImages[expense.category] || 'others.png'
                     }`}
                     alt={expense.category}
@@ -77,9 +77,11 @@ const SettlementExpenseListPage = () => {
                       }}
                     />
                   ) : (
-                    <div
-                      className={`${styles.expenseImg} ${styles.defaultImg}`}
-                    ></div>
+                    <img
+                      className={styles.expenseImg}
+                      src="/images/dashboard/default_image.png"
+                      alt="지출 이미지"
+                    ></img>
                   )}
                 </div>
               ))}
