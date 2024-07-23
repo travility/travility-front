@@ -39,7 +39,7 @@ const AccountBookDate = ({
   }, []);
 
   const memoizedDates = useMemo(
-    () => ['all', 'preparation', 'after', ...dates],
+    () => ['all', 'preparation', ...dates, 'after'],
     [dates]
   );
 
