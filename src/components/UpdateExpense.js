@@ -57,7 +57,13 @@ const paymentMethod = [
 ];
 
 // 지출 항목 업데이트
-const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
+const UpdateExpense = ({
+  isOpen,
+  onClose,
+  isSettlement,
+  expense,
+  accountBook,
+}) => {
   const [oirginalExpense, setOriginalExpense] = useState({
     expense: {
       expenseDate: expense.expenseDate.split('T')[0],
@@ -466,29 +472,33 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                   </div>
                 </div>
                 <div className={styles.buttonGroup}>
-                  <Button
-                    className={styles.updateButton}
-                    onClick={toggleEditable}
-                  >
-                    {isEditable ? '편집완료' : '편집하기'}
-                  </Button>
-                  <div className={styles.cancelAndDelete}>
-                    {isEditable && (
+                  {!isSettlement && (
+                    <>
                       <Button
-                        className={styles.cancel_button}
-                        onClick={handleCancelEdit}
+                        className={styles.updateButton}
+                        onClick={toggleEditable}
                       >
-                        취소
+                        {isEditable ? '편집완료' : '편집하기'}
                       </Button>
-                    )}
-                    <Button
-                      name="delete"
-                      className={styles.delete_button}
-                      onClick={handleDeleteExpense}
-                    >
-                      삭제
-                    </Button>
-                  </div>
+                      <div className={styles.cancelAndDelete}>
+                        {isEditable && (
+                          <Button
+                            className={styles.cancel_button}
+                            onClick={handleCancelEdit}
+                          >
+                            취소
+                          </Button>
+                        )}
+                        <Button
+                          name="delete"
+                          className={styles.delete_button}
+                          onClick={handleDeleteExpense}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </form>

@@ -3,16 +3,17 @@
 }
 
 .description {
-  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 0.55rem;
   color: var(--gray-color);
   margin-bottom: 1.5rem;
 }
 
-.description2 {
-  font-size: 0.5rem;
-  color: var(--gray-color);
-  margin-top: 1.5rem;
-  margin-bottom: 0.7rem;
+.description_item:nth-child(1) {
+  font-size: 0.8rem;
+  margin-bottom: 0.1rem;
 }
 
 .exportOption_container {
@@ -36,4 +37,8 @@
 .radio {
   transform: scale(0.8); /* 라디오 버튼 크기 조정 */
   margin-right: 0.5rem; /* 버튼과 텍스트 간의 간격 */
+}
+
+.exportAccountBook_button {
+  margin-top: 1.5rem;
 }

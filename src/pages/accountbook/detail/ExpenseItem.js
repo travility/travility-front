@@ -56,6 +56,7 @@ const ExpenseItem = ({ expense, accountBook }) => {
         <UpdateExpense
           isOpen={isUpdateExpenseModalOpen}
           onClose={() => setIsUpdateExpenseModalOpen(false)}
+          isSettlement={false}
           expense={expense}
           accountBook={accountBook}
         />

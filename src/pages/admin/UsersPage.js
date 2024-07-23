@@ -31,10 +31,6 @@ const UsersPage = () => {
   ];
   const pageSize = 10;
 
-  useEffect(() => {
-    fetchData();
-  }, [navigate, totalPages, currentPage, sort]);
-
   const fetchData = async () => {
     try {
       const totalMembers = await getTotalMembersCount();
@@ -124,6 +120,10 @@ const UsersPage = () => {
   const handleCurrentPage = (page) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [navigate, totalPages, currentPage, sort]);
 
   return (
     <div className={styles.usersPage}>
