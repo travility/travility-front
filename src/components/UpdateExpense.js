@@ -25,28 +25,28 @@ const categories = [
   {
     name: 'TRANSPORTATION',
     label: '교통',
-    img: '/images/account/category/transportation.png',
+    img: '/images/accountbook/category/transportation.png',
   },
-  { name: 'FOOD', label: '식비', img: '/images/account/category/food.png' },
+  { name: 'FOOD', label: '식비', img: '/images/accountbook/category/food.png' },
   {
     name: 'TOURISM',
     label: '관광',
-    img: '/images/account/category/tourism.png',
+    img: '/images/accountbook/category/tourism.png',
   },
   {
     name: 'ACCOMMODATION',
     label: '숙박',
-    img: '/images/account/category/accommodation.png',
+    img: '/images/accountbook/category/accommodation.png',
   },
   {
     name: 'SHOPPING',
     label: '쇼핑',
-    img: '/images/account/category/shopping.png',
+    img: '/images/accountbook/category/shopping.png',
   },
   {
     name: 'OTHERS',
     label: '기타',
-    img: '/images/account/category/others.png',
+    img: '/images/accountbook/category/others.png',
   },
 ];
 
@@ -204,7 +204,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
     const isSelected = newExpense.expense.paymentMethod === method;
     const suffix =
       theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
-    return `/images/account/${method.toLowerCase()}${suffix}.png`;
+    return `/images/accountbook/${method.toLowerCase()}${suffix}.png`;
   };
 
   //편집 가능 상태 여부
@@ -329,7 +329,7 @@ const UpdateExpense = ({ isOpen, onClose, expense, accountBook }) => {
                     >
                       <img
                         className={styles.addPhoto_image}
-                        src="/images/account/add_photo.png"
+                        src="/images/accountbook/add_photo.png"
                         alt="사진 추가"
                       />
                       업로드

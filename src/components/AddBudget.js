@@ -117,7 +117,6 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   };
 
   const handleRegister = () => {
-    console.log(budgets);
     onSubmit(budgets);
     onClose();
   };

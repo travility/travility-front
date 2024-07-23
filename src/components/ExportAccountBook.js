@@ -15,7 +15,6 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
   const [krw, setKrw] = useState(false);
 
   const handleKRW = (e) => {
-    console.log(e.target.value);
     setKrw(e.target.value);
   };
 
@@ -24,9 +23,9 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
     try {
       const response = await exportAccountBook(id, krw);
 
-      if (response.data instanceof Blob) {
+      if (response instanceof Blob) {
         //응답 데이터가 blob인지 확인(바이너리 데이터 타입)
-        const url = window.URL.createObjectURL(response.data); //바이너리 객체 가리키는 임시 url
+        const url = window.URL.createObjectURL(response); //바이너리 객체 가리키는 임시 url
         const filename = countryName + '_' + title + '_' + '여행 가계부.xlsx';
         downloadFile(url, filename);
 

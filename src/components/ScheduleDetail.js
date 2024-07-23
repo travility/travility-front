@@ -4,15 +4,6 @@ import { Scrollbar } from 'react-scrollbars-custom';
 import { formatNumberWithCommas } from '../util/calcUtils';
 import styles from '../styles/dashboard/MyCalendar.module.css';
 
-const categoryLabels = {
-  TRANSPORTATION: '교통',
-  FOOD: '식비',
-  TOURISM: '관광',
-  ACCOMMODATION: '숙박',
-  SHOPPING: '쇼핑',
-  OTHERS: '기타',
-};
-
 const categoryImages = {
   TRANSPORTATION: 'transportation.png',
   ACCOMMODATION: 'accommodation.png',
@@ -28,7 +19,6 @@ const ScheduleDetail = ({
   imgName,
   expenses,
   date,
-  curUnit,
   totalExpense,
   exchangeRates,
   onClose,
@@ -37,17 +27,6 @@ const ScheduleDetail = ({
   const [filteredTotalExpense, setFilteredTotalExpense] =
     useState(totalExpense);
   const navigate = useNavigate();
-
-  console.log('ScheduleDetail Props:', {
-    accountbookId,
-    countryName,
-    imgName,
-    expenses,
-    date,
-    curUnit,
-    totalExpense,
-    exchangeRates,
-  });
 
   useEffect(() => {
     updateFilteredTotalExpense();
@@ -170,7 +149,7 @@ const ScheduleDetail = ({
                       <div key={index} className={styles.expenseItem}>
                         <img
                           className={styles.categoryImg}
-                          src={`/images/account/category/${categoryImages[category]}`}
+                          src={`/images/accountbook/category/${categoryImages[category]}`}
                           alt={expense.category}
                         />
                         <div className={styles.expense_info}>
@@ -196,7 +175,7 @@ const ScheduleDetail = ({
                           ) : (
                             <img
                               className={styles.expenseImg}
-                              src="http://localhost:8080/images/default_image.png"
+                              src="/images/dashboard/default_image.png"
                               alt="기본 이미지"
                             />
                           )}

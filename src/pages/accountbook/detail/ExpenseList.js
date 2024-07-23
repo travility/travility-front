@@ -96,6 +96,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     setCurrency(selectedOption || { label: '전체', value: 'all' });
   };
 
+  //정산하기 이동
   const goSettlement = () => {
     const sharedExpenses = accountBook.expenses.filter(
       (expense) => expense.isShared
@@ -112,6 +113,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     }
   };
 
+  //내보내기 이동
   const goExport = () => {
     if (accountBook.expenses.length === 0) {
       Swal.fire({

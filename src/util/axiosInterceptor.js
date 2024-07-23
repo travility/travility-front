@@ -65,7 +65,6 @@ axiosInstance.interceptors.response.use(
             error.response.data === 'refresh token null' ||
             error.response.data === 'invalid refresh token'
           ) {
-            console.log(error.response.data);
             handleAlreadyLoggedOut();
           }
           return Promise.reject(error);

@@ -56,6 +56,7 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     document.getElementById('fileInput').click();
   };
 
+  //이미지 수정
   const handleNewImg = (e) => {
     if (e.target.files.length === 0) {
       // 파일 선택 안 했을 때
@@ -77,6 +78,7 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     });
   };
 
+  //가계부 수정
   const handleUpdateTripInfo = (e) => {
     e.preventDefault();
 
@@ -97,17 +99,15 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
       let leftPosition = inputRect.left + window.scrollX;
 
       // 반응형 조정을 위한 예제 (화면 크기에 따라 위치 조정)
-      if (viewportWidth <= 530) { 
-        leftPosition = inputRect.left + window.scrollX; 
+      if (viewportWidth <= 530) {
+        leftPosition = inputRect.left + window.scrollX;
       } else if (viewportWidth >= 531 && viewportWidth <= 860) {
-        leftPosition = inputRect.left + window.scrollX; 
+        leftPosition = inputRect.left + window.scrollX;
       } else if (viewportWidth >= 861 && viewportWidth <= 1024) {
-        leftPosition = inputRect.left + window.scrollX ; 
-      }else { 
+        leftPosition = inputRect.left + window.scrollX;
+      } else {
         leftPosition = inputRect.left + window.scrollX;
       }
-
-      console.log('input 위치:', inputRect); 
 
       setModalPosition({
         top: inputRect.bottom + window.scrollY,
@@ -116,7 +116,6 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     }
     setNewTripInfo((prev) => ({ ...prev, isModalOpen: true }));
   };
-
 
   return (
     <>
@@ -197,7 +196,7 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   >
                     <img
                       className={styles.addPhoto_image}
-                      src="/images/account/add_photo.png"
+                      src="/images/accountbook/add_photo.png"
                       alt="사진 추가"
                     />
                     업로드
@@ -230,9 +229,11 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
           </Modal>
           {newTripInfo.isModalOpen && (
             <SearchCountry
-            onSelectCountry={handleCountrySelect}
-            closeModal={() => setNewTripInfo((prev) => ({ ...prev, isModalOpen: false }))}
-            modalPosition={modalPosition} // modalPosition을 전달
+              onSelectCountry={handleCountrySelect}
+              closeModal={() =>
+                setNewTripInfo((prev) => ({ ...prev, isModalOpen: false }))
+              }
+              modalPosition={modalPosition} // modalPosition을 전달
             />
           )}
         </ModalOverlay>
