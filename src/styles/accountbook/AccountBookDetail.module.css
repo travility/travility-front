@@ -419,6 +419,72 @@
     flex-direction: column;
     align-items: center;
   }
+
+  .expenseItem{
+    display: grid;
+    grid-template-areas:
+    'categoryImg curUnit amount expenseImg'
+    'type title title expenseImg';
+    grid-template-columns: 45px 45px 45px auto;
+    grid-template-rows: 15px;
+    gap: 1px;
+  }
+
+  .categoryImg {
+    grid-area: categoryImg;
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+
+  .description {
+    grid-area: title;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-self: start;
+    text-align: left;
+    margin-top: -1px;
+  }
+
+  .currency {
+    grid-area: curUnit;
+    font-size: 0.8rem;
+    justify-self: start;
+    text-align: left;
+    font-weight: 550;
+ }
+  
+  .amount {
+    grid-area: amount;
+    font-size: 0.8rem;
+    justify-self: start;
+    text-align: left;
+    font-weight: 550;
+  }
+
+  .expenseImg {
+    grid-area: expenseImg;
+    width: 2.7rem;
+    height: 2.7rem;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--gray-color);
+    justify-self: end;
+    margin-bottom: 3px;
+  }
+  
+  /* 개인경비 || 공용경비 */
+  .type {
+    grid-area: type;
+    font-size: 0.55rem;
+    color: rgba(128, 128, 128, 0.745);
+    justify-self: start;
+    margin-top: -7px;
+    margin-left: 2.5px;
+    
+  }
 }
 
 @media (max-width: 390px) {
