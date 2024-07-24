@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Doughnut, Bar } from 'react-chartjs-2';
+import React, { useState, useEffect } from "react";
+import { Doughnut, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -8,12 +8,12 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import styles from '../../styles/dashboard/MyReport.module.css';
-import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
+} from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../styles/dashboard/MyReport.module.css";
+import { getExpenseStatistics, getUserInfo } from "../../api/expenseApi";
 
 // 차트 구성요소 등록
 ChartJS.register(
@@ -32,10 +32,11 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'bottom',
+      position: "bottom",
       labels: {
         usePointStyle: true, // 범례 아이콘을 도트로 변경
-        pointStyle: 'circle', // 도트 모양을 원으로 설정
+        pointStyle: "circle", // 도트 모양을 원으로 설정
+        wrap: true, // 범례를 여러 줄로 설정
       },
     },
     tooltip: {
@@ -51,11 +52,11 @@ const options = {
           sum += data;
         });
 
-        let percentage = ((value / sum) * 100).toFixed(0) + '%'; // 백분율 계산
+        let percentage = ((value / sum) * 100).toFixed(0) + "%"; // 백분율 계산
 
-        return percentage === '0%' ? '' : percentage;
+        return percentage === "0%" ? "" : percentage;
       },
-      color: '#fff',
+      color: "#fff",
       display: true, // 차트에 항목 표시
     },
   },
@@ -66,7 +67,7 @@ const options = {
   },
 };
 
-// 현금 || 카드
+// 현금 || 카드 차트 옵션
 const horizontalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -79,13 +80,13 @@ const horizontalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: 'white',
-      anchor: 'end', // 항목 위치
-      align: 'end',
+      color: "white",
+      anchor: "end", // 항목 위치
+      align: "end",
       offset: -20,
       display: true, // 차트에 항목 표시
       font: {
-        weight: '700', // 폰트 굵기 설정
+        weight: "700", // 폰트 굵기 설정
       },
     },
   },
@@ -105,7 +106,7 @@ const horizontalBarOptions = {
   },
 };
 
-// 카테고리별 누적 지출
+// 카테고리별 누적 지출 차트 옵션
 const verticalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -118,13 +119,13 @@ const verticalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: '#fff',
-      anchor: 'end',
-      align: 'end',
+      color: "#fff",
+      anchor: "end",
+      align: "end",
       offset: -20, // ********** 항목 값 위치 조정
       display: true,
       font: {
-        weight: '500', // 폰트 굵기 설정
+        weight: "500", // 폰트 굵기 설정
       },
     },
   },
@@ -146,18 +147,18 @@ const verticalBarOptions = {
 // 카테고리 이름 변환 (영어 -> 한국어)
 const getCategoryName = (category) => {
   switch (category) {
-    case 'ACCOMMODATION':
-      return '숙박';
-    case 'TRANSPORTATION':
-      return '교통';
-    case 'SHOPPING':
-      return '쇼핑';
-    case 'FOOD':
-      return '식비';
-    case 'TOURISM':
-      return '관광';
-    case 'OTHERS':
-      return '기타';
+    case "ACCOMMODATION":
+      return "숙박";
+    case "TRANSPORTATION":
+      return "교통";
+    case "SHOPPING":
+      return "쇼핑";
+    case "FOOD":
+      return "식비";
+    case "TOURISM":
+      return "관광";
+    case "OTHERS":
+      return "기타";
     default:
       return category; // 기본적으로 원래 카테고리 이름 반환
   }
@@ -179,9 +180,9 @@ const MyReport = () => {
   }); // 총 누적 지출
   const [loading, setLoading] = useState(true); // 로딩 중 여부
   const [error, setError] = useState(null); // 오류 상태
-  const [userName, setUserName] = useState(''); // 사용자 이름
-  const [highestCategory, setHighestCategory] = useState(''); // 가장 높은 지출 카테고리
-  const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제 방법
+  const [userName, setUserName] = useState(""); // 사용자 이름
+  const [highestCategory, setHighestCategory] = useState(""); // 가장 높은 지출 카테고리
+  const [highestPaymentMethod, setHighestPaymentMethod] = useState(""); // 가장 많이 사용한 결제 방법
   const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부
   const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 애니메이션
   const [isVisible, setIsVisible] = useState(false);
@@ -207,12 +208,12 @@ const MyReport = () => {
 
         // 카테고리 목록
         const allCategories = [
-          'ACCOMMODATION',
-          'TRANSPORTATION',
-          'SHOPPING',
-          'FOOD',
-          'TOURISM',
-          'OTHERS',
+          "ACCOMMODATION",
+          "TRANSPORTATION",
+          "SHOPPING",
+          "FOOD",
+          "TOURISM",
+          "OTHERS",
         ];
 
         // 각 카테고리 지출 금액 계산
@@ -232,15 +233,15 @@ const MyReport = () => {
           labels: allCategories.map(getCategoryName),
           datasets: [
             {
-              label: 'KRW',
+              label: "KRW",
               data: categoryAmounts,
               backgroundColor: [
-                '#23C288',
-                '#7697F9',
-                '#9B80E9',
-                '#FEC144',
-                '#B5CE2A',
-                '#828C98',
+                "#23C288",
+                "#7697F9",
+                "#9B80E9",
+                "#FEC144",
+                "#B5CE2A",
+                "#828C98",
               ],
             },
           ],
@@ -249,28 +250,28 @@ const MyReport = () => {
         // 결제 방법별 지출 금액 계산
         const paymentMethodAmounts = {
           CASH:
-            paymentMethods.find((pm) => pm.paymentMethod === 'CASH')?.amount ||
+            paymentMethods.find((pm) => pm.paymentMethod === "CASH")?.amount ||
             0,
           CARD:
-            paymentMethods.find((pm) => pm.paymentMethod === 'CARD')?.amount ||
+            paymentMethods.find((pm) => pm.paymentMethod === "CARD")?.amount ||
             0,
         };
 
         // 가장 많이 사용한 결제 방법 찾기
         setHighestPaymentMethod(
           paymentMethodAmounts.CARD > paymentMethodAmounts.CASH
-            ? '카드'
-            : '현금'
+            ? "카드"
+            : "현금"
         );
 
         // 가로 막대 차트 설정
         setPaymentData({
-          labels: ['현금', '카드'],
+          labels: ["현금", "카드"],
           datasets: [
             {
-              label: 'KRW',
+              label: "KRW",
               data: [paymentMethodAmounts.CASH, paymentMethodAmounts.CARD],
-              backgroundColor: ['#FFBBE5', '#2c73d2'],
+              backgroundColor: ["#FFBBE5", "#2c73d2"],
             },
           ],
         });
@@ -305,15 +306,15 @@ const MyReport = () => {
           labels: allCategories.map(getCategoryName),
           datasets: [
             {
-              label: 'KRW',
+              label: "KRW",
               data: categoryAmounts,
               backgroundColor: [
-                '#23C288',
-                '#7697F9',
-                '#9B80E9',
-                '#FEC144',
-                '#B5CE2A',
-                '#828C98',
+                "#23C288",
+                "#7697F9",
+                "#9B80E9",
+                "#FEC144",
+                "#B5CE2A",
+                "#828C98",
               ],
             },
           ],
@@ -335,8 +336,6 @@ const MyReport = () => {
     return () => {
       clearTimeout(timer);
     };
-
-
   }, []);
 
   // 로딩 중일 때
@@ -348,8 +347,6 @@ const MyReport = () => {
   if (error) {
     return <div>통계 불러오기 오류 : {error.message}</div>;
   }
-
-  
 
   return (
     <div className={styles.myReport}>
@@ -375,9 +372,11 @@ const MyReport = () => {
                   src="/images/dashboard/exclamation_mark.png"
                   alt="느낌표"
                 ></img>
-                <span className={styles.totalAmount_title}>총 누적 지출 : </span>
+                <span className={styles.totalAmount_title}>
+                  총 누적 지출 :{" "}
+                </span>
                 <span className={styles.totalAmount_amount}>
-                  {displayAmount.toLocaleString()} ₩
+                  ₩ {displayAmount.toLocaleString()}
                 </span>
               </div>
               <div className={styles.header_currencyLabel}>
@@ -395,52 +394,60 @@ const MyReport = () => {
                   <span className={styles.description_userName}>
                     {userName}
                   </span>
-                  님은{' '}
-                  <span className={`${styles.description_highlightCategory} ${isVisible ? styles.visible : styles.hidden}`}>
+                  님은{" "}
+                  <span
+                    className={`${styles.description_highlightCategory} ${
+                      isVisible ? styles.visible : styles.hidden
+                    }`}
+                  >
                     {getCategoryName(highestCategory)}
                   </span>
-                  에 가장 많은 소비를 하고,{' '}
-                  <span className={`${styles.description_highlightPaymentMethod} ${isVisible ? styles.visible : styles.hidden}`}>
+                  에 가장 많은 소비를 하고,{" "}
+                  <span
+                    className={`${styles.description_highlightPaymentMethod} ${
+                      isVisible ? styles.visible : styles.hidden
+                    }`}
+                  >
                     {highestPaymentMethod}
                   </span>
-                  {highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이
+                  {highestPaymentMethod === "현금" ? "으로" : "로"} 가장 많이
                   결제하셨어요!
                 </div>
               </div>
               <div className={styles.charts_category_container}>
-              
-              <div className={styles.chartType}>
-                    <div className={styles.category_title}>📝카테고리별 퍼센티지(%)</div>
-                      <div className={styles.chartType_doughnut}>
-                        <Doughnut
-                          className={styles.doughnutChart}
-                          data={categoryData}
-                          options={options}
-                        />
-                    </div>
-              </div>
-
-                <div className={styles.charts_paymentMethod}>
-                  <div className={styles.paymentMethod_title}>💰결제 방법별 지출</div>
-                    <div className={styles.paymentMethod_chart}>
-                        <Bar
-                          className={styles.barChart2}
-                          data={paymentData}
-                          options={horizontalBarOptions}
-                        />
-                    </div>
-                </div>  
-              </div>
-              <div className={styles.chartType_bar_container}> 
-                <div className={styles.chartType_bar_title}>🔎총 누적 지출</div> 
-                <div className={styles.chartType_bar}>
-                    <Bar
-                        className={styles.barChart}
-                        data={categoryBarData}
-                        options={verticalBarOptions}
+                <div className={styles.chartType}>
+                  <div className={styles.chart_title}>
+                    📝 카테고리별 퍼센티지(%)
+                  </div>
+                  <div className={styles.chart_container}>
+                    <Doughnut
+                      className={styles.doughnutChart}
+                      data={categoryData}
+                      options={options}
                     />
+                  </div>
                 </div>
+                <div className={styles.chartType}>
+                  <div className={styles.chart_title}>💰 결제 방법별 지출</div>
+                  <div className={styles.chart_container}>
+                    <Bar
+                      className={styles.barChart2}
+                      data={paymentData}
+                      options={horizontalBarOptions}
+                    />
+                  </div>
                 </div>
+              </div>
+              <div className={styles.chartType_bar_container}>
+                <div className={styles.chart_title}>🔎 총 누적 지출</div>
+                <div className={styles.chartType_bar}>
+                  <Bar
+                    className={styles.barChart}
+                    data={categoryBarData}
+                    options={verticalBarOptions}
+                  />
+                </div>
+              </div>
             </div>
           </>
         )}
