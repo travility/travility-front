@@ -355,18 +355,26 @@ const ExpenseStatistic = () => {
   return (
     <div className={styles.expenseStatistic}>
       <div className={styles.expenseStatistic_header}>
-        <div className={styles.expenseStatistic_buttonContainer}>
-          <Button
-            onClick={goBack}
-            className={styles.expenseStatistic_backButton}
-          >
-            ←
-          </Button>
+          <div className={styles.expenseStatistic_buttonContainer}>
+            <Button
+              onClick={goBack}
+              className={styles.expenseStatistic_backButton}
+            >
+              ←
+            </Button>
+          </div>
+          <div className={styles.header_currencyLabel}>
+                <img
+                  className={styles.currencyLabel_icon}
+                  src="/images/dashboard/payments.png"
+                  alt="화폐"
+                ></img>
+                화폐단위 : <span className={styles.currencyUnit}>KRW</span>
+              </div>
         </div>
         <div className={styles.expenseStatistic_budgetContainer}>
           <TotalResult accountBookId={id} />
         </div>
-      </div>
       <div className={styles.expenseStatistic_content}>
         <div className={styles.expenseStatistic_chartsWrapper}>
           <div className={styles.expenseStatistic_date_container}>

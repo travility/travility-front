@@ -32,7 +32,11 @@ const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top',
+      position: 'bottom',
+      labels: {
+        usePointStyle: true, // 범례 아이콘을 도트로 변경
+        pointStyle: 'circle', // 도트 모양을 원으로 설정
+      },
     },
     tooltip: {
       enabled: true,
@@ -62,9 +66,8 @@ const options = {
   },
 };
 
-// 가로 막대 차트 옵션
+// 현금 || 카드
 const horizontalBarOptions = {
-  indexAxis: 'y',
   maintainAspectRatio: false,
   responsive: true,
   plugins: {
@@ -76,10 +79,10 @@ const horizontalBarOptions = {
     },
     datalabels: {
       formatter: (value) => value.toLocaleString(),
-      color: '#fff',
+      color: 'white',
       anchor: 'end', // 항목 위치
       align: 'end',
-      offset: -60,
+      offset: -20,
       display: true, // 차트에 항목 표시
       font: {
         weight: '700', // 폰트 굵기 설정
@@ -102,7 +105,7 @@ const horizontalBarOptions = {
   },
 };
 
-// 세로 막대 차트 옵션
+// 카테고리별 누적 지출
 const verticalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -169,11 +172,11 @@ const MyReport = () => {
   const [paymentData, setPaymentData] = useState({
     labels: [],
     datasets: [{ data: [] }],
-  }); // 가로 막대 차트 데이터
+  }); // 현금||카드
   const [categoryBarData, setCategoryBarData] = useState({
     labels: [],
     datasets: [{ data: [] }],
-  }); // 세로 막대 차트 데이터
+  }); // 총 누적 지출
   const [loading, setLoading] = useState(true); // 로딩 중 여부
   const [error, setError] = useState(null); // 오류 상태
   const [userName, setUserName] = useState(''); // 사용자 이름
@@ -181,6 +184,7 @@ const MyReport = () => {
   const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제 방법
   const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부
   const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 애니메이션
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -322,6 +326,17 @@ const MyReport = () => {
     }
 
     fetchData();
+
+    //글씨 타이머
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 600);
+
+    return () => {
+      clearTimeout(timer);
+    };
+
+
   }, []);
 
   // 로딩 중일 때
@@ -333,6 +348,8 @@ const MyReport = () => {
   if (error) {
     return <div>통계 불러오기 오류 : {error.message}</div>;
   }
+
+  
 
   return (
     <div className={styles.myReport}>
@@ -358,7 +375,7 @@ const MyReport = () => {
                   src="/images/dashboard/exclamation_mark.png"
                   alt="느낌표"
                 ></img>
-                <span className={styles.totalAmount_title}>총 지출 : </span>
+                <span className={styles.totalAmount_title}>총 누적 지출 : </span>
                 <span className={styles.totalAmount_amount}>
                   {displayAmount.toLocaleString()} ₩
                 </span>
@@ -379,46 +396,51 @@ const MyReport = () => {
                     {userName}
                   </span>
                   님은{' '}
-                  <span className={styles.description_highlightCategory}>
+                  <span className={`${styles.description_highlightCategory} ${isVisible ? styles.visible : styles.hidden}`}>
                     {getCategoryName(highestCategory)}
                   </span>
                   에 가장 많은 소비를 하고,{' '}
-                  <span className={styles.description_highlightPaymentMethod}>
+                  <span className={`${styles.description_highlightPaymentMethod} ${isVisible ? styles.visible : styles.hidden}`}>
                     {highestPaymentMethod}
                   </span>
                   {highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이
                   결제하셨어요!
                 </div>
               </div>
-              <div className={styles.charts_category}>
-                <div className={styles.category_title}>지출 항목</div>
-                <div className={styles.chartType}>
-                  <div className={styles.chartType_doughnut}>
-                    <Doughnut
-                      className={styles.doughnutChart}
-                      data={categoryData}
-                      options={options}
-                    />
-                  </div>
-                  <div className={styles.chartType_bar}>
+              <div className={styles.charts_category_container}>
+              
+              <div className={styles.chartType}>
+                    <div className={styles.category_title}>📝카테고리별 퍼센티지(%)</div>
+                      <div className={styles.chartType_doughnut}>
+                        <Doughnut
+                          className={styles.doughnutChart}
+                          data={categoryData}
+                          options={options}
+                        />
+                    </div>
+              </div>
+
+                <div className={styles.charts_paymentMethod}>
+                  <div className={styles.paymentMethod_title}>💰결제 방법별 지출</div>
+                    <div className={styles.paymentMethod_chart}>
+                        <Bar
+                          className={styles.barChart2}
+                          data={paymentData}
+                          options={horizontalBarOptions}
+                        />
+                    </div>
+                </div>  
+              </div>
+              <div className={styles.chartType_bar_container}> 
+                <div className={styles.chartType_bar_title}>🔎총 누적 지출</div> 
+                <div className={styles.chartType_bar}>
                     <Bar
-                      className={styles.barChart}
-                      data={categoryBarData}
-                      options={verticalBarOptions}
+                        className={styles.barChart}
+                        data={categoryBarData}
+                        options={verticalBarOptions}
                     />
-                  </div>
                 </div>
-              </div>
-              <div className={styles.charts_paymentMethod}>
-                <div className={styles.paymentMethod_title}>결제 방법</div>
-                <div className={styles.paymentMethod_chart}>
-                  <Bar
-                    className={styles.barChart2}
-                    data={paymentData}
-                    options={horizontalBarOptions}
-                  />
                 </div>
-              </div>
             </div>
           </>
         )}
