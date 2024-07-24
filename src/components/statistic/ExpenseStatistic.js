@@ -159,9 +159,7 @@ const ExpenseStatistic = () => {
         const data = await getExpenseStatisticsByDate(id);
         setStatistics(data);
 
-        const uniqueDates = Array.from(new Set(data.map((item) => item.date))).sort(
-          (a, b) => new Date(a) - new Date(b)
-        );
+        const uniqueDates = Array.from(new Set(data.map((item) => item.date)));
         setDates(uniqueDates);
         setSelectedDate(uniqueDates[0]);
 
@@ -463,4 +461,3 @@ const ExpenseStatistic = () => {
 };
 
 export default ExpenseStatistic;
-
