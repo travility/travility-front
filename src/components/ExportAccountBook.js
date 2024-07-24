@@ -15,7 +15,6 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
   const [krw, setKrw] = useState(false);
 
   const handleKRW = (e) => {
-    console.log(e.target.value);
     setKrw(e.target.value);
   };
 
@@ -24,9 +23,9 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
     try {
       const response = await exportAccountBook(id, krw);
 
-      if (response.data instanceof Blob) {
+      if (response instanceof Blob) {
         //응답 데이터가 blob인지 확인(바이너리 데이터 타입)
-        const url = window.URL.createObjectURL(response.data); //바이너리 객체 가리키는 임시 url
+        const url = window.URL.createObjectURL(response); //바이너리 객체 가리키는 임시 url
         const filename = countryName + '_' + title + '_' + '여행 가계부.xlsx';
         downloadFile(url, filename);
 
@@ -59,13 +58,21 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
         <ModalOverlay>
           <Modal>
             <ModalHeader>
-              <div className={styles.exportAccountBook_title}>
-                가계부 내보내기
-              </div>
+              <div className={styles.exportAccountBook_title}>내보내기</div>
               <CloseButton onClick={onClose}>&times;</CloseButton>
             </ModalHeader>
             <div className={styles.exportAccountBook_content}>
-              <p className={styles.description}>지출을 어떻게 내보낼까요?</p>
+              <div className={styles.description}>
+                <p className={styles.description_item}>
+                  지출 목록을 어떻게 내보낼까요?
+                </p>
+                <p className={styles.description_item}>
+                  모든 값은 가중 평균 환율을 통해 반올림하여 계산합니다.
+                </p>
+                <p className={styles.description_item}>
+                  합계는 항상 원화로 계산합니다.
+                </p>
+              </div>
               <div className={styles.exportOption_container}>
                 <div className={styles.exportOption}>
                   <label>그대로 내보내기</label>
@@ -79,7 +86,7 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
                   ></Input>
                 </div>
                 <div className={styles.exportOption}>
-                  <label>원화로 바꾸기</label>
+                  <label>원화로 내보내기</label>
                   <Input
                     type="radio"
                     name="export"
@@ -90,9 +97,6 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
                 </div>
               </div>
             </div>
-            <p className={styles.description2}>
-              모든 값은 가중 평균 환율을 통해 반올림하여 계산합니다.
-            </p>
             <div className={styles.exportAccountBook_button}>
               <Button onClick={handleExport}>다운로드</Button>
             </div>

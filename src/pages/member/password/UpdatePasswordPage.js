@@ -69,31 +69,31 @@ const UpdatePasswordPage = () => {
 
     if (vaildatePassword(password)) {
       //비밀번호 유효성 검사가 올바르면
-      try {
-        const response = await updatePassword(password);
-        console.log(response);
-        Swal.fire({
-          title: '비밀번호 변경 성공',
-          text: '비밀번호를 성공적으로 변경하였습니다. 재로그인하세요.',
-          icon: 'success',
-          confirmButtonColor: '#2a52be',
-        }).then(() => {
-          handleSuccessLogout(); //변경 후, 로그아웃
-        });
-      } catch (error) {
-        console.log(error);
-        if (error.response.data === 'Current password matches') {
-          //새 비밀번호가 기존 비밀번호와 일치하면
+      updatePassword(password)
+        .then(() => {
           Swal.fire({
-            title: '비밀번호 변경 실패',
-            text: '기존 비밀번호와 일치합니다.',
-            icon: 'error',
+            title: '비밀번호 변경 성공',
+            text: '비밀번호를 성공적으로 변경하였습니다. 재로그인하세요.',
+            icon: 'success',
             confirmButtonColor: '#2a52be',
+          }).then(() => {
+            handleSuccessLogout(); //변경 후, 로그아웃
           });
-        } else {
-          handleProblemSubject('비밀번호 변경');
-        }
-      }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.data === 'Current password matches') {
+            //새 비밀번호가 기존 비밀번호와 일치하면
+            Swal.fire({
+              title: '비밀번호 변경 실패',
+              text: '기존 비밀번호와 일치합니다.',
+              icon: 'error',
+              confirmButtonColor: '#2a52be',
+            });
+          } else {
+            handleProblemSubject('비밀번호 변경');
+          }
+        });
     } else {
       Swal.fire({
         title: '비밀번호 변경 실패',

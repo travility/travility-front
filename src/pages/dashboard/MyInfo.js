@@ -22,6 +22,7 @@ const MyInfo = () => {
     }
   }, [memberInfo]);
 
+  //회원 탈퇴
   const handleDeleteMember = async () => {
     const { value: text } = await Swal.fire({
       icon: 'warning',
