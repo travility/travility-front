@@ -38,8 +38,15 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     //여행 시작날짜
     const startDate = formatDate(accountBook.startDate);
 
-    if (selectedDate !== 'all' && selectedDate !== 'preparation') {
-      //선택된 날짜 지출 필터링 ('전체' or '준비' 아닐 경우)
+    //여행 종료날짜
+    const endDate = formatDate(accountBook.endDate);
+
+    if (
+      selectedDate !== 'all' &&
+      selectedDate !== 'preparation' &&
+      selectedDate !== 'after'
+    ) {
+      //선택된 날짜 지출 필터링 ('전체' or '준비' or '사후' 아닐 경우)
       const selected = formatDate(selectedDate);
       filteredExp = filteredExp.filter(
         (expense) =>
@@ -49,6 +56,10 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
       //'준비'일경우, 시작 날짜 이전 지출 필터링
       filteredExp = filteredExp.filter(
         (expense) => formatDate(expense.expenseDate) < startDate
+      );
+    } else if (selectedDate === 'after') {
+      filteredExp = filteredExp.filter(
+        (expense) => formatDate(expense.expenseDate) > endDate
       );
     }
 
@@ -81,6 +92,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     setFilteredBudgets(filteredBudg);
   }, [
     accountBook.startDate,
+    accountBook.endDate,
     selectedDate,
     filter,
     currency,
@@ -96,6 +108,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     setCurrency(selectedOption || { label: '전체', value: 'all' });
   };
 
+  //정산하기 이동
   const goSettlement = () => {
     const sharedExpenses = accountBook.expenses.filter(
       (expense) => expense.isShared
@@ -112,6 +125,7 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
     }
   };
 
+  //내보내기 이동
   const goExport = () => {
     if (accountBook.expenses.length === 0) {
       Swal.fire({
@@ -198,7 +212,9 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   };
 
   const cumulativeTotalExpenses =
-    selectedDate !== 'all' && selectedDate !== 'preparation'
+    selectedDate !== 'all' &&
+    selectedDate !== 'preparation' &&
+    selectedDate !== 'after'
       ? calculateCumulativeTotalExpenses(selectedDate, currency.value)
       : currency.value === 'all'
       ? totalExpensesInKRW
@@ -235,7 +251,9 @@ const ExpenseList = ({ accountBook, selectedDate }) => {
   };
 
   const totalAmountInKRWForFilteredExpenses =
-    selectedDate !== 'all' && selectedDate !== 'preparation'
+    selectedDate !== 'all' &&
+    selectedDate !== 'preparation' &&
+    selectedDate !== 'after'
       ? calculateTotalAmountInKRWForFilteredExpenses(filteredExpenses)
       : totalExpensesInKRW;
 

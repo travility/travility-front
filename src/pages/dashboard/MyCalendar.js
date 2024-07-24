@@ -16,7 +16,6 @@ const MyCalendar = () => {
     const fetchData = async () => {
       try {
         const eventsData = await fetchEvents();
-        console.log('Fetched Events:', eventsData);
         const fetchedEvents = eventsData.map((event) => ({
           accountbookId: event.accountbookId,
           title: event.title,
@@ -46,7 +45,6 @@ const MyCalendar = () => {
           }))
         );
 
-        
         const expensesData = {};
         const totalExpensesData = {};
         const allExchangeRates = {};
@@ -54,12 +52,12 @@ const MyCalendar = () => {
         const expensesPromises = eventsData.map((event) =>
           fetchTotalExpenses(event.accountbookId).then((totalExpenses) => {
             const { expenses, exchangeRates } = totalExpenses;
-            
+
             // 환율 정보를 병합
             Object.assign(allExchangeRates, exchangeRates);
 
             // 일별 지출 금액 계산
-            expenses.forEach(expense => {
+            expenses.forEach((expense) => {
               const date = format(parseISO(expense.expenseDate), 'yyyy-MM-dd');
               const amountInKRW =
                 expense.amount * (exchangeRates[expense.curUnit] || 1);
@@ -69,10 +67,15 @@ const MyCalendar = () => {
               expensesData[date] += amountInKRW;
             });
 
-             // 총 지출 금액 계산
-            totalExpensesData[event.accountbookId] = expenses.reduce((sum, expense) => {
-              return sum + (expense.amount * (exchangeRates[expense.curUnit] || 1));
-            }, 0);
+            // 총 지출 금액 계산
+            totalExpensesData[event.accountbookId] = expenses.reduce(
+              (sum, expense) => {
+                return (
+                  sum + expense.amount * (exchangeRates[expense.curUnit] || 1)
+                );
+              },
+              0
+            );
           })
         );
         // 모든 프로미스가 완료될 때까지 기다림
@@ -81,10 +84,6 @@ const MyCalendar = () => {
         setDailyExpenses(expensesData);
         setTotalExpenses(totalExpensesData);
         setExchangeRates(allExchangeRates);
-
-        console.log('Daily Expenses:', expensesData);
-       console.log('Total Expenses:', totalExpensesData);
-
       } catch (error) {
         console.error(
           '가계부 데이터를 가져오는 중 오류가 발생했습니다:',
@@ -98,15 +97,15 @@ const MyCalendar = () => {
 
   return (
     <div className={styles.my_calendar_container}>
-          <ScheduleCalendar 
-            events={events} 
-            hasEvent={hasEvent}
-            accountBooks={accountBooks}
-            dailyExpenses={dailyExpenses}
-            totalExpenses={totalExpenses}
-            exchangeRates={exchangeRates}
-          />
-    </div> 
+      <ScheduleCalendar
+        events={events}
+        hasEvent={hasEvent}
+        accountBooks={accountBooks}
+        dailyExpenses={dailyExpenses}
+        totalExpenses={totalExpenses}
+        exchangeRates={exchangeRates}
+      />
+    </div>
   );
 };
 

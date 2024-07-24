@@ -82,6 +82,10 @@
   width: 100%;
 }
 
+.amount_input > Input {
+  margin-top: 3px;
+}
+
 /* 이미지 업로드 */
 .image_container {
   display: flex;

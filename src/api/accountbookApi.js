@@ -63,5 +63,5 @@ export const exportAccountBook = async (id, krw) => {
       responseType: 'blob', // 응답을 Blob으로 처리
     }
   );
-  return response;
+  return response.data;
 };

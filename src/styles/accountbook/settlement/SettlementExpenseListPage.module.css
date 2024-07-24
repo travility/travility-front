@@ -1,14 +1,27 @@
+.settlementExpenseListPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.settlementExpenseListPage_header {
+  display: flex;
+  justify-content: flex-start;
+  width: 2rem;
+  margin-bottom: 1rem;
+}
+
 .expenseList_container {
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 2rem;
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
+  border: 1px solid var(--line-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .accountBook_title {
-  color: var(--main-color);
+  color: var(--text-color);
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -16,6 +29,7 @@
 .expenseList {
   width: 100%;
   overflow-y: auto;
+  padding-bottom: 1.5rem;
 }
 
 .expenseDate {
@@ -51,7 +65,10 @@
   height: 1rem;
 }
 
-.type, .currency, .amount, .description {
+.type,
+.currency,
+.amount,
+.description {
   margin-right: 0.3rem;
   flex: 1;
   overflow: hidden;
