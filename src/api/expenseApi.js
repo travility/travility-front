@@ -42,14 +42,6 @@ export const getPaymentMethodStatisticsByDate = async (accountBookId, date) => {
   return response.data;
 };
 
-//추가
-export const getUniqueExpenseDates = async (accountBookId) => {
-  const response = await axiosInstance.get(`/statistics/unique-dates`, {
-      params: { accountBookId },
-  });
-  return response.data; 
-};
-
 // 한 일정에 대한 카테고리별 총 지출
 export const getTotalCategoryStatistics = async (accountBookId) => {
   const response = await axiosInstance.get("/accountbook/statistics/totalcategory", { 
