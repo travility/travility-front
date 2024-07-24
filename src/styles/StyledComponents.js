@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -37,13 +37,13 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
   }
 
-  @media (max-width: 480px) {
-    html {
-      font-size: 80%;
-    }
-  }
+  // @media (max-width: 480px) {
+  //   html {
+  //     font-size: 75%;
+  //   }
+  // }
 
-  @media (min-width: 481px) and (max-width: 767px) {
+  @media (max-width: 767px) {
     html {
       font-size: 87.5%;
     }
@@ -162,12 +162,12 @@ const Input = styled.input`
     color: var(--gray-color);
   }
 
-  &[type='date'] {
+  &[type="date"] {
     font-family: var(--font-family);
     padding: 0.4rem;
   }
 
-  &[type='number'] {
+  &[type="number"] {
     -moz-appearance: textfield;
   }
 
