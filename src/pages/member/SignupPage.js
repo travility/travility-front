@@ -167,9 +167,7 @@ const SignupPage = () => {
         name: nickname,
       };
       signup(member)
-        .then((data) => {
-          console.log(data);
-          console.log(member);
+        .then(() => {
           Swal.fire({
             title: '회원가입 성공',
             text: '로그인 페이지로 이동합니다.',

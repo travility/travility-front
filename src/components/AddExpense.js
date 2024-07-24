@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Select from 'react-select';
 import {
   ModalOverlay,
@@ -131,14 +131,14 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     const isSelected = newExpense.expense.category === category;
     const suffix =
       theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
-    return `/images/account/category/${category.toLowerCase()}${suffix}.png`;
+    return `/images/accountbook/category/${category.toLowerCase()}${suffix}.png`;
   };
 
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
     const suffix =
       theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
-    return `/images/account/${method.toLowerCase()}${suffix}.png`;
+    return `/images/accountbook/${method.toLowerCase()}${suffix}.png`;
   };
 
   const validateForm = () => {
@@ -345,7 +345,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                 >
                   <img
                     className={styles.addPhoto_image}
-                    src="/images/account/add_photo.png"
+                    src="/images/accountbook/add_photo.png"
                     alt="사진 추가"
                   />
                   업로드

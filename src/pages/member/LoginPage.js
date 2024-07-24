@@ -62,7 +62,7 @@ const LoginPage = () => {
       const token = response.headers.get('Authorization');
       saveToken(token);
       const memberInfo = await getMemberInfo();
-      console.log(memberInfo);
+
       Swal.fire({
         title: '로그인 성공',
         icon: 'success',
