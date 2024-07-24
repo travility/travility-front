@@ -344,9 +344,9 @@ const MyReport = () => {
               className={styles.noAccountBook_icon}
             />
             <div>
-              작성하신 가계부가 없어요
+              지출 내역이 없어요
               <br />
-              가계부를 작성하시면 통계화면을 볼 수 있어요🐷
+              지출 내역을 작성하시면 통계화면을 볼 수 있어요
             </div>
           </div>
         ) : (

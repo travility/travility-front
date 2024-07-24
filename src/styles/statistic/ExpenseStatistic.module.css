@@ -20,7 +20,7 @@
 
 .chartsWrapper_title,
 .categorySelection_title {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   width: 200px;
   padding: 10px;
@@ -112,6 +112,29 @@
   width: 100%;
 }
 
+/* 체크박스 선택 / 해제 */
+.expenseStatistic_selectOnOffButton {
+  background-color: var(--main-color);
+  color: #ffffff;
+  width: 100%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 0.5rem; /* 위아래 버튼 간의 간격 추가 */
+}
+
+.expenseStatistic_selectOnOffButton:hover {
+  background-color: var(--second-color);
+}
+
+.expenseStatistic_selectOnOffButton:disabled {
+  background-color: var(--line-color);
+  cursor: not-allowed;
+}
 
 @media (max-width: 768px) {
   .chartsWrapper_chart {

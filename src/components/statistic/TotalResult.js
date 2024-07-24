@@ -52,7 +52,7 @@ const TotalResult = ({ accountBookId }) => {
           <span className={styles.highlight}>
             {formatNumberWithCommas(totalexpenses)} 
           </span>
-           원 썼어요!
+           원 썼어요
         </div>
         <div>
           {remainingBudget > 0 ? (
@@ -69,7 +69,7 @@ const TotalResult = ({ accountBookId }) => {
               <span className={styles.highlight}>
                 {formatNumberWithCommas(-remainingBudget)}
               </span>
-              원 더 사용했어요.
+              원 더 사용했어요
             </>
           ) : (
             '예산과 동일하게 사용했어요!'
