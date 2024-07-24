@@ -125,6 +125,8 @@
   background-color: var(--light-color);
   align-items: center;
   gap: 5rem;
+  height: 100vh;
+  min-height: 35rem;
 }
 
 .travility_disc {
