@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import Select from "react-select";
 import { Tooltip } from "react-tooltip";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import {
   getExpenseStatisticsByDate,
   getPaymentMethodStatisticsByDate,
@@ -70,6 +72,7 @@ const ExpenseStatistic = () => {
     labels: [],
     datasets: [],
   });
+  const [hasExpense, setHasExpense] = useState(true);
 
   const { theme } = useTheme();
 
@@ -159,6 +162,11 @@ const ExpenseStatistic = () => {
         const data = await getExpenseStatisticsByDate(id);
         setStatistics(data);
 
+        if (data.length === 0) {
+          setHasExpense(false);
+          return;
+        }
+
         const uniqueDates = Array.from(new Set(data.map((item) => item.date)));
         setDates(uniqueDates);
         setSelectedDate(uniqueDates[0]);
@@ -171,11 +179,11 @@ const ExpenseStatistic = () => {
         if (Array.isArray(paymentData)) {
           setPaymentMethodStatistics(paymentData);
         } else {
-          console.error("Expected an array but got:", paymentData);
+          console.error("기댓값 array와 다른 결괏값 나옴 : ", paymentData);
           setPaymentMethodStatistics([]);
         }
       } catch (error) {
-        console.error("Failed to fetch statistics:", error);
+        console.error("통계 불러오기 실패 :", error);
       }
     };
 
@@ -245,12 +253,24 @@ const ExpenseStatistic = () => {
                 (cat) => cat.en === category
               );
               const backgroundColor = colors[colorIndex] + "80"; // 살짝 투명하게함 50%
+
+              // 날짜별로 데이터를 합산하여 중복된 날짜 제거
+              const dateMap = data.reduce((acc, curr) => {
+                const date = curr.date.split("T")[0];
+                if (!acc[date]) {
+                  acc[date] = 0;
+                }
+                acc[date] += curr.amount;
+                return acc;
+              }, {});
+
+              const sortedDates = Object.keys(dateMap).sort(
+                (a, b) => new Date(a) - new Date(b)
+              );
+
               return {
                 label: categoryMap[category], // 한글 라벨
-                data: dates.map((date) => {
-                  const entry = data.find((d) => d.date === date);
-                  return entry ? entry.amount : 0;
-                }),
+                data: sortedDates.map((date) => dateMap[date] || 0),
                 borderColor: colors[colorIndex],
                 backgroundColor: backgroundColor,
                 pointStyle: "circle", // 포인트 스타일 (꼭짓점)
@@ -261,13 +281,20 @@ const ExpenseStatistic = () => {
               };
             })
           );
-          setLineChartData({ labels: dates.map(formatDate), datasets });
+
+          const allDates = datasets.reduce(
+            (acc, dataset) =>
+              Array.from(new Set([...acc, ...dataset.data.map((_, i) => dates[i])])),
+            []
+          ).sort((a, b) => new Date(a) - new Date(b)); // 날짜를 오름차순으로 정렬
+
+          setLineChartData({ labels: allDates.map(formatDate), datasets });
         } catch (error) {
           console.error("Failed to fetch line chart data:", error);
         }
       } else {
         setLineChartData({
-          labels: dates.map(formatDate),
+          labels: dates.map(formatDate).sort((a, b) => new Date(a) - new Date(b)), // 날짜를 오름차순으로 정렬
           datasets: [
             { label: "", data: [], borderColor: "rgba(0,0,0,0)", fill: false },
           ],
@@ -333,102 +360,126 @@ const ExpenseStatistic = () => {
 
   return (
     <div className={styles.expenseStatistic}>
-      <div className={styles.expenseStatistic_header}>
-        <div className={styles.expenseStatistic_buttonContainer}>
-          <Button
-            onClick={goBack}
-            className={styles.expenseStatistic_backButton}
-          >
-            ←
-          </Button>
-        </div>
-        <div className={styles.expenseStatistic_budgetContainer}>
-          <TotalResult accountBookId={id} />
-        </div>
-      </div>
-      <div className={styles.expenseStatistic_content}>
-        <div className={styles.expenseStatistic_chartsWrapper}>
-          <div className={styles.expenseStatistic_date_container}>
-            <div className={styles.chartsWrapper_title}>📆 일자별 지출</div>
-            <Select
-              options={dateOptions}
-              onChange={handleDateChange}
-              placeholder="날짜 선택"
-              noOptionsMessage={() => "선택 가능한 날짜가 없습니다."}
-              styles={selectStyles3}
-            />
-            <div className={styles.expenseStatistic_day_selectContainer}></div>
-          </div>
-          <div className={styles.chartsWrapper_chart}>
-            <div className={styles.expenseStatistic_chartContainer}>
-              <div className={styles.expenseStatistic_chartTitle}>
-                지출 항목
-              </div>
-              <div className={styles.barChartWrapper}>
-                <Bar
-                  className={styles.categoryChart}
-                  data={data}
-                  options={categoryChartOptions}
-                />
-              </div>
-            </div>
-            <div className={styles.expenseStatistic_chartContainer}>
-              <div className={styles.expenseStatistic_chartTitle}>
-                결제 방법
-              </div>
-              <div className={styles.barChartWrapper}>
-                <Bar
-                  className={styles.paymentChart}
-                  data={paymentMethodData}
-                  options={paymentMethodOptions}
-                />
-              </div>
-            </div>
+      {!hasExpense ? (
+        <div className={styles.noExpense}>
+          <FontAwesomeIcon
+            icon={faExclamationTriangle}
+            className={styles.noExpense_icon}
+          />
+          <div>
+            지출 내역이 없어요
+            <br />
+            지출 내역을 작성하시면 통계 화면을 볼 수 있어요
           </div>
         </div>
-        <div className={styles.expenseStatistic_chartsWrapper}>
-          <div className={styles.categorySelection_title}>
-            🔎 지출 한눈에 보기
-          </div>
-          <div className={styles.expenseStatistic_categorySelection}>
-            <div className={styles.expenseStatistic_total}>
-              <Tooltip id="expense-info" />
-              <TotalAmountCategory accountBookId={id} />
-            </div>
-            <div className={styles.categorySelection__checkboxGroup}>
-              {categories.map((category) => (
-                <div key={category.en} className={styles.labelContainer}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="category"
-                      value={category.en}
-                      checked={selectedCategories.includes(category.en)}
-                      onChange={handleCategoryChange}
-                    />
-                    {category.ko}
-                  </label>
-                </div>
-              ))}
+      ) : (
+        <>
+          <div className={styles.expenseStatistic_header}>
+            <div className={styles.expenseStatistic_buttonContainer}>
               <Button
-                onClick={handleClearSelection}
-                className={styles.expenseStatistic_clearButton}
+                onClick={goBack}
+                className={styles.expenseStatistic_backButton}
               >
-                모두 해제
+                ←
               </Button>
             </div>
-          </div>
-          <div className={styles.expenseStatistic_lineChartContainer}>
-            <div className={styles.expenseStatistic_lineChartWrapper}>
-              <Line
-                className={styles.lineChart}
-                data={lineChartData}
-                options={lineChartOptions}
-              />
+            <div className={styles.header_currencyLabel}>
+              <img
+                className={styles.currencyLabel_icon}
+                src="/images/dashboard/payments.png"
+                alt="화폐"
+              ></img>
+              화폐단위 : <span className={styles.currencyUnit}>KRW</span>
             </div>
           </div>
-        </div>
-      </div>
+          <div className={styles.expenseStatistic_budgetContainer}>
+            <TotalResult accountBookId={id} />
+          </div>
+          <div className={styles.expenseStatistic_content}>
+            <div className={styles.expenseStatistic_chartsWrapper}>
+              <div className={styles.expenseStatistic_date_container}>
+                <div className={styles.chartsWrapper_title}>📆 일자별 지출</div>
+                <Select
+                  options={dateOptions}
+                  onChange={handleDateChange}
+                  placeholder="날짜 선택"
+                  noOptionsMessage={() => "선택 가능한 날짜가 없습니다."}
+                  styles={selectStyles3}
+                />
+                <div className={styles.expenseStatistic_day_selectContainer}></div>
+              </div>
+              <div className={styles.chartsWrapper_chart}>
+                <div className={styles.expenseStatistic_chartContainer}>
+                  <div className={styles.expenseStatistic_chartTitle}>
+                    지출 항목
+                  </div>
+                  <div className={styles.barChartWrapper}>
+                    <Bar
+                      className={styles.categoryChart}
+                      data={data}
+                      options={categoryChartOptions}
+                    />
+                  </div>
+                </div>
+                <div className={styles.expenseStatistic_chartContainer}>
+                  <div className={styles.expenseStatistic_chartTitle}>
+                    결제 방법
+                  </div>
+                  <div className={styles.barChartWrapper}>
+                    <Bar
+                      className={styles.paymentChart}
+                      data={paymentMethodData}
+                      options={paymentMethodOptions}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={styles.expenseStatistic_chartsWrapper}>
+              <div className={styles.categorySelection_title}>
+                🔎 지출 한눈에 보기
+              </div>
+              <div className={styles.expenseStatistic_categorySelection}>
+                <div className={styles.expenseStatistic_total}>
+                  <Tooltip id="expense-info" />
+                  <TotalAmountCategory accountBookId={id} />
+                </div>
+                <div className={styles.categorySelection__checkboxGroup}>
+                  {categories.map((category) => (
+                    <div key={category.en} className={styles.labelContainer}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          name="category"
+                          value={category.en}
+                          checked={selectedCategories.includes(category.en)}
+                          onChange={handleCategoryChange}
+                        />
+                        {category.ko}
+                      </label>
+                    </div>
+                  ))}
+                  <Button
+                    onClick={handleClearSelection}
+                    className={styles.expenseStatistic_clearButton}
+                  >
+                    모두 해제
+                  </Button>
+                </div>
+              </div>
+              <div className={styles.expenseStatistic_lineChartContainer}>
+                <div className={styles.expenseStatistic_lineChartWrapper}>
+                  <Line
+                    className={styles.lineChart}
+                    data={lineChartData}
+                    options={lineChartOptions}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
