@@ -159,7 +159,9 @@ const ExpenseStatistic = () => {
         const data = await getExpenseStatisticsByDate(id);
         setStatistics(data);
 
-        const uniqueDates = Array.from(new Set(data.map((item) => item.date)));
+        const uniqueDates = Array.from(new Set(data.map((item) => item.date))).sort(
+          (a, b) => new Date(a) - new Date(b)
+        );
         setDates(uniqueDates);
         setSelectedDate(uniqueDates[0]);
 
@@ -245,12 +247,24 @@ const ExpenseStatistic = () => {
                 (cat) => cat.en === category
               );
               const backgroundColor = colors[colorIndex] + "80"; // 살짝 투명하게함 50%
+
+              // 날짜별로 데이터를 합산하여 중복된 날짜 제거
+              const dateMap = data.reduce((acc, curr) => {
+                const date = curr.date.split("T")[0];
+                if (!acc[date]) {
+                  acc[date] = 0;
+                }
+                acc[date] += curr.amount;
+                return acc;
+              }, {});
+
+              const sortedDates = Object.keys(dateMap).sort(
+                (a, b) => new Date(a) - new Date(b)
+              );
+
               return {
                 label: categoryMap[category], // 한글 라벨
-                data: dates.map((date) => {
-                  const entry = data.find((d) => d.date === date);
-                  return entry ? entry.amount : 0;
-                }),
+                data: sortedDates.map((date) => dateMap[date] || 0),
                 borderColor: colors[colorIndex],
                 backgroundColor: backgroundColor,
                 pointStyle: "circle", // 포인트 스타일 (꼭짓점)
@@ -261,13 +275,20 @@ const ExpenseStatistic = () => {
               };
             })
           );
-          setLineChartData({ labels: dates.map(formatDate), datasets });
+
+          const allDates = datasets.reduce(
+            (acc, dataset) =>
+              Array.from(new Set([...acc, ...dataset.data.map((_, i) => dates[i])])),
+            []
+          ).sort((a, b) => new Date(a) - new Date(b)); // 날짜를 오름차순으로 정렬
+
+          setLineChartData({ labels: allDates.map(formatDate), datasets });
         } catch (error) {
           console.error("Failed to fetch line chart data:", error);
         }
       } else {
         setLineChartData({
-          labels: dates.map(formatDate),
+          labels: dates.map(formatDate).sort((a, b) => new Date(a) - new Date(b)), // 날짜를 오름차순으로 정렬
           datasets: [
             { label: "", data: [], borderColor: "rgba(0,0,0,0)", fill: false },
           ],
@@ -434,3 +455,4 @@ const ExpenseStatistic = () => {
 };
 
 export default ExpenseStatistic;
+
