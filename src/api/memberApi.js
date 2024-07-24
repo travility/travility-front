@@ -1,30 +1,26 @@
 import axios from 'axios';
 import axiosInstance from '../util/axiosInterceptor';
-
-const API_SERVER_HOST = 'http://localhost:8080/api';
+import { API_URL } from '../config/apiConfig';
 
 //아이디 중복 확인
 export const checkUsername = async (username) => {
-  const response = await axios.get(
-    `${API_SERVER_HOST}/auth/duplicate-username`,
-    {
-      params: {
-        username: username,
-      },
-    }
-  );
+  const response = await axios.get(`${API_URL}/auth/duplicate-username`, {
+    params: {
+      username: username,
+    },
+  });
   return response.data;
 };
 
 //회원가입
 export const signup = async (member) => {
-  const response = await axios.post(`${API_SERVER_HOST}/signup`, member);
+  const response = await axios.post(`${API_URL}/signup`, member);
   return response;
 };
 
 //로그인
 export const login = async (data) => {
-  const response = await axios.post(`${API_SERVER_HOST}/login`, data, {
+  const response = await axios.post(`${API_URL}/login`, data, {
     withCredentials: true,
   });
   return response;
@@ -32,7 +28,7 @@ export const login = async (data) => {
 
 // OAuth2 쿠키로부터 응답 헤더 토큰 생성
 export const setAccessTokenFromRefreshToken = async () => {
-  const response = await axios.get(`${API_SERVER_HOST}/auth/social-jwt`, {
+  const response = await axios.get(`${API_URL}/auth/social-jwt`, {
     withCredentials: true,
   }); // 인증정보를 포함하여 요청
   return response;
@@ -41,7 +37,7 @@ export const setAccessTokenFromRefreshToken = async () => {
 //액세스 토큰 재발급
 export const getNewAccessToken = async () => {
   const response = await axios.post(
-    `${API_SERVER_HOST}/auth/reissue`,
+    `${API_URL}/auth/reissue`,
     {},
     { withCredentials: true }
   );
@@ -50,7 +46,7 @@ export const getNewAccessToken = async () => {
 
 //로그아웃
 export const logout = async () => {
-  const response = await axiosInstance.post(`${API_SERVER_HOST}/logout`);
+  const response = await axiosInstance.post('/logout');
   return response;
 };
 
@@ -68,10 +64,7 @@ export const getMemberInfo = async () => {
 
 //비밀번호 찾기
 export const forgotPassword = async (data) => {
-  const response = await axios.post(
-    `${API_SERVER_HOST}/users/forgot-password`,
-    data
-  );
+  const response = await axios.post(`${API_URL}/users/forgot-password`, data);
   return response;
 };
 

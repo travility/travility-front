@@ -11,6 +11,7 @@ import {
   Input,
 } from '../../../styles/StyledComponents';
 import { handleNoImage } from '../../../util/swalUtils';
+import { SERVER_URL } from '../../../config/apiConfig';
 
 const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const [newTripInfo, setNewTripInfo] = useState({
@@ -215,7 +216,7 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                         newTripInfo.previewImg ||
                         (accountBook.imgName === null
                           ? '/images/dashboard/default_image.png'
-                          : `http://localhost:8080/images/${accountBook.imgName}`)
+                          : `${SERVER_URL}/images/${accountBook.imgName}`)
                       }
                       alt="대표이미지"
                     />
