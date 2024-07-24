@@ -5,11 +5,7 @@ import {
   getNewMembersCountToday,
   getTotalMembersCount,
 } from '../../api/adminApi';
-import {
-  handleAccessDenied,
-  handleProblemSubject,
-  handleTokenExpirationLogout,
-} from '../../util/swalUtils';
+import { handleAccessDenied, handleProblemSubject } from '../../util/swalUtils';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/admin/UserPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,25 +18,48 @@ import Select from 'react-select';
 import { selectStyles2 } from '../../util/CustomStyles';
 
 const UsersPage = () => {
+  const navigate = useNavigate();
   const [memberList, setMemberList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [todayCount, settodayCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
-  const pageSize = 10;
   const [sort, setSort] = useState({ value: 'desc', label: '최신순' });
-  const navigate = useNavigate();
+  const sortOptions = [
+    { value: 'desc', label: '최신순' },
+    { value: 'asc', label: '오래된순' },
+  ];
+  const pageSize = 10;
 
+  const fetchData = async () => {
+    try {
+      const totalMembers = await getTotalMembersCount();
+      setTotalCount(totalMembers);
+
+      const newMembersToday = await getNewMembersCountToday();
+      settodayCount(newMembersToday);
+
+      const members = await getMemberList(
+        currentPage - 1,
+        pageSize,
+        sort.value
+      );
+      setMemberList(members);
+    } catch (error) {
+      console.log(error);
+      if (error.response.data === 'Access denied') {
+        handleAccessDenied(navigate);
+      }
+    }
+  };
+
+  //정렬
   const handleSort = (sortOption) => {
     setSort(sortOption);
     setCurrentPage(1);
   };
 
-  const sortOptions = [
-    { value: 'desc', label: '최신순' },
-    { value: 'asc', label: '오래된순' },
-  ];
-
+  //계정 삭제
   const handleDeleteMember = async (username) => {
     const { value: text } = await Swal.fire({
       icon: 'warning',
@@ -81,28 +100,6 @@ const UsersPage = () => {
     }
   };
 
-  const fetchData = async () => {
-    try {
-      const totalMembers = await getTotalMembersCount();
-      setTotalCount(totalMembers);
-
-      const newMembersToday = await getNewMembersCountToday();
-      settodayCount(newMembersToday);
-
-      const members = await getMemberList(
-        currentPage - 1,
-        pageSize,
-        sort.value
-      );
-      setMemberList(members);
-    } catch (error) {
-      console.log(error);
-      if (error.response.data === 'Access denied') {
-        handleAccessDenied(navigate);
-      }
-    }
-  };
-
   //총 페이지 수
   const totalPages = Math.ceil(totalCount / pageSize); //반올림
 
@@ -125,8 +122,6 @@ const UsersPage = () => {
   };
 
   useEffect(() => {
-    console.log(totalPages);
-    console.log(memberList);
     fetchData();
   }, [navigate, totalPages, currentPage, sort]);
 

@@ -3,6 +3,7 @@ import { removeToken } from './tokenUtils';
 
 /*로그아웃*/
 
+//로그아웃 성공
 export const handleSuccessLogout = () => {
   removeToken();
   Swal.fire({
@@ -14,6 +15,7 @@ export const handleSuccessLogout = () => {
   });
 };
 
+//로그인 유효기간 만료
 export const handleTokenExpirationLogout = () => {
   removeToken();
   Swal.fire({
@@ -26,6 +28,7 @@ export const handleTokenExpirationLogout = () => {
   });
 };
 
+//이미 로그아웃
 export const handleAlreadyLoggedOut = () => {
   removeToken();
   Swal.fire({
@@ -38,6 +41,7 @@ export const handleAlreadyLoggedOut = () => {
   });
 };
 
+//접근 거부
 export const handleAccessDenied = (navigate) => {
   Swal.fire({
     title: '접근 거부',
@@ -51,6 +55,7 @@ export const handleAccessDenied = (navigate) => {
 
 /* 공통 성공 & 실패 */
 
+//성공
 export const handleSuccessSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 성공`,
@@ -62,8 +67,8 @@ export const handleSuccessSubject = (subject, action) => {
   });
 };
 
+//성공(새로고침 x)
 export const handleSuccessSubjectNotReload = (
-  //새로고침 없음
   subject,
   action,
   navigate,
@@ -79,6 +84,7 @@ export const handleSuccessSubjectNotReload = (
   });
 };
 
+//실패
 export const handleFailureSubject = (subject, action) => {
   Swal.fire({
     title: `${action} 실패`,
@@ -88,6 +94,7 @@ export const handleFailureSubject = (subject, action) => {
   });
 };
 
+//실패(문제 있음)
 export const handleProblemSubject = (subject) => {
   Swal.fire({
     title: `${subject} 실패`,

@@ -3,8 +3,8 @@ import {
   ModalOverlay,
   Modal,
   ModalHeader,
+  CloseButton,
 } from '../../styles/StyledComponents';
-import { CloseButton } from 'react-bootstrap';
 import styles from '../../styles/components/Share.module.css';
 import { useLocation } from 'react-router-dom';
 
@@ -53,7 +53,7 @@ const Share = ({ isOpen, onClose, countryName }) => {
               >
                 <img
                   className={styles.share_icon}
-                  src="/images/account/link.png"
+                  src="/images/accountbook/settlement/link.png"
                   alt="링크로 공유하기"
                 />
                 링크로 공유하기
