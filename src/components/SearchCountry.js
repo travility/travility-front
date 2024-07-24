@@ -21,6 +21,7 @@ const SearchCountry = forwardRef(
         try {
           const response = await fetchCountryFlags();
           setCountries(response.data);
+          console.log(response.data);
         } catch (error) {
           console.error(
             '국가 국기 정보를 가져오는 중 오류 발생:',

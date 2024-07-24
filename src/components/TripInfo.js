@@ -6,6 +6,7 @@ import {
   formatNumberWithCommas,
 } from '../util/calcUtils';
 import styles from '../styles/components/TripInfo.module.css';
+import { SERVER_URL } from '../config/apiConfig';
 
 const TripInfo = ({
   accountBook,
@@ -31,7 +32,7 @@ const TripInfo = ({
       style={{
         backgroundImage: `url(${
           accountBook.imgName
-            ? `http://localhost:8080/images/${accountBook.imgName}`
+            ? `${SERVER_URL}/images/${accountBook.imgName}`
             : '/images/dashboard/default_image.png'
         })`,
       }}
