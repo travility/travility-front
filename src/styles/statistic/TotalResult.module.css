@@ -2,6 +2,14 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+  border: 2px solid var(--line-color);
+  border-radius: 8px;
+  padding: 1rem;
+  height: 10rem;
+  justify-content: center;
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
 }
 
 .budgetHeader {
@@ -13,10 +21,26 @@
   margin-bottom: 4px;
 }
 
+.total_text_color{
+  color: var(--main-color);
+  font-size: 1.5em;
+}
 
 .highlight{
   color: var(--pointor-color);
   margin-right: 5px;
   margin-left: 5px;
   font-size: 1.3em;
+}
+
+@media (max-width: 480px) {
+  .budgetContainer{
+    height: 100px;
+    width: 100%;
+  }
+  
+  .budgetHeader {
+    font-size: 0.9em;
+    color: var(--text-color);
+  }
 }

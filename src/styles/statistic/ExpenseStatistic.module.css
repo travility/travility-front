@@ -33,7 +33,7 @@
 
 .expenseStatistic_chartTitle {
   margin-bottom: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-color);
 }
 
@@ -78,16 +78,17 @@
 
 .categorySelection__checkboxGroup {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 0.3rem;
   margin-bottom: 1rem;
 }
 
+
+
 .labelContainer {
-  flex: 1 1 5rem;
-  display: flex;
   align-items: center;
   margin: 0.3rem;
+  font-size: 0.8rem;
 }
 
 .expenseStatistic_lineChartContainer {
@@ -110,6 +111,45 @@
 .lineChart {
   min-width: 600px;
   height: 100%;
+}
+
+
+/* 헤더 화폐단위  */
+.header_currencyLabel {
+  display: flex;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--gray-color);
+}
+
+.currencyLabel_icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin-right: 0.3rem;
+}
+
+.currencyUnit {
+  color: var(--text-color);
+}
+
+.noExpense {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: var(--light-color);
+}
+
+.noExpense_icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: var(--second-color);
 }
 
 @media (max-width: 768px) {
