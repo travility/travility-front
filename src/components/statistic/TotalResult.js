@@ -83,7 +83,7 @@ const TotalResult = ({ accountBookId }) => {
           <span className={styles.total_text_color}>
             {formatNumberWithCommas(displayTotalExpenses)}
           </span>
-           원 썼어요
+           원 썼어요!
         </div>
         <div>
           {remainingBudget > 0 ? (
