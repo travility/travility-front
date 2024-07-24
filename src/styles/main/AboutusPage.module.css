@@ -63,8 +63,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
+  width: 20rem;
+  height: 20rem;
   margin: auto;
   z-index: 1;
   border-top: 3px solid rgba(101, 125, 249, 0.7);
@@ -176,7 +176,7 @@
 }
 
 .section2 {
-  margin-top: 5rem;
+  margin: 5rem 0;
 }
 
 .section2_content {
@@ -288,7 +288,7 @@
   padding: 5rem 2rem;
   text-align: center;
   height: 100vh;
-  margin-bottom: 5rem;
+  margin: 5rem 0;
   background-color: var(--second-color);
   color: var(--text-color);
   font-size: 1.2em;
