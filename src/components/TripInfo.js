@@ -26,10 +26,6 @@ const TripInfo = ({
     return text.substring(0, maxLength) + '...';
   };
 
-  useEffect(() => {
-    console.log(accountBook);
-  });
-
   return (
     <div
       key={accountBook.id}
