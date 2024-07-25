@@ -20,8 +20,13 @@ const SearchCountry = forwardRef(
       const fetchCountries = async () => {
         try {
           const response = await fetchCountryFlags();
-          setCountries(response.data);
-          console.log(response.data);
+          const updatedCountries = response.data.map((country) => {
+            if (country.country_nm === '미합중국') {
+              return { ...country, country_nm: '미국' };
+            }
+            return country;
+          });
+          setCountries(updatedCountries);
         } catch (error) {
           console.error(
             '국가 국기 정보를 가져오는 중 오류 발생:',

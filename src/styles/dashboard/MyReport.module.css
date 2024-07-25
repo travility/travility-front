@@ -15,10 +15,8 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
   margin-bottom: 1rem;
 }
-
 
 .header_currencyLabel {
   display: flex;
@@ -58,8 +56,6 @@
 
 .totalAmount_amount {
   color: var(--text-color);
-  /* font-size: 1rem; */
-  text-overflow: ellipsis;
 }
 
 .charts {
@@ -110,12 +106,10 @@
 }
 
 /* 항목별 title 들 */
-.category_title,
-.paymentMethod_title,
-.chartType_bar_title{
+.chart_title {
   color: var(--text-color);
   font-weight: 600;
-  padding-right: 1rem; 
+  padding-right: 1rem;
   padding-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -130,69 +124,53 @@
   transition: opacity 0.3s ease-in-out;
 }
 
+
 /* 지출항목 결제방법 컨테이너 */
 .charts_category_container {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   width: 100%;
-  box-sizing: border-box;
 }
 
-.chartType_bar_container{
+.chartType_bar_container {
   display: flex;
   flex-direction: column;
 }
 
-/* 도넛차트 */
 .chartType {
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 }
 
-.chartType_doughnut{
-  width: 100%;
-  height: 250px;
+.chart_container {
+  width: 100%; 
+  height: 15rem;
   border: 1px solid var(--line-color);
   border-radius: 8px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
-  padding: 0.5rem;
+  padding: 1rem;
+}
+
+/* 도넛차트 */
+.doughnutChart {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 auto;
 }
 
 /* 바 차트 */
-.chartType_bar{
-  width: 100% !important;
-  height: 100% !important;
-  max-height: 500px;
-  padding: 2rem;
-  border: 1px solid var(--line-color);
-  border-radius: 8px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
-}
-
-/* 현금 || 카드 */
-.barChart2{
-  border: 1px solid var(--line-color);
-  border-radius: 8px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
-  padding: 0.5rem;
-}
-
-.barChart{
+.barChart {
   width: 100% !important;
   height: 100% !important;
 }
 
-.charts_paymentMethod {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-}
-
-.paymentMethod_chart {
-  width: 100%;
-  height: 100%;
+.barChart2 {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 auto;
 }
 
 /* 등록된 가계부가 없어요 */
@@ -235,12 +213,12 @@
 }
 
 @media (max-width: 480px) {
-  .charts_category_container{
-    display: flexbox;
+  .charts_category_container {
+    display: flex;
     flex-direction: column;
   }
 
-  .chartType_bar{
+  .chartType_bar {
     padding: 1rem;
   }
 }
