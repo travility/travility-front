@@ -353,7 +353,7 @@ const ExpenseStatistic = () => {
 
               return {
                 label: categoryMap[category], // label 한글로 표시
-                data: sortedDates.map((date) => dateMap[date] || 0),
+                data: dates.map((date) => dateMap[date] || 0), // 값이 없으면 0으로
                 borderColor: colors[colorIndex],
                 backgroundColor: backgroundColor,
                 pointStyle: 'circle', // 포인트 스타일 (꼭짓점)
@@ -365,17 +365,7 @@ const ExpenseStatistic = () => {
             })
           );
 
-          const allDates = datasets
-            .reduce(
-              (acc, dataset) =>
-                Array.from(
-                  new Set([...acc, ...dataset.data.map((_, i) => dates[i])])
-                ),
-              []
-            )
-            .sort((a, b) => new Date(a) - new Date(b)); // 날짜 순서대로 표시
-
-          setLineChartData({ labels: allDates.map(formatDate), datasets });
+          setLineChartData({ labels: dates.map(formatDate), datasets: datasets });
         } catch (error) {
           console.error('라인차트 fetch 실패 :', error);
         }
