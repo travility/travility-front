@@ -189,6 +189,7 @@ const AccountBookListPage = () => {
               key={accountBook.id}
               accountBook={accountBook}
               onClick={handleAccountBookClick}
+              isSettlement={false}
               isSelected={selectedBooks.includes(accountBook.id)}
               onSelect={handleSelectBook}
               isDeleteMode={isDeleteMode}

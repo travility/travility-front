@@ -9,8 +9,10 @@ import {
 } from '../../../api/settlementApi';
 import Share from '../../../components/settlement/Share';
 import SettlementDetail from '../../../components/settlement/SettlementDetail';
+import TripInfo from '../../../components/TripInfo';
 import { handleProblemSubject } from '../../../util/swalUtils';
 import { SERVER_URL } from '../../../config/apiConfig';
+import UpdateTripInfo from '../detail/UpdateTripInfo';
 
 const SettlementPage = () => {
   const { id } = useParams();
@@ -24,6 +26,8 @@ const SettlementPage = () => {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isSettlementDetailModalOpen, setIsSettlementDetailModalOpen] =
     useState(false);
+  const [isTripInfoModalOpen, setIsTripInfoModalOpen] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -131,32 +135,37 @@ const SettlementPage = () => {
           <div className={styles.settlementContent}>
             <div className={styles.title}>{accountBook.title}</div>
             {accountBook && (
-              <div
-                className={styles.tripInfo}
-                style={{
-                  backgroundImage: `url(${
-                    accountBook.imgName
-                      ? `${SERVER_URL}/images/${accountBook.imgName}`
-                      : '/images/dashboard/default_image.png'
-                  })`,
-                }}
-              >
-                <div className={styles.accountBook_list_item_detail}>
-                  <div className={styles.accountBook_list_title_and_flag}>
-                    <span className={styles.accountBook_list_flag}>
-                      <img src={accountBook.countryFlag} alt="국기" />
-                    </span>
-                    <span className={styles.accountBook_list_title}>
-                      {accountBook.countryName}
-                    </span>
-                  </div>
-                  <span className={styles.accountBook_list_dates}>
-                    {`${formatDate(accountBook.startDate)} ~ ${formatDate(
-                      accountBook.endDate
-                    )}`}
-                  </span>
-                </div>
-              </div>
+              // <div
+              //   className={styles.tripInfo}
+              //   style={{
+              //     backgroundImage: `url(${
+              //       accountBook.imgName
+              //         ? `${SERVER_URL}/images/${accountBook.imgName}`
+              //         : '/images/dashboard/default_image.png'
+              //     })`,
+              //   }}
+              // >
+              //   <div className={styles.accountBook_list_item_detail}>
+              //     <div className={styles.accountBook_list_title_and_flag}>
+              //       <span className={styles.accountBook_list_flag}>
+              //         <img src={accountBook.countryFlag} alt="국기" />
+              //       </span>
+              //       <span className={styles.accountBook_list_title}>
+              //         {accountBook.countryName}
+              //       </span>
+              //     </div>
+              //     <span className={styles.accountBook_list_dates}>
+              //       {`${formatDate(accountBook.startDate)} ~ ${formatDate(
+              //         accountBook.endDate
+              //       )}`}
+              //     </span>
+              //   </div>
+              // </div>
+              <TripInfo
+                accountBook={accountBook}
+                onClick={() => setIsTripInfoModalOpen(true)}
+                isSettlement={true}
+              />
             )}
             <div className={styles.settlementDetails}>
               <div className={styles.settlementDetails_item}>
@@ -207,6 +216,14 @@ const SettlementPage = () => {
           onClose={() => setIsSettlementDetailModalOpen(false)}
           exchangeRatesByCurrency={exchangeRatesByCurrency}
           totalSharedExpensesByCurrency={totalSharedExpensesByCurrency}
+        />
+      )}
+      {isTripInfoModalOpen && (
+        <UpdateTripInfo
+          isOpen={isTripInfoModalOpen}
+          onClose={() => setIsTripInfoModalOpen(false)}
+          isSettlement={true}
+          accountBook={accountBook}
         />
       )}
     </>
