@@ -1,0 +1,227 @@
+.mainpage_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.addAccountBook {
+  grid-column: 1 / 2;
+  width: 100%;
+  height: auto;
+}
+
+.recentAccountBooks {
+  grid-column: 2 / 3;
+  width: 100%;
+  height: auto;
+  margin-top: 2.5rem;
+}
+
+/* 가계부 추가 : AddAccountBook */
+.addAccount_form_title {
+  margin-bottom: 1rem;
+}
+
+.addAccount_form {
+  display: flex;
+  flex-direction: column;  
+}
+
+.addAccount_formGroup {
+  position: relative;
+  margin: 0.1rem 0;
+}
+
+.addAccount_formGroup label {
+  display: block;
+  margin-bottom: 0.1rem;
+  font-weight: 700;
+  font-size: 0.9em;
+  color: var(--main-color);
+}
+
+/* 여행기간 */
+.addAccount_dateRange {
+  display: flex;
+  align-items: center;
+}
+
+.addAccount_dateRange input {
+  flex: 1;
+}
+
+.addAccount_dateRange span {
+  margin: 0 1rem;
+}
+
+/* 여행국가 */
+.search_button {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.search_button img {
+  width: auto;
+  height: 0.8rem;
+}
+
+.country_input {
+  display: flex;
+  align-items: center;
+}
+
+
+.selectedCountry {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  margin-top: 0.2rem;
+  width: 100%;
+  border: 1px solid var(--line-color);
+  border-radius: 0.3rem;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: border-color 0.3s;
+}
+
+
+.selectedCountry img.flag {
+  width: auto;
+  height: 1rem;
+  margin-right: 10px;
+}
+
+.selectedCountry span {
+  font-size: 0.8rem;
+}
+
+/* 여행이름 */
+.addAccount_title_count {
+  font-size: 0.7em;
+  text-align: right;
+  margin-left: auto;
+  letter-spacing: -1px;
+  font-weight: 500;
+  color: var(--gray-color);
+}
+
+.addAccount_button {
+  margin-top: 1rem;
+}
+
+/* 최근 내 가계부 : RecentAccountBooks */
+.recent_accountBooks_container {
+  display: flex;
+  flex: 1;
+  padding: 1.5rem;
+  border: solid 1px var(--line-color);
+  border-radius: 1rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+ .recent_accountBooks_header {
+  position: absolute;
+  top: 1.8em;
+  left: 1.5em;
+  font-weight: 800;
+  font-size: 1em;
+  color: var(--main-color);
+  margin-bottom: 1rem;
+}
+
+.recent_accountBooks_contents {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.recent_accountBooks_navigation_buttons button {
+  background: none;
+  color: var(--main-color);
+  box-shadow: 1px 1px 1px 1px var(--line-color);
+  border: none;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+
+.recent_accountBooks_navigation_buttons button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.recent_accountBooks_list {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: auto;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 690px) {
+  .mainpage_container {
+    grid-template-columns: 1fr;
+  }
+
+  .addAccountBook {
+    grid-column: 1 / 2;
+  }
+
+  .recentAccountBooks {
+    grid-column: 1 / 2;
+    margin-top: 2rem;
+  }
+
+  .recent_accountBooks_contents {
+    flex-direction: row;
+  }
+
+  .recent_accountBooks_list {
+    flex-direction: row;
+  }
+
+  .recent_accountBooks_header {
+    position: relative;
+    top: 0em; 
+    left: 0em;
+    font-weight: 800;
+    font-size: 1em;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+  }
+  
+}
+
+@media (max-width: 530px){
+  .recent_accountBooks_header {
+    position: relative;
+    top: 0em; 
+    left: 0em;
+    font-weight: 800;
+    font-size: 1em;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+  }
+
+}

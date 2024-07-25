@@ -1,28 +1,33 @@
-import { createContext, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
-import { global } from './styles/dashboard/global.css';
-import { GlobalStyle } from './styles/StyledComponents';
-import { ThemeProvider, useTheme, lightTheme, darkTheme } from './styles/Theme';
-import { getMemberInfo } from './api/memberApi';
-import Layout from './components/header/Layout';
-import AboutUsPage from './pages/main/AboutusPage';
-import MainPage from './pages/main/mainPage2/MainPage';
-import AccountBookListPage from './pages/accountbook/AccountBookListPage';
-import AccountBookDetail from './pages/accountbook/detail/AccountBookDetail';
-import LoginPage from './pages/member/LoginPage';
-import SignupPage from './pages/member/SignupPage';
-import MyInfo from './pages/dashboard/MyInfo';
-import MyCalendar from './pages/dashboard/MyCalendar';
-import MyReport from './pages/dashboard/MyReport';
-import UsersPage from './pages/admin/UsersPage';
-import LoadingPage from './util/LoadingPage';
-import AuthenticatedRoute from './util/AuthenticatedRoute';
-import SettlementPage from './pages/accountbook/settlement/SettlementPage';
-import SettlementExpenseListPage from './pages/accountbook/settlement/SettlementExpenseListPage';
-import ForgotPasswordPage from './pages/member/password/ForgotPasswordPage';
-import UpdatePasswordPage from './pages/member/password/UpdatePasswordPage';
-import ExpenseStatistic from './components/statistic/ExpenseStatistic';
+import { createContext, useEffect, useState } from "react";
+import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
+import { ThemeProvider as StyledThemeProvider } from "styled-components";
+import { global } from "./styles/dashboard/global.css";
+import { GlobalStyle } from "./styles/common/StyledComponents";
+import {
+  ThemeProvider,
+  useTheme,
+  lightTheme,
+  darkTheme,
+} from "./styles/common/Theme";
+import { getMemberInfo } from "./api/memberApi";
+import Layout from "./pages/common/header/Layout";
+import AboutUsPage from "./pages/main/AboutusPage";
+import MainPage from "./pages/main/MainPage";
+import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
+import AccountBookMainPage from "./pages/accountbook/detail/AccountBookMainPage";
+import LoginPage from "./pages/member/LoginPage";
+import SignupPage from "./pages/member/SignupPage";
+import MyInfo from "./pages/member/MyInfo";
+import MyCalendar from "./pages/myCalendar/MyCalendarMainPage";
+import MyReport from "./pages/statistics/MyReport";
+import UsersPage from "./pages/admin/UsersPage";
+import LoadingPage from "./util/LoadingPage";
+import AuthenticatedRoute from "./util/AuthenticatedRoute";
+import SettlementMainPage from "./pages/accountbook/settlement/SettlementMainPage";
+import SettlementExpenseListPage from "./pages/accountbook/settlement/SettlementExpenseListPage";
+import ForgotPasswordPage from "./pages/member/password/ForgotPasswordPage";
+import UpdatePasswordPage from "./pages/member/password/UpdatePasswordPage";
+import ExpenseStatistic from "./pages/statistics/ExpenseStatistic";
 
 export const MemberInfoContext = createContext();
 
@@ -42,9 +47,9 @@ function App() {
           setMemberInfo(info);
         }
       } catch (error) {
-        console.error('토큰 유효성 검사 중 오류 발생:', error);
-        if (location.pathname !== '/') {
-          navigate('/login');
+        console.error("토큰 유효성 검사 중 오류 발생:", error);
+        if (location.pathname !== "/") {
+          navigate("/login");
         }
       }
     };
@@ -54,7 +59,7 @@ function App() {
 
   return (
     <MemberInfoContext.Provider value={{ memberInfo }}>
-      <StyledThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+      <StyledThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
         <GlobalStyle />
         <div>
           <Routes>
@@ -64,7 +69,7 @@ function App() {
               <Route path="/loading" element={<LoadingPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/settlement/:id" element={<SettlementPage />} />
+              <Route path="/settlement/:id" element={<SettlementMainPage />} />
               <Route
                 path="/settlement/:id/expenses"
                 element={<SettlementExpenseListPage />}
@@ -121,7 +126,7 @@ function App() {
                 path="/accountbook/detail/:id"
                 element={
                   <AuthenticatedRoute>
-                    <AccountBookDetail />
+                    <AccountBookMainPage />
                   </AuthenticatedRoute>
                 }
               />
