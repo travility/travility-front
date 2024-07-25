@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   format,
   addMonths,
@@ -11,14 +11,14 @@ import {
   isSameMonth,
   isSameDay,
   setYear,
-} from 'date-fns';
-import ScheduleDetail from '../components/ScheduleDetail';
+} from "date-fns";
+import ScheduleDetail from "../components/ScheduleDetail";
 import {
   fetchAllExpensesByAccountbookId,
   fetchTotalExpenses,
-} from '../api/scheduleApi';
-import { formatNumberWithCommas, formatDate } from '../util/calcUtils';
-import styles from '../styles/dashboard/MyCalendar.module.css';
+} from "../api/scheduleApi";
+import { formatNumberWithCommas, formatDate } from "../util/calcUtils";
+import styles from "../styles/dashboard/MyCalendar.module.css";
 
 const ScheduleCalendar = ({
   onDateClick,
@@ -60,20 +60,20 @@ const ScheduleCalendar = ({
     date: null,
     accountbookId: null,
     expenses: [],
-    curUnit: '',
-    countryName: '',
-    imgName: '',
+    curUnit: "",
+    countryName: "",
+    imgName: "",
     totalExpense: 0,
     exchangeRates: {},
   });
 
   //날짜 클릭 시 동작
   const handleDateClick = async (date) => {
-    const formattedDate = format(date, 'yyyy-MM-dd');
+    const formattedDate = format(date, "yyyy-MM-dd");
 
     // 이벤트가 없는 경우 팝업을 표시하지 않음
     if (!hasEvent[formattedDate]) {
-      console.log('이 날짜에 이벤트가 없습니다.');
+      console.log("이 날짜에 이벤트가 없습니다.");
       return;
     }
 
@@ -84,7 +84,7 @@ const ScheduleCalendar = ({
     );
 
     if (eventsForDate.length === 0) {
-      console.log('이 날짜에 이벤트가 없습니다.');
+      console.log("이 날짜에 이벤트가 없습니다.");
       return;
     }
 
@@ -100,7 +100,7 @@ const ScheduleCalendar = ({
       );
 
       const curUnit =
-        expensesForDate.length > 0 ? expensesForDate[0].curUnit : '';
+        expensesForDate.length > 0 ? expensesForDate[0].curUnit : "";
       const totalExpense = totalExpenses[accountbookId] || 0;
 
       setPopupInfo({
@@ -117,7 +117,7 @@ const ScheduleCalendar = ({
 
       adjustCalendarHeight(); // 팝업 열릴 때 높이 조정
     } catch (error) {
-      console.error('지출 항목을 가져오는 중 오류가 발생했습니다:', error);
+      console.error("지출 항목을 가져오는 중 오류가 발생했습니다:", error);
     }
   };
 
@@ -127,13 +127,13 @@ const ScheduleCalendar = ({
       date: null,
       accountbookId: null,
       expenses: [],
-      countryName: '',
-      imgName: '',
-      curUnit: '',
+      countryName: "",
+      imgName: "",
+      curUnit: "",
       totalExpense: 0,
     });
 
-    const calendarContainer = document.getElementById('calendarContainer');
+    const calendarContainer = document.getElementById("calendarContainer");
     if (calendarContainer) {
       adjustCalendarHeight(); //닫힐 때 높이 조정
     }
@@ -151,7 +151,7 @@ const ScheduleCalendar = ({
 
   //캘린더 높이 동적 조정
   const adjustCalendarHeight = () => {
-    const calendarContainer = document.getElementById('calendarContainer');
+    const calendarContainer = document.getElementById("calendarContainer");
 
     if (calendarContainer) {
       // calendarContainer가 존재하는지 확인
@@ -181,10 +181,10 @@ const ScheduleCalendar = ({
           className={styles.navButton}
           onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         >
-          {'<'}
+          {"<"}
         </button>
         <div className={styles.centerSection}>
-          {format(currentMonth, 'MMM')}{' '}
+          {format(currentMonth, "MMM")}{" "}
           <select
             className={styles.yearSelect}
             value={currentYear}
@@ -197,7 +197,7 @@ const ScheduleCalendar = ({
             ))}
           </select>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <button className={styles.todayButton} onClick={goToToday}>
             today
           </button>
@@ -205,7 +205,7 @@ const ScheduleCalendar = ({
             className={styles.navButton}
             onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
           >
-            {'>'}
+            {">"}
           </button>
         </div>
       </div>
@@ -215,7 +215,7 @@ const ScheduleCalendar = ({
   //요일
   const renderDays = () => {
     const days = [];
-    const date = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const date = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
     for (let i = 0; i < 7; i++) {
       days.push(
@@ -233,11 +233,11 @@ const ScheduleCalendar = ({
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
-    const dateFormat = 'd';
+    const dateFormat = "d";
     const rows = [];
     let days = [];
     let day = startDate;
-    let formattedDate = '';
+    let formattedDate = "";
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
@@ -248,7 +248,7 @@ const ScheduleCalendar = ({
             isSameDay(event.start, cloneDay) ||
             (event.start <= cloneDay && event.end >= cloneDay)
         );
-        const cellDate = format(day, 'yyyy-MM-dd');
+        const cellDate = format(day, "yyyy-MM-dd");
         const totalExpense = dailyExpenses[cellDate] || 0;
         // 해당 날짜의 총 지출 금액 가져오기
         const hasEvent = eventsForDay.length > 0;
@@ -264,7 +264,7 @@ const ScheduleCalendar = ({
                 ? styles.selected
                 : hasEvent
                 ? styles.cellWithEvent
-                : ''
+                : ""
             }`}
             key={day}
             onClick={() =>
@@ -287,7 +287,9 @@ const ScheduleCalendar = ({
               )}
               {totalExpense !== 0 && (
                 <div className={styles.cell_total_amount}>
-                  ₩ {formatNumberWithCommas(totalExpense.toFixed(0))}
+                  KRW
+                  <br />
+                  {formatNumberWithCommas(totalExpense.toFixed(0))}
                 </div>
               )}
             </div>
@@ -308,7 +310,7 @@ const ScheduleCalendar = ({
   return (
     <div
       className={`${styles.schedule_calendar_container} 
-       ${popupInfo.show ? styles.show_popup : ''}
+       ${popupInfo.show ? styles.show_popup : ""}
        `}
     >
       <div className={styles.calendar_container} id="calendarContainer">
