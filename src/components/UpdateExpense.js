@@ -298,7 +298,9 @@ const UpdateExpense = ({
                     }`}
                   ></Input>
                 </div>
-                <CloseButton onClick={onClose}>&times;</CloseButton>
+                <CloseButton className={styles.closeButton} onClick={onClose}>
+                  &times;
+                </CloseButton>
               </ModalHeader>
               <div className={`${styles.modalContent}`}>
                 <div
