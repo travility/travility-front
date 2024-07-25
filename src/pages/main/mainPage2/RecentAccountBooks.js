@@ -113,6 +113,7 @@ const RecentAccountBooks = () => {
                   key={accountBook.id}
                   accountBook={accountBook}
                   onClick={handleRecentAccountBooksClick}
+                  isSettlement={false}
                 />
               ))}
           </div>

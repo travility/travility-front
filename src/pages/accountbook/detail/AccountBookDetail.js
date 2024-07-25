@@ -133,6 +133,7 @@ const AccountBookDetail = () => {
           <TripInfo
             accountBook={accountBook}
             onClick={() => setIsTripInfoModalOpen(true)}
+            isSettlement={false}
           />
           <AccountBookMenu
             onBudgetClick={() => setIsBudgetModalOpen(true)}
@@ -172,6 +173,7 @@ const AccountBookDetail = () => {
         <UpdateTripInfo
           isOpen={isTripInfoModalOpen}
           onClose={() => setIsTripInfoModalOpen(false)}
+          isSettlement={false}
           onSubmit={handleAccountBookSubmit}
           accountBook={accountBook}
         />
