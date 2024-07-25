@@ -9,6 +9,7 @@ import {
   CloseButton,
   Button,
   Input,
+  ErrorMessage,
 } from '../../../styles/StyledComponents';
 import {
   handleFailureSubject,
@@ -42,13 +43,27 @@ const UpdateTripInfo = ({
     isDefaultImage: true,
   });
   const [newTripInfo, setNewTripInfo] = useState({ ...oirginalTripInfo });
-  const [isEditable, setIsEditable] = useState(isSettlement);
+  const [titleError, setTitleError] = useState(''); // 글자수 에러 메세지
+  const [inputCount, setInputCount] = useState(
+    oirginalTripInfo.tripInfo.title.length
+  ); // 글자수 변경 카운트
+  const [isEditable, setIsEditable] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 }); //모달 위치 동적 계산
   const navigate = useNavigate();
   const inputRef = useRef(null);
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'title') {
+      if (value.length <= 22) {
+        setTitleError('');
+      } else {
+        setTitleError('제목은 공백 포함 22 글자까지 입력 가능합니다.');
+      }
+      setInputCount(value.length > 22 ? 22 : value.length);
+    }
+
+    console.log(value);
     setNewTripInfo({
       ...newTripInfo,
       tripInfo: { ...newTripInfo.tripInfo, [name]: value },
@@ -219,9 +234,19 @@ const UpdateTripInfo = ({
                       value={newTripInfo.tripInfo.title}
                       readOnly={!isEditable}
                       onChange={handleTripInfoChange}
+                      maxLength="22"
                       required
                     />
                   </div>
+                  {isEditable && (
+                    <div className="error_container">
+                      {titleError && <ErrorMessage>{titleError}</ErrorMessage>}
+                      <span className={styles.tripInfo_title_count}>
+                        {inputCount}/22 자
+                      </span>
+                    </div>
+                  )}
+
                   <div className={styles.tripInfo_formGroup}>
                     <label>인원 수</label>
                     <Input

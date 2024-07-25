@@ -77,6 +77,16 @@
   margin-top: 1rem;
 }
 
+/* 여행이름 */
+.tripInfo_title_count {
+  font-size: 0.7em;
+  text-align: right;
+  margin-left: auto;
+  letter-spacing: -1px;
+  font-weight: 500;
+  color: var(--gray-color);
+}
+
 /* 이미지 업로드 */
 .image_container {
   display: flex;
@@ -138,6 +148,26 @@
   margin-right: 0.2rem;
 }
 
-.modify_button {
+/* 읽기 모드 */
+.readOnlyInput {
+  border: none !important;
+  background-color: transparent !important;
+  pointer-events: none !important;
+}
+
+/* 버튼 */
+.cancelAndDelete {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-top: 0.5rem;
+}
+
+.cancel_button,
+.delete_button {
+  flex: 1;
+}
+
+.delete_button {
+  background-color: var(--gray-color) !important;
 }

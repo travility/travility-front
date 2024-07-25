@@ -96,6 +96,13 @@ const SettlementPage = () => {
     }
   }, [perPersonExpense]); //1인당 정산 금액이 바뀔 때마다 실행
 
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + '...';
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -114,7 +121,7 @@ const SettlementPage = () => {
         <div className={styles.SettlementPage_header}>
           <div className={styles.goBackButton_container}>
             <Button className={styles.goBackButton} onClick={goBack}>
-              <p className={styles.goBackButton_text}>←</p>
+              <p className={styles.goBackButton_text}>← 가계부 상세보기</p>
             </Button>
           </div>
           <div className={styles.shareButton_container}>
@@ -133,34 +140,10 @@ const SettlementPage = () => {
         </div>
         <div className={styles.settlementContainer}>
           <div className={styles.settlementContent}>
-            <div className={styles.title}>{accountBook.title}</div>
+            <div className={styles.title} title={accountBook.title}>
+              {truncateText(accountBook.title, 8)}
+            </div>
             {accountBook && (
-              // <div
-              //   className={styles.tripInfo}
-              //   style={{
-              //     backgroundImage: `url(${
-              //       accountBook.imgName
-              //         ? `${SERVER_URL}/images/${accountBook.imgName}`
-              //         : '/images/dashboard/default_image.png'
-              //     })`,
-              //   }}
-              // >
-              //   <div className={styles.accountBook_list_item_detail}>
-              //     <div className={styles.accountBook_list_title_and_flag}>
-              //       <span className={styles.accountBook_list_flag}>
-              //         <img src={accountBook.countryFlag} alt="국기" />
-              //       </span>
-              //       <span className={styles.accountBook_list_title}>
-              //         {accountBook.countryName}
-              //       </span>
-              //     </div>
-              //     <span className={styles.accountBook_list_dates}>
-              //       {`${formatDate(accountBook.startDate)} ~ ${formatDate(
-              //         accountBook.endDate
-              //       )}`}
-              //     </span>
-              //   </div>
-              // </div>
               <TripInfo
                 accountBook={accountBook}
                 onClick={() => setIsTripInfoModalOpen(true)}
