@@ -37,12 +37,10 @@
 }
 
 .sortType {
-  /* width: 100%; */
   max-width: 20rem;
   height: 80%;
-  /* margin-right: 0.3rem; */
-  z-index: 9999;
   font-size: 1rem;
+  z-index: 4;
 }
 
 :global(.css-t7pedk-singleValue) {

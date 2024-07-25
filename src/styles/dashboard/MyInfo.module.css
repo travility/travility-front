@@ -23,7 +23,7 @@
   cursor: pointer;
   color: var(--text-color);
   font-weight: 500;
-  font-size: 0.8em;
+  font-size: 0.75em;
   text-align: left;
   text-decoration: underline;
   margin-top: 1.5rem;
@@ -40,7 +40,7 @@
   cursor: pointer;
   color: var(--text-color);
   font-weight: 500;
-  font-size: 0.8em;
+  font-size: 0.75em;
   text-align: left;
   text-decoration: underline;
   margin: 1rem 0;

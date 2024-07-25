@@ -248,6 +248,37 @@ const UpdateExpense = ({
     value: curUnit,
   }));
 
+  //select 변경
+  const customSelectStyles = {
+    ...selectStyles,
+    
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.2rem 0.5rem",
+      margin: "0 auto",
+    }),
+
+    singleValue: (base) => ({
+      ...base,
+      fontSize: "0.7em",
+      fontWeight: "600",
+    }),
+
+    option: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      background: "var(--background-color)",
+      color: "var(--text-color)",
+      fontSize: "0.5em",
+      ":hover": {
+        background: "var(--main-color)",
+        color: "#ffffff",
+      },
+    }),
+
+  };
+
   return (
     <div className={styles.updateExpense_container}>
       {isOpen && (
@@ -273,7 +304,7 @@ const UpdateExpense = ({
                       options={categories}
                       isDisabled={!isEditable}
                       isSearchable={false}
-                      styles={selectStyles}
+                      styles={customSelectStyles}
                       formatOptionLabel={formatOptionLabel}
                     />
                   ) : (

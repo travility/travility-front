@@ -185,7 +185,8 @@
   display: block;
   width: 0;
   height: 1em;
-  background-color: var(--point-color);
+  background-color: #FFC3E8;
+  /* background-color: var(--point-color); */
   position: absolute;
   top: 1.7rem;
   left: 0;
@@ -234,11 +235,13 @@
 
 /* today 꾸미기 투꾸 */
 .selected::before {
-  content: '🐷';
+  content: '';
   display: inline-block;
   width: 1rem;
   height: 1rem;
   background-color: transparent;
+  background-image: url('/public/images/dashboard/today_pig.png');
+  background-size: cover;
   border-radius: 0;
   position: absolute;
   top: 0.4rem;
