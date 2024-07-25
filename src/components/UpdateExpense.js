@@ -19,6 +19,7 @@ import {
 import { useTheme } from '../styles/Theme';
 import { selectStyles } from '../util/CustomStyles';
 import Swal from 'sweetalert2';
+import { SERVER_URL } from '../config/apiConfig';
 
 // 지출 카테고리
 const categories = [
@@ -355,7 +356,7 @@ const UpdateExpense = ({
                         newExpense.previewImg ||
                         (expense.imgName === null
                           ? '/images/dashboard/default_image.png'
-                          : `http://localhost:8080/images/${expense.imgName}`)
+                          : `${SERVER_URL}/images/${expense.imgName}`)
                       }
                       alt="대표이미지"
                     />
