@@ -5,14 +5,13 @@ import {
   handleAlreadyLoggedOut,
   handleTokenExpirationLogout,
 } from './swalUtils';
-
-const API_SERVER_HOST = 'http://localhost:8080/api';
+import { API_URL } from '../config/apiConfig';
 
 let isRefreshing = false;
 let refreshQueue = []; //액세스 토큰 재발급 중 대기 중인 요청 담는 배열
 
 const axiosInstance = axios.create({
-  baseURL: API_SERVER_HOST,
+  baseURL: API_URL,
   timeout: 10000,
   withCredentials: true,
 });

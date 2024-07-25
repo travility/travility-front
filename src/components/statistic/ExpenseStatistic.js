@@ -1,73 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
-import Select from "react-select";
-import { Tooltip } from "react-tooltip";
+import React, { useEffect, useState } from 'react';
+import { Bar, Line } from 'react-chartjs-2';
+import Select from 'react-select';
+import { Tooltip } from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import {
   getExpenseStatisticsByDate,
   getPaymentMethodStatisticsByDate,
   getStatisticsByCategoryAndDates,
-} from "../../api/expenseApi";
-import "chart.js/auto";
-import TotalAmountCategory from "./TotalAmountCategory";
-import TotalResult from "../statistic/TotalResult";
-import { useNavigate, useParams } from "react-router-dom";
-import { formatDate } from "../../util/calcUtils";
-import { Button } from "../../styles/StyledComponents";
-import styles from "../../styles/statistic/ExpenseStatistic.module.css";
-import { selectStyles3 } from "../../util/CustomStyles";
-import { useTheme } from "../../styles/Theme";
+} from '../../api/expenseApi';
+import 'chart.js/auto';
+import TotalAmountCategory from './TotalAmountCategory';
+import TotalResult from '../statistic/TotalResult';
+import { useNavigate, useParams } from 'react-router-dom';
+import { formatDate, formatNumberWithCommas } from '../../util/calcUtils';
+import { Button } from '../../styles/StyledComponents';
+import styles from '../../styles/statistic/ExpenseStatistic.module.css';
+import { selectStyles3 } from '../../util/CustomStyles';
+import { useTheme } from '../../styles/Theme';
 
 // 카테고리 목록
 const categories = [
-  { en: "ACCOMMODATION", ko: "숙박" },
-  { en: "TRANSPORTATION", ko: "교통" },
-  { en: "SHOPPING", ko: "쇼핑" },
-  { en: "FOOD", ko: "식비" },
-  { en: "TOURISM", ko: "관광" },
-  { en: "OTHERS", ko: "기타" },
-  { en: "ALL", ko: "전체지출" },
+  { en: 'ACCOMMODATION', ko: '숙박' },
+  { en: 'TRANSPORTATION', ko: '교통' },
+  { en: 'SHOPPING', ko: '쇼핑' },
+  { en: 'FOOD', ko: '식비' },
+  { en: 'TOURISM', ko: '관광' },
+  { en: 'OTHERS', ko: '기타' },
+  { en: 'ALL', ko: '전체지출' },
 ];
 
 const categoryMap = {
-  ACCOMMODATION: "숙박",
-  TRANSPORTATION: "교통",
-  SHOPPING: "쇼핑",
-  FOOD: "식비",
-  TOURISM: "관광",
-  OTHERS: "기타",
-  ALL: "전체지출",
+  ACCOMMODATION: '숙박',
+  TRANSPORTATION: '교통',
+  SHOPPING: '쇼핑',
+  FOOD: '식비',
+  TOURISM: '관광',
+  OTHERS: '기타',
+  ALL: '전체지출',
 };
 
 // 카테고리 색 배열
 const colors = [
-  "#23C288",
-  "#7697F9",
-  "#9B80E9",
-  "#FEC144",
-  "#B5CE2A",
-  "#828C98",
-  "#ff8bd2",
+  '#23C288',
+  '#7697F9',
+  '#9B80E9',
+  '#FEC144',
+  '#B5CE2A',
+  '#828C98',
+  '#ff8bd2',
 ];
 
 // 결제 방법 목록
 const paymentMethods = [
-  { en: "CASH", ko: "현금" },
-  { en: "CARD", ko: "카드" },
+  { en: 'CASH', ko: '현금' },
+  { en: 'CARD', ko: '카드' },
 ];
 
 // 결제방법 색 배열
-const paymentColors = ["#FFBBE5", "#2c73d2"];
+const paymentColors = ['#FFBBE5', '#2c73d2'];
 
 const ExpenseStatistic = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [statistics, setStatistics] = useState([]);
   const [paymentMethodStatistics, setPaymentMethodStatistics] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
   const [dates, setDates] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState(["ALL"]);
+  const [selectedCategories, setSelectedCategories] = useState(['ALL']);
   const [lineChartData, setLineChartData] = useState({
     labels: [],
     datasets: [],
@@ -79,9 +79,9 @@ const ExpenseStatistic = () => {
   const getChartFontSize = () => {
     const width = window.innerWidth;
     if (width < 480) {
-      return 8;
+      return 7;
     } else if (width < 768) {
-      return 10;
+      return 9;
     } else {
       return 14;
     }
@@ -101,11 +101,12 @@ const ExpenseStatistic = () => {
       x: {
         beginAtZero: true,
         grid: {
+          display: false,
           lineWidth: 1,
-          color: darkMode ? "#888888" : "#d1d1d1",
+          color: darkMode ? '#888888' : '#d1d1d1',
         },
         ticks: {
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
           font: {
             size: getChartFontSize(),
           },
@@ -114,11 +115,12 @@ const ExpenseStatistic = () => {
       y: {
         beginAtZero: true,
         grid: {
+          display: false,
           lineWidth: 1,
-          color: darkMode ? "#888888" : "#d1d1d1",
+          color: darkMode ? '#888888' : '#d1d1d1',
         },
         ticks: {
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
           font: {
             size: getChartFontSize(),
           },
@@ -132,8 +134,9 @@ const ExpenseStatistic = () => {
     },
     plugins: {
       legend: {
+        display: false,
         labels: {
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
           font: {
             size: getChartFontSize(),
           },
@@ -141,15 +144,88 @@ const ExpenseStatistic = () => {
         },
       },
       tooltip: {
-        mode: "index",
+        mode: 'index',
         intersect: false,
         callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`,
-          labelColor: (context) => ({
-            borderColor: context.dataset.borderColor,
-            backgroundColor: context.dataset.backgroundColor,
-          }),
+          label: (context) =>
+            `${context.dataset.label}: ${formatNumberWithCommas(context.raw)}`,
         },
+      },
+      datalabels: {
+        formatter: (value) => value.toLocaleString(),
+        color: 'white',
+        align: 'end',
+        anchor: 'end', // 항목 위치
+        display: true, // 차트에 항목 표시
+        offset: -20,
+      },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+  });
+
+  const getLineChartOptions = (darkMode) => ({
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: {
+          display: false,
+          lineWidth: 1,
+          color: darkMode ? '#888888' : '#d1d1d1',
+        },
+        ticks: {
+          color: darkMode ? 'white' : 'black',
+          font: {
+            size: getChartFontSize(),
+          },
+        },
+      },
+      y: {
+        beginAtZero: true,
+        grid: {
+          display: false,
+          lineWidth: 1,
+          color: darkMode ? '#888888' : '#d1d1d1',
+        },
+        ticks: {
+          color: darkMode ? 'white' : 'black',
+          font: {
+            size: getChartFontSize(),
+          },
+        },
+      },
+    },
+    elements: {
+      line: {
+        borderWidth: getLineChartLineWidth(),
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+        labels: {
+          color: darkMode ? 'white' : 'black',
+          font: {
+            size: getChartFontSize(),
+          },
+          boxWidth: 45,
+        },
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          label: (context) =>
+            `${context.dataset.label}: ${formatNumberWithCommas(context.raw)}`,
+        },
+      },
+      datalabels: {
+        formatter: (value) => value.toLocaleString(),
+        color: darkMode ? 'white' : 'black',
+        align: 'end',
+        anchor: 'end', // 항목 위치
+        display: true, // 차트에 항목 표시
+        offset: -20,
       },
     },
     responsive: true,
@@ -179,11 +255,11 @@ const ExpenseStatistic = () => {
         if (Array.isArray(paymentData)) {
           setPaymentMethodStatistics(paymentData);
         } else {
-          console.error("Expected an array but got:", paymentData);
+          console.error('기댓값 array와 다른 결괏값 나옴 : ', paymentData);
           setPaymentMethodStatistics([]);
         }
       } catch (error) {
-        console.error("Failed to fetch statistics:", error);
+        console.error('통계 불러오기 실패 :', error);
       }
     };
 
@@ -192,19 +268,19 @@ const ExpenseStatistic = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setLineChartOptions(getChartOptions(theme === "dark"));
+      setLineChartOptions(getLineChartOptions(theme === 'dark'));
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [theme]);
 
   const [lineChartOptions, setLineChartOptions] = useState(
-    getChartOptions(theme === "dark")
+    getLineChartOptions(theme === 'dark')
   );
 
   const goBack = () => {
@@ -221,7 +297,7 @@ const ExpenseStatistic = () => {
     if (Array.isArray(paymentData)) {
       setPaymentMethodStatistics(paymentData);
     } else {
-      console.error("Expected an array but got:", paymentData);
+      console.error('Expected an array but got:', paymentData);
       setPaymentMethodStatistics([]);
     }
   };
@@ -252,7 +328,7 @@ const ExpenseStatistic = () => {
               const colorIndex = categories.findIndex(
                 (cat) => cat.en === category
               );
-              const backgroundColor = colors[colorIndex] + "80"; // 살짝 투명하게함 50%
+              const backgroundColor = colors[colorIndex] + '80'; // 살짝 투명하게함 50%
 
               // 날짜별로 데이터를 합산하여 중복된 날짜 제거
               const dateMap = data.reduce((acc, curr) => {
@@ -273,7 +349,7 @@ const ExpenseStatistic = () => {
                 data: sortedDates.map((date) => dateMap[date] || 0),
                 borderColor: colors[colorIndex],
                 backgroundColor: backgroundColor,
-                pointStyle: "circle", // 포인트 스타일 (꼭짓점)
+                pointStyle: 'circle', // 포인트 스타일 (꼭짓점)
                 pointRadius: 5, // 포인트 크기
                 pointHoverRadius: 10, // 호버 포인트 크기 설정
                 pointBackgroundColor: backgroundColor,
@@ -282,21 +358,27 @@ const ExpenseStatistic = () => {
             })
           );
 
-          const allDates = datasets.reduce(
-            (acc, dataset) =>
-              Array.from(new Set([...acc, ...dataset.data.map((_, i) => dates[i])])),
-            []
-          ).sort((a, b) => new Date(a) - new Date(b)); // 날짜를 오름차순으로 정렬
+          const allDates = datasets
+            .reduce(
+              (acc, dataset) =>
+                Array.from(
+                  new Set([...acc, ...dataset.data.map((_, i) => dates[i])])
+                ),
+              []
+            )
+            .sort((a, b) => new Date(a) - new Date(b)); // 날짜를 오름차순으로 정렬
 
           setLineChartData({ labels: allDates.map(formatDate), datasets });
         } catch (error) {
-          console.error("Failed to fetch line chart data:", error);
+          console.error('Failed to fetch line chart data:', error);
         }
       } else {
         setLineChartData({
-          labels: dates.map(formatDate).sort((a, b) => new Date(a) - new Date(b)), // 날짜를 오름차순으로 정렬
+          labels: dates
+            .map(formatDate)
+            .sort((a, b) => new Date(a) - new Date(b)), // 날짜를 오름차순으로 정렬
           datasets: [
-            { label: "", data: [], borderColor: "rgba(0,0,0,0)", fill: false },
+            { label: '', data: [], borderColor: 'rgba(0,0,0,0)', fill: false },
           ],
         });
       }
@@ -320,7 +402,7 @@ const ExpenseStatistic = () => {
     labels: categories.map((category) => category.ko),
     datasets: [
       {
-        label: "금액",
+        label: 'KRW',
         data: categories.map((category) => filteredData[category.en] || 0),
         backgroundColor: colors,
       },
@@ -332,7 +414,7 @@ const ExpenseStatistic = () => {
     labels: paymentMethods.map((method) => method.ko),
     datasets: [
       {
-        label: "금액",
+        label: 'KRW',
         data: paymentMethods.map((method) => {
           const stat = paymentMethodStatistics.find(
             (stat) => stat.paymentMethod === method.en
@@ -344,13 +426,13 @@ const ExpenseStatistic = () => {
     ],
   };
 
-  const options = getChartOptions(theme === "dark");
+  const options = getChartOptions(theme === 'dark');
 
   // 항목별 지출 차트 옵션
-  const categoryChartOptions = getChartOptions(theme === "dark");
+  const categoryChartOptions = getChartOptions(theme === 'dark');
 
   // 결제 방법 차트 옵션
-  const paymentMethodOptions = getChartOptions(theme === "dark");
+  const paymentMethodOptions = getChartOptions(theme === 'dark');
 
   // 날짜 선택 옵션
   const dateOptions = dates.map((date) => ({
@@ -403,10 +485,12 @@ const ExpenseStatistic = () => {
                   options={dateOptions}
                   onChange={handleDateChange}
                   placeholder="날짜 선택"
-                  noOptionsMessage={() => "선택 가능한 날짜가 없습니다."}
+                  noOptionsMessage={() => '선택 가능한 날짜가 없습니다.'}
                   styles={selectStyles3}
                 />
-                <div className={styles.expenseStatistic_day_selectContainer}></div>
+                <div
+                  className={styles.expenseStatistic_day_selectContainer}
+                ></div>
               </div>
               <div className={styles.chartsWrapper_chart}>
                 <div className={styles.expenseStatistic_chartContainer}>

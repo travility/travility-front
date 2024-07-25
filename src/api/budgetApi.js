@@ -11,12 +11,12 @@ export const addBudgets = async (accountBookId, budgets) => {
 };
 
 /* 통화코드,환율 api */
-const apiKey = process.env.REACT_APP_EXCHANGERATE_API_KEY;
+const EXCHANGERATE_API_KEY = process.env.REACT_APP_EXCHANGERATE_API_KEY;
 
 export const fetchCurrencyCodes = async () => {
   try {
     const response = await axios.get(
-      `https://v6.exchangerate-api.com/v6/${apiKey}/codes`
+      `https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/codes`
     );
     return response.data;
   } catch (error) {
@@ -28,7 +28,7 @@ export const fetchCurrencyCodes = async () => {
 export const fetchExchangeRate = async (currency) => {
   try {
     const response = await axios.get(
-      `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${currency}`
+      `https://v6.exchangerate-api.com/v6/${EXCHANGERATE_API_KEY}/latest/${currency}`
     );
     return response.data;
   } catch (error) {

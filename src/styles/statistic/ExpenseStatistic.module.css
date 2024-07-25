@@ -83,8 +83,6 @@
   margin-bottom: 1rem;
 }
 
-
-
 .labelContainer {
   align-items: center;
   margin: 0.3rem;
@@ -105,14 +103,15 @@
   flex: 1;
   box-sizing: border-box;
   max-width: 100%;
-  overflow-x: auto; /* 가로 스크롤 활성화 */
+  overflow-x: auto;
 }
 
 .lineChart {
-  min-width: 600px;
+  width: 100%; /* 차트가 컨테이너의 전체 너비를 사용하도록 설정 */
   height: 100%;
+  /* min-width: 600px;
+  height: 100%; */
 }
-
 
 /* 헤더 화폐단위  */
 .header_currencyLabel {
@@ -170,7 +169,9 @@
 @media (max-width: 480px) {
   .lineChart {
     width: 100%;
-    min-width: 480px;
-    min-height: 240px;
+    /* min-width: 480px;
+    min-height: 240px; */
+    min-width: 320px; /* 최소 너비를 설정하여 너무 좁아지지 않도록 설정 */
+    min-height: 200px;
   }
 }

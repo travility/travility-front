@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Scrollbar } from 'react-scrollbars-custom';
 import { formatNumberWithCommas } from '../util/calcUtils';
 import styles from '../styles/dashboard/MyCalendar.module.css';
+import { SERVER_URL } from '../config/apiConfig';
 
 const categoryImages = {
   TRANSPORTATION: 'transportation.png',
@@ -98,7 +99,7 @@ const ScheduleDetail = ({
           style={{
             backgroundImage: `url(${
               imgName
-                ? `http://localhost:8080/images/${imgName}`
+                ? `${SERVER_URL}/images/${imgName}`
                 : '/images/dashboard/default_image.png'
             })`,
             backgroundSize: 'cover',
@@ -169,7 +170,7 @@ const ScheduleDetail = ({
                           {expense.imgName ? (
                             <img
                               className={styles.expenseImg}
-                              src={`http://localhost:8080/images/${expense.imgName}`}
+                              src={`${SERVER_URL}/images/${expense.imgName}`}
                               alt="지출 이미지"
                             />
                           ) : (

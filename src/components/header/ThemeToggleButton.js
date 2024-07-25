@@ -20,7 +20,9 @@ const ThemeToggleButton = ({ toggleTheme, currentTheme }) => {
       onClick={handleClick}
       style={{
         backgroundImage: `url(${
-          isLight ? "/images/cloud.png" : "/images/stars.png"
+          isLight
+            ? "/images/theme_btn/cloud.png"
+            : "/images/theme_btn/stars.png"
         })`,
         backgroundSize: "cover",
         backgroundPosition: "center",
@@ -29,7 +31,9 @@ const ThemeToggleButton = ({ toggleTheme, currentTheme }) => {
     >
       <div className={styles.icon}>
         <img
-          src={isLight ? "/images/sun.png" : "/images/moon.png"}
+          src={
+            isLight ? "/images/theme_btn/sun.png" : "/images/theme_btn/moon.png"
+          }
           alt={isLight ? "Light" : "Dark"}
           className={styles.iconImage}
         />

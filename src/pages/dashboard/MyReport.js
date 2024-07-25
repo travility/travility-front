@@ -36,6 +36,7 @@ const options = {
       labels: {
         usePointStyle: true, // 범례 아이콘을 도트로 변경
         pointStyle: 'circle', // 도트 모양을 원으로 설정
+        wrap: true, // 범례를 여러 줄로 설정
       },
     },
     tooltip: {
@@ -66,7 +67,7 @@ const options = {
   },
 };
 
-// 현금 || 카드
+// 현금 || 카드 차트 옵션
 const horizontalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -105,7 +106,7 @@ const horizontalBarOptions = {
   },
 };
 
-// 카테고리별 누적 지출
+// 카테고리별 누적 지출 차트 옵션
 const verticalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -335,8 +336,6 @@ const MyReport = () => {
     return () => {
       clearTimeout(timer);
     };
-
-
   }, []);
 
   // 로딩 중일 때
@@ -348,8 +347,6 @@ const MyReport = () => {
   if (error) {
     return <div>통계 불러오기 오류 : {error.message}</div>;
   }
-
-  
 
   return (
     <div className={styles.myReport}>
@@ -375,9 +372,11 @@ const MyReport = () => {
                   src="/images/dashboard/exclamation_mark.png"
                   alt="느낌표"
                 ></img>
-                <span className={styles.totalAmount_title}>총 누적 지출 : </span>
+                <span className={styles.totalAmount_title}>
+                  총 누적 지출 :{' '}
+                </span>
                 <span className={styles.totalAmount_amount}>
-                  {displayAmount.toLocaleString()} ₩
+                  ₩ {displayAmount.toLocaleString()}
                 </span>
               </div>
               <div className={styles.header_currencyLabel}>
@@ -396,11 +395,19 @@ const MyReport = () => {
                     {userName}
                   </span>
                   님은{' '}
-                  <span className={`${styles.description_highlightCategory} ${isVisible ? styles.visible : styles.hidden}`}>
+                  <span
+                    className={`${styles.description_highlightCategory} ${
+                      isVisible ? styles.visible : styles.hidden
+                    }`}
+                  >
                     {getCategoryName(highestCategory)}
                   </span>
                   에 가장 많은 소비를 하고,{' '}
-                  <span className={`${styles.description_highlightPaymentMethod} ${isVisible ? styles.visible : styles.hidden}`}>
+                  <span
+                    className={`${styles.description_highlightPaymentMethod} ${
+                      isVisible ? styles.visible : styles.hidden
+                    }`}
+                  >
                     {highestPaymentMethod}
                   </span>
                   {highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이
@@ -408,39 +415,39 @@ const MyReport = () => {
                 </div>
               </div>
               <div className={styles.charts_category_container}>
-              
-              <div className={styles.chartType}>
-                    <div className={styles.category_title}>📝카테고리별 퍼센티지(%)</div>
-                      <div className={styles.chartType_doughnut}>
-                        <Doughnut
-                          className={styles.doughnutChart}
-                          data={categoryData}
-                          options={options}
-                        />
-                    </div>
-              </div>
-
-                <div className={styles.charts_paymentMethod}>
-                  <div className={styles.paymentMethod_title}>💰결제 방법별 지출</div>
-                    <div className={styles.paymentMethod_chart}>
-                        <Bar
-                          className={styles.barChart2}
-                          data={paymentData}
-                          options={horizontalBarOptions}
-                        />
-                    </div>
-                </div>  
-              </div>
-              <div className={styles.chartType_bar_container}> 
-                <div className={styles.chartType_bar_title}>🔎총 누적 지출</div> 
-                <div className={styles.chartType_bar}>
-                    <Bar
-                        className={styles.barChart}
-                        data={categoryBarData}
-                        options={verticalBarOptions}
+                <div className={styles.chartType}>
+                  <div className={styles.chart_title}>
+                    📝 카테고리별 퍼센티지(%)
+                  </div>
+                  <div className={styles.chart_container}>
+                    <Doughnut
+                      className={styles.doughnutChart}
+                      data={categoryData}
+                      options={options}
                     />
+                  </div>
                 </div>
+                <div className={styles.chartType}>
+                  <div className={styles.chart_title}>💰 결제 방법별 지출</div>
+                  <div className={styles.chart_container}>
+                    <Bar
+                      className={styles.barChart2}
+                      data={paymentData}
+                      options={horizontalBarOptions}
+                    />
+                  </div>
                 </div>
+              </div>
+              <div className={styles.chartType_bar_container}>
+                <div className={styles.chart_title}>🔎 총 누적 지출</div>
+                <div className={styles.chartType_bar}>
+                  <Bar
+                    className={styles.barChart}
+                    data={categoryBarData}
+                    options={verticalBarOptions}
+                  />
+                </div>
+              </div>
             </div>
           </>
         )}

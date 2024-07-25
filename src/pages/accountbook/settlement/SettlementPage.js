@@ -10,6 +10,7 @@ import {
 import Share from '../../../components/settlement/Share';
 import SettlementDetail from '../../../components/settlement/SettlementDetail';
 import { handleProblemSubject } from '../../../util/swalUtils';
+import { SERVER_URL } from '../../../config/apiConfig';
 
 const SettlementPage = () => {
   const { id } = useParams();
@@ -135,7 +136,7 @@ const SettlementPage = () => {
                 style={{
                   backgroundImage: `url(${
                     accountBook.imgName
-                      ? `http://localhost:8080/images/${accountBook.imgName}`
+                      ? `${SERVER_URL}/images/${accountBook.imgName}`
                       : '/images/dashboard/default_image.png'
                   })`,
                 }}
