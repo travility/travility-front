@@ -4,7 +4,6 @@ import axiosInstance from '../util/axiosInterceptor';
 export const fetchEvents = async () => {
   try {
     const response = await axiosInstance.get('/accountBook/schedule');
-    console.log('가계부 일정:', response.data);
     return response.data;
   } catch (error) {
     console.error('가계부 정보를 가져오는 중에 오류가 발생했습니다:', error);
@@ -17,10 +16,6 @@ export const fetchDailyExpenses = async (accountbookId) => {
   try {
     const response = await axiosInstance.get(
       `/accountBook/schedule/${accountbookId}`
-    );
-    console.log(
-      `accountbookid= ${accountbookId} 의 날짜별 총 지출 정보`,
-      response.data
     );
 
     if (Array.isArray(response.data)) {
@@ -49,10 +44,6 @@ export const fetchAllExpensesByAccountbookId = async (accountbookId) => {
     const response = await axiosInstance.get(
       `/accountBook/expenses/${accountbookId}`
     );
-    console.log(
-      `accountBookId= ${accountbookId} 의 모든 지출 항목:`,
-      response.data
-    );
     return response.data;
   } catch (error) {
     console.error(
@@ -69,15 +60,9 @@ export const fetchTotalExpenses = async (accountbookId) => {
     const response = await axiosInstance.get(
       `/accountBook/${accountbookId}/totalExpenses`
     );
-    console.log(`total expense ${accountbookId}`, response.data);
 
     // 백엔드에서 반환된 데이터 구조
     const { totalAmount, expenses, exchangeRates } = response.data;
-
-    // 데이터를 콘솔에 출력하여 확인
-    console.log('Total Amount:', totalAmount);
-    console.log('Expenses:', expenses);
-    console.log('Exchange Rates:', exchangeRates);
 
     // 환율을 고려한 금액 계산
     const calculatedTotalAmount = expenses.reduce((total, expense) => {
@@ -85,10 +70,6 @@ export const fetchTotalExpenses = async (accountbookId) => {
       return total + expense.amount * exchangeRate;
     }, 0);
 
-    console.log(
-      `Calculated total amount for accountbook ${accountbookId}:`,
-      calculatedTotalAmount
-    );
     return { totalAmount: calculatedTotalAmount, expenses, exchangeRates };
   } catch (error) {
     console.error(`accountbookId 오류 ${accountbookId}:`, error);
