@@ -183,7 +183,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     ...selectStyles,
     control: (base) => ({
       ...base,
-      width: "100%",
+      width: "17.5rem",
     }),
 
     valueContainer: (base) => ({

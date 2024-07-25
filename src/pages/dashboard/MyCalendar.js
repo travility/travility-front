@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import ScheduleCalendar from '../../components/ScheduleCalendar';
-import { fetchEvents, fetchTotalExpenses } from '../../api/scheduleApi';
-import { parseISO, addDays, format } from 'date-fns';
-import styles from '../../styles/dashboard/MyCalendar.module.css';
+import React, { useState, useEffect } from "react";
+import ScheduleCalendar from "../../components/ScheduleCalendar";
+import { fetchEvents, fetchTotalExpenses } from "../../api/scheduleApi";
+import { parseISO, addDays, format } from "date-fns";
+import styles from "../../styles/dashboard/MyCalendar.module.css";
 
 const MyCalendar = () => {
   const [events, setEvents] = useState([]);
@@ -11,6 +11,7 @@ const MyCalendar = () => {
   const [dailyExpenses, setDailyExpenses] = useState({});
   const [totalExpenses, setTotalExpenses] = useState({});
   const [exchangeRates, setExchangeRates] = useState({});
+  const [showPopup, setShowPopup] = useState(false); // 팝업 상태 추가
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,7 @@ const MyCalendar = () => {
         fetchedEvents.forEach((event) => {
           let day = new Date(event.start);
           while (day <= new Date(event.end)) {
-            const formattedDate = format(day, 'yyyy-MM-dd');
+            const formattedDate = format(day, "yyyy-MM-dd");
             eventMap[formattedDate] = true;
             day = addDays(day, 1);
           }
@@ -58,7 +59,7 @@ const MyCalendar = () => {
 
             // 일별 지출 금액 계산
             expenses.forEach((expense) => {
-              const date = format(parseISO(expense.expenseDate), 'yyyy-MM-dd');
+              const date = format(parseISO(expense.expenseDate), "yyyy-MM-dd");
               const amountInKRW =
                 expense.amount * (exchangeRates[expense.curUnit] || 1);
               if (!expensesData[date]) {
@@ -86,7 +87,7 @@ const MyCalendar = () => {
         setExchangeRates(allExchangeRates);
       } catch (error) {
         console.error(
-          '가계부 데이터를 가져오는 중 오류가 발생했습니다:',
+          "가계부 데이터를 가져오는 중 오류가 발생했습니다:",
           error
         );
       }
@@ -96,7 +97,11 @@ const MyCalendar = () => {
   }, []); // 빈 배열을 의존성 배열로 전달하여 처음 마운트될 때만 실행되도록 함
 
   return (
-    <div className={styles.my_calendar_container}>
+    <div
+      className={`${styles.my_calendar_container} ${
+        showPopup ? styles.show_popup : ""
+      }`}
+    >
       <ScheduleCalendar
         events={events}
         hasEvent={hasEvent}
@@ -104,6 +109,8 @@ const MyCalendar = () => {
         dailyExpenses={dailyExpenses}
         totalExpenses={totalExpenses}
         exchangeRates={exchangeRates}
+        onShowPopup={() => setShowPopup(true)} // 팝업 열기
+        onClosePopup={() => setShowPopup(false)} // 팝업 닫기
       />
     </div>
   );
