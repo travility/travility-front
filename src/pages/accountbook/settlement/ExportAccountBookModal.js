@@ -15,7 +15,7 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
   const [krw, setKrw] = useState(false);
 
   const handleKRW = (e) => {
-    setKrw(e.target.value);
+    setKrw(e.target.value === "true");
   };
 
   //가계부 엑셀화
@@ -26,7 +26,7 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
       if (response instanceof Blob) {
         //응답 데이터가 blob인지 확인(바이너리 데이터 타입)
         const url = window.URL.createObjectURL(response); //바이너리 객체 가리키는 임시 url
-        const filename = countryName + "_" + title + "_" + "여행 가계부.xlsx";
+        const filename = `${countryName}_${title}_여행 가계부.xlsx`;
         downloadFile(url, filename);
 
         window.URL.revokeObjectURL(url); //url 객체 제거
@@ -81,7 +81,7 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
                     name="export"
                     value={false}
                     className={styles.radio}
-                    checked
+                    checked={!krw}
                     onChange={handleKRW}
                   ></Input>
                 </div>
@@ -92,6 +92,7 @@ const ExportAccountBook = ({ isOpen, onClose, id, countryName, title }) => {
                     name="export"
                     value={true}
                     className={styles.radio}
+                    checked={krw}
                     onChange={handleKRW}
                   ></Input>
                 </div>

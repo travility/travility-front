@@ -22,13 +22,13 @@ const TotalResult = ({ accountBookId }) => {
         const totalexpenses = await getTotalExpenseByAccountBookId(
           accountBookId
         );
-        setTotalExpenses(totalexpenses.toFixed(0));
+        setTotalExpenses(totalexpenses);
 
         const budgetData = await getTotalBudgetByAccountBookId(accountBookId);
-        setTotalBudget(budgetData.toFixed(0));
+        setTotalBudget(budgetData);
 
         const remainingBudgetData = await getRemainingBudget(accountBookId);
-        setRemainingBudget(remainingBudgetData.toFixed(0));
+        setRemainingBudget(remainingBudgetData);
       } catch (error) {
         console.error("예산 데이터 불러오기 실패 :", error);
       }
@@ -38,40 +38,28 @@ const TotalResult = ({ accountBookId }) => {
   }, [accountBookId]);
 
   useEffect(() => {
-    let startAmount = 0;
     const duration = 1000; // 애니메이션 지속 시간 (ms)
     const frames = 60; // 초당 프레임 수
     const totalFrames = (duration / 1000) * frames; // 전체 프레임 수
     let currentFrame = 0;
 
-    const animateExpenses = () => {
+    const animate = () => {
       const progress = currentFrame / totalFrames;
       const easeOutQuad = progress * (2 - progress);
-      const amount = Math.floor(totalexpenses * easeOutQuad);
-      setDisplayTotalExpenses(amount);
+      const expensesAmount = Math.floor(totalexpenses * easeOutQuad);
+      const remainingAmount = Math.floor(remainingBudget * easeOutQuad);
+      setDisplayTotalExpenses(expensesAmount);
+      setDisplayRemainingBudget(remainingAmount);
       currentFrame++;
       if (currentFrame < totalFrames) {
-        requestAnimationFrame(animateExpenses);
+        requestAnimationFrame(animate);
       } else {
         setDisplayTotalExpenses(totalexpenses);
-      }
-    };
-
-    const animateRemainingBudget = () => {
-      const progress = currentFrame / totalFrames;
-      const easeOutQuad = progress * (2 - progress);
-      const amount = Math.floor(remainingBudget * easeOutQuad);
-      setDisplayRemainingBudget(amount);
-      currentFrame++;
-      if (currentFrame < totalFrames) {
-        requestAnimationFrame(animateRemainingBudget);
-      } else {
         setDisplayRemainingBudget(remainingBudget);
       }
     };
 
-    requestAnimationFrame(animateExpenses);
-    requestAnimationFrame(animateRemainingBudget);
+    requestAnimationFrame(animate);
   }, [totalexpenses, remainingBudget]);
 
   return (
@@ -87,9 +75,9 @@ const TotalResult = ({ accountBookId }) => {
         <div>
           {remainingBudget > 0 ? (
             <>
-              예산 {formatNumberWithCommas(totalBudget)} 원에서{" "}
+              예산 {formatNumberWithCommas(totalBudget.toFixed(0))} 원에서{" "}
               <span className={styles.highlight}>
-                {formatNumberWithCommas(displayRemainingBudget)}
+                {formatNumberWithCommas(displayRemainingBudget.toFixed(0))}
               </span>
               원 아꼈어요
             </>
@@ -97,7 +85,7 @@ const TotalResult = ({ accountBookId }) => {
             <>
               예산보다{" "}
               <span className={styles.highlight}>
-                {formatNumberWithCommas(-displayRemainingBudget)}
+                {formatNumberWithCommas((-displayRemainingBudget).toFixed(0))}
               </span>
               원 더 사용했어요
             </>

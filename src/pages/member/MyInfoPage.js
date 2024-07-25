@@ -11,7 +11,7 @@ import {
 } from "../../util/swalUtils";
 import { Input } from "../../styles/common/StyledComponents";
 
-const MyInfo = () => {
+const MyInfoPage = () => {
   const { memberInfo } = useContext(MemberInfoContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -159,4 +159,4 @@ const MyInfo = () => {
   );
 };
 
-export default MyInfo;
+export default MyInfoPage;

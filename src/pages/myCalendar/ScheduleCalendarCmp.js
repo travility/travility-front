@@ -12,7 +12,7 @@ import {
   isSameDay,
   setYear,
 } from "date-fns";
-import ScheduleDetail from "./ScheduleDetail";
+import ScheduleDetail from "./ScheduleDetailModal";
 import {
   fetchAllExpensesByAccountbookId,
   fetchTotalExpenses,
@@ -21,24 +21,22 @@ import { formatNumberWithCommas, formatDate } from "../../util/calcUtils";
 import styles from "../../styles/myCalendar/MyCalendar.module.css";
 
 const ScheduleCalendar = ({
-  onDateClick,
   events,
   hasEvent,
   accountBooks,
   dailyExpenses,
   totalExpenses,
-  exchangeRates,
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const currentYear = currentMonth.getFullYear();
-  const [startYear, setStartYear] = useState(currentYear - 20); //현재 년도 -20 부터
-  const [endYear, setEndYear] = useState(currentYear + 1); //현재 년도 +20 까지만 로딩함
+  const [startYear, setStartYear] = useState(currentYear - 20); // 현재 년도 -20 부터
+  const [endYear, setEndYear] = useState(currentYear + 1); // 현재 년도 +20 까지만 로딩함
   const years = Array.from(
     { length: endYear - startYear + 1 },
     (_, i) => startYear + i
-  ); //배열에 담아서 사용
+  ); // 배열에 담아서 사용
 
-  //연도 변경
+  // 연도 변경
   const handleYearChange = (event) => {
     const newYear = parseInt(event.target.value, 10);
     if (newYear <= startYear) {
@@ -49,12 +47,12 @@ const ScheduleCalendar = ({
     setCurrentMonth(setYear(currentMonth, newYear));
   };
 
-  //오늘로 가기 기능
+  // 오늘로 가기 기능
   const goToToday = () => {
     setCurrentMonth(startOfMonth(new Date()));
   };
 
-  //모달로 넘길 정보
+  // 모달로 넘길 정보
   const [popupInfo, setPopupInfo] = useState({
     show: false,
     date: null,
@@ -67,7 +65,7 @@ const ScheduleCalendar = ({
     exchangeRates: {},
   });
 
-  //날짜 클릭 시 동작
+  // 날짜 클릭 시 동작
   const handleDateClick = async (date) => {
     const formattedDate = format(date, "yyyy-MM-dd");
 
@@ -101,7 +99,6 @@ const ScheduleCalendar = ({
 
       const curUnit =
         expensesForDate.length > 0 ? expensesForDate[0].curUnit : "";
-      const totalExpense = totalExpenses[accountbookId] || 0;
 
       setPopupInfo({
         show: true,
@@ -131,15 +128,16 @@ const ScheduleCalendar = ({
       imgName: "",
       curUnit: "",
       totalExpense: 0,
+      exchangeRates: {},
     });
 
     const calendarContainer = document.getElementById("calendarContainer");
     if (calendarContainer) {
-      adjustCalendarHeight(); //닫힐 때 높이 조정
+      adjustCalendarHeight(); // 닫힐 때 높이 조정
     }
   };
 
-  //이벤트 pop 이펙트
+  // 이벤트 pop 이펙트
   useEffect(() => {
     const cells = document.querySelectorAll(`.${styles.cellWithEvent}`);
     cells.forEach((cell, index) => {
@@ -149,7 +147,7 @@ const ScheduleCalendar = ({
     });
   }, [events, dailyExpenses, currentMonth]);
 
-  //캘린더 높이 동적 조정
+  // 캘린더 높이 동적 조정
   const adjustCalendarHeight = () => {
     const calendarContainer = document.getElementById("calendarContainer");
 
@@ -173,7 +171,7 @@ const ScheduleCalendar = ({
     adjustCalendarHeight();
   }, [popupInfo.show]);
 
-  //년 월
+  // 년 월
   const renderHeader = () => {
     return (
       <div className={styles.header}>
@@ -212,7 +210,7 @@ const ScheduleCalendar = ({
     );
   };
 
-  //요일
+  // 요일
   const renderDays = () => {
     const days = [];
     const date = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -227,7 +225,7 @@ const ScheduleCalendar = ({
     return <div className={styles.days}>{days}</div>;
   };
 
-  //셀
+  // 셀
   const renderCells = () => {
     const monthStart = startOfMonth(currentMonth);
     const monthEnd = endOfMonth(monthStart);

@@ -122,7 +122,7 @@ const verticalBarOptions = {
       color: "#fff",
       anchor: "end",
       align: "end",
-      offset: -20, // ********** 항목 값 위치 조정
+      offset: -20, // 항목 값 위치 조정
       display: true,
       font: {
         weight: "500", // 폰트 굵기 설정
@@ -164,8 +164,7 @@ const getCategoryName = (category) => {
   }
 };
 
-const MyReport = () => {
-  const [totalAmount, setTotalAmount] = useState(0); // 총 지출 금액 상태
+const MyReportPage = () => {
   const [categoryData, setCategoryData] = useState({
     labels: [],
     datasets: [{ data: [] }],
@@ -276,11 +275,7 @@ const MyReport = () => {
           ],
         });
 
-        // 총 지출 금액 설정
-        setTotalAmount(total);
-
         // 총 지출 애니메이션
-        let startAmount = 0;
         const duration = 1000; // 애니메이션 지속 시간 (ms)
         const frames = 60; // 초당 프레임 수
         const totalFrames = (duration / 1000) * frames; // 전체 프레임 수
@@ -458,4 +453,4 @@ const MyReport = () => {
   );
 };
 
-export default MyReport;
+export default MyReportPage;

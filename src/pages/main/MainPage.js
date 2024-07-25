@@ -1,6 +1,6 @@
 import React from "react";
-import AddAccountBook from "./AddAccountBook";
-import RecentAccountBooks from "./RecentAccountBooks";
+import AddAccountBook from "./AddAccountBookCmp";
+import RecentAccountBooks from "./RecentAccountBooksCmp";
 import styles from "../../styles/main/MainPage.module.css";
 
 const MainPage = () => {
