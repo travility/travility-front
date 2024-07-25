@@ -167,7 +167,7 @@ const ExpenseStatistic = () => {
           return;
         }
 
-        const uniqueDates = Array.from(new Set(data.map((item) => item.date)));
+        const uniqueDates = Array.from(new Set(data.map((item) => formatDate(item.date)))).sort((a, b) => new Date(a) - new Date(b));
         setDates(uniqueDates);
         setSelectedDate(uniqueDates[0]);
 
@@ -179,11 +179,11 @@ const ExpenseStatistic = () => {
         if (Array.isArray(paymentData)) {
           setPaymentMethodStatistics(paymentData);
         } else {
-          console.error("기댓값 array와 다른 결괏값 나옴 : ", paymentData);
+          console.error("Expected an array but got:", paymentData);
           setPaymentMethodStatistics([]);
         }
       } catch (error) {
-        console.error("통계 불러오기 실패 :", error);
+        console.error("Failed to fetch statistics:", error);
       }
     };
 
@@ -256,7 +256,7 @@ const ExpenseStatistic = () => {
 
               // 날짜별로 데이터를 합산하여 중복된 날짜 제거
               const dateMap = data.reduce((acc, curr) => {
-                const date = curr.date.split("T")[0];
+                const date = formatDate(curr.date);
                 if (!acc[date]) {
                   acc[date] = 0;
                 }
@@ -309,7 +309,7 @@ const ExpenseStatistic = () => {
 
   // 선택된 날짜의 카테고리별 데이터 골라먹기
   const filteredData = statistics
-    .filter((stat) => stat.date === selectedDate)
+    .filter((stat) => formatDate(stat.date) === selectedDate)
     .reduce((acc, stat) => {
       acc[stat.category] = stat.amount;
       return acc;
