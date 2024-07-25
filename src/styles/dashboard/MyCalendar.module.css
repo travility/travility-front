@@ -4,7 +4,7 @@
   background-color: var(--background-color);
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 1rem;
   height: 100%;
 }
 
@@ -20,15 +20,16 @@
 
 .calendar_container {
   display: grid;
-  border: 1px solid #e0e0e0;
-  border-radius: 30px;
-  padding: 20px; /* 전체 패딩 */
+  border: 1px solid var(--line-color);
+  border-radius: 0.5rem;
+  padding: 2rem; /* 전체 패딩 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   min-width: 100%;
   max-height: auto;
   margin: 0 auto;
-  background: var(--backgroung-color);
+  background: var(--background-color);
   transition: width 0.3s ease-in-out;
+  font-size: 1em;
 }
 
 /* 년월 부분 */
@@ -36,27 +37,29 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .centerSection {
-  font-size: 1rem;
   grid-column: 2;
   justify-self: center;
+  display: flex;
+  gap: 0.8em;
+  align-items: center;
 }
 
 .yearSelect {
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  border: 1px solid var(--line-color);
+  border-radius: 0.2rem;
   color: var(--text-color);
-  background-color: var(--backgroung-color);
-  padding: 3px;
-  margin-left: 5px;
-  font-size: 0.9rem;
-  &:hover {
-    cursor: pointer;
-  }
+  background-color: var(--background-color);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.9em;
+}
+
+.yearSelect:hover {
+  cursor: pointer;
 }
 
 .yearSelect:focus {
@@ -64,19 +67,15 @@
   outline: none;
 }
 
-.option {
-  font-size: 0.95rem;
-  padding: 5px;
-}
-
 .todayButton {
   background-color: var(--main-color);
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 7px;
-  padding: 4px 8px;
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem;
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.7em;
+  font-weight: 600;
   margin-left: -20px;
   margin-right: 10px;
 }
@@ -85,19 +84,11 @@
   background-color: var(--second-color);
 }
 
-.header_years_month {
-  font-size: 1.5rem;
-  color: #727272b3;
-  font-weight: 550;
-  grid-column: 2;
-  justify-self: center;
-}
-
 .navButton {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: bold;
   color: var(--text-color);
   grid-column: 1;
@@ -111,35 +102,30 @@
 }
 
 .day {
-  flex: 1;
   text-align: center;
   font-weight: 530;
   color: rgb(182, 192, 217);
-  font-size: 1rem;
+  font-size: 1em;
   margin: 0 5px;
 }
 
 /* 일 */
 .day:first-child {
-  color: rgb(251, 15, 15);
+  color: red;
 }
 
 /* 토 */
 .day:last-child {
-  color: #4c66f8;
+  color: blue;
 }
 
 .body {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  /* flex-wrap: wrap;
-  justify-content: space-between; */
 }
 
 .row {
   display: contents;
-  /* display: flex;
-  width: 100%; */
 }
 
 /* 달력의 cell */
@@ -148,40 +134,40 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  /*셀 안의 내용을 상하 분배*/
   text-align: left;
   cursor: pointer;
   height: 110px;
   overflow: hidden;
-  padding: 10px;
+  padding: 0.5rem;
   box-sizing: border-box;
   position: relative;
   min-width: 14.28%; /* 7개의 셀을 균등하게 나누기 위해 설정 */
-  border: 1px solid #e7eef8;
+  border: 1px solid var(--line-color);
 }
 
 .number {
   position: relative;
-  font-size: 0.8rem;
+  font-size: 0.8em;
   font-weight: 600;
   z-index: 2;
-  margin-right: 5px;
+  margin-right: 0.5rem;
 }
 
 .eventTitle {
   position: absolute;
   z-index: 3;
-  font-size: 0.65rem;
-  font-weight: 550;
+  font-size: 0.6em;
+  font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
   top: 1.8rem;
+  color: #fff;
 }
 
 .cell_total_amount {
-  font-size: 0.7rem;
+  font-size: 0.7em;
   font-weight: 500;
   color: var(--text-color);
   white-space: nowrap;
@@ -198,7 +184,7 @@
   content: '';
   display: block;
   width: 0;
-  height: 15px;
+  height: 1em;
   background-color: var(--point-color);
   position: absolute;
   top: 1.7rem;
@@ -206,7 +192,6 @@
   z-index: 1;
   opacity: 0;
   transition: opacity 0.5s ease-in-out; /* 애니메이션 설정 */
-  margin-top: 2px;
 }
 
 .cellWithEvent.animate::after {
@@ -244,14 +229,15 @@
 /* 오늘 날짜 표시 */
 .selected {
   position: relative;
+  border: 1px solid var(--main-color);
 }
 
 /* today 꾸미기 투꾸 */
 .selected::before {
   content: '🐷';
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 1rem;
+  height: 1rem;
   background-color: transparent;
   border-radius: 0;
   position: absolute;
@@ -263,84 +249,78 @@
 /* ****************            popup                  *************** */
 
 .schedule_detail_container {
-  border-radius: 10px;
-  padding: 30px;
-  border: 1px solid #e0e0e0;
+  background: var(--background-color);
+  color: var(--text-color);
+  padding: 1.5rem;
+  border: 1px solid var(--line-color);
+  border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: auto;
-  /* 다크모드 */
-  background-color: var(--backgroung-color);
 }
 
 .schedule_detail_header_container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  font-size: 1em;
 }
 
 .icon {
-  width: 11px;
+  width: 0.6rem;
   height: auto;
-  margin-right: 5px;
+  margin-right: 0.5rem;
 }
 
 .schedule_detail_header_container > p {
-  font-size: 0.8rem;
+  font-size: 0.8em;
   font-weight: 500;
-  letter-spacing: -1px;
-}
-
-.schedule_detail_modalBody {
-  margin-top: 10px;
 }
 
 .schedule_detail_modalImage {
   min-width: 100%;
-  height: 150px;
-  background-color: #9d9d9d;
-  border-radius: 8px;
+  height: 7rem;
+  background-color: var(--gray-color);
+  border-radius: 0.3rem;
   background-size: cover;
   background-position: center;
-  margin-bottom: 10px;
+  margin: 0.5rem 0;
 }
 
 .schedule_detail_filter_buttons_container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr auto 1fr;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 10px;
-  border-bottom: 1px solid var(--text-color);
+  gap: 0.5rem;
+  align-items: end;
+  margin-bottom: 0.5rem;
 }
 
 .schedule_detail_filter_buttons_container button {
   border: none;
   cursor: pointer;
-  margin-bottom: 5px;
-  letter-spacing: -1px;
-  /* 다크모드 */
   background: none;
   color: var(--text-color);
+  font-size: 0.7em;
+  font-weight: 600;
 }
 
 .go_accountbook_detail_btn {
   grid-column: -1;
-  background-color: #657df9 !important;
-  color: white !important;
-  border-radius: 8px;
-  padding: 3px 5px;
-  font-size: 0.6rem;
-  letter-spacing: -1px;
+  background-color: var(--main-color) !important;
+  color: #fff !important;
+  border-radius: 0.3rem;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.5em !important;
 }
 
-
 .selectedButton {
-  font-weight: bold;
+  font-weight: 700;
+  color: var(--main-color) !important;
 }
 
 .expenseList {
-  margin-bottom: 20px;
+  height: 100%;
+  border-top: 1px solid var(--text-color);
+  padding: 1rem 0.5rem;
 }
 
 /* 지출 내역 */
@@ -352,25 +332,28 @@
 
 .expenseItem {
   display: flex;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .expense_info {
   display: grid;
+  align-items: center;
   grid-template-areas:
     'title curUnit amount expenseImg'
     'type type type type';
-  grid-template-columns: 95px auto auto 20px;
+  grid-template-columns: 3fr auto auto auto;
   grid-template-rows: auto auto;
   flex-grow: 1;
+  margin-left: 0.3rem;
 }
 
 .expense_title {
   grid-area: title;
-  font-size: 0.75rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 0.7em;
 }
 
 .expense_info > div {
@@ -380,19 +363,24 @@
 
 .expense_curunit {
   grid-area: curUnit;
-  font-size: 0.65rem;
-  margin-left: -18px;
+  font-size: 0.6em;
 }
 
 .expense_amount {
   grid-area: amount;
-  font-size: 0.65rem;
-  margin-left: -4px;
+  font-size: 0.6em;
   text-align: left;
+  padding-right: 1rem;
+  padding-left: 0.5rem;
+}
+
+.accountbook_detail h5 {
+  display: none;
 }
 
 .noExpenses {
-  font-size: 0.8rem;
+  font-size: 0.7em;
+  padding-left: 0.5rem;
 }
 
 .expenseImg {
@@ -401,78 +389,130 @@
   height: 1.25rem;
   border-radius: 50%;
   object-fit: cover;
-  margin-left: -3px;
   background-color: var(--gray-color);
 }
 
 /* 개인경비 || 공용경비 */
 .type {
   grid-area: type;
-  font-size: 0.55rem;
-  color: rgba(128, 128, 128, 0.745);
+  font-size: 0.5em;
+  color: var(--gray-color);
   text-align: left;
-}
-
-/* Footer */
-
-.schedule_detail_modalFooter {
-  border-top: 1px solid var(--text-color);
-  padding-top: 10px;
 }
 
 .total_cost_container {
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
-}
-
-.total_cost_text {
-  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  font-size: 0.8em;
+  border-top: 1px solid var(--text-color);
 }
 
 .total_cost_amount {
   font-size: 0.9rem;
-  color: #4c66f8;
+  color: var(--main-color);
 }
 
 .schedule_detail_Buttons_container {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 1.5rem;
 }
 
 .closeButton {
   background: none;
   border: none;
   cursor: pointer;
-  margin-top: 10px;
-  font-size: 0.75rem;
+  font-size: 0.7em;
   color: var(--text-color);
-  &:hover {
-    color: var(--main-color);
-    text-decoration: underline;
-  }
+}
+
+.closeButton:hover {
+  color: var(--main-color);
+  text-decoration: underline;
 }
 
 /* ***************************   반응형 ************************************* */
+
 @media (max-width: 530px) {
+  .schedule_calendar_container {
+    font-size: 0.7rem;
+  }
+
+  .schedule_detail_container {
+    font-size: 0.9rem;
+  }
+
+  .schedule_detail_content {
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      'title'
+      'button'
+      'expense'
+      'close' !important;
+  }
+
+  .schedule_detail_header_container {
+    padding: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: none !important;
+  }
+
+  .schedule_detail_filter_buttons_container {
+    padding: 0.5rem;
+    align-self: end !important;
+    border-bottom: 1px solid var(--text-color);
+    margin-bottom: 0;
+  }
+
+  .schedule_detail_modalImage {
+    display: none;
+  }
+
+  .accountbook_detail {
+    background-color: var(--background-color) !important;
+    padding-top: 0 !important;
+  }
+
+  .schedule_detail_Buttons_container {
+    grid-area: close;
+    margin: 0.5rem 0;
+    padding-top: 1.5rem;
+    font-size: 1.2em;
+    border-top: 1px solid var(--text-color);
+  }
+
+  .accountbook_detail h5 {
+    display: none !important;
+  }
+
+  .cell_total_amount {
+    font-size: 0.5em !important;
+  }
+}
+
+@media (max-width: 767px) {
   .my_calendar_container {
     display: grid;
-    grid-template-rows: 1fr; /* 기본 상태에서는 하나의 행 */
-    gap: 10px;
-    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
+    grid-template-rows: 1fr;
+    gap: 1rem;
+    height: 100vh;
     transition: grid-template-rows 0.3s ease;
   }
 
-  /* 부모 그리드 컨테이너의 행에 직접 포함 */
   .schedule_calendar_container {
     display: contents;
   }
 
   .calendar_container {
     overflow: auto;
-    height: 65vh; /* 작은 화면에서 달력의 기본 높이 설정 */
+    height: 65vh;
     transition: height 0.3s ease;
+  }
+
+  .cell_total_amount {
+    font-size: 0.7em;
   }
 
   .detail_container {
@@ -480,80 +520,109 @@
     transition: height 0.3s ease;
   }
 
+  .selected::before {
+    display: none;
+  }
+
   .show_popup .my_calendar_container {
     grid-template-rows: 1fr 2fr;
   }
 
   .show_popup .calendar_container {
-    height: 35vh; /* 팝업이 표시될 때 달력의 높이 비율 조정 */
+    height: 35vh;
   }
 
   .show_popup .detail_container {
     height: 65vh;
   }
 
-  /*************** 팝업 내에서 가로 배치 설정 ***************/
-  .schedule_detail_container {
-    width: 100%;
-    padding: 10px;
+  .show_popup .cell {
+    height: auto;
+    min-height: 2rem;
+    padding: 0;
   }
 
-  .schedule_detail_content_container {
+  .show_popup .cell .eventTitle,
+  .show_popup .cell .cell_total_amount {
+    display: none;
+  }
+
+  .show_popup .cell .number {
+    font-size: 0.8em;
+    margin: auto;
+  }
+
+  .schedule_detail_container {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .schedule_detail_content {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 두 개의 열로 설정 */
-    grid-template-rows: auto auto auto auto;
-    gap: 10px;
+    align-items: center;
+    grid-template-areas:
+      'title title'
+      'button expense'
+      'image expense'
+      'close close';
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto 1fr auto;
+    gap: 1rem;
   }
 
   .schedule_detail_header_container {
-    grid-column: 1 / -1; /* 그리드의 전체 열을 차지 */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    grid-area: title;
+    border-bottom: 1px solid var(--text-color);
+    padding-bottom: 1rem;
   }
 
   .schedule_detail_modalImage {
-    grid-row: 2 / 4;
-    grid-column: 1 / 2;
-    width: 250px;
-    max-width: 100%;
-    height: 100%;
-    max-height: 300px;
+    grid-area: image;
     background-size: cover;
     background-position: center;
+    width: 100%;
+    height: 100%;
   }
 
   .schedule_detail_filter_buttons_container {
-    grid-row: 2 / 3;
-    grid-column: 2 / 3;
+    grid-area: button;
+    align-self: start;
+  }
+
+  .accountbook_detail {
+    grid-area: expense;
+    background-color: var(--light-color);
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .schedule_detail_Buttons_container {
+    grid-area: close;
+    margin: 0.5rem 0;
+    padding-top: 1.5rem;
+    font-size: 1.2em;
+    border-top: 1px solid var(--text-color);
+  }
+
+  .accountbook_detail h5 {
+    display: block;
+    border-bottom: 1px solid var(--text-color);
+    padding: 0.5rem;
+  }
+
+  .expenseList {
+    border-top: none;
+  }
+
+  .schedule_detail_filter_buttons_container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr auto 1fr;
     align-items: center;
   }
 
   .expenseList {
-    grid-row: 3 / 4;
-    grid-column: 2 / 3;
-
     display: grid;
     grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
-    
-  }
-
-  .schedule_detail_modalFooter {
-    grid-column: 1 / -1; /* 그리드의 전체 열을 차지 */
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    align-items: center;
-  }
-
-  .eventTitle {
-    font-size: 0.65rem;
-    margin-top: 3px;
-    margin-left: -3px;
   }
 
   .selected::before {
@@ -561,7 +630,7 @@
     top: 0.55rem;
     z-index: 1000;
   }
-  
+
   .schedule_detail_filter_buttons_container button {
     font-size: 0.85rem;
   }
@@ -572,10 +641,6 @@
 
   .schedule_detail_header_container > p {
     font-size: 0.9rem;
-  }
-
-  .expense_title {
-    margin-left: 3px;
   }
 
   .type {
@@ -594,7 +659,7 @@
     height: 60px;
   }
 
-  .header{
+  .header {
     height: 25px;
   }
 
@@ -602,29 +667,13 @@
     grid-column: -1;
   }
 
-  .customScrollbar{
+  .customScrollbar {
     height: 100px;
   }
-  
 }
 
-@media (min-width: 531px) and (max-width: 860px) {
-  .eventTitle {
-    font-size: 0.65rem;
-    margin-top: 2px;
-  }
-
+@media (min-width: 768px) and (max-width: 1024px) {
   .go_accountbook_detail_btn {
     grid-column: -1;
   }
-}
-
-@media (min-width: 861px) and (max-width: 1024px) {
-  .go_accountbook_detail_btn {
-    grid-column: -1;
-  }
-}
-
-
-@media (min-width: 1025px) {
 }
