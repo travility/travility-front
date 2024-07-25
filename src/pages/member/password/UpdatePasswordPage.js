@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
-import styles from '../../../styles/member/password/UpdatePasswordPage.module.css';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { updatePassword } from '../../../api/memberApi';
+import React, { useState } from "react";
+import styles from "../../../styles/member/password/UpdatePasswordPage.module.css";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { updatePassword } from "../../../api/memberApi";
 import {
   handleProblemSubject,
   handleSuccessLogout,
-} from '../../../util/swalUtils';
-import Swal from 'sweetalert2';
-import { Button, ErrorMessage, Input } from '../../../styles/StyledComponents';
+} from "../../../util/swalUtils";
+import Swal from "sweetalert2";
+import {
+  Button,
+  ErrorMessage,
+  Input,
+} from "../../../styles/common/StyledComponents";
 
 const UpdatePasswordPage = () => {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [seePassword, setSeePassword] = useState(false);
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false);
   const [formErrors, setFormErrors] = useState({});
@@ -38,7 +42,7 @@ const UpdatePasswordPage = () => {
     const isValid = vaildatePassword(e.target.value);
     setFormErrors((prevErros) => ({
       ...prevErros,
-      password: isValid ? '' : '영소문자, 숫자, 특수문자 8자 이상 입력하세요',
+      password: isValid ? "" : "영소문자, 숫자, 특수문자 8자 이상 입력하세요",
     }));
   };
 
@@ -48,7 +52,7 @@ const UpdatePasswordPage = () => {
     setFormErrors((prevErros) => ({
       ...prevErros,
       confirmPassword:
-        e.target.value === password ? '' : '비밀번호가 맞지 않습니다',
+        e.target.value === password ? "" : "비밀번호가 맞지 않습니다",
     }));
   };
 
@@ -57,9 +61,9 @@ const UpdatePasswordPage = () => {
     e.preventDefault();
 
     const errors = {};
-    if (!password) errors.password = '비밀번호를 입력하세요.';
+    if (!password) errors.password = "비밀번호를 입력하세요.";
     if (!confirmPassword)
-      errors.confirmPassword = '비밀번호를 다시 확인하세요.';
+      errors.confirmPassword = "비밀번호를 다시 확인하세요.";
 
     setFormErrors(errors);
 
@@ -72,34 +76,34 @@ const UpdatePasswordPage = () => {
       updatePassword(password)
         .then(() => {
           Swal.fire({
-            title: '비밀번호 변경 성공',
-            text: '비밀번호를 성공적으로 변경하였습니다. 재로그인하세요.',
-            icon: 'success',
-            confirmButtonColor: '#2a52be',
+            title: "비밀번호 변경 성공",
+            text: "비밀번호를 성공적으로 변경하였습니다. 재로그인하세요.",
+            icon: "success",
+            confirmButtonColor: "#2a52be",
           }).then(() => {
             handleSuccessLogout(); //변경 후, 로그아웃
           });
         })
         .catch((error) => {
           console.log(error);
-          if (error.response.data === 'Current password matches') {
+          if (error.response.data === "Current password matches") {
             //새 비밀번호가 기존 비밀번호와 일치하면
             Swal.fire({
-              title: '비밀번호 변경 실패',
-              text: '기존 비밀번호와 일치합니다.',
-              icon: 'error',
-              confirmButtonColor: '#2a52be',
+              title: "비밀번호 변경 실패",
+              text: "기존 비밀번호와 일치합니다.",
+              icon: "error",
+              confirmButtonColor: "#2a52be",
             });
           } else {
-            handleProblemSubject('비밀번호 변경');
+            handleProblemSubject("비밀번호 변경");
           }
         });
     } else {
       Swal.fire({
-        title: '비밀번호 변경 실패',
-        text: '양식이 올바르지 않습니다.',
-        icon: 'error',
-        confirmButtonColor: '#4568DC',
+        title: "비밀번호 변경 실패",
+        text: "양식이 올바르지 않습니다.",
+        icon: "error",
+        confirmButtonColor: "#4568DC",
       });
     }
   };
@@ -117,7 +121,7 @@ const UpdatePasswordPage = () => {
               <div className={styles.updatePassword_input_seepw_container}>
                 <label htmlFor="password">변경 비밀번호</label>
                 <Input
-                  type={seePassword ? 'text' : 'password'}
+                  type={seePassword ? "text" : "password"}
                   id="password"
                   placeholder="영문자, 숫자, 특수문자를 포함한 8자 이상"
                   value={password}
@@ -145,7 +149,7 @@ const UpdatePasswordPage = () => {
               >
                 <label htmlFor="confirmPassword">변경 비밀번호 확인</label>
                 <Input
-                  type={seeConfirmPassword ? 'text' : 'password'}
+                  type={seeConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   placeholder="비밀번호를 재입력해주세요"
                   value={confirmPassword}

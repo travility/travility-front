@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getAccountBooks, deleteAccountBook } from '../../api/accountbookApi';
-import styles from '../../styles/accountbook/AccountBookListPage.module.css';
-import { Button, Input } from '../../styles/StyledComponents';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import Select from 'react-select';
-import { selectStyles2 } from '../../util/CustomStyles';
-import TripInfo from '../../components/TripInfo';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAccountBooks, deleteAccountBook } from "../../api/accountbookApi";
+import styles from "../../styles/accountbook/AccountBookList.module.css";
+import { Button, Input } from "../../styles/common/StyledComponents";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
+import { selectStyles2 } from "../../util/CustomStyles";
+import TripInfo from "../common/TripInfoCmp";
 import {
   handleFailureSubject,
   handleSuccessSubject,
-} from '../../util/swalUtils';
-import Swal from 'sweetalert2';
+} from "../../util/swalUtils";
+import Swal from "sweetalert2";
 
 const AccountBookListPage = () => {
   const navigate = useNavigate();
@@ -20,8 +20,8 @@ const AccountBookListPage = () => {
   const [accountBooks, setAccountBooks] = useState([]);
   const [selectedBooks, setSelectedBooks] = useState([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [sort, setSort] = useState({ label: '최신순', value: 'new' });
-  const [searchText, setSearchText] = useState('');
+  const [sort, setSort] = useState({ label: "최신순", value: "new" });
+  const [searchText, setSearchText] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ const AccountBookListPage = () => {
         if (Array.isArray(data)) {
           setAccountBooks(data);
         } else {
-          setError(new Error('Unexpected response format'));
+          setError(new Error("Unexpected response format"));
         }
       } catch (error) {
         setError(error);
@@ -62,10 +62,10 @@ const AccountBookListPage = () => {
   };
 
   const sortOptions = [
-    { value: 'new', label: '최신순' },
-    { value: 'old', label: '오래된순' },
-    { value: 'highest', label: '높은지출순' },
-    { value: 'lowest', label: '낮은지출순' },
+    { value: "new", label: "최신순" },
+    { value: "old", label: "오래된순" },
+    { value: "highest", label: "높은지출순" },
+    { value: "lowest", label: "낮은지출순" },
   ];
 
   const handleSort = (sortOption) => {
@@ -78,13 +78,13 @@ const AccountBookListPage = () => {
 
   const handleDeleteBooks = async () => {
     Swal.fire({
-      title: '정말로 삭제하시겠습니까?',
-      text: '가계부 내용이 전부 삭제됩니다.',
-      icon: 'warning',
+      title: "정말로 삭제하시겠습니까?",
+      text: "가계부 내용이 전부 삭제됩니다.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: 'var(--main-color)',
-      confirmButtonText: '삭제',
-      cancelButtonText: '취소',
+      confirmButtonColor: "var(--main-color)",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소",
     }).then((result) => {
       if (result.isConfirmed) {
         try {
@@ -92,12 +92,12 @@ const AccountBookListPage = () => {
           setAccountBooks((prevBooks) =>
             prevBooks.filter((book) => !selectedBooks.includes(book.id))
           );
-          handleSuccessSubject('가계부', '삭제');
+          handleSuccessSubject("가계부", "삭제");
           setIsDeleteMode(false);
           setSelectedBooks([]);
         } catch (error) {
-          console.error('Failed to delete account books:', error);
-          handleFailureSubject('가계부', '삭제');
+          console.error("Failed to delete account books:", error);
+          handleFailureSubject("가계부", "삭제");
         }
       }
     });
@@ -155,7 +155,7 @@ const AccountBookListPage = () => {
                 className={styles.delete_button}
                 onClick={toggleDeleteMode}
               >
-                {isDeleteMode ? '취소' : '삭제'}
+                {isDeleteMode ? "취소" : "삭제"}
               </Button>
               {isDeleteMode && (
                 <Button
