@@ -9,12 +9,26 @@ import {
   CloseButton,
   Button,
   Input,
+  ErrorMessage,
 } from '../../../styles/StyledComponents';
-import { handleNoImage } from '../../../util/swalUtils';
+import {
+  handleFailureSubject,
+  handleNoImage,
+  handleSuccessSubjectNotReload,
+} from '../../../util/swalUtils';
 import { SERVER_URL } from '../../../config/apiConfig';
+import Swal from 'sweetalert2';
+import { deleteAccountBook } from '../../../api/accountbookApi';
+import { useNavigate } from 'react-router-dom';
 
-const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
-  const [newTripInfo, setNewTripInfo] = useState({
+const UpdateTripInfo = ({
+  isOpen,
+  onClose,
+  isSettlement,
+  onSubmit,
+  accountBook,
+}) => {
+  const [oirginalTripInfo, setOriginalTripInfo] = useState({
     tripInfo: {
       countryName: accountBook.countryName,
       countryFlag: accountBook.countryFlag,
@@ -28,13 +42,28 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     isModalOpen: false,
     isDefaultImage: true,
   });
-
-  //모달 위치 동적 계산
-  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [newTripInfo, setNewTripInfo] = useState({ ...oirginalTripInfo });
+  const [titleError, setTitleError] = useState(''); // 글자수 에러 메세지
+  const [inputCount, setInputCount] = useState(
+    oirginalTripInfo.tripInfo.title.length
+  ); // 글자수 변경 카운트
+  const [isEditable, setIsEditable] = useState(false);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 }); //모달 위치 동적 계산
+  const navigate = useNavigate();
   const inputRef = useRef(null);
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'title') {
+      if (value.length <= 22) {
+        setTitleError('');
+      } else {
+        setTitleError('제목은 공백 포함 22 글자까지 입력 가능합니다.');
+      }
+      setInputCount(value.length > 22 ? 22 : value.length);
+    }
+
+    console.log(value);
     setNewTripInfo({
       ...newTripInfo,
       tripInfo: { ...newTripInfo.tripInfo, [name]: value },
@@ -79,6 +108,23 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     });
   };
 
+  //편집 가능 상태 여부
+  const toggleEditable = (e) => {
+    e.preventDefault();
+    if (isEditable) {
+      handleUpdateTripInfo(e);
+    } else {
+      setIsEditable(true);
+    }
+  };
+
+  // 편집모드 취소
+  const handleCancelEdit = (e) => {
+    e.preventDefault();
+    setNewTripInfo({ ...oirginalTripInfo }); //취소할 경우 원래 상태로 되돌아감
+    setIsEditable(false);
+  };
+
   //가계부 수정
   const handleUpdateTripInfo = (e) => {
     e.preventDefault();
@@ -92,30 +138,62 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
     onSubmit(formData);
   };
 
+  // 가계부 삭제
+  const handleDeleteTripInfo = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: '정말로 삭제하시겠습니까?',
+      text: '가계부 내용이 전부 삭제됩니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: 'var(--main-color)',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteAccountBook(accountBook.id)
+          .then(() => {
+            handleSuccessSubjectNotReload(
+              '가계부',
+              '삭제',
+              navigate,
+              '/accountbook/list'
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            handleFailureSubject('가계부', '삭제');
+          });
+      }
+    });
+  };
+
   //모달 위치 동적 계산 함수
   const handleOpenCountryModal = () => {
-    if (inputRef.current) {
-      const inputRect = inputRef.current.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      let leftPosition = inputRect.left + window.scrollX;
+    if (isEditable) {
+      if (inputRef.current) {
+        const inputRect = inputRef.current.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        let leftPosition = inputRect.left + window.scrollX;
 
-      // 반응형 조정을 위한 예제 (화면 크기에 따라 위치 조정)
-      if (viewportWidth <= 530) {
-        leftPosition = inputRect.left + window.scrollX;
-      } else if (viewportWidth >= 531 && viewportWidth <= 860) {
-        leftPosition = inputRect.left + window.scrollX;
-      } else if (viewportWidth >= 861 && viewportWidth <= 1024) {
-        leftPosition = inputRect.left + window.scrollX;
-      } else {
-        leftPosition = inputRect.left + window.scrollX;
+        // 반응형 조정을 위한 예제 (화면 크기에 따라 위치 조정)
+        if (viewportWidth <= 530) {
+          leftPosition = inputRect.left + window.scrollX;
+        } else if (viewportWidth >= 531 && viewportWidth <= 860) {
+          leftPosition = inputRect.left + window.scrollX;
+        } else if (viewportWidth >= 861 && viewportWidth <= 1024) {
+          leftPosition = inputRect.left + window.scrollX;
+        } else {
+          leftPosition = inputRect.left + window.scrollX;
+        }
+
+        setModalPosition({
+          top: inputRect.bottom + window.scrollY,
+          left: leftPosition,
+        });
       }
-
-      setModalPosition({
-        top: inputRect.bottom + window.scrollY,
-        left: leftPosition,
-      });
+      setNewTripInfo((prev) => ({ ...prev, isModalOpen: true }));
     }
-    setNewTripInfo((prev) => ({ ...prev, isModalOpen: true }));
   };
 
   return (
@@ -149,20 +227,36 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                     <label>여행 제목</label>
                     <Input
                       type="text"
-                      className={styles.tripInfo_title}
                       name="title"
+                      className={`${styles.tripInfo_title} ${
+                        !isEditable ? styles.readOnlyInput : ''
+                      }`}
                       value={newTripInfo.tripInfo.title}
+                      readOnly={!isEditable}
                       onChange={handleTripInfoChange}
+                      maxLength="22"
                       required
                     />
                   </div>
+                  {isEditable && (
+                    <div className="error_container">
+                      {titleError && <ErrorMessage>{titleError}</ErrorMessage>}
+                      <span className={styles.tripInfo_title_count}>
+                        {inputCount}/22 자
+                      </span>
+                    </div>
+                  )}
+
                   <div className={styles.tripInfo_formGroup}>
                     <label>인원 수</label>
                     <Input
                       type="text"
-                      className={styles.numberOfPeople}
                       name="numberOfPeople"
+                      className={`${styles.numberOfPeople} ${
+                        !isEditable ? styles.readOnlyInput : ''
+                      }`}
                       value={newTripInfo.tripInfo.numberOfPeople}
+                      readOnly={!isEditable}
                       onChange={handleTripInfoChange}
                       required
                     />
@@ -172,18 +266,24 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                     <div className={styles.datesRow}>
                       <Input
                         type="date"
-                        className={styles.startDate}
                         name="startDate"
+                        className={`${styles.startDate} ${
+                          !isEditable ? styles.readOnlyInput : ''
+                        }`}
                         value={formatDate(newTripInfo.tripInfo.startDate)}
+                        readOnly={!isEditable}
                         onChange={handleTripInfoChange}
                         required
                       />
                       <span className={styles.separator}>~</span>
                       <Input
                         type="date"
-                        className={styles.endDate}
                         name="endDate"
+                        className={`${styles.endDate} ${
+                          !isEditable ? styles.readOnlyInput : ''
+                        }`}
                         value={formatDate(newTripInfo.tripInfo.endDate)}
+                        readOnly={!isEditable}
                         onChange={handleTripInfoChange}
                         required
                       />
@@ -191,17 +291,19 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   </div>
                 </div>
                 <div className={styles.image_container}>
-                  <div
-                    className={styles.addPhoto_container}
-                    onClick={handleImageClick}
-                  >
-                    <img
-                      className={styles.addPhoto_image}
-                      src="/images/accountbook/add_photo.png"
-                      alt="사진 추가"
-                    />
-                    업로드
-                  </div>
+                  {!isSettlement && isEditable && (
+                    <div
+                      className={styles.addPhoto_container}
+                      onClick={handleImageClick}
+                    >
+                      <img
+                        className={styles.addPhoto_image}
+                        src="/images/accountbook/add_photo.png"
+                        alt="사진 추가"
+                      />
+                      업로드
+                    </div>
+                  )}
                   <input
                     id="fileInput"
                     className={styles.hidden_input}
@@ -222,9 +324,35 @@ const UpdateTripInfo = ({ isOpen, onClose, onSubmit, accountBook }) => {
                     />
                   </div>
                 </div>
-                <Button className={styles.modify_button} type="submit">
-                  수정
-                </Button>
+                <div className={styles.buttonGroup}>
+                  {!isSettlement && (
+                    <>
+                      <Button
+                        className={styles.updateButton}
+                        onClick={toggleEditable}
+                      >
+                        {isEditable ? '편집완료' : '편집하기'}
+                      </Button>
+                      <div className={styles.cancelAndDelete}>
+                        {isEditable && (
+                          <Button
+                            className={styles.cancel_button}
+                            onClick={handleCancelEdit}
+                          >
+                            취소
+                          </Button>
+                        )}
+                        <Button
+                          name="delete"
+                          className={styles.delete_button}
+                          onClick={handleDeleteTripInfo}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             </form>
           </Modal>

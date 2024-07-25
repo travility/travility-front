@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   commaFormatDate,
@@ -11,6 +11,7 @@ import { SERVER_URL } from '../config/apiConfig';
 const TripInfo = ({
   accountBook,
   onClick,
+  isSettlement,
   isSelected,
   onSelect,
   isDeleteMode,
@@ -24,6 +25,10 @@ const TripInfo = ({
     }
     return text.substring(0, maxLength) + '...';
   };
+
+  useEffect(() => {
+    console.log(accountBook);
+  });
 
   return (
     <div
@@ -60,8 +65,13 @@ const TripInfo = ({
           <span className={styles.accountBook_list_flag}>
             <img src={accountBook.countryFlag} alt="국기" />
           </span>
-          <span className={styles.accountBook_list_title}>
-            {truncateText(accountBook.title, 8)}
+          <span
+            className={styles.accountBook_list_title}
+            title={isSettlement ? accountBook.countryName : accountBook.title}
+          >
+            {isSettlement
+              ? accountBook.countryName
+              : truncateText(accountBook.title, 8)}
           </span>
         </div>
         <span className={styles.accountBook_list_dates}>
