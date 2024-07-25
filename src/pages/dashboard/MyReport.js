@@ -428,7 +428,9 @@ const MyReport = () => {
                   </div>
                 </div>
                 <div className={styles.chartType}>
-                  <div className={styles.chart_title}>💰 결제 방법별 지출</div>
+                  <div className={styles.chart_title}>
+                    💰 결제 방법별 지출
+                  </div>
                   <div className={styles.chart_container}>
                     <Bar
                       className={styles.barChart2}
@@ -439,13 +441,17 @@ const MyReport = () => {
                 </div>
               </div>
               <div className={styles.chartType_bar_container}>
-                <div className={styles.chart_title}>🔎 총 누적 지출</div>
-                <div className={styles.chartType_bar}>
-                  <Bar
-                    className={styles.barChart}
-                    data={categoryBarData}
-                    options={verticalBarOptions}
-                  />
+                <div className={styles.chartType}>
+                  <div className={styles.chart_title}>
+                    🔎 총 누적 지출
+                  </div>
+                  <div className={styles.chart_total_container}>
+                    <Bar
+                      className={styles.barChart}
+                      data={categoryBarData}
+                      options={verticalBarOptions}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
