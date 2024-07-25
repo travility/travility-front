@@ -127,7 +127,7 @@ const UpdatePasswordPage = () => {
                 <button
                   type="button"
                   onClick={seePasswordHandler}
-                  className={styles.toggle_pw_button}
+                  className={styles.toggle_pw_button_1}
                 >
                   {seePassword ? <AiFillEye /> : <AiFillEyeInvisible />}
                 </button>
@@ -155,7 +155,7 @@ const UpdatePasswordPage = () => {
                 <button
                   type="button"
                   onClick={seeConfirmPasswordHandler}
-                  className={styles.toggle_pw_button}
+                  className={styles.toggle_pw_button_2}
                 >
                   {seeConfirmPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
                 </button>
