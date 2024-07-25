@@ -30,6 +30,7 @@ const categories = [
   { en: 'ALL', ko: '전체지출' },
 ];
 
+// 카테고리 한글화
 const categoryMap = {
   ACCOMMODATION: '숙박',
   TRANSPORTATION: '교통',
@@ -40,7 +41,7 @@ const categoryMap = {
   ALL: '전체지출',
 };
 
-// 카테고리 색 배열
+// 카테고리별 차트 색 배열
 const colors = [
   '#23C288',
   '#7697F9',
@@ -57,17 +58,17 @@ const paymentMethods = [
   { en: 'CARD', ko: '카드' },
 ];
 
-// 결제방법 색 배열
+// 결제방법별 차트 색 배열
 const paymentColors = ['#FFBBE5', '#2c73d2'];
 
 const ExpenseStatistic = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [statistics, setStatistics] = useState([]);
-  const [paymentMethodStatistics, setPaymentMethodStatistics] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [dates, setDates] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState(['ALL']);
+  const [statistics, setStatistics] = useState([]); // 카테고리별 통계 데이터
+  const [paymentMethodStatistics, setPaymentMethodStatistics] = useState([]); // 결제방법별 통계 데이터
+  const [selectedDate, setSelectedDate] = useState(''); // 선택된 날짜(Select)
+  const [dates, setDates] = useState([]); // 중복 제거한 날짜
+  const [selectedCategories, setSelectedCategories] = useState(['ALL']); // 선택된 카테고리(라인차트)
   const [lineChartData, setLineChartData] = useState({
     labels: [],
     datasets: [],
@@ -76,6 +77,7 @@ const ExpenseStatistic = () => {
 
   const { theme } = useTheme();
 
+  // 차트 폰트
   const getChartFontSize = () => {
     const width = window.innerWidth;
     if (width < 480) {
@@ -87,6 +89,7 @@ const ExpenseStatistic = () => {
     }
   };
 
+  // 라인차트 너비
   const getLineChartLineWidth = () => {
     const width = window.innerWidth;
     if (width < 480) {
@@ -96,6 +99,7 @@ const ExpenseStatistic = () => {
     }
   };
 
+  // 차트 옵션
   const getChartOptions = (darkMode) => ({
     scales: {
       x: {
@@ -232,6 +236,7 @@ const ExpenseStatistic = () => {
     maintainAspectRatio: false,
   });
 
+  // init 데이터
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -239,7 +244,7 @@ const ExpenseStatistic = () => {
         setStatistics(data);
 
         if (data.length === 0) {
-          setHasExpense(false);
+          setHasExpense(false); // 지출 내역 없으면 나오는거
           return;
         }
 
@@ -266,6 +271,7 @@ const ExpenseStatistic = () => {
     fetchData();
   }, [id]);
 
+  // 화면 크기 변경 감지
   useEffect(() => {
     const handleResize = () => {
       setLineChartOptions(getLineChartOptions(theme === 'dark'));
@@ -283,11 +289,12 @@ const ExpenseStatistic = () => {
     getLineChartOptions(theme === 'dark')
   );
 
+  // 뒤로가기
   const goBack = () => {
     navigate(-1);
   };
 
-  // 날짜 선택 핸들러
+  // 날짜 선택 핸들러(Select)
   const handleDateChange = async (selectedOption) => {
     setSelectedDate(selectedOption.value);
     const paymentData = await getPaymentMethodStatisticsByDate(
@@ -302,7 +309,7 @@ const ExpenseStatistic = () => {
     }
   };
 
-  // 카테고리 선택 핸들러
+  // 카테고리 선택 핸들러(라인차트 체크박스)
   const handleCategoryChange = async (event) => {
     const value = event.target.value;
     setSelectedCategories((prevSelectedCategories) =>
@@ -328,9 +335,9 @@ const ExpenseStatistic = () => {
               const colorIndex = categories.findIndex(
                 (cat) => cat.en === category
               );
-              const backgroundColor = colors[colorIndex] + '80'; // 살짝 투명하게함 50%
+              const backgroundColor = colors[colorIndex] + '80'; // 투명도
 
-              // 날짜별로 데이터를 합산하여 중복된 날짜 제거
+              // 중복 날짜 제거
               const dateMap = data.reduce((acc, curr) => {
                 const date = formatDate(curr.date);
                 if (!acc[date]) {
@@ -345,7 +352,7 @@ const ExpenseStatistic = () => {
               );
 
               return {
-                label: categoryMap[category], // 한글 라벨
+                label: categoryMap[category], // label 한글로 표시
                 data: sortedDates.map((date) => dateMap[date] || 0),
                 borderColor: colors[colorIndex],
                 backgroundColor: backgroundColor,
@@ -366,11 +373,11 @@ const ExpenseStatistic = () => {
                 ),
               []
             )
-            .sort((a, b) => new Date(a) - new Date(b)); // 날짜를 오름차순으로 정렬
+            .sort((a, b) => new Date(a) - new Date(b)); // 날짜 순서대로 표시
 
           setLineChartData({ labels: allDates.map(formatDate), datasets });
         } catch (error) {
-          console.error('Failed to fetch line chart data:', error);
+          console.error('라인차트 fetch 실패 :', error);
         }
       } else {
         setLineChartData({
@@ -389,7 +396,7 @@ const ExpenseStatistic = () => {
     }
   }, [selectedCategories, dates]);
 
-  // 선택된 날짜의 카테고리별 데이터 골라먹기
+  // 선택된 날짜의 카테고리별 데이터 골라먹기(카테고리별 바 차트)
   const filteredData = statistics
     .filter((stat) => formatDate(stat.date) === selectedDate)
     .reduce((acc, stat) => {
@@ -442,7 +449,7 @@ const ExpenseStatistic = () => {
 
   return (
     <div className={styles.expenseStatistic}>
-      {!hasExpense ? (
+      {!hasExpense ? ( // 지출 내역이 없는 경우 랜더링
         <div className={styles.noExpense}>
           <FontAwesomeIcon
             icon={faExclamationTriangle}
@@ -462,7 +469,7 @@ const ExpenseStatistic = () => {
                 onClick={goBack}
                 className={styles.expenseStatistic_backButton}
               >
-                ←
+                ← 가계부 상세 보기
               </Button>
             </div>
             <div className={styles.header_currencyLabel}>
