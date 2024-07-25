@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import Select from "react-select";
 import { Tooltip } from "react-tooltip";
@@ -10,8 +10,8 @@ import {
   getStatisticsByCategoryAndDates,
 } from "../../api/expenseApi";
 import "chart.js/auto";
-import TotalAmountCategory from "./TotalAmountCategory";
-import TotalResult from "./TotalResult";
+import TotalAmountCategory from "./TotalAmountCategoryCmp";
+import TotalResult from "./TotalResultCmp";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate, formatNumberWithCommas } from "../../util/calcUtils";
 import { Button } from "../../styles/common/StyledComponents";
@@ -100,141 +100,151 @@ const ExpenseStatistic = () => {
   };
 
   // 차트 옵션
-  const getChartOptions = (darkMode) => ({
-    scales: {
-      x: {
-        beginAtZero: true,
-        grid: {
+  const getChartOptions = useCallback(
+    (darkMode) => ({
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid: {
+            display: false,
+            lineWidth: 1,
+            color: darkMode ? "#888888" : "#d1d1d1",
+          },
+          ticks: {
+            color: darkMode ? "white" : "black",
+            font: {
+              size: getChartFontSize(),
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            display: false,
+            lineWidth: 1,
+            color: darkMode ? "#888888" : "#d1d1d1",
+          },
+          ticks: {
+            color: darkMode ? "white" : "black",
+            font: {
+              size: getChartFontSize(),
+            },
+          },
+        },
+      },
+      elements: {
+        line: {
+          borderWidth: getLineChartLineWidth(),
+        },
+      },
+      plugins: {
+        legend: {
           display: false,
-          lineWidth: 1,
-          color: darkMode ? "#888888" : "#d1d1d1",
-        },
-        ticks: {
-          color: darkMode ? "white" : "black",
-          font: {
-            size: getChartFontSize(),
+          labels: {
+            color: darkMode ? "white" : "black",
+            font: {
+              size: getChartFontSize(),
+            },
+            boxWidth: 45,
           },
         },
-      },
-      y: {
-        beginAtZero: true,
-        grid: {
-          display: false,
-          lineWidth: 1,
-          color: darkMode ? "#888888" : "#d1d1d1",
-        },
-        ticks: {
-          color: darkMode ? "white" : "black",
-          font: {
-            size: getChartFontSize(),
+        tooltip: {
+          mode: "index",
+          intersect: false,
+          callbacks: {
+            label: (context) =>
+              `${context.dataset.label}: ${formatNumberWithCommas(
+                context.raw
+              )}`,
           },
         },
-      },
-    },
-    elements: {
-      line: {
-        borderWidth: getLineChartLineWidth(),
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-        labels: {
-          color: darkMode ? "white" : "black",
-          font: {
-            size: getChartFontSize(),
-          },
-          boxWidth: 45,
+        datalabels: {
+          formatter: (value) => value.toLocaleString(),
+          color: "white",
+          align: "end",
+          anchor: "end", // 항목 위치
+          display: true, // 차트에 항목 표시
+          offset: -20,
         },
       },
-      tooltip: {
-        mode: "index",
-        intersect: false,
-        callbacks: {
-          label: (context) =>
-            `${context.dataset.label}: ${formatNumberWithCommas(context.raw)}`,
-        },
-      },
-      datalabels: {
-        formatter: (value) => value.toLocaleString(),
-        color: "white",
-        align: "end",
-        anchor: "end", // 항목 위치
-        display: true, // 차트에 항목 표시
-        offset: -20,
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-  });
+      responsive: true,
+      maintainAspectRatio: false,
+    }),
+    []
+  );
 
-  const getLineChartOptions = (darkMode) => ({
-    scales: {
-      x: {
-        beginAtZero: true,
-        grid: {
+  const getLineChartOptions = useCallback(
+    (darkMode) => ({
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid: {
+            display: false,
+            lineWidth: 1,
+            color: darkMode ? "#888888" : "#d1d1d1",
+          },
+          ticks: {
+            color: darkMode ? "white" : "black",
+            font: {
+              size: getChartFontSize(),
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            display: false,
+            lineWidth: 1,
+            color: darkMode ? "#888888" : "#d1d1d1",
+          },
+          ticks: {
+            color: darkMode ? "white" : "black",
+            font: {
+              size: getChartFontSize(),
+            },
+          },
+        },
+      },
+      elements: {
+        line: {
+          borderWidth: getLineChartLineWidth(),
+        },
+      },
+      plugins: {
+        legend: {
           display: false,
-          lineWidth: 1,
-          color: darkMode ? "#888888" : "#d1d1d1",
-        },
-        ticks: {
-          color: darkMode ? "white" : "black",
-          font: {
-            size: getChartFontSize(),
+          labels: {
+            color: darkMode ? "white" : "black",
+            font: {
+              size: getChartFontSize(),
+            },
+            boxWidth: 45,
           },
         },
-      },
-      y: {
-        beginAtZero: true,
-        grid: {
-          display: false,
-          lineWidth: 1,
-          color: darkMode ? "#888888" : "#d1d1d1",
-        },
-        ticks: {
-          color: darkMode ? "white" : "black",
-          font: {
-            size: getChartFontSize(),
+        tooltip: {
+          mode: "index",
+          intersect: false,
+          callbacks: {
+            label: (context) =>
+              `${context.dataset.label}: ${formatNumberWithCommas(
+                context.raw
+              )}`,
           },
         },
-      },
-    },
-    elements: {
-      line: {
-        borderWidth: getLineChartLineWidth(),
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-        labels: {
+        datalabels: {
+          formatter: (value) => value.toLocaleString(),
           color: darkMode ? "white" : "black",
-          font: {
-            size: getChartFontSize(),
-          },
-          boxWidth: 45,
+          align: "end",
+          anchor: "end", // 항목 위치
+          display: true, // 차트에 항목 표시
+          offset: -20,
         },
       },
-      tooltip: {
-        mode: "index",
-        intersect: false,
-        callbacks: {
-          label: (context) =>
-            `${context.dataset.label}: ${formatNumberWithCommas(context.raw)}`,
-        },
-      },
-      datalabels: {
-        formatter: (value) => value.toLocaleString(),
-        color: darkMode ? "white" : "black",
-        align: "end",
-        anchor: "end", // 항목 위치
-        display: true, // 차트에 항목 표시
-        offset: -20,
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-  });
+      responsive: true,
+      maintainAspectRatio: false,
+    }),
+    []
+  );
 
   // init 데이터
   useEffect(() => {
@@ -285,7 +295,7 @@ const ExpenseStatistic = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [theme]);
+  }, [theme, getLineChartOptions]);
 
   const [lineChartOptions, setLineChartOptions] = useState(
     getLineChartOptions(theme === "dark")
@@ -349,10 +359,6 @@ const ExpenseStatistic = () => {
                 return acc;
               }, {});
 
-              const sortedDates = Object.keys(dateMap).sort(
-                (a, b) => new Date(a) - new Date(b)
-              );
-
               return {
                 label: categoryMap[category], // label 한글로 표시
                 data: dates.map((date) => dateMap[date] || 0), // 값이 없으면 0으로
@@ -389,7 +395,7 @@ const ExpenseStatistic = () => {
     if (dates.length > 0) {
       fetchLineChartData();
     }
-  }, [selectedCategories, dates]);
+  }, [selectedCategories, dates, id]);
 
   // 선택된 날짜의 카테고리별 데이터 골라먹기(카테고리별 바 차트)
   const filteredData = statistics
@@ -427,8 +433,6 @@ const ExpenseStatistic = () => {
       },
     ],
   };
-
-  const options = getChartOptions(theme === "dark");
 
   // 항목별 지출 차트 옵션
   const categoryChartOptions = getChartOptions(theme === "dark");

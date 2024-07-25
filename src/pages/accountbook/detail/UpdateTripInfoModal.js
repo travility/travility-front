@@ -28,7 +28,7 @@ const UpdateTripInfo = ({
   onSubmit,
   accountBook,
 }) => {
-  const [oirginalTripInfo, setOriginalTripInfo] = useState({
+  const [oirginalTripInfo] = useState({
     tripInfo: {
       countryName: accountBook.countryName,
       countryFlag: accountBook.countryFlag,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ScheduleCalendar from "./ScheduleCalendar";
+import ScheduleCalendar from "./ScheduleCalendarCmp";
 import { fetchEvents, fetchTotalExpenses } from "../../api/scheduleApi";
 import { parseISO, addDays, format } from "date-fns";
 import styles from "../../styles/myCalendar/MyCalendar.module.css";

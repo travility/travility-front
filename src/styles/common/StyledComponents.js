@@ -103,6 +103,18 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: space-between;
   }
+
+  .ScrollbarsCustom-Track, 
+  .ScrollbarsCustom-TrackY {
+    background-color: rgb(246, 246, 246) !important;
+    height: calc(100% - 10px); 
+  }
+
+  .ScrollbarsCustom-Thumb, 
+  .ScrollbarsCustom-ThumbY {
+    background-color: var(--main-color) !important;
+  }
+
 `;
 
 const Inner = styled.div`

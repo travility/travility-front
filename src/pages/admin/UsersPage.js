@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from "react";
 import {
   deleteMemberByAdmin,
   getMemberList,
   getNewMembersCountToday,
   getTotalMembersCount,
-} from '../../api/adminApi';
-import { handleAccessDenied, handleProblemSubject } from '../../util/swalUtils';
-import { useNavigate } from 'react-router-dom';
-import styles from '../../styles/admin/UserPage.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+} from "../../api/adminApi";
+import { handleAccessDenied, handleProblemSubject } from "../../util/swalUtils";
+import { useNavigate } from "react-router-dom";
+import styles from "../../styles/admin/UserPage.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faExclamationTriangle,
   faTrashCan,
-} from '@fortawesome/free-solid-svg-icons';
-import Swal from 'sweetalert2';
-import Select from 'react-select';
-import { selectStyles2 } from '../../util/CustomStyles';
+} from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import Select from "react-select";
+import { selectStyles2 } from "../../util/CustomStyles";
 
 const UsersPage = () => {
   const navigate = useNavigate();
@@ -24,14 +24,15 @@ const UsersPage = () => {
   const [todayCount, settodayCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
-  const [sort, setSort] = useState({ value: 'desc', label: '최신순' });
+  const [sort, setSort] = useState({ value: "desc", label: "최신순" });
   const sortOptions = [
-    { value: 'desc', label: '최신순' },
-    { value: 'asc', label: '오래된순' },
+    { value: "desc", label: "최신순" },
+    { value: "asc", label: "오래된순" },
   ];
   const pageSize = 10;
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    // 무한루프방지
     try {
       const totalMembers = await getTotalMembersCount();
       setTotalCount(totalMembers);
@@ -47,11 +48,11 @@ const UsersPage = () => {
       setMemberList(members);
     } catch (error) {
       console.log(error);
-      if (error.response.data === 'Access denied') {
+      if (error.response.data === "Access denied") {
         handleAccessDenied(navigate);
       }
     }
-  };
+  }, [currentPage, sort, navigate]);
 
   //정렬
   const handleSort = (sortOption) => {
@@ -62,31 +63,31 @@ const UsersPage = () => {
   //계정 삭제
   const handleDeleteMember = async (username) => {
     const { value: text } = await Swal.fire({
-      icon: 'warning',
-      text: '계정 삭제 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 해당 회원 계정을 삭제시키겠습니까?',
+      icon: "warning",
+      text: "계정 삭제 시 모든 정보가 삭제되며, 복구되지 않습니다. 정말 해당 회원 계정을 삭제시키겠습니까?",
       inputLabel: '계정 삭제를 위해 "삭제합니다"를 입력해주세요',
-      input: 'text',
-      inputPlaceholder: '삭제합니다',
+      input: "text",
+      inputPlaceholder: "삭제합니다",
       showCancelButton: true,
-      confirmButtonText: '삭제하기',
-      confirmButtonColor: '#2a52be',
-      cancelButtonText: '취소',
+      confirmButtonText: "삭제하기",
+      confirmButtonColor: "#2a52be",
+      cancelButtonText: "취소",
       preConfirm: (inputValue) => {
-        if (inputValue !== '삭제합니다') {
+        if (inputValue !== "삭제합니다") {
           Swal.showValidationMessage('정확히 "삭제합니다"를 입력해주세요.');
         }
       },
     });
 
-    if (text === '삭제합니다') {
+    if (text === "삭제합니다") {
       deleteMemberByAdmin(username)
         .then(() => {
           Swal.fire({
-            icon: 'success',
-            title: '삭제 성공',
-            text: '해당 회원 계정 삭제가 성공적으로 되었습니다',
-            confirmButtonText: '확인',
-            confirmButtonColor: '#2a52be',
+            icon: "success",
+            title: "삭제 성공",
+            text: "해당 회원 계정 삭제가 성공적으로 되었습니다",
+            confirmButtonText: "확인",
+            confirmButtonColor: "#2a52be",
           }).then((res) => {
             if (res.isConfirmed) {
               fetchData();
@@ -95,7 +96,7 @@ const UsersPage = () => {
         })
         .catch((error) => {
           console.log(error);
-          handleProblemSubject('계정 삭제');
+          handleProblemSubject("계정 삭제");
         });
     }
   };
@@ -123,7 +124,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     fetchData();
-  }, [navigate, totalPages, currentPage, sort]);
+  }, [fetchData]);
 
   return (
     <div className={styles.usersPage}>
@@ -140,7 +141,7 @@ const UsersPage = () => {
           <div className={styles.content}>
             <div className={styles.statistics}>
               <p>
-                총 회원 수는 <span>{totalCount}</span> 명이고, 오늘 가입자 수는{' '}
+                총 회원 수는 <span>{totalCount}</span> 명이고, 오늘 가입자 수는{" "}
                 <span>{todayCount}</span> 명입니다.
               </p>
             </div>
@@ -179,7 +180,7 @@ const UsersPage = () => {
                             alt="socialtype"
                           ></img>
                         ) : (
-                          '일반'
+                          "일반"
                         )}
                       </td>
                       <td>

@@ -13,7 +13,7 @@ import TripInfo from "../../common/TripInfoCmp";
 import { handleProblemSubject } from "../../../util/swalUtils";
 import UpdateTripInfo from "../detail/UpdateTripInfoModal";
 
-const SettlementPage = () => {
+const SettlementMainPage = () => {
   const { id } = useParams();
   const [accountBook, setAccountBook] = useState(null);
   const [exchangeRatesByCurrency, setExchangeRatesByCurrency] = useState({}); //통화 코드별 환율
@@ -212,4 +212,4 @@ const SettlementPage = () => {
   );
 };
 
-export default SettlementPage;
+export default SettlementMainPage;

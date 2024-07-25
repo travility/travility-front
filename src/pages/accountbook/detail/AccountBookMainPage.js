@@ -19,7 +19,7 @@ import {
 } from "../../../util/swalUtils";
 import styles from "../../../styles/accountbook/detail/AccountBookDetail.module.css";
 
-const AccountBookDetail = () => {
+const AccountBookMain = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [accountBook, setAccountBook] = useState(null);
@@ -181,4 +181,4 @@ const AccountBookDetail = () => {
   );
 };
 
-export default AccountBookDetail;
+export default AccountBookMain;

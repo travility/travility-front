@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Scrollbar } from "react-scrollbars-custom";
 import { formatNumberWithCommas } from "../../util/calcUtils";
@@ -29,11 +29,7 @@ const ScheduleDetail = ({
     useState(totalExpense);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    updateFilteredTotalExpense();
-  }, [filter, expenses]);
-
-  const updateFilteredTotalExpense = () => {
+  const updateFilteredTotalExpense = useCallback(() => {
     const newFilteredTotalExpense = expenses.reduce((sum, expense) => {
       const amountInKRW =
         expense.amount * (exchangeRates?.[expense.curUnit] || 1);
@@ -43,7 +39,11 @@ const ScheduleDetail = ({
       return sum;
     }, 0);
     setFilteredTotalExpense(newFilteredTotalExpense);
-  };
+  }, [expenses, exchangeRates, filter]);
+
+  useEffect(() => {
+    updateFilteredTotalExpense();
+  }, [filter, expenses, updateFilteredTotalExpense]);
 
   const categorizedExpenses = expenses.reduce((acc, expense) => {
     const category = expense.category || "OTHERS";
@@ -89,7 +89,7 @@ const ScheduleDetail = ({
       >
         <div className={styles.schedule_detail_header_container}>
           <h5>
-            <img src="/images/gpiIcon.png" className={styles.icon} />
+            <img src="/images/gpiIcon.png" className={styles.icon} alt="icon" />
             {countryName}
           </h5>
           <p>{date}</p>
@@ -153,7 +153,7 @@ const ScheduleDetail = ({
                           <img
                             className={styles.categoryImg}
                             src={`/images/accountbook/category/${categoryImages[category]}`}
-                            alt={expense.category}
+                            alt={expense.category || "기타"}
                           />
                           <div className={styles.expense_info}>
                             <div className={styles.expense_title_container}>
@@ -172,7 +172,7 @@ const ScheduleDetail = ({
                             {expense.imgName ? (
                               <img
                                 className={styles.expenseImg}
-                                src={`http://localhost:8080/images/${expense.imgName}`}
+                                src={`${SERVER_URL}/images/${expense.imgName}`}
                                 alt="지출 이미지"
                               />
                             ) : (

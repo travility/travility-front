@@ -65,7 +65,7 @@ const UpdateExpense = ({
   expense,
   accountBook,
 }) => {
-  const [oirginalExpense, setOriginalExpense] = useState({
+  const [oirginalExpense] = useState({
     expense: {
       expenseDate: expense.expenseDate.split("T")[0],
       expenseTime: expense.expenseDate.split("T")[1],

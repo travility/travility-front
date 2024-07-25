@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { ThemeProvider as StyledThemeProvider } from "styled-components";
-import { global } from "./styles/dashboard/global.css";
 import { GlobalStyle } from "./styles/common/StyledComponents";
 import {
   ThemeProvider,
@@ -17,9 +16,9 @@ import AccountBookListPage from "./pages/accountbook/AccountBookListPage";
 import AccountBookMainPage from "./pages/accountbook/detail/AccountBookMainPage";
 import LoginPage from "./pages/member/LoginPage";
 import SignupPage from "./pages/member/SignupPage";
-import MyInfo from "./pages/member/MyInfo";
-import MyCalendar from "./pages/myCalendar/MyCalendarMainPage";
-import MyReport from "./pages/statistics/MyReport";
+import MyInfoPage from "./pages/member/MyInfoPage";
+import MyCalendarPage from "./pages/myCalendar/MyCalendarPage";
+import MyReportPage from "./pages/statistics/MyReportPage";
 import UsersPage from "./pages/admin/UsersPage";
 import LoadingPage from "./util/LoadingPage";
 import AuthenticatedRoute from "./util/AuthenticatedRoute";
@@ -27,7 +26,7 @@ import SettlementMainPage from "./pages/accountbook/settlement/SettlementMainPag
 import SettlementExpenseListPage from "./pages/accountbook/settlement/SettlementExpenseListPage";
 import ForgotPasswordPage from "./pages/member/password/ForgotPasswordPage";
 import UpdatePasswordPage from "./pages/member/password/UpdatePasswordPage";
-import ExpenseStatistic from "./pages/statistics/ExpenseStatistic";
+import ExpenseStatisticPage from "./pages/statistics/ExpenseStatisticPage";
 
 export const MemberInfoContext = createContext();
 
@@ -86,7 +85,7 @@ function App() {
                 path="/dashboard/myreport"
                 element={
                   <AuthenticatedRoute>
-                    <MyReport />
+                    <MyReportPage />
                   </AuthenticatedRoute>
                 }
               />
@@ -94,7 +93,7 @@ function App() {
                 path="/dashboard/myinfo"
                 element={
                   <AuthenticatedRoute>
-                    <MyInfo />
+                    <MyInfoPage />
                   </AuthenticatedRoute>
                 }
               />
@@ -110,7 +109,7 @@ function App() {
                 path="/dashboard/mycalendar"
                 element={
                   <AuthenticatedRoute>
-                    <MyCalendar />
+                    <MyCalendarPage />
                   </AuthenticatedRoute>
                 }
               />
@@ -134,7 +133,7 @@ function App() {
                 path="/accountbook/detail/:id/statistics"
                 element={
                   <AuthenticatedRoute>
-                    <ExpenseStatistic />
+                    <ExpenseStatisticPage />
                   </AuthenticatedRoute>
                 }
               />

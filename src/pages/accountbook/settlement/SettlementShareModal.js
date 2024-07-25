@@ -8,7 +8,7 @@ import {
 import styles from "../../../styles/accountbook/settlement/SettlementShare.module.css";
 import { useLocation } from "react-router-dom";
 
-const Share = ({ isOpen, onClose, countryName }) => {
+const SettlementShare = ({ isOpen, onClose, countryName }) => {
   const location = useLocation();
   const pathName = location.pathname.substring(1);
 
@@ -74,4 +74,4 @@ const Share = ({ isOpen, onClose, countryName }) => {
   );
 };
 
-export default Share;
+export default SettlementShare;
