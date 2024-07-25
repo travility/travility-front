@@ -36,6 +36,7 @@ const options = {
       labels: {
         usePointStyle: true, // 범례 아이콘을 도트로 변경
         pointStyle: 'circle', // 도트 모양을 원으로 설정
+        wrap: true, // 범례를 여러 줄로 설정
       },
     },
     tooltip: {
@@ -66,7 +67,7 @@ const options = {
   },
 };
 
-// 현금 || 카드
+// 현금 || 카드 차트 옵션
 const horizontalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -105,7 +106,7 @@ const horizontalBarOptions = {
   },
 };
 
-// 카테고리별 누적 지출
+// 카테고리별 누적 지출 차트 옵션
 const verticalBarOptions = {
   maintainAspectRatio: false,
   responsive: true,
@@ -375,7 +376,7 @@ const MyReport = () => {
                   총 누적 지출 :{' '}
                 </span>
                 <span className={styles.totalAmount_amount}>
-                  {displayAmount.toLocaleString()} ₩
+                  ₩ {displayAmount.toLocaleString()}
                 </span>
               </div>
               <div className={styles.header_currencyLabel}>
@@ -415,10 +416,10 @@ const MyReport = () => {
               </div>
               <div className={styles.charts_category_container}>
                 <div className={styles.chartType}>
-                  <div className={styles.category_title}>
-                    📝카테고리별 퍼센티지(%)
+                  <div className={styles.chart_title}>
+                    📝 카테고리별 퍼센티지(%)
                   </div>
-                  <div className={styles.chartType_doughnut}>
+                  <div className={styles.chart_container}>
                     <Doughnut
                       className={styles.doughnutChart}
                       data={categoryData}
@@ -426,12 +427,9 @@ const MyReport = () => {
                     />
                   </div>
                 </div>
-
-                <div className={styles.charts_paymentMethod}>
-                  <div className={styles.paymentMethod_title}>
-                    💰결제 방법별 지출
-                  </div>
-                  <div className={styles.paymentMethod_chart}>
+                <div className={styles.chartType}>
+                  <div className={styles.chart_title}>💰 결제 방법별 지출</div>
+                  <div className={styles.chart_container}>
                     <Bar
                       className={styles.barChart2}
                       data={paymentData}
@@ -441,7 +439,7 @@ const MyReport = () => {
                 </div>
               </div>
               <div className={styles.chartType_bar_container}>
-                <div className={styles.chartType_bar_title}>🔎총 누적 지출</div>
+                <div className={styles.chart_title}>🔎 총 누적 지출</div>
                 <div className={styles.chartType_bar}>
                   <Bar
                     className={styles.barChart}

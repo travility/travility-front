@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../styles/components/AddBudget.module.css';
-import { fetchCurrencyCodes, fetchExchangeRate } from '../api/budgetApi';
+import React, { useState, useEffect } from "react";
+import styles from "../styles/components/AddBudget.module.css";
+import Select from "react-select";
+import { selectStyles } from "../util/CustomStyles";
+import { fetchCurrencyCodes, fetchExchangeRate } from "../api/budgetApi";
 import {
   ModalOverlay,
   Modal,
@@ -9,18 +11,18 @@ import {
   Button,
   ErrorMessage,
   Input,
-} from '../styles/StyledComponents';
-import { formatNumberWithCommas } from '../util/calcUtils';
+} from "../styles/StyledComponents";
+import { formatNumberWithCommas } from "../util/calcUtils";
 
 const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
-  const [budgetType, setBudgetType] = useState('shared');
-  const [currency, setCurrency] = useState('KRW');
-  const [amount, setAmount] = useState('');
-  const [exchangeRate, setExchangeRate] = useState('1.00');
+  const [budgetType, setBudgetType] = useState("shared");
+  const [currency, setCurrency] = useState("KRW");
+  const [amount, setAmount] = useState("");
+  const [exchangeRate, setExchangeRate] = useState("1.00");
   const [budgets, setBudgets] = useState(initialBudgets || []);
   const [currencies, setCurrencies] = useState([]);
-  const [amountError, setAmountError] = useState('');
-  const [exchangeRateError, setExchangeRateError] = useState('');
+  const [amountError, setAmountError] = useState("");
+  const [exchangeRateError, setExchangeRateError] = useState("");
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
@@ -28,13 +30,18 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
       try {
         const data = await fetchCurrencyCodes();
         if (data && data.supported_codes) {
-          setCurrencies(data.supported_codes);
+          setCurrencies(
+            data.supported_codes.map(([code, name]) => ({
+              value: code,
+              label: `${name} (${code})`,
+            }))
+          );
           if (!currency) {
             setCurrency(data.supported_codes[0][0]); // 초기 기본값 설정
           }
         }
       } catch (error) {
-        alert('화폐 코드를 불러오는 중 오류가 발생했습니다.');
+        alert("화폐 코드를 불러오는 중 오류가 발생했습니다.");
       }
     };
 
@@ -49,10 +56,10 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
           if (data && data.conversion_rates && data.conversion_rates.KRW) {
             setExchangeRate(data.conversion_rates.KRW.toFixed(2));
           } else {
-            setExchangeRate('1.00');
+            setExchangeRate("1.00");
           }
         } catch (error) {
-          setExchangeRate('1.00');
+          setExchangeRate("1.00");
         }
       }
     };
@@ -62,15 +69,15 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
 
   const handleAddBudget = () => {
     if (!amount) {
-      setAmountError('금액을 입력하세요.');
+      setAmountError("금액을 입력하세요.");
       return;
     }
     if (!exchangeRate) {
-      setExchangeRateError('환율을 입력하세요.');
+      setExchangeRateError("환율을 입력하세요.");
       return;
     }
     const newBudget = {
-      isShared: budgetType === 'shared',
+      isShared: budgetType === "shared",
       curUnit: currency,
       amount: parseFloat(amount).toFixed(2),
       exchangeRate,
@@ -81,18 +88,18 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
 
   const handleEditBudget = () => {
     if (!amount) {
-      setAmountError('금액을 입력하세요.');
+      setAmountError("금액을 입력하세요.");
       return;
     }
     if (!exchangeRate) {
-      setExchangeRateError('환율을 입력하세요.');
+      setExchangeRateError("환율을 입력하세요.");
       return;
     }
     const updatedBudgets = budgets.map((budget, index) =>
       index === editIndex
         ? {
             ...budget,
-            isShared: budgetType === 'shared',
+            isShared: budgetType === "shared",
             curUnit: currency,
             amount: parseFloat(amount).toFixed(2),
             exchangeRate,
@@ -109,7 +116,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
       remainingBudgets.map((budget) => budget.curUnit)
     );
     if (expenseCurrencies.size < 1) {
-      alert('지출에 사용된 화폐 코드는 최소한 하나는 존재해야 합니다.');
+      alert("지출에 사용된 화폐 코드는 최소한 하나는 존재해야 합니다.");
       return;
     }
     setBudgets(remainingBudgets);
@@ -135,10 +142,10 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
     if (regex.test(value)) {
-      setAmountError('');
+      setAmountError("");
       setAmount(value);
     } else {
-      setAmountError('숫자를 입력하세요.');
+      setAmountError("숫자를 입력하세요.");
     }
   };
 
@@ -146,16 +153,16 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     const value = e.target.value;
     const regex = /^\d*\.?\d{0,2}$/;
     if (regex.test(value)) {
-      setExchangeRateError('');
+      setExchangeRateError("");
       setExchangeRate(value);
     } else {
-      setExchangeRateError('숫자를 입력하세요.');
+      setExchangeRateError("숫자를 입력하세요.");
     }
   };
 
   const handleBudgetClick = (index) => {
     const budget = budgets[index];
-    setBudgetType(budget.isShared ? 'shared' : 'personal');
+    setBudgetType(budget.isShared ? "shared" : "personal");
     setCurrency(budget.curUnit);
     setAmount(budget.amount.toString());
     setExchangeRate(budget.exchangeRate.toString());
@@ -163,13 +170,33 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
   };
 
   const resetForm = () => {
-    setBudgetType('shared');
-    setCurrency(currencies[0] ? currencies[0][0] : 'KRW');
-    setAmount('');
-    setExchangeRate('1.00');
+    setBudgetType("shared");
+    setCurrency(currencies[0] ? currencies[0].value : "KRW");
+    setAmount("");
+    setExchangeRate("1.00");
     setEditIndex(null);
-    setAmountError('');
-    setExchangeRateError('');
+    setAmountError("");
+    setExchangeRateError("");
+  };
+
+  const customSelectStyles = {
+    ...selectStyles,
+    control: (base) => ({
+      ...base,
+      width: "100%",
+    }),
+
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.2rem 0.5rem",
+      margin: "0 auto",
+    }),
+
+    singleValue: (base) => ({
+      ...base,
+      fontSize: "0.7em",
+      fontWeight: "600",
+    }),
   };
 
   return (
@@ -191,8 +218,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                         id="budgetTypeShared"
                         name="budgetType"
                         value="shared"
-                        checked={budgetType === 'shared'}
-                        onChange={() => setBudgetType('shared')}
+                        checked={budgetType === "shared"}
+                        onChange={() => setBudgetType("shared")}
                       />
                       공동경비
                     </label>
@@ -202,8 +229,8 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                         id="budgetTypePersonal"
                         name="budgetType"
                         value="personal"
-                        checked={budgetType === 'personal'}
-                        onChange={() => setBudgetType('personal')}
+                        checked={budgetType === "personal"}
+                        onChange={() => setBudgetType("personal")}
                       />
                       개인경비
                     </label>
@@ -213,19 +240,17 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                 <div className={styles.addBudget_formGroup}>
                   <div className={styles.currency}>
                     <label htmlFor="currency">화폐</label>
-                    <select
+                    <Select
                       id="currency"
                       name="currency"
-                      value={currency}
-                      onChange={(e) => setCurrency(e.target.value)}
-                      disabled={editIndex !== null}
-                    >
-                      {currencies.map(([code, name]) => (
-                        <option key={code} value={code}>
-                          {name} ({code})
-                        </option>
-                      ))}
-                    </select>
+                      styles={customSelectStyles}
+                      value={currencies.find((c) => c.value === currency)}
+                      onChange={(selectedOption) =>
+                        setCurrency(selectedOption.value)
+                      }
+                      options={currencies}
+                      isDisabled={editIndex !== null}
+                    />
                   </div>
                 </div>
                 <div className={styles.addBudget_formGroup}>
@@ -271,7 +296,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                     editIndex !== null ? handleEditBudget : handleAddBudget
                   }
                 >
-                  {editIndex !== null ? '수정' : '예산 추가하기'}
+                  {editIndex !== null ? "수정" : "예산 추가하기"}
                 </Button>
                 {editIndex !== null && (
                   <Button
@@ -291,7 +316,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                       className={styles.budget_detail}
                       onClick={() => handleBudgetClick(index)}
                     >
-                      <span>{budget.isShared ? '공동경비' : '개인경비'}</span>
+                      <span>{budget.isShared ? "공동경비" : "개인경비"}</span>
                       <span>
                         {budget.curUnit} {parseFloat(budget.amount).toFixed(2)}
                       </span>
@@ -302,7 +327,7 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
                   ))}
                 </div>
                 <div className={styles.totalBudget}>
-                  총 예산 금액 :{' '}
+                  총 예산 금액 :{" "}
                   <span>
                     KRW {formatNumberWithCommas(calculateTotalAmount())}
                   </span>
