@@ -13,7 +13,7 @@ import 'chart.js/auto';
 import TotalAmountCategory from './TotalAmountCategory';
 import TotalResult from '../statistic/TotalResult';
 import { useNavigate, useParams } from 'react-router-dom';
-import { formatDate } from '../../util/calcUtils';
+import { formatDate, formatNumberWithCommas } from '../../util/calcUtils';
 import { Button } from '../../styles/StyledComponents';
 import styles from '../../styles/statistic/ExpenseStatistic.module.css';
 import { selectStyles3 } from '../../util/CustomStyles';
@@ -79,9 +79,9 @@ const ExpenseStatistic = () => {
   const getChartFontSize = () => {
     const width = window.innerWidth;
     if (width < 480) {
-      return 8;
+      return 7;
     } else if (width < 768) {
-      return 10;
+      return 9;
     } else {
       return 14;
     }
@@ -134,6 +134,7 @@ const ExpenseStatistic = () => {
     },
     plugins: {
       legend: {
+        display: false,
         labels: {
           color: darkMode ? 'white' : 'black',
           font: {
@@ -146,11 +147,8 @@ const ExpenseStatistic = () => {
         mode: 'index',
         intersect: false,
         callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`,
-          labelColor: (context) => ({
-            borderColor: context.dataset.borderColor,
-            backgroundColor: context.dataset.backgroundColor,
-          }),
+          label: (context) =>
+            `${context.dataset.label}: ${formatNumberWithCommas(context.raw)}`,
         },
       },
       datalabels: {
@@ -204,6 +202,7 @@ const ExpenseStatistic = () => {
     },
     plugins: {
       legend: {
+        display: false,
         labels: {
           color: darkMode ? 'white' : 'black',
           font: {
@@ -216,15 +215,13 @@ const ExpenseStatistic = () => {
         mode: 'index',
         intersect: false,
         callbacks: {
-          label: (context) => `${context.dataset.label}: ${context.raw}`,
-          labelColor: (context) => ({
-            borderColor: context.dataset.borderColor,
-            backgroundColor: context.dataset.backgroundColor,
-          }),
+          label: (context) =>
+            `${context.dataset.label}: ${formatNumberWithCommas(context.raw)}`,
         },
       },
       datalabels: {
         formatter: (value) => value.toLocaleString(),
+        color: darkMode ? 'white' : 'black',
         align: 'end',
         anchor: 'end', // 항목 위치
         display: true, // 차트에 항목 표시
@@ -405,7 +402,7 @@ const ExpenseStatistic = () => {
     labels: categories.map((category) => category.ko),
     datasets: [
       {
-        label: '금액',
+        label: 'KRW',
         data: categories.map((category) => filteredData[category.en] || 0),
         backgroundColor: colors,
       },
@@ -417,7 +414,7 @@ const ExpenseStatistic = () => {
     labels: paymentMethods.map((method) => method.ko),
     datasets: [
       {
-        label: '금액',
+        label: 'KRW',
         data: paymentMethods.map((method) => {
           const stat = paymentMethodStatistics.find(
             (stat) => stat.paymentMethod === method.en
