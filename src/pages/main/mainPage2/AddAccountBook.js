@@ -7,7 +7,6 @@ import { addAccountBook } from '../../../api/accountbookApi';
 import { Button, ErrorMessage, Input } from '../../../styles/StyledComponents';
 import {
   handleFailureSubject,
-  handleSuccessSubject,
   handleSuccessSubjectNotReload,
 } from '../../../util/swalUtils';
 
@@ -221,7 +220,6 @@ const AddAccountBook = () => {
           <label>어디로 떠나시나요?</label>
           <div
             className={styles.country_input}
-            /* onClick={() => setIsCountryModalOpen(true)} */
             onClick={handleOpenCountryModal}
             ref={inputRef}
           >
@@ -245,7 +243,6 @@ const AddAccountBook = () => {
             <button
               type="button"
               className={styles.search_button}
-              /*  onClick={() => setIsCountryModalOpen(true)} */
               onClick={handleOpenCountryModal}
             >
               <img src="/images/main/mainPage/search_br.png" alt="Search" />

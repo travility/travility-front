@@ -65,7 +65,10 @@ const TripInfo = ({
           <span className={styles.accountBook_list_flag}>
             <img src={accountBook.countryFlag} alt="국기" />
           </span>
-          <span className={styles.accountBook_list_title}>
+          <span
+            className={styles.accountBook_list_title}
+            title={isSettlement ? accountBook.countryName : accountBook.title}
+          >
             {isSettlement
               ? accountBook.countryName
               : truncateText(accountBook.title, 8)}
