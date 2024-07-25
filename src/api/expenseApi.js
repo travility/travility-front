@@ -1,4 +1,5 @@
 import axiosInstance from '../util/axiosInterceptor';
+import { formatDate } from "../util/calcUtils";
 
 // 유저 정보 가져오기
 export const getUserInfo = async () => {
@@ -26,7 +27,7 @@ export const addExpense = async (expenseData) => {
   }
 };
 
-// 지출통계
+// 카테고리별 지출통계
 export const getExpenseStatisticsByDate = async (accountBookId) => {
   const response = await axiosInstance.get("/accountbook/statistics/category", { 
     params: { accountBookId }
@@ -36,8 +37,17 @@ export const getExpenseStatisticsByDate = async (accountBookId) => {
 
 // 결제 방법별 지출통계
 export const getPaymentMethodStatisticsByDate = async (accountBookId, date) => {
+  const formattedDate = formatDate(date);
   const response = await axiosInstance.get(`/accountbook/statistics/paymentMethod`, {
-    params: { accountBookId, date }
+    params: { accountBookId, date: formattedDate }
+  });
+  return response.data;
+};
+
+// 추가
+export const getUniqueExpenseDates = async (accountBookId) => {
+  const response = await axiosInstance.get('/accountbook/statistics/dates', {
+    params: { accountBookId }
   });
   return response.data;
 };
