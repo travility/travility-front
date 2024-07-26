@@ -7,6 +7,8 @@ import {
   CloseButton,
   Button,
   Input,
+  DateInput,
+  TimeInput,
   ErrorMessage,
 } from "../../../styles/common/StyledComponents";
 import { useTheme } from "../../../styles/common/Theme";
@@ -220,8 +222,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
               </div>
               <div className={styles.date_group}>
                 <div className={styles.date}>
-                  <Input
-                    type="date"
+                  <DateInput
                     name="expenseDate"
                     value={newExpense.expense.expenseDate}
                     onChange={handleChange}
@@ -234,7 +235,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                   </div>
                 </div>
                 <div className={styles.time}>
-                  <Input
+                  <TimeInput
                     type="time"
                     name="expenseTime"
                     value={newExpense.expense.expenseTime}

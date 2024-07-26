@@ -14,6 +14,8 @@ import {
   CloseButton,
   Button,
   Input,
+  DateInput,
+  TimeInput,
   ErrorMessage,
 } from "../../../styles/common/StyledComponents";
 import { useTheme } from "../../../styles/common/Theme";
@@ -338,22 +340,22 @@ const UpdateExpense = ({
                     !isEditable ? "readOnly" : ""
                   }`}
                 >
-                  <Input
+                  <DateInput
                     type="date"
                     name="expenseDate"
                     value={newExpense.expense.expenseDate}
                     readOnly={!isEditable}
                     onChange={handleInputChange}
                     className={`${!isEditable ? styles.readOnlyInput : ""}`}
-                  ></Input>
-                  <Input
+                  />
+                  <TimeInput
                     type="time"
                     name="expenseTime"
                     value={newExpense.expense.expenseTime}
                     readOnly={!isEditable}
                     onChange={handleInputChange}
                     className={`${!isEditable ? styles.readOnlyInput : ""}`}
-                  ></Input>
+                  />
                 </div>
                 <div className="error_container">
                   {errors.expenseDate && (

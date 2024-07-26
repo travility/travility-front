@@ -9,6 +9,7 @@ import {
   CloseButton,
   Button,
   Input,
+  DateInput,
   ErrorMessage,
 } from "../../../styles/common/StyledComponents";
 import {
@@ -20,6 +21,7 @@ import { SERVER_URL } from "../../../config/apiConfig";
 import Swal from "sweetalert2";
 import { deleteAccountBook } from "../../../api/accountbookApi";
 import { useNavigate } from "react-router-dom";
+
 
 const UpdateTripInfo = ({
   isOpen,
@@ -51,6 +53,7 @@ const UpdateTripInfo = ({
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 }); //모달 위치 동적 계산
   const navigate = useNavigate();
   const inputRef = useRef(null);
+
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
@@ -196,6 +199,8 @@ const UpdateTripInfo = ({
     }
   };
 
+
+
   return (
     <>
       {isOpen && (
@@ -264,8 +269,7 @@ const UpdateTripInfo = ({
                   <div className={styles.tripInfo_formGroup}>
                     <label>여행 일정</label>
                     <div className={styles.datesRow}>
-                      <Input
-                        type="date"
+                      <DateInput
                         name="startDate"
                         className={`${styles.startDate} ${
                           !isEditable ? styles.readOnlyInput : ""
@@ -276,8 +280,7 @@ const UpdateTripInfo = ({
                         required
                       />
                       <span className={styles.separator}>~</span>
-                      <Input
-                        type="date"
+                      <DateInput
                         name="endDate"
                         className={`${styles.endDate} ${
                           !isEditable ? styles.readOnlyInput : ""
