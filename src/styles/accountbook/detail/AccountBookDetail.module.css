@@ -89,7 +89,7 @@
   background-color: var(--main-color);
 }
 
-.accountbook_icons button p{
+.accountbook_icons button p {
   font-size: 0.8em;
   font-weight: 700;
   white-space: nowrap;
@@ -221,7 +221,7 @@
 
 .totalAmount {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-self: end;
   gap: 0.2rem;
   padding: 0 0.8rem;
@@ -274,6 +274,7 @@
   font-size: 0.8em;
   font-weight: 500;
   text-align: center;
+  cursor: pointer;
 }
 
 .amount,
@@ -360,7 +361,7 @@
     flex-direction: row;
     width: 100%;
   }
-  
+
   .date_buttons button {
     display: flex;
     flex-direction: column;
@@ -391,11 +392,11 @@
     content: attr(data-day);
     font-size: 0.7rem;
   }
-  
+
   .date_buttons button.selected .tripDate {
     color: var(--bold-color);
   }
-  
+
   .date_buttons button.selected {
     background: none;
     color: var(--point-color);
@@ -420,11 +421,11 @@
     align-items: center;
   }
 
-  .expenseItem{
+  .expenseItem {
     display: grid;
     grid-template-areas:
-    'categoryImg curUnit amount expenseImg'
-    'type title title expenseImg';
+      'categoryImg curUnit amount expenseImg'
+      'type title title expenseImg';
     grid-template-columns: 45px 45px 45px auto;
     grid-template-rows: 15px;
     gap: 1px;
@@ -454,8 +455,8 @@
     justify-self: start;
     text-align: left;
     font-weight: 550;
- }
-  
+  }
+
   .amount {
     grid-area: amount;
     font-size: 0.8rem;
@@ -474,7 +475,7 @@
     justify-self: end;
     margin-bottom: 3px;
   }
-  
+
   /* 개인경비 || 공용경비 */
   .type {
     grid-area: type;
@@ -483,7 +484,6 @@
     justify-self: start;
     margin-top: -7px;
     margin-left: 2.5px;
-    
   }
 }
 
