@@ -378,26 +378,40 @@ const UpdateExpense = ({
                   </div>
                 </div>
                 <div
-                  className={`${styles.expenseDateAndTime} ${
+                  className={`${styles.date_group} ${
                     !isEditable ? "readOnly" : ""
                   }`}
                 >
-                  <DateInput
-                    type="date"
-                    name="expenseDate"
-                    value={newExpense.expense.expenseDate}
-                    readOnly={!isEditable}
-                    onChange={handleInputChange}
-                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
-                  />
-                  <TimeInput
-                    type="time"
-                    name="expenseTime"
-                    value={newExpense.expense.expenseTime}
-                    readOnly={!isEditable}
-                    onChange={handleInputChange}
-                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
-                  />
+                  <div className={styles.date}>
+                    <DateInput
+                      type="date"
+                      name="expenseDate"
+                      value={newExpense.expense.expenseDate}
+                      readOnly={!isEditable}
+                      onChange={handleInputChange}
+                      className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    />
+                    <div className="error_container">
+                      {errors.expenseDate && (
+                        <ErrorMessage>{errors.expenseDate}</ErrorMessage>
+                      )}
+                    </div>
+                  </div>
+                  <div className={styles.time}>
+                    <TimeInput
+                      type="time"
+                      name="expenseTime"
+                      value={newExpense.expense.expenseTime}
+                      readOnly={!isEditable}
+                      onChange={handleInputChange}
+                      className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    />
+                    <div className="error_container">
+                      {errors.expenseTime && (
+                        <ErrorMessage>{errors.expenseTime}</ErrorMessage>
+                      )}
+                    </div>
+                  </div>
                 </div>
                 <div className={styles.radio_group}>
                   <div className={styles.budgetType}>

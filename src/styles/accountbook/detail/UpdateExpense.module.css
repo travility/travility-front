@@ -39,11 +39,17 @@
   color: var(--gray-color);
 }
 
-.expenseDateAndTime {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: space-between;
-  width: 100%;
+.date_group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.date input,
+.time input {
+  padding: 0.4rem;
+  cursor: pointer;
 }
 
 /* 지출 디테일 - 경비, 결제방식, 금액 */
