@@ -183,19 +183,15 @@ const AddBudget = ({ isOpen, onClose, onSubmit, initialBudgets }) => {
     ...selectStyles,
     control: (base) => ({
       ...base,
-      width: "17.5rem",
-    }),
-
-    valueContainer: (base) => ({
-      ...base,
-      padding: "0.2rem 0.5rem",
-      margin: "0 auto",
-    }),
-
-    singleValue: (base) => ({
-      ...base,
-      fontSize: "0.7em",
-      fontWeight: "600",
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      width: "17.6rem",
+      fontSize: "0.8em",
+      minHeight: "1rem",
+      color: "var(--text-color)",
+      marginTop: "0.2rem",
+      cursor: "pointer",
     }),
   };
 

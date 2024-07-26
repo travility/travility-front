@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import Select from "react-select";
-import { selectStyles2 } from "../../util/CustomStyles";
+import { selectStyles } from "../../util/CustomStyles";
 
 const UsersPage = () => {
   const navigate = useNavigate();
@@ -126,6 +126,28 @@ const UsersPage = () => {
     fetchData();
   }, [fetchData]);
 
+  const customSelectStyles = {
+    ...selectStyles,
+    control: (base) => ({
+      ...base,
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      minHeight: "1rem",
+      width: "5rem",
+      color: "var(--text-color)",
+      cursor: "pointer",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.1rem 0.5rem",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: "0.1rem",
+    }),
+  };
+
   return (
     <div className={styles.usersPage}>
       {memberList.length === 0 ? (
@@ -152,7 +174,7 @@ const UsersPage = () => {
                   value={sort}
                   onChange={handleSort}
                   options={sortOptions}
-                  styles={selectStyles2}
+                  styles={customSelectStyles}
                 ></Select>
               </div>
               <table className={styles.memberList}>

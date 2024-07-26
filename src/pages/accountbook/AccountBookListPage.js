@@ -6,7 +6,7 @@ import { Button, Input } from "../../styles/common/StyledComponents";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
-import { selectStyles2 } from "../../util/CustomStyles";
+import { selectStyles } from "../../util/CustomStyles";
 import TripInfo from "../common/TripInfoCmp";
 import {
   handleFailureSubject,
@@ -124,6 +124,28 @@ const AccountBookListPage = () => {
     return <div>Error: {error.message}</div>;
   }
 
+  const customSelectStyles = {
+    ...selectStyles,
+    control: (base) => ({
+      ...base,
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      minHeight: "1rem",
+      width: "5rem",
+      color: "var(--text-color)",
+      cursor: "pointer",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.1rem 0.5rem",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: "0.1rem",
+    }),
+  };
+
   return (
     <div className={styles.accountBook_list_page}>
       {accountBooks.length > 0 && (
@@ -136,7 +158,7 @@ const AccountBookListPage = () => {
                   value={sort}
                   onChange={handleSort}
                   options={sortOptions}
-                  styles={selectStyles2}
+                  styles={customSelectStyles}
                 ></Select>
               </span>
               <span className={styles.search_container}>

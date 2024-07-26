@@ -16,7 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { formatDate, formatNumberWithCommas } from "../../util/calcUtils";
 import { Button } from "../../styles/common/StyledComponents";
 import styles from "../../styles/statistics/ExpenseStatistic.module.css";
-import { selectStyles3 } from "../../util/CustomStyles";
+import { selectStyles } from "../../util/CustomStyles";
 import { useTheme } from "../../styles/common/Theme";
 
 // 카테고리 목록
@@ -85,7 +85,7 @@ const ExpenseStatistic = () => {
     } else if (width < 768) {
       return 9;
     } else {
-      return 14;
+      return 12;
     }
   };
 
@@ -108,13 +108,15 @@ const ExpenseStatistic = () => {
           grid: {
             display: false,
             lineWidth: 1,
-            color: darkMode ? "#888888" : "#d1d1d1",
           },
           ticks: {
             color: darkMode ? "white" : "black",
             font: {
               size: getChartFontSize(),
             },
+          },
+          border: {
+            color: darkMode ? "#454545" : "#ECECEC",
           },
         },
         y: {
@@ -122,13 +124,15 @@ const ExpenseStatistic = () => {
           grid: {
             display: false,
             lineWidth: 1,
-            color: darkMode ? "#888888" : "#d1d1d1",
           },
           ticks: {
             color: darkMode ? "white" : "black",
             font: {
               size: getChartFontSize(),
             },
+          },
+          border: {
+            color: darkMode ? "#454545" : "#ECECEC",
           },
         },
       },
@@ -181,13 +185,15 @@ const ExpenseStatistic = () => {
           grid: {
             display: false,
             lineWidth: 1,
-            color: darkMode ? "#888888" : "#d1d1d1",
           },
           ticks: {
             color: darkMode ? "white" : "black",
             font: {
               size: getChartFontSize(),
             },
+          },
+          border: {
+            color: darkMode ? "#454545" : "#ECECEC",
           },
         },
         y: {
@@ -195,13 +201,15 @@ const ExpenseStatistic = () => {
           grid: {
             display: false,
             lineWidth: 1,
-            color: darkMode ? "#888888" : "#d1d1d1",
           },
           ticks: {
             color: darkMode ? "white" : "black",
             font: {
               size: getChartFontSize(),
             },
+          },
+          border: {
+            color: darkMode ? "#454545" : "#ECECEC",
           },
         },
       },
@@ -237,7 +245,10 @@ const ExpenseStatistic = () => {
           align: "end",
           anchor: "end", // 항목 위치
           display: true, // 차트에 항목 표시
-          offset: -20,
+          offset: -15,
+          font: {
+            size: getChartFontSize(),
+          },
         },
       },
       responsive: true,
@@ -446,6 +457,20 @@ const ExpenseStatistic = () => {
     label: formatDate(date),
   }));
 
+  const customSelectStyles = {
+    ...selectStyles,
+    control: (base) => ({
+      ...base,
+      backgroundColor: "var(--background-color)",
+      border: "1px solid var(--line-color)",
+      borderRadius: "0.3rem",
+      minHeight: "1rem",
+      width: "10rem",
+      color: "var(--text-color)",
+      cursor: "pointer",
+    }),
+  };
+
   return (
     <div className={styles.expenseStatistic}>
       {!hasExpense ? ( // 지출 내역이 없는 경우 랜더링
@@ -485,19 +510,14 @@ const ExpenseStatistic = () => {
           </div>
           <div className={styles.expenseStatistic_content}>
             <div className={styles.expenseStatistic_chartsWrapper}>
-              <div className={styles.expenseStatistic_date_container}>
-                <div className={styles.chartsWrapper_title}>📆 일자별 지출</div>
-                <Select
-                  options={dateOptions}
-                  onChange={handleDateChange}
-                  placeholder="날짜 선택"
-                  noOptionsMessage={() => "선택 가능한 날짜가 없습니다."}
-                  styles={selectStyles3}
-                />
-                <div
-                  className={styles.expenseStatistic_day_selectContainer}
-                ></div>
-              </div>
+              <div className={styles.chartsWrapper_title}>📆 일자별 지출</div>
+              <Select
+                options={dateOptions}
+                onChange={handleDateChange}
+                placeholder="날짜 선택"
+                noOptionsMessage={() => "선택 가능한 날짜가 없습니다."}
+                styles={customSelectStyles}
+              />
               <div className={styles.chartsWrapper_chart}>
                 <div className={styles.expenseStatistic_chartContainer}>
                   <div className={styles.expenseStatistic_chartTitle}>

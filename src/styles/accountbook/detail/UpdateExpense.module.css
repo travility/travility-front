@@ -1,33 +1,42 @@
 .modal_content {
-  font-size: 0.8em;
-  font-weight: 700;
+  margin-top: 1.5rem;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.expenseTitle_container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.expenseTitle {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.expenseTitle > Input {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.category {
+  margin-right: 0.6rem;
+  padding-bottom: 1.2rem;
 }
 
 .categoryImage {
   width: 1.5rem;
 }
 
-.expenseTitle {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.expenseTitle select {
-  height: 2rem;
-}
-
-.titleInput {
-  font-weight: 800;
-  font-size: 0.7em !important;
-  width: 90%;
-  height: 2.5rem;
-  margin-top: 3px;
-}
-
-.closeButton {
-  margin-left: 0.5rem;
+.updateExpense_title_count {
+  font-size: 0.7em;
+  text-align: right;
+  margin-left: auto;
+  letter-spacing: -1px;
+  font-weight: 500;
+  color: var(--gray-color);
 }
 
 .expenseDateAndTime {
@@ -35,19 +44,63 @@
   gap: 0.5rem;
   justify-content: space-between;
   width: 100%;
-  height: 100%;
-  margin-top: 0.3rem;
-  margin-right: auto;
 }
 
-.image_container::before {
-  content: '';
-  position: absolute;
-  top: -0.5rem;
-  left: 0;
+/* 지출 디테일 - 경비, 결제방식, 금액 */
+.radio_group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.budgetType {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+.selectedBudgetType {
+  color: var(--main-color);
+  font-size: 1.1em;
+}
+
+.budgetType input {
+  cursor: pointer;
+}
+
+.paymentMethods {
+  display: flex;
+  gap: 1rem;
+}
+
+.paymentMethods img {
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.updateExpense_form {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+
+.updateExpense_formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.curUnit_input .label,
+.amount_input .label {
+  margin: 0.2rem;
+  font-size: 0.8em;
+}
+
+.amount_input {
   width: 100%;
-  height: 1px;
-  background-color: var(--line-color);
+  gap: 0.5rem;
 }
 
 /* 이미지 업로드 */
@@ -120,6 +173,7 @@
   border-radius: 0.5rem;
   margin-bottom: 1rem;
   background-color: var(--background-color);
+  font-size: 0.8em;
 }
 
 .textArea textarea {
@@ -132,73 +186,11 @@
   border-radius: 0.5rem;
   color: var(--text-color);
   background-color: var(--background-color);
-  font-size: 0.8em;
-}
-
-/* 지출 디테일 - 경비, 결제방식, 금액 */
-.expenseDetail {
-  display: grid;
-  grid-template-columns: 1fr 1fr 3fr;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.expenseType {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 0.8em;
-  font-weight: 700;
-}
-
-.isShared {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-size: 0.7em;
-  white-space: nowrap;
-  gap: 0;
-  height: 1rem;
-  margin-right: auto;
-}
-
-.isShared input[type='radio'] {
-  transform: scale(0.8);
-  margin-right: 0.2rem;
-}
-
-.selectedExpenseType {
-  color: var(--gray-color);
-}
-
-.paymentMethods {
-  display: flex;
-  align-items: center;
-  margin-left: 2%;
-  gap: 0.5rem;
-}
-
-.paymentMethodImage {
-  cursor: pointer;
-  height: 1rem;
-}
-
-.expenseAmount {
-  display: grid;
-  grid-template-columns: 3fr 4fr;
-  gap: 0.5rem;
-}
-
-.expenseAmount input {
-  text-align: right;
-  font-size: 0.8em;
-  font-weight: 600;
+  font-size: 1em;
 }
 
 /* 읽기 모드 */
 .readOnlyInput {
-  /* border: none !important; */
-  background-color: transparent !important;
   pointer-events: none !important;
 }
 

@@ -157,12 +157,13 @@ const Input = styled.input`
   padding: 0.5rem;
   // margin-top: 0.2rem;
   width: 100%;
+  min-height: 1rem;
   border: 1px solid var(--line-color);
   border-radius: 0.3rem;
   color: var(--text-color);
   background-color: var(--background-color);
   transition: border-color 0.3s;
-  font-size: 0.7rem;
+  font-size: 0.7em;
 
   &:focus {
     background-color: ${({ theme }) => theme.focusBackground};
@@ -194,33 +195,13 @@ const Input = styled.input`
   }
 `;
 
-const DateInput = styled(Input).attrs({ type: 'date' })`
-  
-    font-family: var(--font-family);
-    padding: 0.4rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    position: relative;
-
-    &::-webkit-calendar-picker-indicator {
-      color: var(--text-color);
-      opacity: 1;
-      cursor: pointer;
-      /* 아이콘 색상 변경 */
-      filter: brightness(1) saturate(0%) contrast(0.1);
-    }
-  
-`;
-
-const TimeInput = styled(Input).attrs({ type: 'time' })`
-  
-    font-family: var(--font-family);
-    padding: 0.4rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    position: relative;
+const DateInput = styled(Input).attrs({ type: "date" })`
+  font-family: var(--font-family);
+  padding: 0.4rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
 
   &::-webkit-calendar-picker-indicator {
     color: var(--text-color);
@@ -228,8 +209,24 @@ const TimeInput = styled(Input).attrs({ type: 'time' })`
     cursor: pointer;
     /* 아이콘 색상 변경 */
     filter: brightness(1) saturate(0%) contrast(0.1);
-    }
-  
+  }
+`;
+
+const TimeInput = styled(Input).attrs({ type: "time" })`
+  font-family: var(--font-family);
+  padding: 0.4rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: relative;
+
+  &::-webkit-calendar-picker-indicator {
+    color: var(--text-color);
+    opacity: 1;
+    cursor: pointer;
+    /* 아이콘 색상 변경 */
+    filter: brightness(1) saturate(0%) contrast(0.1);
+  }
 `;
 
 const ErrorMessage = styled.p`

@@ -26,22 +26,10 @@
   text-align: left;
 }
 
-.expenseStatistic_date_container {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
 .expenseStatistic_chartTitle {
   margin-bottom: 1rem;
   font-weight: 600;
   color: var(--text-color);
-}
-
-.expenseStatistic_day_selectContainer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
 }
 
 .chartsWrapper_chart {
