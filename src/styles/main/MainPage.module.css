@@ -24,7 +24,7 @@
 
 .addAccount_form {
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
 }
 
 .addAccount_formGroup {
@@ -54,6 +54,13 @@
   margin: 0 1rem;
 }
 
+input[type='date'] {
+  color: black; /* 텍스트 색상 */
+  background-color: white; /* 배경 색상 */
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 4px; /* 모서리 둥글게 */
+  padding: 5px;
+}
 
 /* 여행국가 */
 .search_button {
@@ -79,7 +86,6 @@
   align-items: center;
 }
 
-
 .selectedCountry {
   display: flex;
   align-items: center;
@@ -92,7 +98,6 @@
   background-color: var(--background-color);
   transition: border-color 0.3s;
 }
-
 
 .selectedCountry img.flag {
   width: auto;
@@ -132,7 +137,7 @@
   position: relative;
 }
 
- .recent_accountBooks_header {
+.recent_accountBooks_header {
   position: absolute;
   top: 1.8em;
   left: 1.5em;
@@ -204,25 +209,23 @@
 
   .recent_accountBooks_header {
     position: relative;
-    top: 0em; 
+    top: 0em;
     left: 0em;
     font-weight: 800;
     font-size: 1em;
     color: var(--main-color);
     margin-bottom: 1rem;
   }
-  
 }
 
-@media (max-width: 530px){
+@media (max-width: 530px) {
   .recent_accountBooks_header {
     position: relative;
-    top: 0em; 
+    top: 0em;
     left: 0em;
     font-weight: 800;
     font-size: 1em;
     color: var(--main-color);
     margin-bottom: 1rem;
   }
-
 }
