@@ -282,10 +282,34 @@ const UpdateExpense = ({
   // 셀렉트 옵션 스타일
   const formatOptionLabel = ({ label, img }) => (
     <div style={{ display: "flex", alignItems: "center" }}>
-      <img src={img} alt="" style={{ width: "1rem", marginRight: "1rem" }} />
+      <img src={img} alt="" style={{ width: "1.2rem", marginRight: "1rem" }} />
       {label}
     </div>
   );
+
+  const customSelectStyles = {
+    ...selectStyles,
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0.5rem 0.5rem",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: "0.5rem",
+    }),
+    option: (base) => ({
+      ...base,
+      display: "flex",
+      alignItems: "center",
+      background: "var(--background-color)",
+      color: "var(--text-color)",
+      fontSize: "0.8em",
+      ":hover": {
+        background: "var(--main-color)",
+        color: "#ffffff",
+      },
+    }),
+  };
 
   return (
     <div className={styles.updateExpense_container}>
@@ -317,7 +341,7 @@ const UpdateExpense = ({
                         options={categories}
                         isDisabled={!isEditable}
                         isSearchable={false}
-                        styles={selectStyles}
+                        styles={customSelectStyles}
                         formatOptionLabel={formatOptionLabel}
                       />
                     ) : (
