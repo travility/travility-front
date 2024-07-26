@@ -169,12 +169,11 @@
 }
 
 .chart_total_container{
-  height: 24.3rem;
   border: 1px solid var(--line-color);
   border-radius: 8px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
   padding: 1rem;
-  aspect-ratio: 2 / 1;
+  height: 100% !important;
 }
 
 /* 총 누적 지출 barChart */
@@ -182,6 +181,7 @@
   width: 100% !important;
   height: 100% !important;
   margin: 0 auto;
+  aspect-ratio: 2 / 1;
 }
 
 
@@ -209,12 +209,10 @@
 
 /********************** 미디어 쿼리 *************************/
 @media (max-width: 1024px){
-  .chart_total_container{
-    height: 24rem;
-  }
+ 
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .charts_category_container {
     gap: 1rem;
     width: 100%;
@@ -230,10 +228,8 @@
     height: 200px; 
   }
 
-  .chart_total_container{
-    height: 20rem;
-  }
 }
+
 
 @media (max-width: 535px) {
   .charts_category_container {
@@ -244,10 +240,4 @@
   .chartType_bar {
     padding: 1rem;
   }
-
-  .chart_total_container{
-    height: 100%;
-    aspect-ratio: 1 / 1;
-  }
-
 }
