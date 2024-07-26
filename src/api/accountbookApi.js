@@ -1,10 +1,10 @@
-import axios from "axios";
-import axiosInstance from "../util/axiosInterceptor";
+import axios from 'axios';
+import axiosInstance from '../util/axiosInterceptor';
 
 // 국가, 국기 API
 export const fetchCountryFlags = async () => {
   const response = await axios.get(
-    `https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=${process.env.REACT_APP_API_KEY}&numOfRows=220`
+    `https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=${process.env.REACT_APP_COUNTRY_API_KEY}&numOfRows=220`
   );
   return response.data;
 };
@@ -14,9 +14,9 @@ export const addAccountBook = async (accountBookData) => {
   const updatedData = {
     ...accountBookData,
     country:
-      accountBookData.country === "미합중국" ? "미국" : accountBookData.country,
+      accountBookData.country === '미합중국' ? '미국' : accountBookData.country,
   };
-  const response = await axiosInstance.post("/accountbook", updatedData);
+  const response = await axiosInstance.post('/accountbook', updatedData);
   return response.data;
 };
 
@@ -64,7 +64,7 @@ export const exportAccountBook = async (id, krw) => {
   const response = await axiosInstance.get(
     `/accountbook/${id}/export?krw=${krw}`,
     {
-      responseType: "blob", // 응답을 Blob으로 처리
+      responseType: 'blob', // 응답을 Blob으로 처리
     }
   );
   return response.data;
