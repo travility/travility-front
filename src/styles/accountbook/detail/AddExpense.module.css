@@ -39,6 +39,7 @@
 .date input,
 .time input {
   padding: 0.4rem;
+  cursor: pointer;
 }
 
 .radio_group {
@@ -52,6 +53,10 @@
   display: flex;
   justify-content: flex-start;
   gap: 1rem;
+}
+
+.budgetType input {
+  cursor: pointer;
 }
 
 .paymentMethods {
