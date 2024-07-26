@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styles from "../../../styles/accountbook/settlement/SettlementMain.module.css";
-import { formatNumberWithCommas } from "../../../util/calcUtils";
-import { Button } from "../../../styles/common/StyledComponents";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from '../../../styles/accountbook/settlement/SettlementMain.module.css';
+import { formatNumberWithCommas } from '../../../util/calcUtils';
+import { Button } from '../../../styles/common/StyledComponents';
 import {
   getAccountBook,
   getTotalSharedExpensesAndExchangeRates,
-} from "../../../api/settlementApi";
-import Share from "./SettlementShareModal";
-import SettlementDetail from "./SettlementDetailModal";
-import TripInfo from "../../common/TripInfoCmp";
-import { handleProblemSubject } from "../../../util/swalUtils";
-import UpdateTripInfo from "../detail/UpdateTripInfoModal";
+} from '../../../api/settlementApi';
+import Share from './SettlementShareModal';
+import SettlementDetail from './SettlementDetailModal';
+import TripInfo from '../../common/TripInfoCmp';
+import { handleProblemSubject } from '../../../util/swalUtils';
+import UpdateTripInfo from '../detail/UpdateTripInfoModal';
 
 const SettlementMainPage = () => {
   const { id } = useParams();
@@ -65,7 +65,7 @@ const SettlementMainPage = () => {
         setDisplayedPerPersonExpense(0); //애니메이션 실행 전 초기화
       } catch (error) {
         console.error(error);
-        handleProblemSubject("가계부 정산");
+        handleProblemSubject('가계부 정산');
       }
     };
     fetchData();
@@ -99,7 +99,7 @@ const SettlementMainPage = () => {
     if (text.length <= maxLength) {
       return text;
     }
-    return text.substring(0, maxLength) + "...";
+    return text.substring(0, maxLength) + '...';
   };
 
   const goBack = () => {

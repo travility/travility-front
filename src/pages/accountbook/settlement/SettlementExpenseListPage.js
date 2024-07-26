@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styles from "../../../styles/accountbook/settlement/SettlementMain.module.css";
-import { Button } from "../../../styles/common/StyledComponents";
-import { formatNumberWithCommas } from "../../../util/calcUtils";
-import UpdateExpense from "../detail/UpdateExpenseModal";
-import { SERVER_URL } from "../../../config/apiConfig";
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styles from '../../../styles/accountbook/settlement/SettlementMain.module.css';
+import { Button } from '../../../styles/common/StyledComponents';
+import { formatNumberWithCommas } from '../../../util/calcUtils';
+import UpdateExpense from '../detail/UpdateExpenseModal';
+import { SERVER_URL } from '../../../config/apiConfig';
 
 const categoryImages = {
-  TRANSPORTATION: "transportation.png",
-  ACCOMMODATION: "accommodation.png",
-  FOOD: "food.png",
-  TOURISM: "tourism.png",
-  SHOPPING: "shopping.png",
-  OTHERS: "others.png",
+  TRANSPORTATION: 'transportation.png',
+  ACCOMMODATION: 'accommodation.png',
+  FOOD: 'food.png',
+  TOURISM: 'tourism.png',
+  SHOPPING: 'shopping.png',
+  OTHERS: 'others.png',
 };
 
 const SettlementExpenseListPage = () => {
@@ -64,7 +64,9 @@ const SettlementExpenseListPage = () => {
     <>
       <div className={styles.settlementExpenseListPage}>
         <div className={styles.settlementExpenseListPage_header}>
-          <Button onClick={goBack}>←</Button>
+          <Button className={styles.goBackButton} onClick={goBack}>
+            <p className={styles.goBackButton_text}>← 정산하기</p>
+          </Button>
         </div>
         <div className={styles.expenseList_container}>
           <h2 className={styles.accountBook_title}>{accountBook.title}</h2>
@@ -84,7 +86,7 @@ const SettlementExpenseListPage = () => {
                       <img
                         className={styles.categoryImg}
                         src={`/images/accountbook/category/${
-                          categoryImages[expense.category] || "others.png"
+                          categoryImages[expense.category] || 'others.png'
                         }`}
                         alt={expense.category}
                       />
@@ -92,25 +94,16 @@ const SettlementExpenseListPage = () => {
                       <span className={styles.amount}>
                         {formatNumberWithCommas(expense.amount)}
                       </span>
-                      <span className={styles.description}>
-                        {expense.title}
-                      </span>
-                      {expense.imgName ? (
-                        <img
-                          className={styles.expenseImg}
-                          src={`${SERVER_URL}/images/${expense.imgName}`}
-                          alt="지출 이미지"
-                          onError={(e) => {
-                            e.target.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <img
-                          className={styles.expenseImg}
-                          src="/images/dashboard/default_image.png"
-                          alt="지출 이미지"
-                        ></img>
-                      )}
+                      <span className={styles.title2}>{expense.title}</span>
+                      <img
+                        className={styles.expenseImg}
+                        src={
+                          expense.imgName
+                            ? `${SERVER_URL}/images/${expense.imgName}`
+                            : '/images/dashboard/default_image.png'
+                        }
+                        alt="지출 이미지"
+                      />
                     </div>
                   ))}
                 </div>
