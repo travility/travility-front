@@ -194,6 +194,42 @@ const Input = styled.input`
   }
 `;
 
+const DateInput = styled(Input).attrs({ type: 'date' })`
+
+  &[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+
+    &::-webkit-calendar-picker-indicator {
+      color: var(--text-color);
+      opacity: 1;
+      cursor: pointer;
+      /* 아이콘 색상 변경 */
+      filter: brightness(1) saturate(0%) contrast(0.1);
+    }
+  }
+`;
+
+const TimeInput = styled(Input).attrs({ type: 'time' })`
+  
+  &[type="time"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+
+  &::-webkit-calendar-picker-indicator {
+    color: var(--text-color);
+    opacity: 1;
+    cursor: pointer;
+    /* 아이콘 색상 변경 */
+    filter: brightness(1) saturate(0%) contrast(0.1);
+    }
+  }
+`;
+
 const ErrorMessage = styled.p`
   margin-top: 0.2rem;
   font-size: 0.6em;
@@ -256,6 +292,8 @@ export {
   Container,
   Button,
   Input,
+  DateInput,
+  TimeInput,
   ErrorMessage,
   ModalOverlay,
   Modal,

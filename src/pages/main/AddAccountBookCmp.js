@@ -8,11 +8,20 @@ import {
   Button,
   ErrorMessage,
   Input,
+  DateInput as OriginalDateInput, 
 } from "../../styles/common/StyledComponents";
 import {
   handleFailureSubject,
   handleSuccessSubjectNotReload,
 } from "../../util/swalUtils";
+import styled from 'styled-components';
+
+
+const DateInput = styled(OriginalDateInput)`
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(53%) sepia(93%) saturate(1462%) hue-rotate(200deg) brightness(91%) contrast(104%) !important;
+  }
+`;
 
 const AddAccountBook = () => {
   const [startDate, setStartDate] = useState("");
@@ -79,6 +88,7 @@ const AddAccountBook = () => {
       handleFailureSubject("가계부", "추가");
     }
   };
+
 
   // 여행 국가
   const handleCountrySelect = (country) => {
@@ -183,15 +193,15 @@ const AddAccountBook = () => {
         <div className={styles.addAccount_formGroup}>
           <label>언제 떠나시나요?</label>
           <div className={styles.addAccount_dateRange}>
-            <Input
-              type="date"
+            <DateInput
+              /* type="date" */
               value={startDate}
               onChange={handleStartDateChange}
               required
             />
             <span>~</span>
-            <Input
-              type="date"
+            <DateInput
+              /* type="date" */
               value={endDate}
               onChange={handleEndDateChange}
               required
