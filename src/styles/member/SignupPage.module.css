@@ -71,6 +71,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  color: var(--text-color);
 }
 
 /*비밀번호 확인 컨테이너*/
@@ -95,4 +96,5 @@
   background: none;
   border: none;
   cursor: pointer;
+  color: var(--text-color);
 }
