@@ -99,7 +99,7 @@ const SettlementExpenseListPage = () => {
                         className={styles.expenseImg}
                         src={
                           expense.imgName
-                            ? `${SERVER_URL}/images/${expense.imgName}`
+                            ? `${SERVER_URL}/uploaded-images/${expense.imgName}`
                             : '/images/dashboard/default_image.png'
                         }
                         alt="지출 이미지"
