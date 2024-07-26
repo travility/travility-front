@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
+import React, { useState } from "react";
+import Select from "react-select";
 import {
   ModalOverlay,
   Modal,
@@ -10,24 +10,24 @@ import {
   DateInput,
   TimeInput,
   ErrorMessage,
-} from '../../../styles/common/StyledComponents';
-import { useTheme } from '../../../styles/common/Theme';
-import { handleNoImage } from '../../../util/swalUtils';
-import styles from '../../../styles/accountbook/detail/AddExpense.module.css';
-import { selectStyles } from '../../../util/CustomStyles';
+} from "../../../styles/common/StyledComponents";
+import { useTheme } from "../../../styles/common/Theme";
+import { handleNoImage } from "../../../util/swalUtils";
+import styles from "../../../styles/accountbook/detail/AddExpense.module.css";
+import { selectStyles } from "../../../util/CustomStyles";
 
 const categories = [
-  { name: 'TRANSPORTATION', label: '교통' },
-  { name: 'FOOD', label: '식비' },
-  { name: 'TOURISM', label: '관광' },
-  { name: 'ACCOMMODATION', label: '숙박' },
-  { name: 'SHOPPING', label: '쇼핑' },
-  { name: 'OTHERS', label: '기타' },
+  { name: "TRANSPORTATION", label: "교통" },
+  { name: "FOOD", label: "식비" },
+  { name: "TOURISM", label: "관광" },
+  { name: "ACCOMMODATION", label: "숙박" },
+  { name: "SHOPPING", label: "쇼핑" },
+  { name: "OTHERS", label: "기타" },
 ];
 
 const paymentMethod = [
-  { name: 'CASH', label: '현금' },
-  { name: 'CARD', label: '카드' },
+  { name: "CASH", label: "현금" },
+  { name: "CARD", label: "카드" },
 ];
 
 // 중복 통화 제거
@@ -41,15 +41,15 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
 
   const [newExpense, setNewExpense] = useState({
     expense: {
-      title: '',
-      category: 'OTHERS',
+      title: "",
+      category: "OTHERS",
       isShared: false,
-      paymentMethod: 'CASH',
-      curUnit: uniqueCurrencies[0]?.value || '',
-      amount: '',
-      expenseDate: '',
-      expenseTime: '',
-      memo: '',
+      paymentMethod: "CASH",
+      curUnit: uniqueCurrencies[0]?.value || "",
+      amount: "",
+      expenseDate: "",
+      expenseTime: "",
+      memo: "",
     },
     newImg: null,
     previewImg: null,
@@ -57,40 +57,57 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   });
 
   const [errors, setErrors] = useState({
-    title: '',
-    expenseDate: '',
-    expenseTime: '',
-    amount: '',
+    title: "",
+    expenseDate: "",
+    expenseTime: "",
+    amount: "",
   });
+
+  const [titleError, setTitleError] = useState("");
+  const [inputCount, setInputCount] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     const newErrors = {};
 
-    if (name === 'expenseDate') {
+    if (name === "expenseDate") {
       if (new Date(value) < new Date(accountBook.startDate)) {
         //선택 날짜가 시작 날짜 이전일 때,
-        newErrors.expenseDate = '준비 비용입니다.';
+        newErrors.expenseDate = "준비 비용입니다.";
       } else if (new Date(value) > new Date(accountBook.endDate)) {
         //선택 날짜가 종료 날짜 이후일 때,
-        newErrors.expenseDate = '사후 비용입니다.';
+        newErrors.expenseDate = "사후 비용입니다.";
       } else {
-        newErrors.expenseDate = '';
+        newErrors.expenseDate = "";
       }
     }
+
+    if (name === "title") {
+      if (value.length <= 20) {
+        setNewExpense((prev) => ({
+          ...prev,
+          expense: { ...prev.expense, title: value },
+        }));
+        setTitleError("");
+      } else {
+        setTitleError("항목명은 공백 포함 20 글자까지 입력 가능합니다.");
+      }
+      setInputCount(value.length > 20 ? 20 : value.length);
+    } else {
+      setNewExpense((prev) => ({
+        ...prev,
+        expense: { ...prev.expense, [name]: value },
+      }));
+    }
+
     setErrors((prevError) => ({
       ...prevError,
       ...newErrors,
     }));
-
-    setNewExpense((prev) => ({
-      ...prev,
-      expense: { ...prev.expense, [name]: value },
-    }));
   };
 
   const handleImageClick = () => {
-    document.getElementById('fileInput').click();
+    document.getElementById("fileInput").click();
   };
 
   const handleNewImg = (e) => {
@@ -100,7 +117,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     }
 
     const file = e.target.files[0];
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith("image/")) {
       handleNoImage();
       return;
     }
@@ -132,14 +149,14 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
   const getCategoryImage = (category) => {
     const isSelected = newExpense.expense.category === category;
     const suffix =
-      theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
+      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
     return `/images/accountbook/category/${category.toLowerCase()}${suffix}.png`;
   };
 
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
     const suffix =
-      theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
+      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
     return `/images/accountbook/${method.toLowerCase()}${suffix}.png`;
   };
 
@@ -147,10 +164,10 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     const { title, expenseDate, expenseTime, amount } = newExpense.expense;
     const newErrors = {};
 
-    if (!title) newErrors.title = '항목명을 입력해 주세요.';
-    if (!expenseDate) newErrors.expenseDate = '날짜를 선택해 주세요.';
-    if (!expenseTime) newErrors.expenseTime = '시간을 선택해 주세요.';
-    if (!amount) newErrors.amount = '금액을 입력해 주세요.';
+    if (!title) newErrors.title = "항목명을 입력해 주세요.";
+    if (!expenseDate) newErrors.expenseDate = "날짜를 선택해 주세요.";
+    if (!expenseTime) newErrors.expenseTime = "시간을 선택해 주세요.";
+    if (!amount) newErrors.amount = "금액을 입력해 주세요.";
 
     setErrors(newErrors);
 
@@ -175,9 +192,9 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
     };
 
     const formData = new FormData();
-    formData.append('expenseInfo', JSON.stringify(expenseData));
+    formData.append("expenseInfo", JSON.stringify(expenseData));
     if (newExpense.newImg) {
-      formData.append('img', newExpense.newImg);
+      formData.append("img", newExpense.newImg);
     }
 
     onSubmit(formData);
@@ -200,10 +217,14 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                 value={newExpense.expense.title}
                 onChange={handleChange}
                 placeholder="항목명을 입력해 주세요."
-                className={styles.title_input}
               />
               <div className="error_container">
-                {errors.title && <ErrorMessage>{errors.title}</ErrorMessage>}
+                {(errors.title || titleError) && (
+                  <ErrorMessage>{errors.title || titleError}</ErrorMessage>
+                )}
+                <span className={styles.addExpense_title_count}>
+                  {inputCount}/20 자
+                </span>
               </div>
               <div className={styles.category_container}>
                 {categories.map((category) => (
@@ -296,7 +317,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
               <div className={styles.addExpense_form}>
                 <div className={styles.addExpense_formGroup}>
                   <div className={styles.curUnit_input}>
-                    <label htmlFor="curUnit">화폐</label>
+                    <div className={styles.label}>화폐</div>
                     <Select
                       id="curUnit"
                       name="curUnit"
@@ -317,13 +338,13 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                       options={uniqueCurrencies}
                       styles={selectStyles}
                       isSearchable={false}
-                      noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
+                      noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
                     />
                   </div>
                 </div>
                 <div className={styles.addExpense_formGroup}>
                   <div className={styles.amount_input}>
-                    <label htmlFor="amount">금액</label>
+                    <div className={styles.label}>금액</div>
                     <Input
                       type="number"
                       name="amount"
@@ -364,7 +385,7 @@ const AddExpense = ({ isOpen, onClose, onSubmit, accountBook }) => {
                     className={styles.upload_image}
                     src={
                       newExpense.previewImg ||
-                      '/images/dashboard/default_image.png'
+                      "/images/dashboard/default_image.png"
                     }
                     alt="대표이미지"
                   />

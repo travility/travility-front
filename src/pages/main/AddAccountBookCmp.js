@@ -1,41 +1,41 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import SearchCountry from '../common/SearchCountryModal';
-import AddBudget from '../accountbook/detail/AddBudgetModal';
-import styles from '../../styles/main/MainPage.module.css';
-import { addAccountBook } from '../../api/accountbookApi';
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import SearchCountry from "../common/SearchCountryModal";
+import AddBudget from "../accountbook/detail/AddBudgetModal";
+import styles from "../../styles/main/MainPage.module.css";
+import { addAccountBook } from "../../api/accountbookApi";
 import {
   Button,
   ErrorMessage,
   Input,
-  DateInput as OriginalDateInput, 
+  DateInput as OriginalDateInput,
 } from "../../styles/common/StyledComponents";
 import {
   handleFailureSubject,
   handleSuccessSubjectNotReload,
 } from "../../util/swalUtils";
-import styled from 'styled-components';
-
+import styled from "styled-components";
 
 const DateInput = styled(OriginalDateInput)`
   &::-webkit-calendar-picker-indicator {
-    filter: invert(53%) sepia(93%) saturate(1462%) hue-rotate(200deg) brightness(91%) contrast(104%) !important;
+    filter: invert(53%) sepia(93%) saturate(1462%) hue-rotate(200deg)
+      brightness(91%) contrast(104%) !important;
   }
 `;
 
 const AddAccountBook = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [errorDate, setErrorDate] = useState('');
-  const [numberOfPeople, setNumberOfPeople] = useState('');
-  const [countryName, setCountryName] = useState('');
-  const [countryFlag, setCountryFlag] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [errorDate, setErrorDate] = useState("");
+  const [numberOfPeople, setNumberOfPeople] = useState("");
+  const [countryName, setCountryName] = useState("");
+  const [countryFlag, setCountryFlag] = useState("");
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
   const [isCountryModalOpen, setIsCountryModalOpen] = useState(false);
-  const [budget, setBudget] = useState('');
+  const [budget, setBudget] = useState("");
   const [budgets, setBudgets] = useState([]);
-  const [title, setTitle] = useState('');
-  const [titleError, setTitleError] = useState(''); // 글자수 에러 메세지
+  const [title, setTitle] = useState("");
+  const [titleError, setTitleError] = useState(""); // 글자수 에러 메세지
   const [inputCount, setInputCount] = useState(0); // 글자수 변경 카운트
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
@@ -48,13 +48,13 @@ const AddAccountBook = () => {
   const handleAddAccountBook = async () => {
     const errors = {};
 
-    if (!startDate || !endDate) errors.dateRange = '여행일정을 입력해주세요.';
+    if (!startDate || !endDate) errors.dateRange = "여행일정을 입력해주세요.";
     if (endDate < startDate)
-      errors.dateRange = '여행 시작일 이전 날짜는 선택할 수 없습니다.';
-    if (!numberOfPeople) errors.numberOfPeople = '여행 인원을 입력해주세요.';
-    if (!countryName) errors.countryName = '여행지를 선택해주세요.';
-    if (!budget) errors.budget = '예산을 입력해주세요.';
-    if (!title) errors.title = '여행의 이름을 입력해주세요.';
+      errors.dateRange = "여행 시작일 이전 날짜는 선택할 수 없습니다.";
+    if (!numberOfPeople) errors.numberOfPeople = "여행 인원을 입력해주세요.";
+    if (!countryName) errors.countryName = "여행지를 선택해주세요.";
+    if (!budget) errors.budget = "예산을 입력해주세요.";
+    if (!title) errors.title = "여행의 이름을 입력해주세요.";
 
     setFormErrors(errors);
 
@@ -72,29 +72,28 @@ const AddAccountBook = () => {
       budgets,
     };
 
-    console.log('전송되는 데이터:', accountBookData); // 데이터 확인
+    console.log("전송되는 데이터:", accountBookData); // 데이터 확인
 
     try {
       const accountBookResponse = await addAccountBook(accountBookData);
       console.log(accountBookResponse);
       handleSuccessSubjectNotReload(
-        '가계부',
-        '추가',
+        "가계부",
+        "추가",
         navigate,
         `/accountbook/detail/${accountBookResponse.id}`
       );
     } catch (error) {
-      console.error('가계부 추가 중 오류가 발생했습니다:', error);
-      handleFailureSubject('가계부', '추가');
+      console.error("가계부 추가 중 오류가 발생했습니다:", error);
+      handleFailureSubject("가계부", "추가");
     }
   };
-
 
   // 여행 국가
   const handleCountrySelect = (country) => {
     setCountryName(country.country_nm);
     setCountryFlag(country.download_url);
-    setFormErrors((prevErrors) => ({ ...prevErrors, countryName: '' }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, countryName: "" }));
     setIsCountryModalOpen(false);
   };
 
@@ -116,7 +115,7 @@ const AddAccountBook = () => {
         leftPosition = inputRect.left + window.scrollX - 250;
       }
 
-      console.log('input 위치:', inputRect);
+      console.log("input 위치:", inputRect);
 
       setModalPosition({
         top: inputRect.bottom + window.scrollY - 18,
@@ -135,7 +134,7 @@ const AddAccountBook = () => {
       0
     );
     setBudget(totalBudget.toLocaleString());
-    setFormErrors((prevErrors) => ({ ...prevErrors, budget: '' }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, budget: "" }));
   };
 
   // 여행 시작일
@@ -145,19 +144,19 @@ const AddAccountBook = () => {
     if (endDate && newStartDate > endDate) {
       setEndDate(newStartDate);
     }
-    setFormErrors((prevErrors) => ({ ...prevErrors, dateRange: '' }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, dateRange: "" }));
   };
 
   // 여행 종료일
   const handleEndDateChange = (e) => {
     const newEndDate = e.target.value;
     if (newEndDate < startDate) {
-      setErrorDate('여행 시작일 이전 날짜는 선택할 수 없습니다.');
+      setErrorDate("여행 시작일 이전 날짜는 선택할 수 없습니다.");
     } else {
       setEndDate(newEndDate);
-      setErrorDate('');
+      setErrorDate("");
     }
-    setFormErrors((prevErrors) => ({ ...prevErrors, dateRange: '' }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, dateRange: "" }));
   };
 
   // 인원 수
@@ -166,22 +165,22 @@ const AddAccountBook = () => {
     if (value >= 0) {
       setNumberOfPeople(value);
     }
-    setFormErrors((prevErrors) => ({ ...prevErrors, numberOfPeople: '' }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, numberOfPeople: "" }));
   };
 
   // 여행 제목 글자수 제한
   const handleTitleChange = (e) => {
     const input = e.target.value;
 
-    if (input.length <= 22) {
+    if (input.length <= 20) {
       setTitle(input);
-      setTitleError('');
+      setTitleError("");
     } else {
-      setTitleError('제목은 공백 포함 22 글자까지 입력 가능합니다.');
+      setTitleError("제목은 공백 포함 20 글자까지 입력 가능합니다.");
     }
 
-    setInputCount(input.length > 22 ? 22 : input.length);
-    setFormErrors((prevErrors) => ({ ...prevErrors, title: '' }));
+    setInputCount(input.length > 20 ? 20 : input.length);
+    setFormErrors((prevErrors) => ({ ...prevErrors, title: "" }));
   };
 
   return (
@@ -291,7 +290,7 @@ const AddAccountBook = () => {
             value={title}
             onChange={handleTitleChange}
             placeholder="제목 입력"
-            maxLength="22"
+            maxLength="20"
             required
           />
           <div className="error_container">
@@ -299,7 +298,7 @@ const AddAccountBook = () => {
               <ErrorMessage>{formErrors.title || titleError}</ErrorMessage>
             )}
             <span className={styles.addAccount_title_count}>
-              {inputCount}/22 자
+              {inputCount}/20 자
             </span>
           </div>
         </div>
