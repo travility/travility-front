@@ -8,13 +8,15 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  Ticks,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/statistics/MyReport.module.css';
 import { getExpenseStatistics, getUserInfo } from '../../api/expenseApi';
+import { formatNumberWithCommas } from '../../util/calcUtils';
+
+let total = 0;
 
 // 차트 구성요소 등록
 ChartJS.register(
@@ -27,8 +29,8 @@ ChartJS.register(
 );
 ChartJS.register(ChartDataLabels); // 차트에 항목 표시
 
-// 도넛 차트 옵션
-const options = {
+// 카테고리 퍼센티지 차트 옵션
+const categoryPercentageOptions = {
   maintainAspectRatio: false,
   responsive: true,
   plugins: {
@@ -68,8 +70,8 @@ const options = {
   },
 };
 
-// 현금 || 카드 차트 옵션
-const horizontalBarOptions = {
+// 결제 방법 차트 옵션
+const paymentMethodChartOptions = {
   maintainAspectRatio: false,
   responsive: true,
   plugins: {
@@ -77,22 +79,16 @@ const horizontalBarOptions = {
       display: false,
     },
     tooltip: {
-      enabled: true,
+      callbacks: {
+        label: (context) => {
+          const percentage = context.raw;
+          const originalValue = ((percentage / 100) * total).toFixed(0);
+          return `KRW: ${formatNumberWithCommas(originalValue)}`;
+        },
+      },
     },
     datalabels: {
-      formatter: (value, ctx) => {
-        let sum = 0;
-        let dataArr = ctx.chart.data.datasets[0].data; //차트에 있는 데이터 가져오기
-
-        //전체 데이터 합
-        dataArr.forEach((data) => {
-          sum += data;
-        });
-
-        let percentage = ((value / sum) * 100).toFixed(0) + '%'; // 백분율 계산
-
-        return percentage === '0%' ? '' : percentage;
-      },
+      formatter: (value) => `${value}%`,
       color: 'white',
       anchor: 'end', // 항목 위치
       align: 'end',
@@ -109,24 +105,27 @@ const horizontalBarOptions = {
       grid: {
         display: false,
       },
-      ticks: {
-        callback: (value) => value + '%',
-      },
     },
     y: {
       beginAtZero: true,
+      min: 0,
+      max: 100,
+      ticks: {
+        callback: (value) => {
+          if (value === 0 || value === 50 || value === 100) {
+            return `${value}%`;
+          }
+        },
+      },
       grid: {
         display: false,
-      },
-      ticks: {
-        callback: (value) => value + '%',
       },
     },
   },
 };
 
 // 카테고리별 누적 지출 차트 옵션
-const verticalBarOptions = {
+const categoryChartOptions = {
   maintainAspectRatio: false,
   responsive: true,
   plugins: {
@@ -215,7 +214,7 @@ const MyReportPage = () => {
         const categories = data.categories || [];
         const amounts = data.amounts || [];
         const paymentMethods = data.paymentMethods || [];
-        const total = data.totalAmount || 0;
+        total = data.totalAmount || 0;
 
         // 카테고리가 없으면 가계부가 없는 것
         if (categories.length === 0) {
@@ -275,6 +274,12 @@ const MyReportPage = () => {
             0,
         };
 
+        //결제 방법별 지출 금액 백분율
+        const PaymentMethodAmountsPercentage = {
+          CASH: ((paymentMethodAmounts.CASH / total) * 100).toFixed(0),
+          CARD: ((paymentMethodAmounts.CARD / total) * 100).toFixed(0),
+        };
+
         // 가장 많이 사용한 결제 방법 찾기
         setHighestPaymentMethod(
           paymentMethodAmounts.CARD > paymentMethodAmounts.CASH
@@ -282,13 +287,15 @@ const MyReportPage = () => {
             : '현금'
         );
 
-        // 가로 막대 차트 설정
+        // 결제 방법 차트 데이터
         setPaymentData({
           labels: ['현금', '카드'],
           datasets: [
             {
-              label: 'KRW',
-              data: [paymentMethodAmounts.CASH, paymentMethodAmounts.CARD],
+              data: [
+                PaymentMethodAmountsPercentage.CASH,
+                PaymentMethodAmountsPercentage.CARD,
+              ],
               backgroundColor: ['#FFBBE5', '#2c73d2'],
             },
           ],
@@ -437,7 +444,7 @@ const MyReportPage = () => {
                     <Doughnut
                       className={styles.doughnutChart}
                       data={categoryData}
-                      options={options}
+                      options={categoryPercentageOptions}
                     />
                   </div>
                 </div>
@@ -447,7 +454,7 @@ const MyReportPage = () => {
                     <Bar
                       className={styles.barChart2}
                       data={paymentData}
-                      options={horizontalBarOptions}
+                      options={paymentMethodChartOptions}
                     />
                   </div>
                 </div>
@@ -459,7 +466,7 @@ const MyReportPage = () => {
                     <Bar
                       className={styles.barChart}
                       data={categoryBarData}
-                      options={verticalBarOptions}
+                      options={categoryChartOptions}
                     />
                   </div>
                 </div>
