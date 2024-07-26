@@ -195,8 +195,9 @@ const Input = styled.input`
 `;
 
 const DateInput = styled(Input).attrs({ type: 'date' })`
-
-  &[type="date"] {
+  
+    font-family: var(--font-family);
+    padding: 0.4rem;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -209,12 +210,13 @@ const DateInput = styled(Input).attrs({ type: 'date' })`
       /* 아이콘 색상 변경 */
       filter: brightness(1) saturate(0%) contrast(0.1);
     }
-  }
+  
 `;
 
 const TimeInput = styled(Input).attrs({ type: 'time' })`
   
-  &[type="time"] {
+    font-family: var(--font-family);
+    padding: 0.4rem;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -227,7 +229,7 @@ const TimeInput = styled(Input).attrs({ type: 'time' })`
     /* 아이콘 색상 변경 */
     filter: brightness(1) saturate(0%) contrast(0.1);
     }
-  }
+  
 `;
 
 const ErrorMessage = styled.p`
