@@ -25,7 +25,6 @@
   font-weight: 500;
   font-size: 0.75em;
   text-align: left;
-  text-decoration: underline;
   margin-top: 1.5rem;
   &:hover {
     text-decoration: underline;
@@ -42,7 +41,6 @@
   font-weight: 500;
   font-size: 0.75em;
   text-align: left;
-  text-decoration: underline;
   margin: 1rem 0;
   &:hover {
     text-decoration: underline;

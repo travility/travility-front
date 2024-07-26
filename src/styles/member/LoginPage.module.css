@@ -138,6 +138,7 @@
   color: var(--text-color);
   &:hover {
     text-decoration: underline;
+    color: var(--pointor-color);
     font-weight: 600;
   }
 }
