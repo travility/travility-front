@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import Select from "react-select";
-import styles from "../../../styles/accountbook/detail/UpdateExpense.module.css";
-import { deleteExpense, updateExpense } from "../../../api/expenseApi";
+import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
+import styles from '../../../styles/accountbook/detail/UpdateExpense.module.css';
+import { deleteExpense, updateExpense } from '../../../api/expenseApi';
 import {
   handleSuccessSubject,
   handleFailureSubject,
   handleNoImage,
-} from "../../../util/swalUtils";
+} from '../../../util/swalUtils';
 import {
   ModalOverlay,
   Modal,
@@ -15,46 +15,46 @@ import {
   Button,
   Input,
   ErrorMessage,
-} from "../../../styles/common/StyledComponents";
-import { useTheme } from "../../../styles/common/Theme";
-import { selectStyles } from "../../../util/CustomStyles";
-import Swal from "sweetalert2";
-import { SERVER_URL } from "../../../config/apiConfig";
+} from '../../../styles/common/StyledComponents';
+import { useTheme } from '../../../styles/common/Theme';
+import { selectStyles } from '../../../util/CustomStyles';
+import Swal from 'sweetalert2';
+import { SERVER_URL } from '../../../config/apiConfig';
 
 // 지출 카테고리
 const categories = [
   {
-    name: "TRANSPORTATION",
-    label: "교통",
-    img: "/images/accountbook/category/transportation.png",
+    name: 'TRANSPORTATION',
+    label: '교통',
+    img: '/images/accountbook/category/transportation.png',
   },
-  { name: "FOOD", label: "식비", img: "/images/accountbook/category/food.png" },
+  { name: 'FOOD', label: '식비', img: '/images/accountbook/category/food.png' },
   {
-    name: "TOURISM",
-    label: "관광",
-    img: "/images/accountbook/category/tourism.png",
-  },
-  {
-    name: "ACCOMMODATION",
-    label: "숙박",
-    img: "/images/accountbook/category/accommodation.png",
+    name: 'TOURISM',
+    label: '관광',
+    img: '/images/accountbook/category/tourism.png',
   },
   {
-    name: "SHOPPING",
-    label: "쇼핑",
-    img: "/images/accountbook/category/shopping.png",
+    name: 'ACCOMMODATION',
+    label: '숙박',
+    img: '/images/accountbook/category/accommodation.png',
   },
   {
-    name: "OTHERS",
-    label: "기타",
-    img: "/images/accountbook/category/others.png",
+    name: 'SHOPPING',
+    label: '쇼핑',
+    img: '/images/accountbook/category/shopping.png',
+  },
+  {
+    name: 'OTHERS',
+    label: '기타',
+    img: '/images/accountbook/category/others.png',
   },
 ];
 
 // 결제 방식
 const paymentMethod = [
-  { name: "CASH", label: "현금" },
-  { name: "CARD", label: "카드" },
+  { name: 'CASH', label: '현금' },
+  { name: 'CARD', label: '카드' },
 ];
 
 // 지출 항목 업데이트
@@ -67,8 +67,8 @@ const UpdateExpense = ({
 }) => {
   const [oirginalExpense] = useState({
     expense: {
-      expenseDate: expense.expenseDate.split("T")[0],
-      expenseTime: expense.expenseDate.split("T")[1],
+      expenseDate: expense.expenseDate.split('T')[0],
+      expenseTime: expense.expenseDate.split('T')[1],
       title: expense.title,
       category: expense.category,
       memo: expense.memo,
@@ -85,7 +85,7 @@ const UpdateExpense = ({
   const [newExpense, setNewExpense] = useState({ ...oirginalExpense });
   const [isEditable, setIsEditable] = useState(false);
   const [errors, setErrors] = useState({
-    expenseDate: "",
+    expenseDate: '',
   });
   const { theme } = useTheme();
 
@@ -95,15 +95,15 @@ const UpdateExpense = ({
     const { name, value, type } = e.target;
     const newErrors = {};
 
-    if (name === "expenseDate") {
+    if (name === 'expenseDate') {
       if (new Date(value) < new Date(accountBook.startDate)) {
         //선택 날짜가 시작 날짜 이전일 때,
-        newErrors.expenseDate = "준비 비용입니다.";
+        newErrors.expenseDate = '준비 비용입니다.';
       } else if (new Date(value) > new Date(accountBook.endDate)) {
         //선택 날짜가 종료 날짜 이후일 때,
-        newErrors.expenseDate = "사후 비용입니다.";
+        newErrors.expenseDate = '사후 비용입니다.';
       } else {
-        newErrors.expenseDate = "";
+        newErrors.expenseDate = '';
       }
     }
     setErrors(newErrors);
@@ -112,7 +112,7 @@ const UpdateExpense = ({
       ...prevState,
       expense: {
         ...prevState.expense,
-        [name]: type === "radio" ? value === "true" : value,
+        [name]: type === 'radio' ? value === 'true' : value,
       },
     }));
   };
@@ -120,7 +120,7 @@ const UpdateExpense = ({
   //이미지 클릭 시, input 파일 작동
   const handleImageClick = () => {
     if (isEditable) {
-      document.getElementById("fileInput").click();
+      document.getElementById('fileInput').click();
     }
   };
 
@@ -131,7 +131,7 @@ const UpdateExpense = ({
 
     const file = e.target.files[0];
 
-    if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith('image/')) {
       handleNoImage();
       return;
     }
@@ -156,18 +156,18 @@ const UpdateExpense = ({
     };
 
     const formData = new FormData();
-    formData.append("expenseInfo", JSON.stringify(expenseData));
+    formData.append('expenseInfo', JSON.stringify(expenseData));
     if (newExpense.newImg) {
-      formData.append("img", newExpense.newImg);
+      formData.append('img', newExpense.newImg);
     }
 
     updateExpense(expense.id, formData)
       .then(() => {
-        handleSuccessSubject("지출", "수정");
+        handleSuccessSubject('지출', '수정');
       })
       .catch((error) => {
         console.log(error);
-        handleFailureSubject("지출", "수정");
+        handleFailureSubject('지출', '수정');
       });
   };
 
@@ -175,22 +175,22 @@ const UpdateExpense = ({
   const handleDeleteExpense = (e) => {
     e.preventDefault();
     Swal.fire({
-      title: "정말로 삭제하시겠습니까?",
-      text: "지출이 삭제됩니다.",
-      icon: "warning",
+      title: '정말로 삭제하시겠습니까?',
+      text: '지출이 삭제됩니다.',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "var(--main-color)",
-      confirmButtonText: "삭제",
-      cancelButtonText: "취소",
+      confirmButtonColor: 'var(--main-color)',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
     }).then((result) => {
       if (result.isConfirmed) {
         deleteExpense(expense.id)
           .then(() => {
-            handleSuccessSubject("지출", "삭제");
+            handleSuccessSubject('지출', '삭제');
           })
           .catch((error) => {
             console.log(error);
-            handleFailureSubject("지출", "삭제");
+            handleFailureSubject('지출', '삭제');
           });
       }
     });
@@ -210,7 +210,7 @@ const UpdateExpense = ({
   const getPaymentMethodImage = (method) => {
     const isSelected = newExpense.expense.paymentMethod === method;
     const suffix =
-      theme === "dark" ? (isSelected ? "_wt" : "") : isSelected ? "_bk" : "";
+      theme === 'dark' ? (isSelected ? '_wt' : '') : isSelected ? '_bk' : '';
     return `/images/accountbook/${method.toLowerCase()}${suffix}.png`;
   };
 
@@ -228,14 +228,14 @@ const UpdateExpense = ({
   const handleCancelEdit = (e) => {
     e.preventDefault();
     setNewExpense({ ...oirginalExpense }); //취소할 경우 원래 상태로 되돌아감
-    setErrors("");
+    setErrors('');
     setIsEditable(false);
   };
 
   // 셀렉트 옵션 스타일
   const formatOptionLabel = ({ label, img }) => (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <img src={img} alt="" style={{ width: "1rem", marginRight: "1rem" }} />
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <img src={img} alt="" style={{ width: '1rem', marginRight: '1rem' }} />
       {label}
     </div>
   );
@@ -254,26 +254,26 @@ const UpdateExpense = ({
 
     valueContainer: (base) => ({
       ...base,
-      padding: "0.2rem 0.5rem",
-      margin: "0 auto",
+      padding: '0.2rem 0.5rem',
+      margin: '0 auto',
     }),
 
     singleValue: (base) => ({
       ...base,
-      fontSize: "0.7em",
-      fontWeight: "600",
+      fontSize: '0.7em',
+      fontWeight: '600',
     }),
 
     option: (base) => ({
       ...base,
-      display: "flex",
-      alignItems: "center",
-      background: "var(--background-color)",
-      color: "var(--text-color)",
-      fontSize: "0.5em",
-      ":hover": {
-        background: "var(--main-color)",
-        color: "#ffffff",
+      display: 'flex',
+      alignItems: 'center',
+      background: 'var(--background-color)',
+      color: 'var(--text-color)',
+      fontSize: '0.5em',
+      ':hover': {
+        background: 'var(--main-color)',
+        color: '#ffffff',
       },
     }),
   };
@@ -324,7 +324,7 @@ const UpdateExpense = ({
                     readOnly={!isEditable}
                     onChange={handleInputChange}
                     className={`${styles.titleInput} ${
-                      !isEditable ? styles.readOnlyInput : ""
+                      !isEditable ? styles.readOnlyInput : ''
                     }`}
                   ></Input>
                 </div>
@@ -335,7 +335,7 @@ const UpdateExpense = ({
               <div className={`${styles.modalContent}`}>
                 <div
                   className={`${styles.expenseDateAndTime} ${
-                    !isEditable ? "readOnly" : ""
+                    !isEditable ? 'readOnly' : ''
                   }`}
                 >
                   <Input
@@ -344,7 +344,7 @@ const UpdateExpense = ({
                     value={newExpense.expense.expenseDate}
                     readOnly={!isEditable}
                     onChange={handleInputChange}
-                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    className={`${!isEditable ? styles.readOnlyInput : ''}`}
                   ></Input>
                   <Input
                     type="time"
@@ -352,7 +352,7 @@ const UpdateExpense = ({
                     value={newExpense.expense.expenseTime}
                     readOnly={!isEditable}
                     onChange={handleInputChange}
-                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    className={`${!isEditable ? styles.readOnlyInput : ''}`}
                   ></Input>
                 </div>
                 <div className="error_container">
@@ -387,8 +387,8 @@ const UpdateExpense = ({
                       src={
                         newExpense.previewImg ||
                         (expense.imgName === null
-                          ? "/images/dashboard/default_image.png"
-                          : `${SERVER_URL}/images/${expense.imgName}`)
+                          ? '/images/dashboard/default_image.png'
+                          : `${SERVER_URL}/uploaded-images/${expense.imgName}`)
                       }
                       alt="대표이미지"
                     />
@@ -401,11 +401,11 @@ const UpdateExpense = ({
                     readOnly={!isEditable}
                     onChange={handleInputChange}
                     rows="4"
-                    className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                    className={`${!isEditable ? styles.readOnlyInput : ''}`}
                     style={{
-                      resize: "none",
-                      overflowY: "auto",
-                      border: "none",
+                      resize: 'none',
+                      overflowY: 'auto',
+                      border: 'none',
                     }}
                   />
                 </div>
@@ -437,8 +437,8 @@ const UpdateExpense = ({
                     ) : (
                       <div className={styles.selectedExpenseType}>
                         {newExpense.expense.isShared
-                          ? "공동 경비"
-                          : "개인 경비"}
+                          ? '공동 경비'
+                          : '개인 경비'}
                       </div>
                     )}
                   </div>
@@ -482,7 +482,7 @@ const UpdateExpense = ({
                         options={uniqueCurrencies}
                         styles={selectStyles}
                         isSearchable={false}
-                        noOptionsMessage={() => "선택 가능한 화폐가 없습니다"}
+                        noOptionsMessage={() => '선택 가능한 화폐가 없습니다'}
                       />
                     ) : (
                       <Input
@@ -491,7 +491,7 @@ const UpdateExpense = ({
                         value={newExpense.expense.curUnit}
                         readOnly={!isEditable}
                         onChange={handleInputChange}
-                        className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                        className={`${!isEditable ? styles.readOnlyInput : ''}`}
                       />
                     )}
                     <Input
@@ -500,7 +500,7 @@ const UpdateExpense = ({
                       value={newExpense.expense.amount}
                       readOnly={!isEditable}
                       onChange={handleInputChange}
-                      className={`${!isEditable ? styles.readOnlyInput : ""}`}
+                      className={`${!isEditable ? styles.readOnlyInput : ''}`}
                     />
                   </div>
                 </div>
@@ -511,7 +511,7 @@ const UpdateExpense = ({
                         className={styles.updateButton}
                         onClick={toggleEditable}
                       >
-                        {isEditable ? "편집완료" : "편집하기"}
+                        {isEditable ? '편집완료' : '편집하기'}
                       </Button>
                       <div className={styles.cancelAndDelete}>
                         {isEditable && (

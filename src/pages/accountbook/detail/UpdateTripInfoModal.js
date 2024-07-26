@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
-import styles from "../../../styles/accountbook/detail/UpdateTripInfo.module.css";
-import { formatDate } from "../../../util/calcUtils";
-import SearchCountry from "../../common/SearchCountryModal";
+import React, { useState, useRef } from 'react';
+import styles from '../../../styles/accountbook/detail/UpdateTripInfo.module.css';
+import { formatDate } from '../../../util/calcUtils';
+import SearchCountry from '../../common/SearchCountryModal';
 import {
   ModalOverlay,
   Modal,
@@ -10,16 +10,16 @@ import {
   Button,
   Input,
   ErrorMessage,
-} from "../../../styles/common/StyledComponents";
+} from '../../../styles/common/StyledComponents';
 import {
   handleFailureSubject,
   handleNoImage,
   handleSuccessSubjectNotReload,
-} from "../../../util/swalUtils";
-import { SERVER_URL } from "../../../config/apiConfig";
-import Swal from "sweetalert2";
-import { deleteAccountBook } from "../../../api/accountbookApi";
-import { useNavigate } from "react-router-dom";
+} from '../../../util/swalUtils';
+import { SERVER_URL } from '../../../config/apiConfig';
+import Swal from 'sweetalert2';
+import { deleteAccountBook } from '../../../api/accountbookApi';
+import { useNavigate } from 'react-router-dom';
 
 const UpdateTripInfo = ({
   isOpen,
@@ -43,7 +43,7 @@ const UpdateTripInfo = ({
     isDefaultImage: true,
   });
   const [newTripInfo, setNewTripInfo] = useState({ ...oirginalTripInfo });
-  const [titleError, setTitleError] = useState(""); // 글자수 에러 메세지
+  const [titleError, setTitleError] = useState(''); // 글자수 에러 메세지
   const [inputCount, setInputCount] = useState(
     oirginalTripInfo.tripInfo.title.length
   ); // 글자수 변경 카운트
@@ -54,11 +54,11 @@ const UpdateTripInfo = ({
 
   const handleTripInfoChange = (e) => {
     const { name, value } = e.target;
-    if (name === "title") {
+    if (name === 'title') {
       if (value.length <= 22) {
-        setTitleError("");
+        setTitleError('');
       } else {
-        setTitleError("제목은 공백 포함 22 글자까지 입력 가능합니다.");
+        setTitleError('제목은 공백 포함 22 글자까지 입력 가능합니다.');
       }
       setInputCount(value.length > 22 ? 22 : value.length);
     }
@@ -83,7 +83,7 @@ const UpdateTripInfo = ({
   };
 
   const handleImageClick = () => {
-    document.getElementById("fileInput").click();
+    document.getElementById('fileInput').click();
   };
 
   //이미지 수정
@@ -95,7 +95,7 @@ const UpdateTripInfo = ({
 
     const file = e.target.files[0];
 
-    if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith('image/')) {
       handleNoImage();
       return;
     }
@@ -130,9 +130,9 @@ const UpdateTripInfo = ({
     e.preventDefault();
 
     const formData = new FormData(); // 문자열 or Blob 객체만 추가 가능
-    formData.append("tripInfo", JSON.stringify(newTripInfo.tripInfo)); // json 문자열로 변환
+    formData.append('tripInfo', JSON.stringify(newTripInfo.tripInfo)); // json 문자열로 변환
     if (newTripInfo.newImg) {
-      formData.append("img", newTripInfo.newImg);
+      formData.append('img', newTripInfo.newImg);
     }
 
     onSubmit(formData);
@@ -142,27 +142,27 @@ const UpdateTripInfo = ({
   const handleDeleteTripInfo = (e) => {
     e.preventDefault();
     Swal.fire({
-      title: "정말로 삭제하시겠습니까?",
-      text: "가계부 내용이 전부 삭제됩니다.",
-      icon: "warning",
+      title: '정말로 삭제하시겠습니까?',
+      text: '가계부 내용이 전부 삭제됩니다.',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "var(--main-color)",
-      confirmButtonText: "삭제",
-      cancelButtonText: "취소",
+      confirmButtonColor: 'var(--main-color)',
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
     }).then((result) => {
       if (result.isConfirmed) {
         deleteAccountBook(accountBook.id)
           .then(() => {
             handleSuccessSubjectNotReload(
-              "가계부",
-              "삭제",
+              '가계부',
+              '삭제',
               navigate,
-              "/accountbook/list"
+              '/accountbook/list'
             );
           })
           .catch((error) => {
             console.log(error);
-            handleFailureSubject("가계부", "삭제");
+            handleFailureSubject('가계부', '삭제');
           });
       }
     });
@@ -229,7 +229,7 @@ const UpdateTripInfo = ({
                       type="text"
                       name="title"
                       className={`${styles.tripInfo_title} ${
-                        !isEditable ? styles.readOnlyInput : ""
+                        !isEditable ? styles.readOnlyInput : ''
                       }`}
                       value={newTripInfo.tripInfo.title}
                       readOnly={!isEditable}
@@ -253,7 +253,7 @@ const UpdateTripInfo = ({
                       type="text"
                       name="numberOfPeople"
                       className={`${styles.numberOfPeople} ${
-                        !isEditable ? styles.readOnlyInput : ""
+                        !isEditable ? styles.readOnlyInput : ''
                       }`}
                       value={newTripInfo.tripInfo.numberOfPeople}
                       readOnly={!isEditable}
@@ -268,7 +268,7 @@ const UpdateTripInfo = ({
                         type="date"
                         name="startDate"
                         className={`${styles.startDate} ${
-                          !isEditable ? styles.readOnlyInput : ""
+                          !isEditable ? styles.readOnlyInput : ''
                         }`}
                         value={formatDate(newTripInfo.tripInfo.startDate)}
                         readOnly={!isEditable}
@@ -280,7 +280,7 @@ const UpdateTripInfo = ({
                         type="date"
                         name="endDate"
                         className={`${styles.endDate} ${
-                          !isEditable ? styles.readOnlyInput : ""
+                          !isEditable ? styles.readOnlyInput : ''
                         }`}
                         value={formatDate(newTripInfo.tripInfo.endDate)}
                         readOnly={!isEditable}
@@ -317,8 +317,8 @@ const UpdateTripInfo = ({
                       src={
                         newTripInfo.previewImg ||
                         (accountBook.imgName === null
-                          ? "/images/dashboard/default_image.png"
-                          : `${SERVER_URL}/images/${accountBook.imgName}`)
+                          ? '/images/dashboard/default_image.png'
+                          : `${SERVER_URL}/uploaded-images/${accountBook.imgName}`)
                       }
                       alt="대표이미지"
                     />
@@ -331,7 +331,7 @@ const UpdateTripInfo = ({
                         className={styles.updateButton}
                         onClick={toggleEditable}
                       >
-                        {isEditable ? "편집완료" : "편집하기"}
+                        {isEditable ? '편집완료' : '편집하기'}
                       </Button>
                       <div className={styles.cancelAndDelete}>
                         {isEditable && (

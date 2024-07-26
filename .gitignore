@@ -25,3 +25,4 @@ yarn-error.log*
 .anima/*
 
 .env
+.env.production
