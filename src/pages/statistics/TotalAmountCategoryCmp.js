@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getTotalCategoryStatistics } from '../../api/expenseApi';
 import styles from '../../styles/statistics/TotalAmountCategory.module.css';
-import { getExpenditureByCategory } from '../../api/statisticsApi';
+import { getTotalExpenditureByCategory } from '../../api/statisticsApi';
 import { formatNumberWithCommas } from '../../util/calcUtils';
 
 // 총 지출내역 밑에 카테고리별 총지출 써져있는거
@@ -22,16 +21,8 @@ const TotalAmountCategory = ({ accountBookId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getTotalCategoryStatistics(accountBookId);
-        const data2 = await getExpenditureByCategory(accountBookId);
-        console.log(data);
-        console.log(data2);
-        // if (Array.isArray(data)) {
-        //   setStatistics(data);
-        // } else {
-        //   console.error('데이터 포매팅 잘 안됨 :', data);
-        // }
-        setStatistics(data2);
+        const data = await getTotalExpenditureByCategory(accountBookId);
+        setStatistics(data);
       } catch (error) {
         console.error('통계를 불러오지 못함 :', error);
       }
@@ -43,8 +34,6 @@ const TotalAmountCategory = ({ accountBookId }) => {
   return (
     <div className={styles.categoryContainer}>
       {categories.map((category, index) => {
-        // const stat = statistics.find((stat) => stat.category === category.en);
-        // const amount = stat ? stat.amount : 0;
         const amount = statistics[category.en] || 0;
         return (
           <div

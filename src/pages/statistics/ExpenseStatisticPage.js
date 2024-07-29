@@ -4,11 +4,6 @@ import Select from 'react-select';
 import { Tooltip } from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import {
-  getExpenseStatisticsByDate,
-  getPaymentMethodStatisticsByDate,
-  getStatisticsByCategoryAndDates,
-} from '../../api/expenseApi';
 import 'chart.js/auto';
 import TotalAmountCategory from './TotalAmountCategoryCmp';
 import TotalResult from './TotalResultCmp';
@@ -18,6 +13,13 @@ import { Button } from '../../styles/common/StyledComponents';
 import styles from '../../styles/statistics/ExpenseStatistic.module.css';
 import { selectStyles } from '../../util/CustomStyles';
 import { useTheme } from '../../styles/common/Theme';
+import {
+  getDailyCategory,
+  getDailyCategoryExpense,
+  getDailyCategoryExpenseForLineChart,
+  getDailyPaymentMethod,
+  getDailyPaymentMethodExpense,
+} from '../../api/statisticsApi';
 
 // 카테고리 목록
 const categories = [
@@ -158,12 +160,12 @@ const ExpenseStatistic = () => {
           callbacks: {
             label: (context) =>
               `${context.dataset.label}: ${formatNumberWithCommas(
-                context.raw
+                context.raw.toFixed(0)
               )}`,
           },
         },
         datalabels: {
-          formatter: (value) => value.toLocaleString(),
+          formatter: (value) => formatNumberWithCommas(value.toFixed(0)),
           color: 'white',
           align: 'end',
           anchor: 'end', // 항목 위치
@@ -235,12 +237,12 @@ const ExpenseStatistic = () => {
           callbacks: {
             label: (context) =>
               `${context.dataset.label}: ${formatNumberWithCommas(
-                context.raw
+                context.raw.toFixed(0)
               )}`,
           },
         },
         datalabels: {
-          formatter: (value) => value.toLocaleString(),
+          formatter: (value) => formatNumberWithCommas(value.toFixed(0)),
           color: darkMode ? 'white' : 'black',
           align: 'end',
           anchor: 'end', // 항목 위치
@@ -261,25 +263,25 @@ const ExpenseStatistic = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getExpenseStatisticsByDate(id);
-        setStatistics(data);
+        const data2 = await getDailyCategoryExpense(id);
+        setStatistics(data2);
 
-        if (data.length === 0) {
+        if (data2.length === 0) {
           setHasExpense(false); // 지출 내역 없으면 나오는거
           return;
         }
 
         const uniqueDates = Array.from(
-          new Set(data.map((item) => formatDate(item.date)))
+          new Set(data2.map((item) => formatDate(item.date)))
         ).sort((a, b) => new Date(a) - new Date(b));
         setDates(uniqueDates);
         setSelectedDate(uniqueDates[0]);
 
-        // 기본적으로 첫 번째 날짜 선택
-        const paymentData = await getPaymentMethodStatisticsByDate(
+        const paymentData = await getDailyPaymentMethodExpense(
           id,
           uniqueDates[0]
         );
+
         if (Array.isArray(paymentData)) {
           setPaymentMethodStatistics(paymentData);
         } else {
@@ -320,7 +322,8 @@ const ExpenseStatistic = () => {
   // 날짜 선택 핸들러(Select)
   const handleDateChange = async (selectedOption) => {
     setSelectedDate(selectedOption.value);
-    const paymentData = await getPaymentMethodStatisticsByDate(
+
+    const paymentData = await getDailyPaymentMethodExpense(
       id,
       selectedOption.value
     );
@@ -354,7 +357,12 @@ const ExpenseStatistic = () => {
         try {
           const datasets = await Promise.all(
             selectedCategories.map(async (category) => {
-              const data = await getStatisticsByCategoryAndDates(id, category);
+              const data = await getDailyCategoryExpenseForLineChart(
+                id,
+                category
+              );
+              console.log(`2Category: ${category}`, data);
+
               const colorIndex = categories.findIndex(
                 (cat) => cat.en === category
               );
@@ -412,18 +420,21 @@ const ExpenseStatistic = () => {
   const filteredData = statistics
     .filter((stat) => formatDate(stat.date) === selectedDate)
     .reduce((acc, stat) => {
-      acc[stat.category] = stat.amount;
+      if (!acc[stat.category]) {
+        acc[stat.category] = 0;
+      }
+      acc[stat.category] += stat.amount;
       return acc;
     }, {});
 
   // 카테고리별 데이터 설정
   const data = {
-    labels: categories.map((category) => category.ko),
+    labels: categories.map((category) => category.ko), // 카테고리 한글 레이블
     datasets: [
       {
-        label: 'KRW',
-        data: categories.map((category) => filteredData[category.en] || 0),
-        backgroundColor: colors,
+        label: 'KRW', // 통화 단위
+        data: categories.map((category) => filteredData[category.en] || 0), // 각 카테고리의 지출액
+        backgroundColor: colors, // 바 차트의 색상 배열
       },
     ],
   };
