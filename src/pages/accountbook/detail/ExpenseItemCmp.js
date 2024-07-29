@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styles from '../../../styles/accountbook/detail/AccountBookDetail.module.css';
 import UpdateExpense from './UpdateExpenseModal';
 import { formatNumberWithCommas } from '../../../util/calcUtils';
-import { SERVER_URL } from '../../../config/apiConfig';
 
 const categoryImages = {
   TRANSPORTATION: 'transportation.png',
@@ -47,7 +46,7 @@ const ExpenseItem = ({ expense, accountBook }) => {
         ) : (
           <img
             className={styles.expenseImg}
-            src={`${SERVER_URL}/uploaded-images/${expense.imgName}`}
+            src={`/uploaded-images/${expense.imgName}`}
             alt="지출 이미지"
             onError={() => setImgError(true)}
           />
