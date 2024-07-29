@@ -4,7 +4,6 @@ import styles from '../../../styles/accountbook/settlement/SettlementMain.module
 import { Button } from '../../../styles/common/StyledComponents';
 import { formatNumberWithCommas } from '../../../util/calcUtils';
 import UpdateExpense from '../detail/UpdateExpenseModal';
-import { SERVER_URL } from '../../../config/apiConfig';
 
 const categoryImages = {
   TRANSPORTATION: 'transportation.png',
@@ -99,7 +98,7 @@ const SettlementExpenseListPage = () => {
                         className={styles.expenseImg}
                         src={
                           expense.imgName
-                            ? `${SERVER_URL}/uploaded-images/${expense.imgName}`
+                            ? `/uploaded-images/${expense.imgName}`
                             : '/images/dashboard/default_image.png'
                         }
                         alt="지출 이미지"

@@ -17,7 +17,6 @@ import {
   handleNoImage,
   handleSuccessSubjectNotReload,
 } from '../../../util/swalUtils';
-import { SERVER_URL } from '../../../config/apiConfig';
 import Swal from 'sweetalert2';
 import { deleteAccountBook } from '../../../api/accountbookApi';
 import { useNavigate } from 'react-router-dom';
@@ -321,7 +320,7 @@ const UpdateTripInfo = ({
                         newTripInfo.previewImg ||
                         (accountBook.imgName === null
                           ? '/images/dashboard/default_image.png'
-                          : `${SERVER_URL}/uploaded-images/${accountBook.imgName}`)
+                          : `/uploaded-images/${accountBook.imgName}`)
                       }
                       alt="대표이미지"
                     />

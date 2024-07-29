@@ -10,18 +10,17 @@ import {
   ErrorMessage,
 } from "../../styles/common/StyledComponents";
 import styles from "../../styles/member/LoginPage.module.css";
-import { SERVER_URL } from "../../config/apiConfig";
 
 const onNaverLogin = () => {
-  window.location.href = `${SERVER_URL}/oauth2/authorization/naver`;
+  window.location.href = '/oauth2/authorization/naver';
 };
 
 const onGoogleLogin = () => {
-  window.location.href = `${SERVER_URL}/oauth2/authorization/google`;
+  window.location.href = '/oauth2/authorization/google';
 };
 
 const onKakaoLogin = () => {
-  window.location.href = `${SERVER_URL}/oauth2/authorization/kakao`;
+  window.location.href = '/oauth2/authorization/kakao';
 };
 
 const LoginPage = () => {
