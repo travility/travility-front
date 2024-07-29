@@ -361,7 +361,6 @@ const ExpenseStatistic = () => {
                 id,
                 category
               );
-              console.log(`2Category: ${category}`, data);
 
               const colorIndex = categories.findIndex(
                 (cat) => cat.en === category

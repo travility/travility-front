@@ -1,10 +1,19 @@
 import axiosInstance from '../util/axiosInterceptor';
-import { formatDate } from '../util/calcUtils';
+//import { formatDate } from '../util/calcUtils';
 
-// 유저 정보 가져오기
-export const getUserInfo = async () => {
-  const response = await axiosInstance.get('/accountbook/userinfo');
-  return response.data;
+//지출 수정
+export const updateExpense = async (id, newExpenseData) => {
+  const response = await axiosInstance.put(
+    `/accountbook/expense/${id}`,
+    newExpenseData
+  );
+  return response;
+};
+
+//지출 삭제
+export const deleteExpense = async (id) => {
+  const response = await axiosInstance.delete(`/accountbook/expense/${id}`);
+  return response;
 };
 
 // 마이리포트
@@ -27,6 +36,11 @@ export const addExpense = async (expenseData) => {
   }
 };
 
+// 유저 정보 가져오기
+// export const getUserInfo = async () => {
+//   const response = await axiosInstance.get('/accountbook/userinfo');
+//   return response.data;
+// };
 // 카테고리별 지출통계
 // export const getExpenseStatisticsByDate = async (accountBookId) => {
 //   const response = await axiosInstance.get("/accountbook/statistics/category", {
@@ -97,18 +111,3 @@ export const addExpense = async (expenseData) => {
 //   });
 //   return response.data;
 // };
-
-//지출 수정
-export const updateExpense = async (id, newExpenseData) => {
-  const response = await axiosInstance.put(
-    `/accountbook/expense/${id}`,
-    newExpenseData
-  );
-  return response;
-};
-
-//지출 삭제
-export const deleteExpense = async (id) => {
-  const response = await axiosInstance.delete(`/accountbook/expense/${id}`);
-  return response;
-};
