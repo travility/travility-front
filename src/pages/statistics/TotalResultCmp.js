@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   getTotalBudgetByAccountBookId,
   getRemainingBudget,
   getTotalExpenseByAccountBookId,
-} from "../../api/expenseApi";
-import styles from "../../styles/statistics/TotalResult.module.css";
-import { formatNumberWithCommas } from "../../util/calcUtils";
+} from '../../api/expenseApi';
+import styles from '../../styles/statistics/TotalResult.module.css';
+import { formatNumberWithCommas } from '../../util/calcUtils';
+import { getTotalBudget, getTotalExpenditure } from '../../api/statisticsApi';
 
 // 예산 - 지출 보여주는거 (예산보다 x원 더 사용했어요)
 const TotalResult = ({ accountBookId }) => {
@@ -19,18 +20,27 @@ const TotalResult = ({ accountBookId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const totalexpenses = await getTotalExpenseByAccountBookId(
-          accountBookId
-        );
+        // const totalexpenses = await getTotalExpenseByAccountBookId(
+        //   accountBookId
+        // );
+        // setTotalExpenses(totalexpenses);
+
+        // const budgetData = await getTotalBudgetByAccountBookId(accountBookId);
+        // setTotalBudget(budgetData);
+
+        // const remainingBudgetData = await getRemainingBudget(accountBookId);
+        // setRemainingBudget(remainingBudgetData);
+
+        const totalexpenses = await getTotalExpenditure(accountBookId);
         setTotalExpenses(totalexpenses);
 
-        const budgetData = await getTotalBudgetByAccountBookId(accountBookId);
+        const budgetData = await getTotalBudget(accountBookId);
         setTotalBudget(budgetData);
 
-        const remainingBudgetData = await getRemainingBudget(accountBookId);
+        const remainingBudgetData = budgetData - totalexpenses;
         setRemainingBudget(remainingBudgetData);
       } catch (error) {
-        console.error("예산 데이터 불러오기 실패 :", error);
+        console.error('예산 데이터 불러오기 실패 :', error);
       }
     };
 
@@ -66,16 +76,16 @@ const TotalResult = ({ accountBookId }) => {
     <div className={styles.budgetContainer}>
       <div className={styles.budgetHeader}>
         <div>
-          이번 여행에서{" "}
+          이번 여행에서{' '}
           <span className={styles.total_text_color}>
-            {formatNumberWithCommas(displayTotalExpenses)}
+            {formatNumberWithCommas(displayTotalExpenses.toFixed(0))}
           </span>
           원 썼어요!
         </div>
         <div>
           {remainingBudget > 0 ? (
             <>
-              예산 {formatNumberWithCommas(totalBudget.toFixed(0))} 원에서{" "}
+              예산 {formatNumberWithCommas(totalBudget.toFixed(0))} 원에서{' '}
               <span className={styles.highlight}>
                 {formatNumberWithCommas(displayRemainingBudget.toFixed(0))}
               </span>
@@ -83,14 +93,14 @@ const TotalResult = ({ accountBookId }) => {
             </>
           ) : remainingBudget < 0 ? (
             <>
-              예산보다{" "}
+              예산보다{' '}
               <span className={styles.highlight}>
-                {formatNumberWithCommas((-displayRemainingBudget).toFixed(0))}
+                {formatNumberWithCommas(-displayRemainingBudget.toFixed(0))}
               </span>
               원 더 사용했어요
             </>
           ) : (
-            "예산과 동일하게 사용했어요!"
+            '예산과 동일하게 사용했어요!'
           )}
         </div>
       </div>

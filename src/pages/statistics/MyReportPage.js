@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Doughnut, Bar } from "react-chartjs-2";
+import React, { useState, useEffect, useContext } from 'react';
+import { Doughnut, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   ArcElement,
@@ -8,14 +8,16 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-} from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
-import styles from "../../styles/statistics/MyReport.module.css";
-import { getExpenseStatistics, getUserInfo } from "../../api/expenseApi";
-import { formatNumberWithCommas } from "../../util/calcUtils";
-import { useTheme } from "../../styles/common/Theme";
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import styles from '../../styles/statistics/MyReport.module.css';
+import { getExpenseStatistics } from '../../api/expenseApi';
+import { formatNumberWithCommas } from '../../util/calcUtils';
+import { useTheme } from '../../styles/common/Theme';
+import { getMyReportData } from '../../api/statisticsApi';
+import { MemberInfoContext } from '../../App';
 
 let total = 0;
 
@@ -33,24 +35,25 @@ ChartJS.register(ChartDataLabels); // 차트에 항목 표시
 // 카테고리 이름 변환 (영어 -> 한국어)
 const getCategoryName = (category) => {
   switch (category) {
-    case "ACCOMMODATION":
-      return "숙박";
-    case "TRANSPORTATION":
-      return "교통";
-    case "SHOPPING":
-      return "쇼핑";
-    case "FOOD":
-      return "식비";
-    case "TOURISM":
-      return "관광";
-    case "OTHERS":
-      return "기타";
+    case 'ACCOMMODATION':
+      return '숙박';
+    case 'TRANSPORTATION':
+      return '교통';
+    case 'SHOPPING':
+      return '쇼핑';
+    case 'FOOD':
+      return '식비';
+    case 'TOURISM':
+      return '관광';
+    case 'OTHERS':
+      return '기타';
     default:
       return category; // 기본적으로 원래 카테고리 이름 반환
   }
 };
 
 const MyReportPage = () => {
+  const { memberInfo } = useContext(MemberInfoContext);
   const [categoryData, setCategoryData] = useState({
     labels: [],
     datasets: [{ data: [] }],
@@ -65,15 +68,15 @@ const MyReportPage = () => {
   }); // 총 누적 지출
   const [loading, setLoading] = useState(true); // 로딩 중 여부
   const [error, setError] = useState(null); // 오류 상태
-  const [userName, setUserName] = useState(""); // 사용자 이름
-  const [highestCategory, setHighestCategory] = useState(""); // 가장 높은 지출 카테고리
-  const [highestPaymentMethod, setHighestPaymentMethod] = useState(""); // 가장 많이 사용한 결제 방법
+  //const [userName, setUserName] = useState(memberInfo.name); // 사용자 이름
+  const [highestCategory, setHighestCategory] = useState(''); // 가장 높은 지출 카테고리
+  const [highestPaymentMethod, setHighestPaymentMethod] = useState(''); // 가장 많이 사용한 결제 방법
   const [hasAccountBook, setHasAccountBook] = useState(true); // 가계부 존재 여부
   const [displayAmount, setDisplayAmount] = useState(0); // 총 지출 애니메이션
   const [isVisible, setIsVisible] = useState(false);
 
   const { theme } = useTheme();
-  const darkMode = theme === "dark";
+  const darkMode = theme === 'dark';
 
   // 카테고리 퍼센티지 차트 옵션
   const categoryPercentageOptions = {
@@ -81,16 +84,22 @@ const MyReportPage = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: "bottom",
+        position: 'bottom',
         labels: {
           usePointStyle: true, // 범례 아이콘을 도트로 변경
-          pointStyle: "circle", // 도트 모양을 원으로 설정
+          pointStyle: 'circle', // 도트 모양을 원으로 설정
           wrap: true, // 범례를 여러 줄로 설정
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
         },
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: (context) => {
+            const value = context.raw.toFixed(0);
+            return `KRW: ${formatNumberWithCommas(value)}`;
+          },
+        },
       },
       datalabels: {
         formatter: (value, ctx) => {
@@ -102,11 +111,11 @@ const MyReportPage = () => {
             sum += data;
           });
 
-          let percentage = ((value / sum) * 100).toFixed(0) + "%"; // 백분율 계산
+          let percentage = ((value / sum) * 100).toFixed(0) + '%'; // 백분율 계산
 
-          return percentage === "0%" ? "" : percentage;
+          return percentage === '0%' ? '' : percentage;
         },
-        color: "#fff",
+        color: '#fff',
         display: true, // 차트에 항목 표시
       },
     },
@@ -126,6 +135,7 @@ const MyReportPage = () => {
         display: false,
       },
       tooltip: {
+        enabled: true,
         callbacks: {
           label: (context) => {
             const percentage = context.raw;
@@ -135,14 +145,14 @@ const MyReportPage = () => {
         },
       },
       datalabels: {
-        formatter: (value) => `${value}%`,
-        color: "white",
-        anchor: "end", // 항목 위치
-        align: "end",
+        formatter: (value) => `${value.toFixed(0)}%`,
+        color: 'white',
+        anchor: 'end', // 항목 위치
+        align: 'end',
         offset: -20,
         display: true, // 차트에 항목 표시
         font: {
-          weight: "700", // 폰트 굵기 설정
+          weight: '700', // 폰트 굵기 설정
         },
       },
     },
@@ -153,10 +163,10 @@ const MyReportPage = () => {
           display: false,
         },
         ticks: {
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
         },
         border: {
-          color: darkMode ? "#454545" : "#ECECEC",
+          color: darkMode ? '#454545' : '#ECECEC',
         },
       },
       y: {
@@ -169,13 +179,13 @@ const MyReportPage = () => {
               return `${value}%`;
             }
           },
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
         },
         grid: {
           display: false,
         },
         border: {
-          color: darkMode ? "#454545" : "#ECECEC",
+          color: darkMode ? '#454545' : '#ECECEC',
         },
       },
     },
@@ -191,16 +201,22 @@ const MyReportPage = () => {
       },
       tooltip: {
         enabled: true,
+        callbacks: {
+          label: (context) => {
+            const value = context.raw.toFixed(0);
+            return `KRW: ${formatNumberWithCommas(value)}`;
+          },
+        },
       },
       datalabels: {
-        formatter: (value) => value.toLocaleString(),
-        color: "#fff",
-        anchor: "end",
-        align: "end",
+        formatter: (value) => formatNumberWithCommas(value.toFixed(0)),
+        color: '#fff',
+        anchor: 'end',
+        align: 'end',
         offset: -20, // 항목 값 위치 조정
         display: true,
         font: {
-          weight: "500", // 폰트 굵기 설정
+          weight: '500', // 폰트 굵기 설정
         },
       },
     },
@@ -211,10 +227,10 @@ const MyReportPage = () => {
           display: false,
         },
         ticks: {
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
         },
         border: {
-          color: darkMode ? "#454545" : "#ECECEC",
+          color: darkMode ? '#454545' : '#ECECEC',
         },
       },
       x: {
@@ -222,10 +238,10 @@ const MyReportPage = () => {
           display: false,
         },
         ticks: {
-          color: darkMode ? "white" : "black",
+          color: darkMode ? 'white' : 'black',
         },
         border: {
-          color: darkMode ? "#454545" : "#ECECEC",
+          color: darkMode ? '#454545' : '#ECECEC',
         },
       },
     },
@@ -234,30 +250,38 @@ const MyReportPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const userInfo = await getUserInfo(); // 사용자 정보 가져오기
-        setUserName(userInfo.name);
-
-        const data = await getExpenseStatistics(); // 지출 통계 데이터 가져오기
-        const categories = data.categories || [];
-        const amounts = data.amounts || [];
-        const paymentMethods = data.paymentMethods || [];
-        total = data.totalAmount || 0;
+        // const userInfo = await getUserInfo(); // 사용자 정보 가져오기
+        // setUserName(userInfo.name);
+        const data = await getMyReportData();
+        const categoryData = data.expenditureByCategory;
+        //const data = await getExpenseStatistics(); // 지출 통계 데이터 가져오기
+        //console.log(data);
+        const categories = Object.keys(categoryData) || [];
+        const amounts = Object.values(categoryData) || [];
+        const paymentMethods = data.expenditureByPaymentMethod || [];
+        total = data.totalExpenditure || 0;
 
         // 카테고리가 없으면 가계부가 없는 것
-        if (categories.length === 0) {
-          setHasAccountBook(false); // 가계부 없을 때 상태 업데이트
+        // if (categories.length === 0) {
+        //   setHasAccountBook(false); // 가계부 없을 때 상태 업데이트
+        //   setLoading(false);
+        //   return;
+        // }
+
+        if (total === 0) {
+          setHasAccountBook(false);
           setLoading(false);
           return;
         }
 
         // 카테고리 목록
         const allCategories = [
-          "ACCOMMODATION",
-          "TRANSPORTATION",
-          "SHOPPING",
-          "FOOD",
-          "TOURISM",
-          "OTHERS",
+          'ACCOMMODATION',
+          'TRANSPORTATION',
+          'SHOPPING',
+          'FOOD',
+          'TOURISM',
+          'OTHERS',
         ];
 
         // 각 카테고리 지출 금액 계산
@@ -277,53 +301,58 @@ const MyReportPage = () => {
           labels: allCategories.map(getCategoryName),
           datasets: [
             {
-              label: "KRW",
+              label: 'KRW',
               data: categoryAmounts,
               backgroundColor: [
-                "#23C288",
-                "#7697F9",
-                "#9B80E9",
-                "#FEC144",
-                "#B5CE2A",
-                "#828C98",
+                '#23C288',
+                '#7697F9',
+                '#9B80E9',
+                '#FEC144',
+                '#B5CE2A',
+                '#828C98',
               ],
             },
           ],
         });
 
         // 결제 방법별 지출 금액 계산
+        // const paymentMethodAmounts = {
+        //   CASH:
+        //     paymentMethods.find((pm) => pm.paymentMethod === 'CASH')?.amount ||
+        //     0,
+        //   CARD:
+        //     paymentMethods.find((pm) => pm.paymentMethod === 'CARD')?.amount ||
+        //     0,
+        // };
+
         const paymentMethodAmounts = {
-          CASH:
-            paymentMethods.find((pm) => pm.paymentMethod === "CASH")?.amount ||
-            0,
-          CARD:
-            paymentMethods.find((pm) => pm.paymentMethod === "CARD")?.amount ||
-            0,
+          CASH: paymentMethods.CASH || 0,
+          CARD: paymentMethods.CARD || 0,
         };
 
         //결제 방법별 지출 금액 백분율
         const PaymentMethodAmountsPercentage = {
-          CASH: ((paymentMethodAmounts.CASH / total) * 100).toFixed(0),
-          CARD: ((paymentMethodAmounts.CARD / total) * 100).toFixed(0),
+          CASH: (paymentMethodAmounts.CASH / total) * 100,
+          CARD: (paymentMethodAmounts.CARD / total) * 100,
         };
 
         // 가장 많이 사용한 결제 방법 찾기
         setHighestPaymentMethod(
           paymentMethodAmounts.CARD > paymentMethodAmounts.CASH
-            ? "카드"
-            : "현금"
+            ? '카드'
+            : '현금'
         );
 
         // 결제 방법 차트 데이터
         setPaymentData({
-          labels: ["현금", "카드"],
+          labels: ['현금', '카드'],
           datasets: [
             {
               data: [
                 PaymentMethodAmountsPercentage.CASH,
                 PaymentMethodAmountsPercentage.CARD,
               ],
-              backgroundColor: ["#FFBBE5", "#2c73d2"],
+              backgroundColor: ['#FFBBE5', '#2c73d2'],
             },
           ],
         });
@@ -354,15 +383,15 @@ const MyReportPage = () => {
           labels: allCategories.map(getCategoryName),
           datasets: [
             {
-              label: "KRW",
+              label: 'KRW',
               data: categoryAmounts,
               backgroundColor: [
-                "#23C288",
-                "#7697F9",
-                "#9B80E9",
-                "#FEC144",
-                "#B5CE2A",
-                "#828C98",
+                '#23C288',
+                '#7697F9',
+                '#9B80E9',
+                '#FEC144',
+                '#B5CE2A',
+                '#828C98',
               ],
             },
           ],
@@ -421,10 +450,10 @@ const MyReportPage = () => {
                   alt="느낌표"
                 ></img>
                 <span className={styles.totalAmount_title}>
-                  총 누적 지출 :{" "}
+                  총 누적 지출 :{' '}
                 </span>
                 <span className={styles.totalAmount_amount}>
-                  ₩ {displayAmount.toLocaleString()}
+                  ₩ {formatNumberWithCommas(displayAmount.toFixed(0))}
                 </span>
               </div>
               <div className={styles.header_currencyLabel}>
@@ -440,9 +469,9 @@ const MyReportPage = () => {
               <div className={styles.charts_summary}>
                 <div className={styles.description}>
                   <span className={styles.description_userName}>
-                    {userName}
+                    {memberInfo.name}
                   </span>
-                  님은{" "}
+                  님은{' '}
                   <span
                     className={`${styles.description_highlightCategory} ${
                       isVisible ? styles.visible : styles.hidden
@@ -450,7 +479,7 @@ const MyReportPage = () => {
                   >
                     {getCategoryName(highestCategory)}
                   </span>
-                  에 가장 많은 소비를 하고,{" "}
+                  에 가장 많은 소비를 하고,{' '}
                   <span
                     className={`${styles.description_highlightPaymentMethod} ${
                       isVisible ? styles.visible : styles.hidden
@@ -458,7 +487,7 @@ const MyReportPage = () => {
                   >
                     {highestPaymentMethod}
                   </span>
-                  {highestPaymentMethod === "현금" ? "으로" : "로"} 가장 많이
+                  {highestPaymentMethod === '현금' ? '으로' : '로'} 가장 많이
                   결제하셨어요!
                 </div>
               </div>
