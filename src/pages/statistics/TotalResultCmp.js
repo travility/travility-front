@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {
-  getTotalBudgetByAccountBookId,
-  getRemainingBudget,
-  getTotalExpenseByAccountBookId,
-} from '../../api/expenseApi';
 import styles from '../../styles/statistics/TotalResult.module.css';
 import { formatNumberWithCommas } from '../../util/calcUtils';
 import { getTotalBudget, getTotalExpenditure } from '../../api/statisticsApi';
@@ -20,17 +15,6 @@ const TotalResult = ({ accountBookId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const totalexpenses = await getTotalExpenseByAccountBookId(
-        //   accountBookId
-        // );
-        // setTotalExpenses(totalexpenses);
-
-        // const budgetData = await getTotalBudgetByAccountBookId(accountBookId);
-        // setTotalBudget(budgetData);
-
-        // const remainingBudgetData = await getRemainingBudget(accountBookId);
-        // setRemainingBudget(remainingBudgetData);
-
         const totalexpenses = await getTotalExpenditure(accountBookId);
         setTotalExpenses(totalexpenses);
 
