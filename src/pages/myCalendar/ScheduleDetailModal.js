@@ -99,7 +99,7 @@ const ScheduleDetail = ({
           style={{
             backgroundImage: `url(${
               imgName
-                ? `${SERVER_URL}/images/${imgName}`
+                ? `${SERVER_URL}/uploaded-images/${imgName}`
                 : '/images/dashboard/default_image.png'
             })`,
             backgroundSize: 'cover',
