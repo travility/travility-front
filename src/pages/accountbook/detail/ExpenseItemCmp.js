@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import styles from '../../../styles/accountbook/detail/AccountBookDetail.module.css';
-import UpdateExpense from './UpdateExpenseModal';
-import { formatNumberWithCommas } from '../../../util/calcUtils';
+import React, { useState } from "react";
+import styles from "../../../styles/accountbook/detail/AccountBookDetail.module.css";
+import UpdateExpense from "./UpdateExpenseModal";
+import { formatNumberWithCommas } from "../../../util/calcUtils";
+import { SERVER_URL } from "../../../config/apiConfig";
 
 const categoryImages = {
-  TRANSPORTATION: 'transportation.png',
-  ACCOMMODATION: 'accommodation.png',
-  FOOD: 'food.png',
-  TOURISM: 'tourism.png',
-  SHOPPING: 'shopping.png',
-  OTHERS: 'others.png',
+  TRANSPORTATION: "transportation.png",
+  ACCOMMODATION: "accommodation.png",
+  FOOD: "food.png",
+  TOURISM: "tourism.png",
+  SHOPPING: "shopping.png",
+  OTHERS: "others.png",
 };
 
 const ExpenseItem = ({ expense, accountBook }) => {
   const [imgError, setImgError] = useState(false);
-  const categoryImage = categoryImages[expense.category] || 'others.png';
+  const categoryImage = categoryImages[expense.category] || "others.png";
   const [isUpdateExpenseModalOpen, setIsUpdateExpenseModalOpen] =
     useState(false);
 
@@ -25,7 +26,7 @@ const ExpenseItem = ({ expense, accountBook }) => {
         onClick={() => setIsUpdateExpenseModalOpen(true)}
       >
         <span className={styles.type}>
-          {expense.isShared ? '공동' : '개인'}
+          {expense.isShared ? "공동" : "개인"}
         </span>
         <img
           className={styles.categoryImg}
@@ -46,7 +47,7 @@ const ExpenseItem = ({ expense, accountBook }) => {
         ) : (
           <img
             className={styles.expenseImg}
-            src={`/uploaded-images/${expense.imgName}`}
+            src={`${SERVER_URL}/uploaded-images/${expense.imgName}`}
             alt="지출 이미지"
             onError={() => setImgError(true)}
           />

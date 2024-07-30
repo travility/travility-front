@@ -1,16 +1,17 @@
-import axios from 'axios';
-import { getNewAccessToken } from '../api/memberApi';
-import { saveToken } from './tokenUtils';
+import axios from "axios";
+import { getNewAccessToken } from "../api/memberApi";
+import { saveToken } from "./tokenUtils";
 import {
   handleAlreadyLoggedOut,
   handleTokenExpirationLogout,
-} from './swalUtils';
+} from "./swalUtils";
+import { API_URL } from "../config/apiConfig";
 
 let isRefreshing = false;
 let refreshQueue = []; //액세스 토큰 재발급 중 대기 중인 요청 담는 배열
 
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: API_URL,
   timeout: 10000,
   withCredentials: true,
 });
@@ -18,7 +19,7 @@ const axiosInstance = axios.create({
 // 요청 전 실행
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('Authorization');
+    const token = localStorage.getItem("Authorization");
     config.headers.Authorization = token;
     return config;
   },
@@ -37,13 +38,13 @@ axiosInstance.interceptors.response.use(
     // 2xx 외의 범위에 있는 상태 코드 or 응답 오류가 있는 작업 수행
     const originalRequest = error.config; // 원래 요청 정보
 
-    if (error.response.data === 'access token expired') {
+    if (error.response.data === "access token expired") {
       if (!isRefreshing) {
         //재발급 중
         isRefreshing = true;
         try {
           const response = await getNewAccessToken(); // 액세스 토큰 재발급
-          const accessToken = response.headers.get('Authorization');
+          const accessToken = response.headers.get("Authorization");
 
           saveToken(accessToken); // 로컬스토리지에 저장
           isRefreshing = false;
@@ -56,12 +57,12 @@ axiosInstance.interceptors.response.use(
         } catch (error) {
           console.log(error);
           isRefreshing = false;
-          if (error.response.data === 'refresh token expired') {
+          if (error.response.data === "refresh token expired") {
             //리프레시 토큰 만료
             handleTokenExpirationLogout();
           } else if (
-            error.response.data === 'refresh token null' ||
-            error.response.data === 'invalid refresh token'
+            error.response.data === "refresh token null" ||
+            error.response.data === "invalid refresh token"
           ) {
             handleAlreadyLoggedOut();
           }

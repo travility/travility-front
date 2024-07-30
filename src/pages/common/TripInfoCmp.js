@@ -1,11 +1,12 @@
-import React from 'react';
-import { useLocation } from 'react-router-dom';
+import React from "react";
+import { useLocation } from "react-router-dom";
 import {
   commaFormatDate,
   calculateTotalExpenseInKRW,
   formatNumberWithCommas,
-} from '../../util/calcUtils';
-import styles from '../../styles/common/TripInfo.module.css';
+} from "../../util/calcUtils";
+import styles from "../../styles/common/TripInfo.module.css";
+import { SERVER_URL } from "../../config/apiConfig";
 
 const TripInfo = ({
   accountBook,
@@ -22,18 +23,18 @@ const TripInfo = ({
     if (text.length <= maxLength) {
       return text;
     }
-    return text.substring(0, maxLength) + '...';
+    return text.substring(0, maxLength) + "...";
   };
 
   return (
     <div
       key={accountBook.id}
-      className={`${styles.tripInfo} ${isSelected ? styles.selected : ''}`}
+      className={`${styles.tripInfo} ${isSelected ? styles.selected : ""}`}
       style={{
         backgroundImage: `url(${
           accountBook.imgName
-            ? `/uploaded-images/${accountBook.imgName}`
-            : '/images/dashboard/default_image.png'
+            ? `${SERVER_URL}/uploaded-images/${accountBook.imgName}`
+            : "/images/dashboard/default_image.png"
         })`,
       }}
       onClick={() => onClick(accountBook)}
@@ -77,7 +78,7 @@ const TripInfo = ({
         {isDetailPage ? (
           <span className={styles.accountBook_list_edit}>
             <img src="/images/accountbook/add_box.png" alt="+" />
-            {accountBook.imgName ? '수정하기' : '사진을 추가하세요.'}
+            {accountBook.imgName ? "수정하기" : "사진을 추가하세요."}
           </span>
         ) : (
           <span className={styles.accountBook_list_amount}>

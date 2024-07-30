@@ -504,7 +504,7 @@ const AboutUsPage = () => {
             className={styles.image_container}
             variants={sectionVariants}
           >
-            <img src="https://via.placeholder.com/200x400" alt="section6" />
+            <img src="/images/main/myReport.png" alt="section6" />
           </motion.div>
           <motion.div variants={sectionVariants} transition={{ delay: 0.5 }}>
             <h1>
