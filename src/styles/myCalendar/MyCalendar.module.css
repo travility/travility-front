@@ -492,8 +492,14 @@
   }
 
   .cell_total_amount {
-    font-size: 0.5em !important;
+    font-size: 0.36em !important;
   }
+
+  .eventTitle{
+    font-size: 0.4em;
+  }
+
+
 }
 
 @media (max-width: 767px) {

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchCountry from "../common/SearchCountryModal";
 import AddBudget from "../accountbook/detail/AddBudgetModal";
@@ -16,6 +16,7 @@ import {
 } from "../../util/swalUtils";
 import styled from "styled-components";
 
+//달력 모양 색깔만 변경
 const DateInput = styled(OriginalDateInput)`
   &::-webkit-calendar-picker-indicator {
     filter: invert(53%) sepia(93%) saturate(1462%) hue-rotate(200deg)
@@ -44,6 +45,7 @@ const AddAccountBook = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const inputRef = useRef(null);
 
+
   // 여행 추가
   const handleAddAccountBook = async () => {
     const errors = {};
@@ -67,7 +69,7 @@ const AddAccountBook = () => {
       endDate,
       countryName,
       countryFlag,
-      numberOfPeople: parseInt(numberOfPeople),
+      numberOfPeople: numberOfPeople === "" ? "" : parseInt(numberOfPeople, 10),
       title,
       budgets,
     };
@@ -161,11 +163,13 @@ const AddAccountBook = () => {
 
   // 인원 수
   const handleNumberOfPeopleChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value >= 0) {
+    const value = e.target.value;
+    if (value === "" || (/^\d*$/.test(value) && parseInt(value, 10) >= 1)) {
       setNumberOfPeople(value);
+      setFormErrors((prevErrors) => ({ ...prevErrors, numberOfPeople: "" }));
+    }else{
+      setFormErrors((prevErrors) => ({ ...prevErrors, numberOfPeople: "" }));
     }
-    setFormErrors((prevErrors) => ({ ...prevErrors, numberOfPeople: "" }));
   };
 
   // 여행 제목 글자수 제한
@@ -193,14 +197,12 @@ const AddAccountBook = () => {
           <label>언제 떠나시나요?</label>
           <div className={styles.addAccount_dateRange}>
             <DateInput
-              /* type="date" */
               value={startDate}
               onChange={handleStartDateChange}
               required
             />
             <span>~</span>
             <DateInput
-              /* type="date" */
               value={endDate}
               onChange={handleEndDateChange}
               required
@@ -216,11 +218,10 @@ const AddAccountBook = () => {
         <div className={styles.addAccount_formGroup}>
           <label>몇 명이서 떠나시나요?</label>
           <Input
-            type="number"
+            type="text"
             value={numberOfPeople}
             onChange={handleNumberOfPeopleChange}
             placeholder="인원 입력"
-            min="1"
             required
           />
           <div className="error_container">

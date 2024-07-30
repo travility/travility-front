@@ -247,7 +247,6 @@ const UpdateTripInfo = ({
                       </span>
                     </div>
                   )}
-
                   <div className={styles.tripInfo_formGroup}>
                     <label>인원 수</label>
                     <Input
