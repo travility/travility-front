@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styles from '../../../styles/accountbook/settlement/SettlementMain.module.css';
-import { Button } from '../../../styles/common/StyledComponents';
-import { formatNumberWithCommas } from '../../../util/calcUtils';
-import UpdateExpense from '../detail/UpdateExpenseModal';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../../../styles/accountbook/settlement/SettlementMain.module.css";
+import { Button } from "../../../styles/common/StyledComponents";
+import { formatNumberWithCommas } from "../../../util/calcUtils";
+import UpdateExpense from "../detail/UpdateExpenseModal";
+import { SERVER_URL } from "../../../config/apiConfig";
 
 const categoryImages = {
-  TRANSPORTATION: 'transportation.png',
-  ACCOMMODATION: 'accommodation.png',
-  FOOD: 'food.png',
-  TOURISM: 'tourism.png',
-  SHOPPING: 'shopping.png',
-  OTHERS: 'others.png',
+  TRANSPORTATION: "transportation.png",
+  ACCOMMODATION: "accommodation.png",
+  FOOD: "food.png",
+  TOURISM: "tourism.png",
+  SHOPPING: "shopping.png",
+  OTHERS: "others.png",
 };
 
 const SettlementExpenseListPage = () => {
@@ -85,7 +86,7 @@ const SettlementExpenseListPage = () => {
                       <img
                         className={styles.categoryImg}
                         src={`/images/accountbook/category/${
-                          categoryImages[expense.category] || 'others.png'
+                          categoryImages[expense.category] || "others.png"
                         }`}
                         alt={expense.category}
                       />
@@ -98,8 +99,8 @@ const SettlementExpenseListPage = () => {
                         className={styles.expenseImg}
                         src={
                           expense.imgName
-                            ? `/uploaded-images/${expense.imgName}`
-                            : '/images/dashboard/default_image.png'
+                            ? `${SERVER_URL}/uploaded-images/${expense.imgName}`
+                            : "/images/dashboard/default_image.png"
                         }
                         alt="지출 이미지"
                       />
