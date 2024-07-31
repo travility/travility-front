@@ -1,10 +1,11 @@
 import axios from 'axios';
 import axiosInstance from '../util/axiosInterceptor';
+import { COUNTRY_API_KEY } from '../config/apiConfig';
 
 // 국가, 국기 API
 export const fetchCountryFlags = async () => {
   const response = await axios.get(
-    `https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=${process.env.REACT_APP_COUNTRY_API_KEY}&numOfRows=220`
+    `https://apis.data.go.kr/1262000/CountryFlagService2/getCountryFlagList2?serviceKey=${COUNTRY_API_KEY}&numOfRows=220`
   );
   return response.data;
 };
