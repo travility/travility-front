@@ -1,12 +1,13 @@
-import React from "react";
+import React from 'react';
 import {
   ModalOverlay,
   Modal,
   ModalHeader,
   CloseButton,
-} from "../../../styles/common/StyledComponents";
-import styles from "../../../styles/accountbook/settlement/SettlementShare.module.css";
-import { useLocation } from "react-router-dom";
+} from '../../../styles/common/StyledComponents';
+import styles from '../../../styles/accountbook/settlement/SettlementShare.module.css';
+import { useLocation } from 'react-router-dom';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 const SettlementShare = ({ isOpen, onClose, countryName }) => {
   const location = useLocation();
@@ -16,7 +17,7 @@ const SettlementShare = ({ isOpen, onClose, countryName }) => {
   const handleCopyClipBoard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("복사 완료");
+      alert('복사 완료');
     } catch (error) {
       console.log(error);
     }
@@ -49,14 +50,19 @@ const SettlementShare = ({ isOpen, onClose, countryName }) => {
             <div className={styles.share_content}>
               <div
                 className={styles.share_option}
-                onClick={() => handleCopyClipBoard(`${window.location.href}`)}
+                // onClick={() => handleCopyClipBoard(`${window.location.href}`)}
               >
-                <img
-                  className={styles.share_icon}
-                  src="/images/accountbook/settlement/link.png"
-                  alt="링크로 공유하기"
-                />
-                링크로 공유하기
+                <CopyToClipboard
+                  text={window.location.href}
+                  onCopy={() => alert('복사 완료')}
+                >
+                  <img
+                    className={styles.share_icon}
+                    src="/images/accountbook/settlement/link.png"
+                    alt="링크로 공유하기"
+                  />
+                  링크로 공유하기
+                </CopyToClipboard>
               </div>
               <div className={styles.share_option} onClick={handleKakaoShare}>
                 <img

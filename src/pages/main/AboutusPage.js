@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { MemberInfoContext } from "../../App.js";
-import { motion, useAnimation } from "framer-motion";
-import { useTheme } from "../../styles/common/Theme.js";
-import styles from "../../styles/main/AboutusPage.module.css";
-import Header from "../common/header/Header.js";
-import ScrollToTopButton from "../common/ScrollToTopButtonCmp.js";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MemberInfoContext } from '../../App.js';
+import { motion, useAnimation } from 'framer-motion';
+import { useTheme } from '../../styles/common/Theme.js';
+import styles from '../../styles/main/AboutusPage.module.css';
+import Header from '../common/header/Header.js';
+import ScrollToTopButton from '../common/ScrollToTopButtonCmp.js';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 const AboutUsPage = () => {
   const { memberInfo } = useContext(MemberInfoContext);
@@ -24,19 +25,19 @@ const AboutUsPage = () => {
   const [section2InView, setSection2InView] = useState(false);
 
   const handleButtonClick = () => {
-    navigate(memberInfo ? "/main" : "/login");
+    navigate(memberInfo ? '/main' : '/login');
   };
 
   const travelVariants = {
-    hidden: { x: "-100%", opacity: 0 },
-    visible: { x: "0%", opacity: 1 },
-    combined: { x: "0%", opacity: 0 },
+    hidden: { x: '-100%', opacity: 0 },
+    visible: { x: '0%', opacity: 1 },
+    combined: { x: '0%', opacity: 0 },
   };
 
   const facilityVariants = {
-    hidden: { x: "100%", opacity: 0 },
-    visible: { x: "0%", opacity: 1 },
-    combined: { x: "0%", opacity: 0 },
+    hidden: { x: '100%', opacity: 0 },
+    visible: { x: '0%', opacity: 1 },
+    combined: { x: '0%', opacity: 0 },
   };
 
   const combinedVariants = {
@@ -51,13 +52,13 @@ const AboutUsPage = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            controls.start("visible");
+            controls.start('visible');
             setTimeout(() => {
-              controls.start("combined");
+              controls.start('combined');
               setShowCombined(true);
             }, 800);
           } else {
-            controls.start("hidden");
+            controls.start('hidden');
             setShowCombined(false);
           }
         });
@@ -83,26 +84,26 @@ const AboutUsPage = () => {
           if (entry.isIntersecting && icons) {
             icons.forEach((icon, index) => {
               setTimeout(() => {
-                icon.classList.add(styles["icon-visible"]);
+                icon.classList.add(styles['icon-visible']);
               }, index * 500);
             });
 
             intervalId = setInterval(() => {
               icons.forEach((icon, index) => {
                 setTimeout(() => {
-                  icon.classList.add(styles["icon-visible"]);
+                  icon.classList.add(styles['icon-visible']);
                 }, index * 500);
               });
               setTimeout(() => {
                 icons.forEach((icon) =>
-                  icon.classList.remove(styles["icon-visible"])
+                  icon.classList.remove(styles['icon-visible'])
                 );
               }, icons.length * 500 + 500);
             }, icons.length * 500 + 700);
           } else {
             clearInterval(intervalId);
             icons?.forEach((icon) =>
-              icon.classList.remove(styles["icon-visible"])
+              icon.classList.remove(styles['icon-visible'])
             );
           }
         });
@@ -127,7 +128,7 @@ const AboutUsPage = () => {
           0,
           Math.min(1, 1 - (top - height * 0.1) / height)
         );
-        section2.style.setProperty("--scroll-progress", scrollProgress);
+        section2.style.setProperty('--scroll-progress', scrollProgress);
       }
     };
 
@@ -136,10 +137,10 @@ const AboutUsPage = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setSection2InView(true);
-            window.addEventListener("scroll", handleScroll);
+            window.addEventListener('scroll', handleScroll);
           } else {
             setSection2InView(false);
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('scroll', handleScroll);
           }
         });
       },
@@ -149,7 +150,7 @@ const AboutUsPage = () => {
     if (section2) observer.observe(section2);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       if (section2) observer.unobserve(section2);
     };
   }, [section2InView]);
@@ -171,9 +172,9 @@ const AboutUsPage = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            window.addEventListener("scroll", handleScroll);
+            window.addEventListener('scroll', handleScroll);
           } else {
-            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener('scroll', handleScroll);
           }
         });
       },
@@ -184,35 +185,35 @@ const AboutUsPage = () => {
     if (section) observer.observe(section);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
       if (section) observer.unobserve(section);
     };
   }, []);
 
   const getImageSrc = (imageName) => {
-    return theme === "dark"
+    return theme === 'dark'
       ? `/images/main/${imageName}_wt.png`
       : `/images/main/${imageName}.png`;
   };
 
   const goGithub = () => {
     window.open(
-      "https://github.com/The-Forest-of-Labor-Development/travility-back_",
-      "_blank"
+      'https://github.com/The-Forest-of-Labor-Development/travility-back_',
+      '_blank'
     );
   };
 
   const goFigma = () => {
     window.open(
-      "https://www.figma.com/design/tEJo1b5V0vTel2IvEKSxwx/Travility?m=auto&t=0RiTjBr3yqY8bVFd-6",
-      "_blank"
+      'https://www.figma.com/design/tEJo1b5V0vTel2IvEKSxwx/Travility?m=auto&t=0RiTjBr3yqY8bVFd-6',
+      '_blank'
     );
   };
 
   const handleCopyClipBoard = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("복사 완료");
+      alert('복사 완료');
     } catch (error) {
       console.log(error);
     }
@@ -286,7 +287,7 @@ const AboutUsPage = () => {
         </div>
         <div className={styles.header_button}>
           <button className={styles.login_button} onClick={handleButtonClick}>
-            {memberInfo ? "MAIN" : "LOGIN"}
+            {memberInfo ? 'MAIN' : 'LOGIN'}
           </button>
           <div className={styles.arrow}>
             <FontAwesomeIcon icon={faChevronDown} />
@@ -320,9 +321,9 @@ const AboutUsPage = () => {
             FACILITY
           </motion.h1>
           <motion.h1
-            className={`${styles.combined} ${showCombined ? styles.show : ""}`}
+            className={`${styles.combined} ${showCombined ? styles.show : ''}`}
             initial="hidden"
-            animate={showCombined ? "combined" : "hidden"}
+            animate={showCombined ? 'combined' : 'hidden'}
             variants={combinedVariants}
             transition={{ duration: 1.5 }}
           >
@@ -571,20 +572,25 @@ const AboutUsPage = () => {
             className={styles.footer_login_button}
             onClick={handleButtonClick}
           >
-            {memberInfo ? "MAIN" : "LOGIN"}
+            {memberInfo ? 'MAIN' : 'LOGIN'}
           </button>
           <div className={styles.buttonGroup}>
             <motion.button whileHover={{ scale: 1.05 }} onClick={goGithub}>
-              <img src={getImageSrc("github")} alt="github" />
+              <img src={getImageSrc('github')} alt="github" />
             </motion.button>
             <motion.button whileHover={{ scale: 1.05 }} onClick={goFigma}>
               <img src="/images/main/figma.png" alt="figma" />
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
-              onClick={() => handleCopyClipBoard(`${window.location.href}`)}
+              // onClick={() => handleCopyClipBoard(`${window.location.href}`)}
             >
-              <img src={getImageSrc("link")} alt="link" />
+              <CopyToClipboard
+                text={window.location.href}
+                onCopy={() => alert('복사 완료')}
+              >
+                <img src={getImageSrc('link')} alt="link" />
+              </CopyToClipboard>
             </motion.button>
           </div>
         </div>
