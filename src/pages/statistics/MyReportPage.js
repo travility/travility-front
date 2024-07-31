@@ -13,7 +13,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../styles/statistics/MyReport.module.css';
-import { getExpenseStatistics } from '../../api/expenseApi';
 import { formatNumberWithCommas } from '../../util/calcUtils';
 import { useTheme } from '../../styles/common/Theme';
 import { getMyReportData } from '../../api/statisticsApi';
@@ -250,23 +249,12 @@ const MyReportPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        // const userInfo = await getUserInfo(); // 사용자 정보 가져오기
-        // setUserName(userInfo.name);
         const data = await getMyReportData();
         const categoryData = data.expenditureByCategory;
-        //const data = await getExpenseStatistics(); // 지출 통계 데이터 가져오기
-        //console.log(data);
         const categories = Object.keys(categoryData) || [];
         const amounts = Object.values(categoryData) || [];
         const paymentMethods = data.expenditureByPaymentMethod || [];
         total = data.totalExpenditure || 0;
-
-        // 카테고리가 없으면 가계부가 없는 것
-        // if (categories.length === 0) {
-        //   setHasAccountBook(false); // 가계부 없을 때 상태 업데이트
-        //   setLoading(false);
-        //   return;
-        // }
 
         if (total === 0) {
           setHasAccountBook(false);
@@ -314,16 +302,6 @@ const MyReportPage = () => {
             },
           ],
         });
-
-        // 결제 방법별 지출 금액 계산
-        // const paymentMethodAmounts = {
-        //   CASH:
-        //     paymentMethods.find((pm) => pm.paymentMethod === 'CASH')?.amount ||
-        //     0,
-        //   CARD:
-        //     paymentMethods.find((pm) => pm.paymentMethod === 'CARD')?.amount ||
-        //     0,
-        // };
 
         const paymentMethodAmounts = {
           CASH: paymentMethods.CASH || 0,

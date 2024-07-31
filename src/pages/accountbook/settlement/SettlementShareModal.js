@@ -13,16 +13,6 @@ const SettlementShare = ({ isOpen, onClose, countryName }) => {
   const location = useLocation();
   const pathName = location.pathname.substring(1);
 
-  //링크 클립보드 복사
-  const handleCopyClipBoard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert('복사 완료');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   //카카오톡으로 공유하기
   const handleKakaoShare = () => {
     if (window.Kakao) {
@@ -48,22 +38,19 @@ const SettlementShare = ({ isOpen, onClose, countryName }) => {
               <CloseButton onClick={onClose}>&times;</CloseButton>
             </ModalHeader>
             <div className={styles.share_content}>
-              <div
-                className={styles.share_option}
-                // onClick={() => handleCopyClipBoard(`${window.location.href}`)}
+              <CopyToClipboard
+                text={window.location.href}
+                onCopy={() => alert('복사 완료')}
               >
-                <CopyToClipboard
-                  text={window.location.href}
-                  onCopy={() => alert('복사 완료')}
-                >
+                <div className={styles.share_option}>
                   <img
                     className={styles.share_icon}
                     src="/images/accountbook/settlement/link.png"
                     alt="링크로 공유하기"
                   />
                   링크로 공유하기
-                </CopyToClipboard>
-              </div>
+                </div>
+              </CopyToClipboard>
               <div className={styles.share_option} onClick={handleKakaoShare}>
                 <img
                   className={styles.share_icon}

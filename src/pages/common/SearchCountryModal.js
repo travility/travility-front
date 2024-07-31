@@ -3,17 +3,17 @@ import React, {
   useState,
   forwardRef,
   useImperativeHandle,
-} from "react";
-import styles from "../../styles/common/SearchCountry.module.css";
-import { fetchCountryFlags } from "../../api/accountbookApi";
-import { Scrollbar } from "react-scrollbars-custom";
+} from 'react';
+import styles from '../../styles/common/SearchCountry.module.css';
+import { fetchCountryFlags } from '../../api/accountbookApi';
+import { Scrollbar } from 'react-scrollbars-custom';
 
 const SearchCountry = forwardRef(
   (
     { onSelectCountry, closeModal, modalPosition = { top: 0, left: 0 } },
     ref
   ) => {
-    const [modalSearchCountry, setModalSearchCountry] = useState("");
+    const [modalSearchCountry, setModalSearchCountry] = useState('');
     const [countries, setCountries] = useState([]);
 
     useEffect(() => {
@@ -21,15 +21,15 @@ const SearchCountry = forwardRef(
         try {
           const response = await fetchCountryFlags();
           const updatedCountries = response.data.map((country) => {
-            if (country.country_nm === "미합중국") {
-              return { ...country, country_nm: "미국" };
+            if (country.country_nm === '미합중국') {
+              return { ...country, country_nm: '미국' };
             }
             return country;
           });
           setCountries(updatedCountries);
         } catch (error) {
           console.error(
-            "국가 국기 정보를 가져오는 중 오류 발생:",
+            '국가 국기 정보를 가져오는 중 오류 발생:',
             error.message
           );
         }
@@ -43,9 +43,7 @@ const SearchCountry = forwardRef(
     );
 
     useImperativeHandle(ref, () => ({
-      focus: () => {
-        console.log("focus on SearchCountry");
-      },
+      focus: () => {},
     }));
 
     return (
@@ -53,7 +51,7 @@ const SearchCountry = forwardRef(
         ref={ref}
         className={styles.modalOverlay}
         style={{
-          position: "absolute",
+          position: 'absolute',
           top: `${modalPosition.top}px`,
           left: `${modalPosition.left}px`,
         }}
@@ -71,7 +69,7 @@ const SearchCountry = forwardRef(
               className={styles.modalSearchInput}
             />
             <Scrollbar
-              style={{ height: "200px" }}
+              style={{ height: '200px' }}
               className={styles.customScrollbar}
             >
               <div className={styles.countryFlags}>
