@@ -441,11 +441,11 @@
 
 @media (max-width: 530px) {
   .schedule_calendar_container {
-    font-size: 0.7rem;
+    font-size: 0.5em;
   }
 
   .schedule_detail_container {
-    font-size: 0.9rem;
+    font-size: 0.8rem !important;
   }
 
   .schedule_detail_content {
@@ -492,13 +492,16 @@
   }
 
   .cell_total_amount {
-    font-size: 0.36em !important;
+    font-size: 0.4em !important;
   }
 
   .eventTitle{
-    font-size: 0.4em;
+    font-size: 0.35em;
   }
 
+  .cell {
+    height: 4rem !important;
+  }
 
 }
 
@@ -517,12 +520,12 @@
 
   .calendar_container {
     overflow: auto;
-    height: 65vh;
+    height: 42ㅋrem;
     transition: height 0.3s ease;
   }
 
   .cell_total_amount {
-    font-size: 0.7em;
+    font-size: 0.6em;
   }
 
   .detail_container {
@@ -654,11 +657,11 @@
   }
 
   .type {
-    margin-left: 4px;
+    margin-left: 0.4rem;
   }
 
   .total_cost_amount {
-    margin-left: 10px;
+    margin-left: 1rem;
   }
 
   .icon {
@@ -666,11 +669,11 @@
   }
 
   .cell {
-    height: 60px;
+    height: 6rem;
   }
 
   .header {
-    height: 25px;
+    height: 2.5rem;
   }
 
   .go_accountbook_detail_btn {
@@ -678,7 +681,19 @@
   }
 
   .customScrollbar {
-    height: 100px;
+    height: 5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+  .cell_total_amount {
+    font-size: 0.4em;
+  }
+}
+
+@media (min-width: 851px) and (max-width: 960px) {
+  .cell_total_amount {
+    font-size: 0.5em;
   }
 }
 

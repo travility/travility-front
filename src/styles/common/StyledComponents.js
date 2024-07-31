@@ -37,13 +37,13 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
   }
 
-  // @media (max-width: 480px) {
-  //   html {
-  //     font-size: 75%;
-  //   }
-  // }
+  @media (max-width: 480px) {
+    html {
+      font-size: 95%;
+    }
+  }
 
-  @media (max-width: 767px) {
+  @media (min-width: 481px) and (max-width: 767px) {
     html {
       font-size: 87.5%;
     }
@@ -135,9 +135,9 @@ const Button = styled.button`
   background-color: var(--main-color);
   color: #ffffff;
   width: 100%;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  padding: 0.5rem;
+  padding: 0.6rem;
   border: none;
   border-radius: 0.3rem;
   cursor: pointer;
@@ -163,7 +163,7 @@ const Input = styled.input`
   color: var(--text-color);
   background-color: var(--background-color);
   transition: border-color 0.3s;
-  font-size: 0.7em;
+  font-size: 0.6em;
 
   &:focus {
     background-color: ${({ theme }) => theme.focusBackground};
