@@ -151,27 +151,24 @@ const AccountBookListPage = () => {
       {accountBooks.length > 0 && (
         <>
           <div className={styles.accountBook_list_header}>
-            <div className={styles.sort_search_container}>
-              <span className={styles.sortType}>
-                <Select
-                  id="sort"
-                  value={sort}
-                  onChange={handleSort}
-                  options={sortOptions}
-                  styles={customSelectStyles}
-                ></Select>
-              </span>
-              <span className={styles.search_container}>
-                <Input
-                  className={styles.search}
-                  type="text"
-                  value={searchText}
-                  onChange={handleSearch}
-                  placeholder="여행 제목 또는 국가"
-                ></Input>
-              </span>
+            <div className={styles.sortType}>
+              <Select
+                id="sort"
+                value={sort}
+                onChange={handleSort}
+                options={sortOptions}
+                styles={customSelectStyles}
+              ></Select>
             </div>
-
+            <div className={styles.search_container}>
+              <Input
+                className={styles.search}
+                type="text"
+                value={searchText}
+                onChange={handleSearch}
+                placeholder="여행 제목 또는 국가"
+              ></Input>
+            </div>
             <div className={styles.action_buttons}>
               <Button
                 className={styles.delete_button}

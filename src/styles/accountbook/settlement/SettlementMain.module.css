@@ -209,6 +209,11 @@
   white-space: nowrap;
 }
 
+.currency {
+  min-width: 1.2rem;
+  font-size: 0.8em;
+}
+
 .title2 {
   color: var(--gray-color);
 }

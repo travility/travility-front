@@ -22,6 +22,9 @@ const RecentAccountBooks = () => {
   const [visibleStartIndex, setVisibleStartIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(2); // 기본값은 두 개
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 690);
+  const [isVerySmallScreen, setIsVerySmallScreen] = useState(
+    window.innerWidth <= 390
+  );
 
   useEffect(() => {
     const fetchAccountBooks = async () => {
@@ -47,6 +50,7 @@ const RecentAccountBooks = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 690);
+      setIsVerySmallScreen(window.innerWidth <= 390);
       if (window.innerWidth <= 560) {
         setItemsPerPage(1);
       } else {
@@ -102,7 +106,15 @@ const RecentAccountBooks = () => {
               onClick={handlePrevClick}
               disabled={visibleStartIndex === 0}
             >
-              <FontAwesomeIcon icon={isMobile ? faChevronLeft : faChevronUp} />
+              <FontAwesomeIcon
+                icon={
+                  isVerySmallScreen
+                    ? faChevronUp
+                    : isMobile
+                    ? faChevronLeft
+                    : faChevronUp
+                }
+              />
             </button>
           </div>
           <div className={styles.recent_accountBooks_list}>
@@ -123,7 +135,13 @@ const RecentAccountBooks = () => {
               disabled={visibleStartIndex + itemsPerPage >= accountBooks.length}
             >
               <FontAwesomeIcon
-                icon={isMobile ? faChevronRight : faChevronDown}
+                icon={
+                  isVerySmallScreen
+                    ? faChevronDown
+                    : isMobile
+                    ? faChevronRight
+                    : faChevronDown
+                }
               />
             </button>
           </div>
