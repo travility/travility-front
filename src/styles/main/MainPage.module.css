@@ -221,3 +221,13 @@
     margin-bottom: 1rem;
   }
 }
+
+@media (max-width: 390px) {
+  .recent_accountBooks_contents {
+    flex-direction: column;
+  }
+
+  .recent_accountBooks_list {
+    flex-direction: column;
+  }
+}

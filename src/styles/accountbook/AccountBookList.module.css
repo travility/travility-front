@@ -14,6 +14,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .sort_search_container {
@@ -43,19 +44,17 @@
 }
 
 :global(.css-t7pedk-singleValue) {
-  overflow: hidden !important; 
+  overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   width: 350px;
 }
-
 
 /*삭제*/
 .action_buttons {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-bottom: 1rem;
   width: 9rem;
   font-size: 0.9rem;
 }
@@ -97,9 +96,6 @@
   .accountBook_list_grid_container {
     grid-template-columns: repeat(3, 1fr);
   }
-  /* .sortType {
-    width: 5.3rem;
-  } */
 }
 
 @media (max-width: 690px) {
@@ -111,5 +107,30 @@
 @media (max-width: 450px) {
   .accountBook_list_grid_container {
     grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (max-width: 530px) {
+  .accountBook_list_header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "sortType action_buttons"
+      "search_container search_container";
+    gap: 0.5rem;
+  }
+
+  .sortType {
+    grid-area: sortType;
+  }
+
+  .action_buttons {
+    grid-area: action_buttons;
+    justify-self: end;
+  }
+
+  .search_container {
+    grid-area: search_container;
+    margin-right: 0;
   }
 }

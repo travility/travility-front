@@ -313,7 +313,7 @@
   color: #fff !important;
   border-radius: 0.3rem;
   padding: 0.3rem 0.5rem;
-  font-size: 0.5em !important;
+  font-size: 0.7em !important;
 }
 
 .selectedButton {
@@ -441,7 +441,11 @@
 
 @media (max-width: 530px) {
   .schedule_calendar_container {
-    font-size: 0.5em;
+    font-size: 0.7em;
+  }
+
+  .schedule_calendar_container .header {
+    font-size: 0.8em;
   }
 
   .schedule_detail_container {
@@ -491,18 +495,13 @@
     display: none !important;
   }
 
-  .cell_total_amount {
-    font-size: 0.4em !important;
-  }
-
-  .eventTitle{
-    font-size: 0.35em;
-  }
-
   .cell {
     height: 4rem !important;
   }
 
+  .cell_total_amount {
+    font-size: 0.3em !important;
+  }
 }
 
 @media (max-width: 767px) {
@@ -520,7 +519,7 @@
 
   .calendar_container {
     overflow: auto;
-    height: 42ㅋrem;
+    height: 65vh;
     transition: height 0.3s ease;
   }
 
@@ -607,6 +606,7 @@
     background-color: var(--light-color);
     padding: 1rem;
     border-radius: 0.5rem;
+    font-size: 1.2rem;
   }
 
   .schedule_detail_Buttons_container {
@@ -669,11 +669,11 @@
   }
 
   .cell {
-    height: 6rem;
+    height: 5rem;
   }
 
   .header {
-    height: 2.5rem;
+    height: 25px;
   }
 
   .go_accountbook_detail_btn {
@@ -681,19 +681,19 @@
   }
 
   .customScrollbar {
-    height: 5rem;
+    height: 100px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 850px) {
   .cell_total_amount {
-    font-size: 0.4em;
+    font-size: 0.6em;
   }
 }
 
 @media (min-width: 851px) and (max-width: 960px) {
   .cell_total_amount {
-    font-size: 0.5em;
+    font-size: 0.7em;
   }
 }
 

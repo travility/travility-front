@@ -135,7 +135,7 @@ const Button = styled.button`
   background-color: var(--main-color);
   color: #ffffff;
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 0.7em;
   font-weight: 700;
   padding: 0.6rem;
   border: none;
@@ -155,7 +155,6 @@ const Button = styled.button`
 
 const Input = styled.input`
   padding: 0.5rem;
-  // margin-top: 0.2rem;
   width: 100%;
   min-height: 1rem;
   border: 1px solid var(--line-color);
@@ -163,7 +162,7 @@ const Input = styled.input`
   color: var(--text-color);
   background-color: var(--background-color);
   transition: border-color 0.3s;
-  font-size: 0.6em;
+  font-size: 0.7em;
 
   &:focus {
     background-color: ${({ theme }) => theme.focusBackground};
