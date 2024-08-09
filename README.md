@@ -104,6 +104,7 @@ Test ID / PW : usertest1 / usertest1! <br>
 #### Work Flow
 
 ![workflow](https://github.com/user-attachments/assets/18d55564-b4ff-4a32-95c3-2a00e9d7deaf)
+![erd drawio](https://github.com/user-attachments/assets/ee9c5fb8-1b5d-4578-ba4c-3c057d79e87e)
 
 #### ERD (<a href="https://www.erdcloud.com/d/K3iPuuZy3FDYsmcwW" target="_blank">🔗자세히 보러가기</a>)
 
